@@ -18,7 +18,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity
+@Entity(name = "users")
 public class User extends AbsEntityInteger implements UserDetails {
     @NotNull
     @Column(unique = true)
