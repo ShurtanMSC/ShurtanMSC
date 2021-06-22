@@ -20,9 +20,9 @@ public class Role extends AbsEntityShort implements GrantedAuthority{
 
     @Column(unique = true)
     @Enumerated(EnumType.STRING)
-    private String roleName;
+    private RoleName roleName;
     @Override
     public String getAuthority() {
-        return roleName;
+        return roleName.name();
     }
 }
