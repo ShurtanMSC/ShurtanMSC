@@ -41,12 +41,12 @@ public class DataLoader implements CommandLineRunner {
                     User
                             .builder()
                             .active(true)
-                            .email("a")
-                            .password(passwordEncoder.encode("a"))
-                            .fio("a")
-                            .phone("a")
+                            .email("admin")
+                            .password(passwordEncoder.encode("admin"))
+                            .fio("admin")
+                            .phone("+998993793877")
                             .roles(Collections.singleton(director))
-                            .username("a")
+                            .username("admin")
                             .build()
             );
 //        }
