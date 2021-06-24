@@ -11,6 +11,7 @@ import uz.neft.repository.UserRepository;
 import uz.neft.utils.Converter;
 
 import java.util.Collections;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -24,11 +25,11 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public ApiResponse save(UserDto dto){
+    public ApiResponse save(UserDto dto) {
 
-        if (dto.getId()!=null) return converter.apiError();
+        if (dto.getId() != null) return converter.apiError();
         if (!roleRepository.existsById(dto.getRoleId())) return converter.apiError();
-        User user= User
+        User user = User
                 .builder()
                 .username(dto.getUsername())
                 .phone(dto.getPhone())
@@ -39,7 +40,26 @@ public class UserService {
                 .roles(Collections.singleton(roleRepository.findById(dto.getRoleId()).get()))
                 .build();
         user = userRepository.save(user);
-        return converter.apiSuccess("Saved",user);
+        return converter.apiSuccess("Saved", user);
+    }
+
+    public ApiResponse delete(Integer id) {
+
+        try {
+            if (id != null) {
+                Optional<User> byId = userRepository.findById(id);
+                if (byId.isPresent()) {
+                    userRepository.deleteById(id);
+                    return converter.apiSuccess("Deleted");
+                } else {
+                    return converter.apiError("User not found");
+                }
+            }
+            return converter.apiError("Id null");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError("Error in deleting", e);
+        }
     }
 
 }
