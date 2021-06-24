@@ -3,9 +3,13 @@ package uz.neft.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import uz.neft.dto.UserDto;
+import uz.neft.entity.User;
 import uz.neft.payload.ApiResponse;
 import uz.neft.payload.ApiResponseObject;
 import uz.neft.payload.ApiResponseObjectByPageable;
+import uz.neft.repository.RoleRepository;
+import uz.neft.repository.UserRepository;
 
 
 import java.util.stream.Collectors;
@@ -13,8 +17,12 @@ import java.util.stream.Collectors;
 @Component
 public class Converter {
 
-    //la la la la^3
 
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private UserRepository userRepository;
     /** For responses **/
 
     public ApiResponse api(String message, boolean success){
@@ -83,6 +91,11 @@ public class Converter {
 
     /** For data transfer objects (Dto) **/
 
-
+//    public User userDtoToUser(UserDto dto){
+//
+//
+//
+//    }
+//
 
 }
