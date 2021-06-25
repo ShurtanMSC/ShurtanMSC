@@ -67,7 +67,7 @@ public class UserService {
             editingUser.setFio(dto.getFio());
 
             if (!passwordEncoder.matches(editingUser.getPassword(), dto.getPassword())) {
-            editingUser.setPassword(passwordEncoder.encode(dto.getPassword()));
+                editingUser.setPassword(passwordEncoder.encode(dto.getPassword()));
             }
 
             editingUser.setPhone(dto.getPhone());
