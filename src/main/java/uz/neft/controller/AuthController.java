@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import uz.neft.payload.ResToken;
 import uz.neft.payload.SignIn;
 import uz.neft.service.AuthService;
+import uz.neft.utils.Converter;
 
 
 @RestController
@@ -16,12 +17,20 @@ import uz.neft.service.AuthService;
 @CrossOrigin
 public class AuthController {
     @Autowired
-    AuthService authService;
+    private AuthService authService;
 
+    @Autowired
+    private Converter converter;
     @PostMapping("/login")
     public HttpEntity<?> login(@RequestBody SignIn signIn){
         ResToken resToken=authService.signIn(signIn);
         return ResponseEntity.status(resToken!=null?200:401).body(resToken);
+    }
+
+
+    @GetMapping("/test")
+    public HttpEntity<?> test(){
+        return ResponseEntity.ok(converter.apiSuccess());
     }
 
 
