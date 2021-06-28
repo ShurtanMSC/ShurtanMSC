@@ -23,4 +23,5 @@ public class CollectionPoint extends AbsEntityInteger {
     @ManyToOne
     private Uppg uppg;
 
+
 }
