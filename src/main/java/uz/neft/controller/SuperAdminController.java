@@ -12,6 +12,7 @@ import uz.neft.utils.Converter;
 
 @RestController
 @RequestMapping("api/admin/")
+@CrossOrigin
 public class SuperAdminController {
 
     private final UserService userService;
