@@ -3,8 +3,8 @@ package uz.neft.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import uz.neft.dto.UserDto;
-import uz.neft.entity.User;
+import uz.neft.dto.*;
+import uz.neft.entity.*;
 import uz.neft.payload.ApiResponse;
 import uz.neft.payload.ApiResponseObject;
 import uz.neft.payload.ApiResponseObjectByPageable;
@@ -90,7 +90,6 @@ public class Converter {
     }
 
 
-
     /**
      * For data transfer objects (Dto)
      **/
@@ -112,4 +111,60 @@ public class Converter {
             return null;
         }
     }
+
+    public MiningSystemDto miningSysToMiningSysDto(MiningSystem miningSystem) {
+        try {
+            return MiningSystemDto
+                    .builder()
+                    .Id(miningSystem.getId())
+                    .name(miningSystem.getName())
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public UppgDto uppgToUppgDto(Uppg uppg) {
+        try {
+            return UppgDto
+                    .builder()
+                    .id(uppg.getId())
+                    .name(uppg.getName())
+                    .miningSystem(miningSysToMiningSysDto(uppg.getMiningSystem()))
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public CollectionPointDto collectionPointToCollectionPointDto(CollectionPoint collectionPoint) {
+        try {
+            return CollectionPointDto
+                    .builder()
+                    .id(collectionPoint.getId())
+                    .name(collectionPoint.getName())
+                    .uppgDto(uppgToUppgDto(collectionPoint.getUppg()))
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public WellDto wellToWellDto(Well well) {
+        try {
+            return WellDto
+                    .builder()
+                    .id(well.getId())
+                    .number(well.getNumber())
+                    .collectionPointDto(collectionPointToCollectionPointDto(well.getCollectionPoint()))
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

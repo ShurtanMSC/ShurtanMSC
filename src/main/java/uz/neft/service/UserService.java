@@ -112,7 +112,6 @@ public class UserService {
     }
 
     public ApiResponse delete(Integer id) {
-
         try {
             if (id != null) {
                 Optional<User> byId = userRepository.findById(id);
