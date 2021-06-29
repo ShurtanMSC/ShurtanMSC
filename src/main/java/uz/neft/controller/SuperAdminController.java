@@ -1,15 +1,12 @@
 package uz.neft.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.neft.dto.*;
-import uz.neft.entity.MiningSystem;
 import uz.neft.payload.ApiResponse;
-import uz.neft.repository.UserRepository;
+import uz.neft.repository.RoleRepository;
 import uz.neft.service.*;
-import uz.neft.utils.Converter;
 
 @RestController
 @RequestMapping("api/admin")
@@ -21,20 +18,28 @@ public class SuperAdminController {
     private final UppgService uppgService;
     private final CollectionPointService collectionPointService;
     private final WellService wellService;
+    private final RoleRepository roleRepository;
 
-    public SuperAdminController(UserService userService, MiningSystemService miningSystemService, UppgService uppgService, CollectionPointService collectionPointService, WellService wellService) {
+    public SuperAdminController(UserService userService, MiningSystemService miningSystemService, UppgService uppgService, CollectionPointService collectionPointService, WellService wellService, RoleRepository roleRepository) {
         this.userService = userService;
         this.miningSystemService = miningSystemService;
         this.uppgService = uppgService;
         this.collectionPointService = collectionPointService;
         this.wellService = wellService;
+        this.roleRepository = roleRepository;
+    }
+
+
+    /** Roles **/
+    public HttpEntity<?> getRoles(){
+        return ResponseEntity.ok(roleRepository.findAll());
     }
 
     /**
      * User qo'shish
      **/
 
-    @PostMapping("/user/save")
+    @PostMapping("/user/add")
     public HttpEntity<?> save(@RequestBody UserDto dto) {
         ApiResponse save = userService.save(dto);
         return ResponseEntity.ok(save);
@@ -67,7 +72,7 @@ public class SuperAdminController {
 
 //    Mining system CRUD
 
-    @PostMapping("/mining/save")
+    @PostMapping("/mining/add")
     public HttpEntity<?> saveMiningSystem(@RequestBody MiningSystemDto dto) {
         ApiResponse save = miningSystemService.save(dto);
         return ResponseEntity.ok(save);
@@ -100,7 +105,7 @@ public class SuperAdminController {
 
     //      UPPG CRUD
 
-    @PostMapping("/uppg/save")
+    @PostMapping("/uppg/add")
     public HttpEntity<?> saveUppg(@RequestBody UppgDto dto) {
         ApiResponse save = uppgService.save(dto);
         return ResponseEntity.ok(save);
@@ -133,7 +138,7 @@ public class SuperAdminController {
 
     //   Collection Point CRUD
 
-    @PostMapping("/collection/save")
+    @PostMapping("/collection/add")
     public HttpEntity<?> saveCollection(@RequestBody CollectionPointDto dto) {
         ApiResponse save = collectionPointService.save(dto);
         return ResponseEntity.ok(save);
@@ -166,7 +171,7 @@ public class SuperAdminController {
 
     //   Well CRUD
 
-    @PostMapping("/well/save")
+    @PostMapping("/well/add")
     public HttpEntity<?> saveWell(@RequestBody WellDto dto) {
         ApiResponse save = wellService.save(dto);
         return ResponseEntity.ok(save);
