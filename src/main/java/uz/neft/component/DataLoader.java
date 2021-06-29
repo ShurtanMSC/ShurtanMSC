@@ -36,7 +36,13 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 //        if (mode.equals("always")) {
+        try {
             Role director = roleRepository.save(new Role(RoleName.SUPER_ADMIN));
+            Role operator = roleRepository.save(new Role(RoleName.OPERATOR));
+            Role employee = roleRepository.save(new Role(RoleName.EMPLOYEE));
+            Role energetic = roleRepository.save(new Role(RoleName.ENERGETIC));
+            Role metrologist = roleRepository.save(new Role(RoleName.METROLOGIST));
+            Role geologist = roleRepository.save(new Role(RoleName.GEOLOGIST));
             userRepository.save(
                     User
                             .builder()
@@ -49,6 +55,10 @@ public class DataLoader implements CommandLineRunner {
                             .username("admin")
                             .build()
             );
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 //        }
     }
 }

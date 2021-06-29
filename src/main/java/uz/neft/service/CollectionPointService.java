@@ -48,14 +48,17 @@ public class CollectionPointService {
         try {
             CollectionPoint editingCollectionPoint = new CollectionPoint();
             Optional<CollectionPoint> byId = collectionPointRepository.findById(dto.getId());
-            if (byId.isPresent()) editingCollectionPoint = byId.get();
-            editingCollectionPoint.setName(dto.getName());
+            if (byId.isPresent()){
+                editingCollectionPoint = byId.get();
+                editingCollectionPoint.setName(dto.getName());
 
-            Optional<Uppg> byIdCollection = uppgRepository.findById(dto.getUppgDto().getId());
-            editingCollectionPoint.setUppg(byIdCollection.get());
+                Optional<Uppg> byIdCollection = uppgRepository.findById(dto.getUppgDto().getId());
+                editingCollectionPoint.setUppg(byIdCollection.get());
 
-            CollectionPoint editedCollectionPoint = collectionPointRepository.save(editingCollectionPoint);
-            return converter.apiSuccess("Edited Mining System", editedCollectionPoint);
+                CollectionPoint editedCollectionPoint = collectionPointRepository.save(editingCollectionPoint);
+                return converter.apiSuccess("Edited Mining System", editedCollectionPoint);
+            }
+            return converter.apiError("Collection not found!");
         } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError("Error editing collection point");

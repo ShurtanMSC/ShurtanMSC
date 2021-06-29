@@ -8,11 +8,10 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import uz.neft.entity.User;
 import uz.neft.entity.Well;
+import uz.neft.entity.enums.WellStatus;
 import uz.neft.entity.template.AbsEntityLong;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @EqualsAndHashCode(callSuper = true)
@@ -34,7 +33,8 @@ public class WellAction extends AbsEntityLong {
     // Rpl
     private double rpl;
 
-    private boolean status;
+    @Enumerated(EnumType.STRING)
+    private WellStatus status;
 
     @ManyToOne
     private User user;

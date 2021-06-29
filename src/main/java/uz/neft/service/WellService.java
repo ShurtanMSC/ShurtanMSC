@@ -30,14 +30,18 @@ public class WellService {
 
     public ApiResponse save(WellDto dto) {
         try {
-            Well well = new Well();
-            well.setNumber(dto.getNumber());
+            if (dto.getId()==null){
+                Well well = new Well();
+                well.setNumber(dto.getNumber());
 
-            Optional<CollectionPoint> byIdMining = collectionPointRepository.findById(dto.getCollectionPointDto().getId());
-            well.setCollectionPoint(byIdMining.get());
+                Optional<CollectionPoint> byId = collectionPointRepository.findById(dto.getCollectionPointDto().getId());
+                if (!byId.isPresent()) return converter.apiError("Yig'uv punkti topilmadi!");
+                well.setCollectionPoint(byId.get());
+                Well save = wellRepository.save(well);
+                return converter.apiSuccess("Saved well", save);
+            }
+            return converter.apiError();
 
-            Well save = wellRepository.save(well);
-            return converter.apiSuccess("Saved well", save);
         } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError("Error creating well");

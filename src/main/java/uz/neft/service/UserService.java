@@ -12,6 +12,7 @@ import uz.neft.repository.UserRepository;
 import uz.neft.utils.Converter;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -60,21 +61,27 @@ public class UserService {
             Optional<User> byId = userRepository.findById(dto.getId());
             if (byId.isPresent()) {
                 editingUser = byId.get();
-            }
-            editingUser.setActive(dto.isActive());
-            editingUser.setEmail(dto.getEmail());
-            editingUser.setUsername(dto.getUsername());
-            editingUser.setFio(dto.getFio());
 
-            if (!passwordEncoder.matches(editingUser.getPassword(), dto.getPassword())) {
-                editingUser.setPassword(passwordEncoder.encode(dto.getPassword()));
+                editingUser.setActive(dto.isActive());
+                editingUser.setEmail(dto.getEmail());
+                editingUser.setUsername(dto.getUsername());
+                editingUser.setFio(dto.getFio());
+                editingUser.setPhone(dto.getPhone());
+                Optional<Role> role = roleRepository.findById(dto.getRoleId());
+                if (role.isPresent()){
+                    editingUser.setRoles(new HashSet<>(Collections.singletonList(role.get())));
+                }
+                if (dto.getPassword()!=null&&!passwordEncoder.matches(byId.get().getPassword(),dto.getPassword())){
+                    editingUser.setPassword(passwordEncoder.encode(dto.getPassword()));
+                }
+
+                editingUser=userRepository.save(editingUser);
+                return converter.apiSuccess("Edited", editingUser);
             }
 
-            editingUser.setPhone(dto.getPhone());
-            Optional<Role> byId1 = roleRepository.findById(dto.getRoleId());
-            editingUser.setRoles(Collections.singleton(byId1.get()));
-            User editedUser = userRepository.save(editingUser);
-            return converter.apiSuccess("Edited", editedUser);
+
+
+            return converter.apiError("Bunaqa id li user yo'q");
         } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError();

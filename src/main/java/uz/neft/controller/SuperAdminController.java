@@ -12,7 +12,7 @@ import uz.neft.service.*;
 import uz.neft.utils.Converter;
 
 @RestController
-@RequestMapping("api/admin/")
+@RequestMapping("api/admin")
 @CrossOrigin
 public class SuperAdminController {
 
@@ -52,7 +52,7 @@ public class SuperAdminController {
         return ResponseEntity.ok(delete);
     }
 
-    @GetMapping("/users")
+    @GetMapping("/user/all")
     public HttpEntity<?> all() {
         ApiResponse all = userService.findAll();
         return ResponseEntity.ok(all);
@@ -85,7 +85,7 @@ public class SuperAdminController {
         return ResponseEntity.ok(delete);
     }
 
-    @GetMapping("/minings")
+    @GetMapping("/mining/all")
     public HttpEntity<?> allMinings() {
         ApiResponse all = miningSystemService.findAll();
         return ResponseEntity.ok(all);
@@ -100,31 +100,31 @@ public class SuperAdminController {
 
     //      UPPG CRUD
 
-    @PostMapping("/collection/save")
+    @PostMapping("/uppg/save")
     public HttpEntity<?> saveUppg(@RequestBody UppgDto dto) {
         ApiResponse save = uppgService.save(dto);
         return ResponseEntity.ok(save);
     }
 
-    @PutMapping("/collection/edit")
+    @PutMapping("/uppg/edit")
     public HttpEntity<?> editUppg(@RequestBody UppgDto dto) {
         ApiResponse edit = uppgService.edit(dto);
         return ResponseEntity.ok(edit);
     }
 
-    @DeleteMapping("/collection/delete/{id}")
+    @DeleteMapping("/uppg/delete/{id}")
     public HttpEntity<?> deleteUppg(@PathVariable Integer id) {
         ApiResponse delete = uppgService.delete(id);
         return ResponseEntity.ok(delete);
     }
 
-    @GetMapping("/collections")
+    @GetMapping("/uppg/all")
     public HttpEntity<?> allUppgs() {
         ApiResponse all = uppgService.findAll();
         return ResponseEntity.ok(all);
     }
 
-    @GetMapping("/collection/{id}")
+    @GetMapping("/uppg/{id}")
     public HttpEntity<?> uppgById(@PathVariable Integer id) {
         ApiResponse byId = uppgService.findById(id);
         return ResponseEntity.ok(byId);
@@ -151,7 +151,7 @@ public class SuperAdminController {
         return ResponseEntity.ok(delete);
     }
 
-    @GetMapping("/collections")
+    @GetMapping("/collection/all")
     public HttpEntity<?> allCollections() {
         ApiResponse all = collectionPointService.findAll();
         return ResponseEntity.ok(all);
@@ -184,7 +184,7 @@ public class SuperAdminController {
         return ResponseEntity.ok(delete);
     }
 
-    @GetMapping("/wells")
+    @GetMapping("/well/all")
     public HttpEntity<?> allWells() {
         ApiResponse all = wellService.findAll();
         return ResponseEntity.ok(all);
