@@ -30,14 +30,17 @@ public class CollectionPointService {
 
     public ApiResponse save(CollectionPointDto dto) {
         try {
+            if (dto.getId() != null) return converter.apiError("id shouldn't be sent");
             CollectionPoint collectionPoint = new CollectionPoint();
-            collectionPoint.setName(dto.getName());
-
-            Optional<Uppg> byIdCollection = uppgRepository.findById(dto.getUppgDto().getId());
-            collectionPoint.setUppg(byIdCollection.get());
-
-            CollectionPoint save = collectionPointRepository.save(collectionPoint);
-            return converter.apiSuccess("Saved collection point", save);
+            Optional<Uppg> byIdUppg = uppgRepository.findById(dto.getUppgDto().getId());
+            if (byIdUppg.isPresent()) {
+                collectionPoint.setName(dto.getName());
+                collectionPoint.setUppg(byIdUppg.get());
+                CollectionPoint save = collectionPointRepository.save(collectionPoint);
+                CollectionPointDto collectionPointDto = converter.collectionPointToCollectionPointDto(save);
+                return converter.apiSuccess("Collection point saved", collectionPointDto);
+            }
+            return converter.apiError("Uppg not found");
         } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError("Error creating collection point");
@@ -46,22 +49,25 @@ public class CollectionPointService {
 
     public ApiResponse edit(CollectionPointDto dto) {
         try {
-            CollectionPoint editingCollectionPoint = new CollectionPoint();
+            if (dto.getId() == null) return converter.apiError("Id null");
+            CollectionPoint editCollectionPoint;
             Optional<CollectionPoint> byId = collectionPointRepository.findById(dto.getId());
-            if (byId.isPresent()){
-                editingCollectionPoint = byId.get();
-                editingCollectionPoint.setName(dto.getName());
-
-                Optional<Uppg> byIdCollection = uppgRepository.findById(dto.getUppgDto().getId());
-                editingCollectionPoint.setUppg(byIdCollection.get());
-
-                CollectionPoint editedCollectionPoint = collectionPointRepository.save(editingCollectionPoint);
-                return converter.apiSuccess("Edited Mining System", editedCollectionPoint);
+            if (byId.isPresent()) {
+                Optional<Uppg> byIdUppg = uppgRepository.findById(dto.getUppgDto().getId());
+                if (byIdUppg.isPresent()) {
+                    editCollectionPoint = byId.get();
+                    editCollectionPoint.setName(dto.getName());
+                    editCollectionPoint.setUppg(byIdUppg.get());
+                    CollectionPoint save = collectionPointRepository.save(editCollectionPoint);
+                    CollectionPointDto collectionPointDto = converter.collectionPointToCollectionPointDto(save);
+                    return converter.apiSuccess("Edited Mining System", collectionPointDto);
+                }
+                return converter.apiError("Uppg not found");
             }
             return converter.apiError("Collection not found!");
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error editing collection point");
+            return converter.apiError("Error edit collection point");
         }
     }
 
@@ -71,17 +77,15 @@ public class CollectionPointService {
                 Optional<CollectionPoint> byId = collectionPointRepository.findById(id);
                 if (byId.isPresent()) {
                     collectionPointRepository.deleteById(id);
-                    return converter.apiSuccess("Deleted collection point");
-                } else {
-                    return converter.apiError("Collection point not found");
+                    return converter.apiSuccess("Collection point deleted");
                 }
+                return converter.apiError("Collection point not found");
             }
             return converter.apiError("Id null");
         } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError("Error in deleting collection point", e);
         }
-
     }
 
     public ApiResponse findAll() {
@@ -92,7 +96,7 @@ public class CollectionPointService {
             return converter.apiSuccess(collect);
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in finding collection point", e);
+            return converter.apiError("Error in fetching all collection points", e);
         }
     }
 
@@ -101,11 +105,10 @@ public class CollectionPointService {
             if (id != null) {
                 Optional<CollectionPoint> byId = collectionPointRepository.findById(id);
                 if (byId.isPresent()) {
-                    Optional<CollectionPoint> byId1 = collectionPointRepository.findById(id);
-                    return converter.apiSuccess(byId1.get());
-                } else {
-                    return converter.apiError("CollectionPoint not found");
+                    CollectionPointDto collectionPointDto = converter.collectionPointToCollectionPointDto(byId.get());
+                    return converter.apiSuccess(collectionPointDto);
                 }
+                return converter.apiError("CollectionPoint not found");
             }
             return converter.apiError("Id null");
         } catch (Exception e) {

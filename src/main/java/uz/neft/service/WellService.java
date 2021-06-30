@@ -30,42 +30,47 @@ public class WellService {
 
     public ApiResponse save(WellDto dto) {
         try {
-            if (dto.getId()==null){
+            if (dto.getId() == null) {
                 Well well = new Well();
-                well.setNumber(dto.getNumber());
-
-                Optional<CollectionPoint> byId = collectionPointRepository.findById(dto.getCollectionPointDto().getId());
-                if (!byId.isPresent()) return converter.apiError("Yig'uv punkti topilmadi!");
-                well.setCollectionPoint(byId.get());
-                Well save = wellRepository.save(well);
-                return converter.apiSuccess("Saved well", save);
+                Optional<CollectionPoint> byIdCollectionPoint = collectionPointRepository.findById(dto.getCollectionPointDto().getId());
+                if (byIdCollectionPoint.isPresent()) {
+                    well.setNumber(dto.getNumber());
+                    well.setCollectionPoint(byIdCollectionPoint.get());
+                    Well save = wellRepository.save(well);
+                    WellDto wellDto = converter.wellToWellDto(save);
+                    return converter.apiSuccess("Well saved", wellDto);
+                }
+                return converter.apiError("Collection point not found");
             }
-            return converter.apiError();
-
+            return converter.apiError("id shouldn't be sent");
         } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError("Error creating well");
         }
-
     }
 
     public ApiResponse edit(WellDto dto) {
         try {
-            Well editingWell = new Well();
+            if (dto.getId() == null) return converter.apiError("Id null");
+            Well editWell;
             Optional<Well> byId = wellRepository.findById(dto.getId());
-            if (byId.isPresent()) editingWell = byId.get();
-            editingWell.setNumber(dto.getNumber());
-
-            Optional<CollectionPoint> byIdMining = collectionPointRepository.findById(dto.getCollectionPointDto().getId());
-            editingWell.setCollectionPoint(byIdMining.get());
-
-            Well editedWell = wellRepository.save(editingWell);
-            return converter.apiSuccess("Edited well", editedWell);
+            if (byId.isPresent()) {
+                Optional<CollectionPoint> byIdCollectionPoint = collectionPointRepository.findById(dto.getCollectionPointDto().getId());
+                if (byIdCollectionPoint.isPresent()) {
+                    editWell = byId.get();
+                    editWell.setNumber(dto.getNumber());
+                    editWell.setCollectionPoint(byIdCollectionPoint.get());
+                    Well editedWell = wellRepository.save(editWell);
+                    WellDto wellDto = converter.wellToWellDto(editedWell);
+                    return converter.apiSuccess("Well Edited", wellDto);
+                }
+                return converter.apiError("Collection point not found");
+            }
+            return converter.apiError("Well not found");
         } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError("Error editing well");
         }
-
     }
 
     public ApiResponse delete(Integer id) {
@@ -74,10 +79,9 @@ public class WellService {
                 Optional<Well> byId = wellRepository.findById(id);
                 if (byId.isPresent()) {
                     wellRepository.deleteById(id);
-                    return converter.apiSuccess("Deleted well");
-                } else {
-                    return converter.apiError("Well not found");
+                    return converter.apiSuccess("Well deleted");
                 }
+                return converter.apiError("Well not found");
             }
             return converter.apiError("Id null");
         } catch (Exception e) {
@@ -91,11 +95,10 @@ public class WellService {
         try {
             List<Well> all = wellRepository.findAll();
             List<WellDto> collect = all.stream().map(converter::wellToWellDto).collect(Collectors.toList());
-
             return converter.apiSuccess(collect);
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in finding well", e);
+            return converter.apiError("Error in fetching all wells", e);
         }
     }
 
@@ -104,11 +107,10 @@ public class WellService {
             if (id != null) {
                 Optional<Well> byId = wellRepository.findById(id);
                 if (byId.isPresent()) {
-                    Optional<Well> byId1 = wellRepository.findById(id);
-                    return converter.apiSuccess(byId1.get());
-                } else {
-                    return converter.apiError("Well not found");
+                    WellDto wellDto = converter.wellToWellDto(byId.get());
+                    return converter.apiSuccess(wellDto);
                 }
+                return converter.apiError("Well not found");
             }
             return converter.apiError("Id null");
         } catch (Exception e) {

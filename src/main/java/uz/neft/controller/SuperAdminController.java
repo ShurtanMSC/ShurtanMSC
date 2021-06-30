@@ -35,9 +35,7 @@ public class SuperAdminController {
         return ResponseEntity.ok(roleRepository.findAll());
     }
 
-    /**
-     * User qo'shish
-     **/
+    /** User qo'shish  **/
 
     @PostMapping("/user/add")
     public HttpEntity<?> save(@RequestBody UserDto dto) {

@@ -31,10 +31,12 @@ public class MiningSystemService {
 
     public ApiResponse save(MiningSystemDto dto) {
         try {
+            if (dto.getId() != null) return converter.apiError("id shouldn't be sent");
             MiningSystem miningSystem = new MiningSystem();
             miningSystem.setName(dto.getName());
             MiningSystem save = miningSystemRepository.save(miningSystem);
-            return converter.apiSuccess("Saved Mining System", save);
+            MiningSystemDto miningSystemDto = converter.miningSysToMiningSysDto(save);
+            return converter.apiSuccess("Mining system added", miningSystemDto);
         } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError("Error Creating MiningSystem");
@@ -43,18 +45,20 @@ public class MiningSystemService {
 
     public ApiResponse edit(MiningSystemDto dto) {
         try {
-            MiningSystem editingMiningSys = new MiningSystem();
+            MiningSystem editMiningSys;
             Optional<MiningSystem> byId = miningSystemRepository.findById(dto.getId());
-            if (byId.isPresent()) editingMiningSys = byId.get();
-            editingMiningSys.setName(dto.getName());
-
-            MiningSystem editedMiningSys = miningSystemRepository.save(editingMiningSys);
-            return converter.apiSuccess("Edited Mining System", editedMiningSys);
+            if (byId.isPresent()) {
+                editMiningSys = byId.get();
+                editMiningSys.setName(dto.getName());
+                editMiningSys = miningSystemRepository.save(editMiningSys);
+                MiningSystemDto miningSystemDto = converter.miningSysToMiningSysDto(editMiningSys);
+                return converter.apiSuccess("Mining system edited", miningSystemDto);
+            }
+            return converter.apiError("Mining system not found");
         } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError("Error editing mining system");
         }
-
     }
 
     public ApiResponse delete(Integer id) {
@@ -63,7 +67,7 @@ public class MiningSystemService {
                 Optional<MiningSystem> byId = miningSystemRepository.findById(id);
                 if (byId.isPresent()) {
                     miningSystemRepository.deleteById(id);
-                    return converter.apiSuccess("Deleted mining system");
+                    return converter.apiSuccess("Mining system deleted ");
                 } else {
                     return converter.apiError("Mining system not found");
                 }
@@ -79,11 +83,10 @@ public class MiningSystemService {
         try {
             List<MiningSystem> all = miningSystemRepository.findAll();
             List<MiningSystemDto> collect = all.stream().map(converter::miningSysToMiningSysDto).collect(Collectors.toList());
-
             return converter.apiSuccess(collect);
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in finding user", e);
+            return converter.apiError("Error in fetching mining systems", e);
         }
     }
 
@@ -92,8 +95,8 @@ public class MiningSystemService {
             if (id != null) {
                 Optional<MiningSystem> byId = miningSystemRepository.findById(id);
                 if (byId.isPresent()) {
-                    Optional<MiningSystem> byId1 = miningSystemRepository.findById(id);
-                    return converter.apiSuccess(byId1.get());
+                    MiningSystemDto miningSystemDto = converter.miningSysToMiningSysDto(byId.get());
+                    return converter.apiSuccess(miningSystemDto);
                 } else {
                     return converter.apiError("Mining system not found");
                 }
@@ -101,7 +104,7 @@ public class MiningSystemService {
             return converter.apiError("Id null");
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in finding mining sytem", e);
+            return converter.apiError("Error in finding mining system", e);
         }
     }
 

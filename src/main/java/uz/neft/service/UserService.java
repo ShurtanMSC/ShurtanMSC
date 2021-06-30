@@ -35,8 +35,8 @@ public class UserService {
 
     public ApiResponse save(UserDto dto) {
         try {
-            if (dto.getId() != null) return converter.apiError();
-            if (!roleRepository.existsById(dto.getRoleId())) return converter.apiError();
+            if (dto.getId() != null) return converter.apiError("id shouldn't be sent");
+            if (!roleRepository.existsById(dto.getRoleId())) return converter.apiError("Role id does not exist");
             User user = User
                     .builder()
                     .username(dto.getUsername())
@@ -48,43 +48,40 @@ public class UserService {
                     .roles(Collections.singleton(roleRepository.findById(dto.getRoleId()).get()))
                     .build();
             user = userRepository.save(user);
-            return converter.apiSuccess("Saved", user);
+            UserDto userDto = converter.userToUserDto(user);
+            return converter.apiSuccess("User saved", userDto);
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError();
+            return converter.apiError("Error catch");
         }
     }
 
     public ApiResponse edit(UserDto dto) {
         try {
-            User editingUser = new User();
+            User editingUser;
             Optional<User> byId = userRepository.findById(dto.getId());
             if (byId.isPresent()) {
                 editingUser = byId.get();
-
                 editingUser.setActive(dto.isActive());
                 editingUser.setEmail(dto.getEmail());
                 editingUser.setUsername(dto.getUsername());
                 editingUser.setFio(dto.getFio());
                 editingUser.setPhone(dto.getPhone());
                 Optional<Role> role = roleRepository.findById(dto.getRoleId());
-                if (role.isPresent()){
+                if (role.isPresent()) {
                     editingUser.setRoles(new HashSet<>(Collections.singletonList(role.get())));
                 }
-                if (dto.getPassword()!=null&&!passwordEncoder.matches(byId.get().getPassword(),dto.getPassword())){
+                if (dto.getPassword() != null && !passwordEncoder.matches(byId.get().getPassword(), dto.getPassword())) {
                     editingUser.setPassword(passwordEncoder.encode(dto.getPassword()));
                 }
-
-                editingUser=userRepository.save(editingUser);
-                return converter.apiSuccess("Edited", editingUser);
+                editingUser = userRepository.save(editingUser);
+                UserDto userDto = converter.userToUserDto(editingUser);
+                return converter.apiSuccess("User edited", userDto);
             }
-
-
-
-            return converter.apiError("Bunaqa id li user yo'q");
+            return converter.apiError("User not found");
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError();
+            return converter.apiError("Error catch");
         }
     }
 
@@ -93,8 +90,8 @@ public class UserService {
             if (id != null) {
                 Optional<User> byId = userRepository.findById(id);
                 if (byId.isPresent()) {
-                    Optional<User> byId1 = userRepository.findById(id);
-                    return converter.apiSuccess(byId1.get());
+                    UserDto userDto = converter.userToUserDto(byId.get());
+                    return converter.apiSuccess(userDto);
                 } else {
                     return converter.apiError("User not found");
                 }

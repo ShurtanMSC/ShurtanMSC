@@ -30,14 +30,17 @@ public class UppgService {
 
     public ApiResponse save(UppgDto dto) {
         try {
+            if (dto.getId() != null) return converter.apiError("id shouldn't be sent");
             Uppg uppg = new Uppg();
-            uppg.setName(dto.getName());
-
             Optional<MiningSystem> byIdMining = miningSystemRepository.findById(dto.getMiningSystem().getId());
-            uppg.setMiningSystem(byIdMining.get());
-
-            Uppg save = uppgRepository.save(uppg);
-            return converter.apiSuccess("Saved uppg", save);
+            if (byIdMining.isPresent()) {
+                uppg.setName(dto.getName());
+                uppg.setMiningSystem(byIdMining.get());
+                Uppg save = uppgRepository.save(uppg);
+                UppgDto uppgDto = converter.uppgToUppgDto(save);
+                return converter.apiSuccess("Uppg saved", uppgDto);
+            }
+            return converter.apiError("Mining system not found");
         } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError("Error creating uppg");
@@ -46,19 +49,24 @@ public class UppgService {
 
     public ApiResponse edit(UppgDto dto) {
         try {
-            Uppg editingUppg = new Uppg();
+            if (dto.getId() == null) return converter.apiError("Id null");
+            Uppg editUppg;
             Optional<Uppg> byId = uppgRepository.findById(dto.getId());
-            if (byId.isPresent()) editingUppg = byId.get();
-            editingUppg.setName(dto.getName());
-
-            Optional<MiningSystem> byIdMining = miningSystemRepository.findById(dto.getMiningSystem().getId());
-            editingUppg.setMiningSystem(byIdMining.get());
-
-            Uppg editedUppg = uppgRepository.save(editingUppg);
-            return converter.apiSuccess("Edited Mining System", editedUppg);
+            if (byId.isPresent()) {
+                Optional<MiningSystem> byIdMining = miningSystemRepository.findById(dto.getMiningSystem().getId());
+                if (byIdMining.isPresent()) {
+                    editUppg = byId.get();
+                    editUppg.setName(dto.getName());
+                    editUppg.setMiningSystem(byIdMining.get());
+                    Uppg editedUppg = uppgRepository.save(editUppg);
+                    return converter.apiSuccess("Edited Mining System", editedUppg);
+                }
+                return converter.apiError("Mining system not found");
+            }
+            return converter.apiError("Uppg not found");
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error editing uppg");
+            return converter.apiError("Error edit uppg");
         }
     }
 
@@ -68,7 +76,7 @@ public class UppgService {
                 Optional<Uppg> byId = uppgRepository.findById(id);
                 if (byId.isPresent()) {
                     uppgRepository.deleteById(id);
-                    return converter.apiSuccess("Deleted uppg");
+                    return converter.apiSuccess("Uppg deleted");
                 } else {
                     return converter.apiError("Mining system not found");
                 }
@@ -88,7 +96,7 @@ public class UppgService {
             return converter.apiSuccess(collect);
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in finding uppg", e);
+            return converter.apiError("Error in fetching all uppgs", e);
         }
 
     }
@@ -98,8 +106,8 @@ public class UppgService {
             if (id != null) {
                 Optional<Uppg> byId = uppgRepository.findById(id);
                 if (byId.isPresent()) {
-                    Optional<Uppg> byId1 = uppgRepository.findById(id);
-                    return converter.apiSuccess(byId1.get());
+                    UppgDto uppgDto = converter.uppgToUppgDto(byId.get());
+                    return converter.apiSuccess(uppgDto);
                 } else {
                     return converter.apiError("Uppg not found");
                 }
