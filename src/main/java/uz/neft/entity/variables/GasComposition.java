@@ -24,4 +24,5 @@ public class GasComposition extends AbsEntityInteger {
     @Column(precision = 6, scale = 2)
     private Double criticalTemperature;
 
+
 }

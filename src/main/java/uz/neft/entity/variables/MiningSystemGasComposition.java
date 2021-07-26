@@ -21,7 +21,7 @@ public class MiningSystemGasComposition extends AbsEntityInteger {
     private MiningSystem miningSystem;
 
     @ManyToOne
-    private MiningSystemGasComposition miningSystemGasComposition;
+    private GasComposition gasComposition;
 
-    private String molarFraction;
+    private Double molarFraction;
 }
