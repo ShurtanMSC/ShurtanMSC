@@ -35,36 +35,20 @@ public class Calculator {
      * Formulalar ketma-ketligi
      **/
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    public static double pseudoCriticalPressure(List<Double> molarFractions,
-                                                List<Double> criticalPressure
+    public static double pseudoCriticalPressureOrTemperature(List<Double> molarFractions,
+                                                List<Double> criticalPressureOrTemperature
     ) {
-        if (molarFractions.size() != criticalPressure.size()) return 0;
+        if (molarFractions.size() != criticalPressureOrTemperature.size()) return 0;
 //        if (molarFractions.stream().mapToDouble(n->n).sum()!=100) return 0;
 
         double s = 0;
 
         for (int i = 0; i < molarFractions.size(); i++) {
-            s += molarFractions.get(i) * criticalPressure.get(i);
+            s += molarFractions.get(i) * criticalPressureOrTemperature.get(i);
         }
         return s;
     }
 
-//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-    public static double pseudoCriticalTempereture(List<Double> molarFractions,
-                                                   List<Double> criticalTemperature
-    ) {
-        if (molarFractions.size() != criticalTemperature.size()) return 0;
-//        if (molarFractions.stream().mapToDouble(n->n).sum()!=100) return 0;
-
-        double s = 0;
-
-        for (int i = 0; i < molarFractions.size(); i++) {
-            s += molarFractions.get(i) * criticalTemperature.get(i);
-        }
-        return s;
-    }
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
