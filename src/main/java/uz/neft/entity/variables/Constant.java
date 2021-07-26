@@ -1,4 +1,4 @@
-package uz.neft.entity;
+package uz.neft.entity.variables;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

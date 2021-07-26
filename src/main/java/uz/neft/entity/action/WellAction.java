@@ -1,9 +1,6 @@
 package uz.neft.entity.action;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import uz.neft.entity.User;
@@ -19,13 +16,14 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class WellAction extends AbsEntityLong {
 
     // Bosim
     private double pressure;
 
     // Tempratura
-    private int temperature;
+    private double temperature;
 
     // Rasxod
     private double cost;

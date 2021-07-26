@@ -1,9 +1,10 @@
-package uz.neft.entity;
+package uz.neft.entity.variables;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import uz.neft.entity.MiningSystem;
 import uz.neft.entity.template.AbsEntityInteger;
 
 import javax.persistence.Entity;
