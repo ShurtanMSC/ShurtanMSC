@@ -17,13 +17,13 @@ public class Calculator {
     public static double averageProductionRate(
                                         double C,
                                         double  P_u,
-                                        double b,
+                                        double delta,
                                         double p_otn,
                                         double Z,
                                         double T_abs
     ){
         double D=0;
-        D=(C*P_u*b)/(0.1013*Math.sqrt(p_otn*T_abs*Z));
+        D=(C*P_u*delta)/(0.1013*Math.sqrt(p_otn*T_abs*Z));
         return D;
     }
 
@@ -45,10 +45,10 @@ public class Calculator {
     //РПР №154 = 1,9 / 4,7743 = 0,398
     //ТПР №154 = 320 / 202,7112 = 1,579
     public static double correctionFactor(double T_pr, double P_pr){
-        double b=-0.517+1.618*T_pr-0.448*T_pr*T_pr+
+        double delta=-0.517+1.618*T_pr-0.448*T_pr*T_pr+
                 P_pr*(1.204-1.231*T_pr+0.322*T_pr*T_pr)+
                 P_pr*P_pr*(-0.101+0.110*T_pr-0.02958*T_pr*T_pr);
-        return b;
+        return delta;
     }
 
 

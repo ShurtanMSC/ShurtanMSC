@@ -26,7 +26,7 @@ public class WellAction extends AbsEntityLong {
     private double temperature;
 
     // Rasxod
-    private double cost;
+    private double expend;
 
     // Rpl
     private double rpl;
