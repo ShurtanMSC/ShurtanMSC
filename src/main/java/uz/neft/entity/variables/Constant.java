@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import uz.neft.entity.template.AbsEntityInteger;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -15,8 +17,8 @@ import javax.persistence.Entity;
 @Entity(name = "constant")
 public class Constant extends AbsEntityInteger {
 
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private ConstantNameEnums name;
     private String description;
-
 
 }

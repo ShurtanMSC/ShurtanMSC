@@ -11,8 +11,7 @@ import uz.neft.entity.MiningSystem;
 import uz.neft.entity.Role;
 import uz.neft.entity.RoleName;
 import uz.neft.entity.User;
-import uz.neft.entity.variables.GasComposition;
-import uz.neft.entity.variables.MiningSystemGasComposition;
+import uz.neft.entity.variables.*;
 import uz.neft.entity.variables.MiningSystemGasComposition;
 import uz.neft.repository.*;
 
@@ -22,22 +21,27 @@ import java.util.Collections;
 @Component
 @NoArgsConstructor
 public class DataLoader implements CommandLineRunner {
-//test
+    //test
     UserRepository userRepository;
     RoleRepository roleRepository;
     PasswordEncoder passwordEncoder;
     MiningSystemRepository miningSystemRepository;
     GasCompositionRepository gasCompositionRepository;
     MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository;
+    ConstantRepository constantRepository;
+    MiningSystemConstantRepository miningSystemConstantRepository;
 
     @Autowired
-    public DataLoader(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository) {
+    public DataLoader(UserRepository userRepository, MiningSystemConstantRepository miningSystemConstantRepository, RoleRepository roleRepository, ConstantRepository constantRepository
+            , PasswordEncoder passwordEncoder, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.miningSystemRepository = miningSystemRepository;
         this.gasCompositionRepository = gasCompositionRepository;
         this.miningSystemMiningSystemGasCompositionRepository = miningSystemMiningSystemGasCompositionRepository;
+        this.constantRepository = constantRepository;
+        this.miningSystemConstantRepository = miningSystemConstantRepository;
     }
 
 
@@ -106,34 +110,44 @@ public class DataLoader implements CommandLineRunner {
 
             //----------------------------------------------------
 
-            MiningSystemGasComposition CH4_MOLAR = miningSystemMiningSystemGasCompositionRepository.save(new MiningSystemGasComposition(shurtan, CH4,90.0960));
+            MiningSystemGasComposition CH4_MOLAR = miningSystemMiningSystemGasCompositionRepository.save(new MiningSystemGasComposition(shurtan, CH4, 90.0960));
 
-            MiningSystemGasComposition C2H6_MOLAR = miningSystemMiningSystemGasCompositionRepository.save(new MiningSystemGasComposition(shurtan, C2H6,3.7600));
+            MiningSystemGasComposition C2H6_MOLAR = miningSystemMiningSystemGasCompositionRepository.save(new MiningSystemGasComposition(shurtan, C2H6, 3.7600));
 
-            MiningSystemGasComposition C3H8_MOLAR = miningSystemMiningSystemGasCompositionRepository.save(new MiningSystemGasComposition(shurtan, C3H8,0.9140));
+            MiningSystemGasComposition C3H8_MOLAR = miningSystemMiningSystemGasCompositionRepository.save(new MiningSystemGasComposition(shurtan, C3H8, 0.9140));
 
-            MiningSystemGasComposition Izo_C4H10_MOLAR = miningSystemMiningSystemGasCompositionRepository.save(new MiningSystemGasComposition(shurtan, Izo_C4H10,0.1820));
+            MiningSystemGasComposition Izo_C4H10_MOLAR = miningSystemMiningSystemGasCompositionRepository.save(new MiningSystemGasComposition(shurtan, Izo_C4H10, 0.1820));
 
-            MiningSystemGasComposition H_C4H10_MOLAR = miningSystemMiningSystemGasCompositionRepository.save(new MiningSystemGasComposition(shurtan, H_C4H10,0.2160));
+            MiningSystemGasComposition H_C4H10_MOLAR = miningSystemMiningSystemGasCompositionRepository.save(new MiningSystemGasComposition(shurtan, H_C4H10, 0.2160));
 
-            MiningSystemGasComposition Izo_C5H12_MOLAR = miningSystemMiningSystemGasCompositionRepository.save(new MiningSystemGasComposition(shurtan, Izo_C5H12,0.1050));
+            MiningSystemGasComposition Izo_C5H12_MOLAR = miningSystemMiningSystemGasCompositionRepository.save(new MiningSystemGasComposition(shurtan, Izo_C5H12, 0.1050));
 
-            MiningSystemGasComposition H_C5H12_MOLAR = miningSystemMiningSystemGasCompositionRepository.save(new MiningSystemGasComposition(shurtan, H_C5H12,0.0720));
+            MiningSystemGasComposition H_C5H12_MOLAR = miningSystemMiningSystemGasCompositionRepository.save(new MiningSystemGasComposition(shurtan, H_C5H12, 0.0720));
 
-            MiningSystemGasComposition C6H14_MOLAR = miningSystemMiningSystemGasCompositionRepository.save(new MiningSystemGasComposition(shurtan, C6H14,0.4660));
+            MiningSystemGasComposition C6H14_MOLAR = miningSystemMiningSystemGasCompositionRepository.save(new MiningSystemGasComposition(shurtan, C6H14, 0.4660));
 
-            MiningSystemGasComposition C7H16_MOLAR = miningSystemMiningSystemGasCompositionRepository.save(new MiningSystemGasComposition(shurtan, C7H16,0.0000));
+            MiningSystemGasComposition C7H16_MOLAR = miningSystemMiningSystemGasCompositionRepository.save(new MiningSystemGasComposition(shurtan, C7H16, 0.0000));
 
-            MiningSystemGasComposition C8H18v_MOLAR = miningSystemMiningSystemGasCompositionRepository.save(new MiningSystemGasComposition(shurtan, C8H18v,0.0000));
+            MiningSystemGasComposition C8H18v_MOLAR = miningSystemMiningSystemGasCompositionRepository.save(new MiningSystemGasComposition(shurtan, C8H18v, 0.0000));
 
-            MiningSystemGasComposition CO2_MOLAR = miningSystemMiningSystemGasCompositionRepository.save(new MiningSystemGasComposition(shurtan, CO2,3.2720));
+            MiningSystemGasComposition CO2_MOLAR = miningSystemMiningSystemGasCompositionRepository.save(new MiningSystemGasComposition(shurtan, CO2, 3.2720));
 
-            MiningSystemGasComposition N2_MOLAR = miningSystemMiningSystemGasCompositionRepository.save(new MiningSystemGasComposition(shurtan, N2,0.8470));
+            MiningSystemGasComposition N2_MOLAR = miningSystemMiningSystemGasCompositionRepository.save(new MiningSystemGasComposition(shurtan, N2, 0.8470));
 
-            MiningSystemGasComposition H2S_MOLAR = miningSystemMiningSystemGasCompositionRepository.save(new MiningSystemGasComposition(shurtan, H2S,0.0700));
+            MiningSystemGasComposition H2S_MOLAR = miningSystemMiningSystemGasCompositionRepository.save(new MiningSystemGasComposition(shurtan, H2S, 0.0700));
 
-            MiningSystemGasComposition H20_MOLAR = miningSystemMiningSystemGasCompositionRepository.save(new MiningSystemGasComposition(shurtan, H20,0.0000));
+            MiningSystemGasComposition H20_MOLAR = miningSystemMiningSystemGasCompositionRepository.save(new MiningSystemGasComposition(shurtan, H20, 0.0000));
 
+            Constant roGas = new Constant(ConstantNameEnums.RO_GAS, "ρгаза – плотность газа при стандартных условиях (standart\n" +
+                    "sharoitda gaz zichligi), kg/m3 ");
+            Constant roAir = new Constant(ConstantNameEnums.RO_AIR, "ρвозд – плотность воздуха при стандартных условиях (standart\n" +
+                    "sharoitda havo zichligi), kg/m3");
+
+            Constant savedRoGas = constantRepository.save(roGas);
+            Constant savedRoAir = constantRepository.save(roAir);
+
+            MiningSystemConstant miningSystemConstantRoGasValue=new MiningSystemConstant(shurtan,roGas,0.772);
+            MiningSystemConstant miningSystemConstantRoAirValue=new MiningSystemConstant(shurtan,roAir,1.205);
 
         } catch (Exception e) {
             e.printStackTrace();

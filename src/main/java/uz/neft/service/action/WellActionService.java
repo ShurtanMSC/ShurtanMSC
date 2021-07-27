@@ -4,16 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.WellDto;
 import uz.neft.dto.action.WellActionDto;
+import uz.neft.entity.MiningSystem;
 import uz.neft.entity.User;
 import uz.neft.entity.Well;
 import uz.neft.entity.action.WellAction;
+import uz.neft.entity.variables.Constant;
+import uz.neft.entity.variables.ConstantNameEnums;
 import uz.neft.entity.variables.GasComposition;
 import uz.neft.entity.variables.MiningSystemGasComposition;
 import uz.neft.payload.ApiResponse;
-import uz.neft.repository.GasCompositionRepository;
-import uz.neft.repository.MiningSystemGasCompositionRepository;
-import uz.neft.repository.MiningSystemRepository;
-import uz.neft.repository.WellRepository;
+import uz.neft.repository.*;
 import uz.neft.repository.action.WellActionRepository;
 import uz.neft.service.Calculator;
 import uz.neft.utils.Converter;
@@ -31,9 +31,11 @@ public class WellActionService {
     private GasCompositionRepository gasCompositionRepository;
     private MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository;
     private Calculator calculator;
+    private ConstantRepository constantRepository;
+    private MiningSystemConstantRepository miningSystemConstantRepository;
 
     @Autowired
-    public WellActionService(WellActionRepository wellActionRepository, WellRepository wellRepository, Converter converter, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository, Calculator calculator) {
+    public WellActionService(WellActionRepository wellActionRepository, MiningSystemConstantRepository miningSystemConstantRepository, WellRepository wellRepository, Converter converter, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository, Calculator calculator) {
         this.wellActionRepository = wellActionRepository;
         this.wellRepository = wellRepository;
         this.converter = converter;
@@ -41,6 +43,7 @@ public class WellActionService {
         this.gasCompositionRepository = gasCompositionRepository;
         this.miningSystemMiningSystemGasCompositionRepository = miningSystemMiningSystemGasCompositionRepository;
         this.calculator = calculator;
+        this.miningSystemConstantRepository = miningSystemConstantRepository;
     }
 
     /**
@@ -53,6 +56,7 @@ public class WellActionService {
         if (!well.isPresent()) return converter.apiError("Quduq topilmadi!");
 
         Integer miningSystemId = well.get().getCollectionPoint().getUppg().getMiningSystem().getId();
+        MiningSystem miningSystem = well.get().getCollectionPoint().getUppg().getMiningSystem();
 
 
         /**
@@ -105,9 +109,20 @@ public class WellActionService {
          **/
         double T_pr = Calculator.reducedPressure(T_u, T_pkr);
 
-        // MUAMMO
-        double roGas = 0;
-        double roAir = 0;
+        /**
+         * roGas   -   ρ_газа – плотность газа при стандартных условиях (standart
+         * sharoitda gaz zichligi), kg/m3
+         **/
+
+        Constant constRoGas = constantRepository.findByName(ConstantNameEnums.RO_GAS);
+        Double roGas = miningSystemConstantRepository.findByMiningSystemAndConstant(miningSystem, constRoGas);
+
+        /**
+         * roAir  -  ρ_возд – плотность воздуха при стандартных условиях (standart
+         * sharoitda havo zichligi), kg/m3
+         **/
+        Constant constRoAir = constantRepository.findByName(ConstantNameEnums.RO_AIR);
+        Double roAir = miningSystemConstantRepository.findByMiningSystemAndConstant(miningSystem, constRoAir);
 
         /**
          * Относительная плотность газа ( ρ_отн )
@@ -126,7 +141,7 @@ public class WellActionService {
         double delta = Calculator.correctionFactor_P_T(T_pr, P_pr);
 
         //MUAMMO
-        double C = 0;
+        double C = 0.088;
 
         /**
          * D_well - Средний дебит скважин месторождения Шуртан ( D_СКВ )

@@ -23,7 +23,7 @@ public class MiningSystemConstant extends AbsEntityInteger {
     @ManyToOne
     private Constant constant;
 
-    private String value;
+    private Double value;
 
 
 }
