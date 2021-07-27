@@ -22,7 +22,7 @@ import java.util.Collections;
 @Component
 @NoArgsConstructor
 public class DataLoader implements CommandLineRunner {
-
+//test
     UserRepository userRepository;
     RoleRepository roleRepository;
     PasswordEncoder passwordEncoder;
