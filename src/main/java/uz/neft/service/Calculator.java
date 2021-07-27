@@ -36,7 +36,7 @@ public class Calculator {
      **/
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     public static double pseudoCriticalPressureOrTemperature(List<Double> molarFractions,
-                                                List<Double> criticalPressureOrTemperature
+                                                             List<Double> criticalPressureOrTemperature
     ) {
         if (molarFractions.size() != criticalPressureOrTemperature.size()) return 0;
 //        if (molarFractions.stream().mapToDouble(n->n).sum()!=100) return 0;
@@ -71,6 +71,15 @@ public class Calculator {
     }
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+    // ρ отн – относительная плотность газа (gazning nisbiy zichligi);
+    public static double relativeDensity(double roGas, double roAir) {
+        double Ro_otn = 0;
+        Ro_otn = roGas / roAir;
+        return Ro_otn;
+    }
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
     //  Коэффициент сверхсжимаемости газа определяется графически по зависимости коэффициента сверхсжимаемости природного газа от приведенных давления и температуры
     //  или по формуле:
 
@@ -78,18 +87,9 @@ public class Calculator {
     // yoki quyidagi formula bo'yicha:
 
     //Z = 1 – [(Ру – 6) · (0,345·10-2 · ∆в – 0,446·10-3) + 0,015] · [1,3 – 0,0144 · (Ту – 283,2)]
-    public static double superCompressFactor(double P_u, double T_u, double p_otn) {
-        double Z = 1 - ((P_u - 6) * (0.345 * 0.01 * p_otn - 0.446 * 0.001) + 0.015) * (1.3 - 0.0144 * (T_u - 283.2));
+    public static double superCompressFactor(double P_u, double T_u, double Ro_otn) {
+        double Z = 1 - ((P_u - 6) * (0.345 * 0.01 * Ro_otn - 0.446 * 0.001) + 0.015) * (1.3 - 0.0144 * (T_u - 283.2));
         return Z;
-    }
-
-//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-    // ρ отн – относительная плотность газа (gazning nisbiy zichligi);
-    public static double relativeDensity(double roGas, double roAir) {
-        double RO = 0;
-        RO = roGas / roAir;
-        return RO;
     }
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -118,14 +118,15 @@ public class Calculator {
     public static double averageProductionRate(
             double C,
             double P_u,
-            double p_otn,
+            double delta,
+            double Ro_otn,
             double Z,
             double T_u
     ) {
 
-        double delta = 0;
+
         double D_well = 0;
-        D_well = (C * P_u * delta) / (0.1013 * Math.sqrt(p_otn * T_u * Z));
+        D_well = (C * P_u * delta) / (0.1013 * Math.sqrt(Ro_otn * T_u * Z));
         return D_well;
     }
 
