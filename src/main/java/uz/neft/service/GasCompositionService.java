@@ -153,11 +153,11 @@ public class GasCompositionService {
             MiningSystemGasComposition save = miningSystemGasCompositionRepository.save(miningSystemGasComposition);
             MiningSystemGasCompositionDto miningSystemGasCompositionDto = converter.miningSystemGasCompositionToMiningSystemGasCompositionDto(save);
 
-            return converter.apiSuccess("Molar Fraction saved in MiningSystemGasComposition Entity", miningSystemGasCompositionDto);
+            return converter.apiSuccess("Molar Fraction saved in MiningSystem_GasComposition Entity", miningSystemGasCompositionDto);
         } catch (
                 Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error creating Molar Fraction ");
+            return converter.apiError("Error saving Molar Fraction in MiningSystem_GasComposition table");
         }
     }
 
@@ -180,7 +180,7 @@ public class GasCompositionService {
                     miningSystemGasCompositionRepository.findByIdAndMiningSystemAndGasComposition(dto.getId(), miningSystem.get(), gasComposition.get());
 
             if (!byIdMiningSysGasComposition.isPresent())
-                return converter.apiError("There is no MiningSysGasComposition ");
+                return converter.apiError("There is no MiningSys_GasComposition ");
 
             byIdMiningSysGasComposition.get().setMolarFraction(dto.getMolarFraction());
 
@@ -190,56 +190,51 @@ public class GasCompositionService {
             return converter.apiSuccess("Molar Fraction edited ", miningSystemGasCompositionDto);
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error edit uppg");
+            return converter.apiError("Editing Molar Fraction is ERROR in MiningSystem_GasComposition, catch");
         }
-
     }
 
     public ApiResponse deleteMSGC(Integer id) {
         try {
-            if (id != null) {
-                Optional<Uppg> byId = uppgRepository.findById(id);
-                if (byId.isPresent()) {
-                    uppgRepository.deleteById(id);
-                    return converter.apiSuccess("Uppg deleted");
-                } else {
-                    return converter.apiError("Mining system not found");
-                }
+            if (id == null) return converter.apiError("Id is null");
+
+            Optional<MiningSystemGasComposition> byId = miningSystemGasCompositionRepository.findById(id);
+            if (byId.isPresent()) {
+                miningSystemGasCompositionRepository.deleteById(id);
+                return converter.apiSuccess("MiningSystem_GasComposition deleted");
             }
-            return converter.apiError("Id null");
+            return converter.apiError("MiningSystem_GasComposition not found");
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in deleting uppg", e);
+            return converter.apiError("Deleting Molar Fraction is ERROR in MiningSystem_GasComposition, catch", e);
         }
     }
 
     public ApiResponse findAllMSGCs() {
         try {
-            List<Uppg> all = uppgRepository.findAll();
-            List<UppgDto> collect = all.stream().map(converter::uppgToUppgDto).collect(Collectors.toList());
+            List<MiningSystemGasComposition> all = miningSystemGasCompositionRepository.findAll();
+            List<MiningSystemGasCompositionDto> collect = all.stream().map(converter::miningSystemGasCompositionToMiningSystemGasCompositionDto).collect(Collectors.toList());
 
             return converter.apiSuccess(collect);
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in fetching all uppgs", e);
+            return converter.apiError("Error in fetching all Molar Fractions in MiningSystem_GasComposition table", e);
         }
     }
 
     public ApiResponse findByIdMSGC(Integer id) {
         try {
-            if (id != null) {
-                Optional<Uppg> byId = uppgRepository.findById(id);
-                if (byId.isPresent()) {
-                    UppgDto uppgDto = converter.uppgToUppgDto(byId.get());
-                    return converter.apiSuccess(uppgDto);
-                } else {
-                    return converter.apiError("Uppg not found");
-                }
+            if (id != null) return converter.apiError("Id null");
+            Optional<MiningSystemGasComposition> byId = miningSystemGasCompositionRepository.findById(id);
+            if (byId.isPresent()) {
+                MiningSystemGasCompositionDto dto = converter.miningSystemGasCompositionToMiningSystemGasCompositionDto(byId.get());
+                return converter.apiSuccess(dto);
             }
-            return converter.apiError("Id null");
+            return converter.apiError("Molar Fraction not found in MiningSystem_GasComposition table");
+
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in finding uppg", e);
+            return converter.apiError("Error in finding Molar Fraction in MiningSystem_GasComposition table", e);
         }
     }
 }
