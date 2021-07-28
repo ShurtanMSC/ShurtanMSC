@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uz.neft.dto.*;
 import uz.neft.entity.*;
+import uz.neft.entity.variables.Constant;
+import uz.neft.entity.variables.GasComposition;
 import uz.neft.payload.ApiResponse;
 import uz.neft.payload.ApiResponseObject;
 import uz.neft.payload.ApiResponseObjectByPageable;
@@ -160,6 +162,35 @@ public class Converter {
                     .id(well.getId())
                     .number(well.getNumber())
                     .collectionPointDto(collectionPointToCollectionPointDto(well.getCollectionPoint()))
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public GasCompositionDto gasCompositionToGasCompositionDto(GasComposition composition) {
+        try {
+            return GasCompositionDto
+                    .builder()
+                    .Id(composition.getId())
+                    .name(composition.getName())
+                    .criticalPressure(composition.getCriticalPressure())
+                    .criticalTemperature(composition.getCriticalTemperature())
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public ConstantDto constantToConstantDto(Constant constant) {
+        try {
+            return ConstantDto
+                    .builder()
+                    .Id(constant.getId())
+                    .name(constant.getName())
+                    .description(constant.getDescription())
                     .build();
         } catch (Exception e) {
             e.printStackTrace();
