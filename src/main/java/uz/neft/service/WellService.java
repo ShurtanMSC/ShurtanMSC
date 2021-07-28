@@ -52,6 +52,7 @@ public class WellService {
     public ApiResponse edit(WellDto dto) {
         try {
             if (dto.getId() == null) return converter.apiError("Id null");
+
             Well editWell;
             Optional<Well> byId = wellRepository.findById(dto.getId());
             if (byId.isPresent()) {

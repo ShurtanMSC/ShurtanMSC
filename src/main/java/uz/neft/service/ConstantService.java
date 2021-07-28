@@ -7,6 +7,7 @@ import uz.neft.entity.variables.Constant;
 import uz.neft.payload.ApiResponse;
 import uz.neft.repository.ConstantRepository;
 import uz.neft.utils.Converter;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -44,6 +45,8 @@ public class ConstantService {
 
     public ApiResponse edit(ConstantDto dto) {
         try {
+            if (dto.getId() == null) return converter.apiError("id is null");
+
             Constant constant;
             Optional<Constant> byId = constantRepository.findById(dto.getId());
             if (byId.isPresent()) {

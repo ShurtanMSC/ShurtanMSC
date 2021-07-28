@@ -137,9 +137,9 @@ public class DataLoader implements CommandLineRunner {
 
             MiningSystemGasComposition H20_MOLAR = miningSystemMiningSystemGasCompositionRepository.save(new MiningSystemGasComposition(shurtan, H20, 0.0000));
 
-            Constant roGas = new Constant(ConstantNameEnums.RO_GAS, "ρгаза – плотность газа при стандартных условиях (standart\n" +
+            Constant roGas = new Constant(ConstantNameEnums.RO_GAS, "ρгаза – плотность газа при стандартных условиях (standart" +
                     "sharoitda gaz zichligi), kg/m3 ");
-            Constant roAir = new Constant(ConstantNameEnums.RO_AIR, "ρвозд – плотность воздуха при стандартных условиях (standart\n" +
+            Constant roAir = new Constant(ConstantNameEnums.RO_AIR, "ρвозд – плотность воздуха при стандартных условиях (standart" +
                     "sharoitda havo zichligi), kg/m3");
 
             Constant savedRoGas = constantRepository.save(roGas);

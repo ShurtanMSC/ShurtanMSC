@@ -49,7 +49,7 @@ public class CollectionPointService {
 
     public ApiResponse edit(CollectionPointDto dto) {
         try {
-            if (dto.getId() == null) return converter.apiError("Id null");
+            if (dto.getId() == null) return converter.apiError("Id is null");
             CollectionPoint editCollectionPoint;
             Optional<CollectionPoint> byId = collectionPointRepository.findById(dto.getId());
             if (byId.isPresent()) {

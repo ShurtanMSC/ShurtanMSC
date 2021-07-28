@@ -45,6 +45,8 @@ public class MiningSystemService {
 
     public ApiResponse edit(MiningSystemDto dto) {
         try {
+            if (dto.getId() == null) return converter.apiError("id is null");
+
             MiningSystem editMiningSys;
             Optional<MiningSystem> byId = miningSystemRepository.findById(dto.getId());
             if (byId.isPresent()) {

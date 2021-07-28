@@ -50,6 +50,7 @@ public class UppgService {
     public ApiResponse edit(UppgDto dto) {
         try {
             if (dto.getId() == null) return converter.apiError("Id null");
+
             Uppg editUppg;
             Optional<Uppg> byId = uppgRepository.findById(dto.getId());
             if (byId.isPresent()) {

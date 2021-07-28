@@ -58,6 +58,8 @@ public class UserService {
 
     public ApiResponse edit(UserDto dto) {
         try {
+            if (dto.getId() == null) return converter.apiError("id is null");
+
             User editingUser;
             Optional<User> byId = userRepository.findById(dto.getId());
             if (byId.isPresent()) {

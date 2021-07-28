@@ -50,6 +50,8 @@ public class GasCompositionService {
 
     public ApiResponse edit(GasCompositionDto dto) {
         try {
+            if (dto.getId() == null) return converter.apiError("id is null");
+
             GasComposition composition;
             Optional<GasComposition> byId = compositionRepository.findById(dto.getId());
             if (byId.isPresent()) {
