@@ -1,5 +1,5 @@
 package uz.neft.service;
-
+//lord
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.CollectionPointDto;
