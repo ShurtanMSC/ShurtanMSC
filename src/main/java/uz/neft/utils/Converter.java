@@ -7,6 +7,7 @@ import uz.neft.dto.*;
 import uz.neft.entity.*;
 import uz.neft.entity.variables.Constant;
 import uz.neft.entity.variables.GasComposition;
+import uz.neft.entity.variables.MiningSystemGasComposition;
 import uz.neft.payload.ApiResponse;
 import uz.neft.payload.ApiResponseObject;
 import uz.neft.payload.ApiResponseObjectByPageable;
@@ -191,6 +192,20 @@ public class Converter {
                     .Id(constant.getId())
                     .name(constant.getName())
                     .description(constant.getDescription())
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public MiningSystemGasCompositionDto miningSystemGasCompositionToMiningSystemGasCompositionDto(MiningSystemGasComposition miningSystemGasComposition) {
+        try {
+            return MiningSystemGasCompositionDto
+                    .builder()
+                    .Id(miningSystemGasComposition.getId())
+                    .miningSystemId(miningSystemGasComposition.getMiningSystem().getId())
+                    .gasCompositionId(miningSystemGasComposition.getGasComposition().getId())
+                    .molarFraction(miningSystemGasComposition.getMolarFraction())
                     .build();
         } catch (Exception e) {
             e.printStackTrace();

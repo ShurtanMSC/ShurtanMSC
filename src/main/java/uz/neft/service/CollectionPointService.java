@@ -32,6 +32,7 @@ public class CollectionPointService {
         try {
             if (dto.getId() != null) return converter.apiError("id shouldn't be sent");
             CollectionPoint collectionPoint = new CollectionPoint();
+
             Optional<Uppg> byIdUppg = uppgRepository.findById(dto.getUppgDto().getId());
             if (byIdUppg.isPresent()) {
                 collectionPoint.setName(dto.getName());

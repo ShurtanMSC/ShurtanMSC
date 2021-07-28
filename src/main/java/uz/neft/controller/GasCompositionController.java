@@ -2,9 +2,11 @@ package uz.neft.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.neft.dto.GasCompositionDto;
+import uz.neft.dto.MiningSystemGasCompositionDto;
 import uz.neft.entity.variables.GasComposition;
 import uz.neft.payload.ApiResponse;
 import uz.neft.service.GasCompositionService;
@@ -49,5 +51,39 @@ public class GasCompositionController {
         ApiResponse byId = compositionService.findById(id);
         return ResponseEntity.ok(byId);
     }
+
+    // Molar fractions CRUD
+
+    @PostMapping("add")
+    public HttpEntity<?> saveMiningSystemGasComposition(@RequestBody MiningSystemGasCompositionDto dto) {
+
+        ApiResponse save = compositionService.saveMSGC(dto);
+        return ResponseEntity.ok(save);
+    }
+
+    @PutMapping("edit")
+    public HttpEntity<?> editMiningSystemGasComposition(@RequestBody MiningSystemGasCompositionDto dto) {
+        ApiResponse edit = compositionService.editMSGC(dto);
+        return ResponseEntity.ok(edit);
+    }
+
+    @DeleteMapping("delete/{id}")
+    public HttpEntity<?> deleteMiningSystemGasComposition(@PathVariable Integer id) {
+        ApiResponse delete = compositionService.deleteMSGC(id);
+        return ResponseEntity.ok(delete);
+    }
+
+    @GetMapping("all")
+    public HttpEntity<?> allMiningSystemGasComposition() {
+        ApiResponse all = compositionService.findAllMSGCs();
+        return ResponseEntity.ok(all);
+    }
+
+    @GetMapping("{id}")
+    public HttpEntity<?> gasCMiningSystemGasComposition(@PathVariable Integer id) {
+        ApiResponse byId = compositionService.findByIdMSGC(id);
+        return ResponseEntity.ok(byId);
+    }
+
 
 }
