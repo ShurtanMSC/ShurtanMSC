@@ -85,6 +85,24 @@ public class UserService {
         }
     }
 
+    public ApiResponse delete(Integer id) {
+        try {
+            if (id != null) {
+                Optional<User> byId = userRepository.findById(id);
+                if (byId.isPresent()) {
+                    userRepository.deleteById(id);
+                    return converter.apiSuccess("Deleted");
+                } else {
+                    return converter.apiError("User not found");
+                }
+            }
+            return converter.apiError("Id null");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError("Error in deleting", e);
+        }
+    }
+
     public ApiResponse findById(Integer id) {
         try {
             if (id != null) {
@@ -112,24 +130,6 @@ public class UserService {
         } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError("Error in finding user", e);
-        }
-    }
-
-    public ApiResponse delete(Integer id) {
-        try {
-            if (id != null) {
-                Optional<User> byId = userRepository.findById(id);
-                if (byId.isPresent()) {
-                    userRepository.deleteById(id);
-                    return converter.apiSuccess("Deleted");
-                } else {
-                    return converter.apiError("User not found");
-                }
-            }
-            return converter.apiError("Id null");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return converter.apiError("Error in deleting", e);
         }
     }
 
