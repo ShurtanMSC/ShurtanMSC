@@ -1,6 +1,7 @@
 package uz.neft.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.UserDto;
@@ -33,10 +34,10 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public ApiResponse save(UserDto dto) {
+    public ResponseEntity<?> save(UserDto dto) {
         try {
-            if (dto.getId() != null) return converter.apiError("id shouldn't be sent");
-            if (!roleRepository.existsById(dto.getRoleId())) return converter.apiError("Role id does not exist");
+            if (dto.getId() != null) return converter.apiError400("id shouldn't be sent");
+            if (!roleRepository.existsById(dto.getRoleId())) return converter.apiError404("Role id does not exist");
             User user = User
                     .builder()
                     .username(dto.getUsername())
@@ -49,16 +50,16 @@ public class UserService {
                     .build();
             user = userRepository.save(user);
             UserDto userDto = converter.userToUserDto(user);
-            return converter.apiSuccess("User saved", userDto);
+            return converter.apiSuccess201("User saved", userDto);
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error catch");
+            return converter.apiError409("Error catch");
         }
     }
 
-    public ApiResponse edit(UserDto dto) {
+    public ResponseEntity<?> edit(UserDto dto) {
         try {
-            if (dto.getId() == null) return converter.apiError("id is null");
+            if (dto.getId() == null) return converter.apiError400("id is null");
 
             User editingUser;
             Optional<User> byId = userRepository.findById(dto.getId());
@@ -78,60 +79,60 @@ public class UserService {
                 }
                 editingUser = userRepository.save(editingUser);
                 UserDto userDto = converter.userToUserDto(editingUser);
-                return converter.apiSuccess("User edited", userDto);
+                return converter.apiSuccess200("User edited", userDto);
             }
-            return converter.apiError("User not found");
+            return converter.apiError404("User not found");
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error catch");
+            return converter.apiError409("Error catch");
         }
     }
 
-    public ApiResponse delete(Integer id) {
+    public ResponseEntity<?> delete(Integer id) {
         try {
             if (id != null) {
                 Optional<User> byId = userRepository.findById(id);
                 if (byId.isPresent()) {
                     userRepository.deleteById(id);
-                    return converter.apiSuccess("Deleted");
+                    return converter.apiSuccess200("Deleted");
                 } else {
-                    return converter.apiError("User not found");
+                    return converter.apiError404("User not found");
                 }
             }
-            return converter.apiError("Id null");
+            return converter.apiError400("Id null");
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in deleting", e);
+            return converter.apiError409("Error in deleting", e);
         }
     }
 
-    public ApiResponse findById(Integer id) {
+    public ResponseEntity<?> findById(Integer id) {
         try {
             if (id != null) {
                 Optional<User> byId = userRepository.findById(id);
                 if (byId.isPresent()) {
                     UserDto userDto = converter.userToUserDto(byId.get());
-                    return converter.apiSuccess(userDto);
+                    return converter.apiSuccess200(userDto);
                 } else {
-                    return converter.apiError("User not found");
+                    return converter.apiError404("User not found");
                 }
             }
-            return converter.apiError("Id null");
+            return converter.apiError400("Id null");
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in finding user", e);
+            return converter.apiError409("Error in finding user", e);
         }
     }
 
-    public ApiResponse findAll() {
+    public ResponseEntity<?> findAll() {
         try {
             List<User> all = userRepository.findAll();
-            List<UserDto> collect = all.stream().map(item -> converter.userToUserDto(item)).collect(Collectors.toList());
+            List<UserDto> collect = all.stream().map(converter::userToUserDto).collect(Collectors.toList());
 
-            return converter.apiSuccess(collect);
+            return converter.apiSuccess200(collect);
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in finding user", e);
+            return converter.apiError409("Error in finding user", e);
         }
     }
 

@@ -24,66 +24,54 @@ public class GasCompositionController {
 
     @PostMapping("add")
     public HttpEntity<?> saveGasComposition(@RequestBody GasCompositionDto dto) {
-        ApiResponse save = compositionService.save(dto);
-        return ResponseEntity.ok(save);
+        return compositionService.save(dto);
     }
 
     @PutMapping("edit")
     public HttpEntity<?> editGasComposition(@RequestBody GasCompositionDto dto) {
-        ApiResponse edit = compositionService.edit(dto);
-        return ResponseEntity.ok(edit);
+        return compositionService.edit(dto);
     }
 
     @DeleteMapping("delete/{id}")
     public HttpEntity<?> deleteGasComposition(@PathVariable Integer id) {
-        ApiResponse delete = compositionService.delete(id);
-        return ResponseEntity.ok(delete);
+        return compositionService.delete(id);
     }
 
     @GetMapping("all")
     public HttpEntity<?> allGasComposition() {
-        ApiResponse all = compositionService.findAll();
-        return ResponseEntity.ok(all);
+        return compositionService.findAll();
     }
 
     @GetMapping("{id}")
     public HttpEntity<?> gasCompositionById(@PathVariable Integer id) {
-        ApiResponse byId = compositionService.findById(id);
-        return ResponseEntity.ok(byId);
+        return compositionService.findById(id);
     }
 
     // Molar fractions CRUD
 
     @PostMapping("molar/add")
     public HttpEntity<?> saveMiningSystemGasComposition(@RequestBody MiningSystemGasCompositionDto dto) {
-
-        ApiResponse save = compositionService.saveMSGC(dto);
-        return ResponseEntity.ok(save);
+        return compositionService.saveMSGC(dto);
     }
 
     @PutMapping("molar/edit")
     public HttpEntity<?> editMiningSystemGasComposition(@RequestBody MiningSystemGasCompositionDto dto) {
-        ApiResponse edit = compositionService.editMSGC(dto);
-        return ResponseEntity.ok(edit);
+        return compositionService.editMSGC(dto);
     }
 
     @DeleteMapping("molar/delete/{id}")
     public HttpEntity<?> deleteMiningSystemGasComposition(@PathVariable Integer id) {
-        ApiResponse delete = compositionService.deleteMSGC(id);
-        return ResponseEntity.ok(delete);
+        return compositionService.deleteMSGC(id);
     }
 
     @GetMapping("molar/all")
     public HttpEntity<?> allMiningSystemGasComposition() {
-        ApiResponse all = compositionService.findAllMSGCs();
-        return ResponseEntity.ok(all);
+        return compositionService.findAllMSGCs();
     }
 
     @GetMapping("molar/{id}")
     public HttpEntity<?> gasCMiningSystemGasComposition(@PathVariable Integer id) {
-        ApiResponse byId = compositionService.findByIdMSGC(id);
-        return ResponseEntity.ok(byId);
+        return compositionService.findByIdMSGC(id);
     }
-
 
 }

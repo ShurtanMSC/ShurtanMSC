@@ -1,6 +1,7 @@
 package uz.neft.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.ConstantDto;
 import uz.neft.entity.variables.Constant;
@@ -24,10 +25,10 @@ public class ConstantService {
         this.converter = converter;
     }
 
-    public ApiResponse save(ConstantDto dto) {
+    public ResponseEntity<?> save(ConstantDto dto) {
         try {
-            if (dto.getId() != null) return converter.apiError("id shouldn't be sent");
-            if (dto.getName() == null) return converter.apiError("name is null");
+            if (dto.getId() != null) return converter.apiError400("id shouldn't be sent");
+            if (dto.getName() == null) return converter.apiError400("name is null");
 
             Constant constant = new Constant();
             constant.setName(dto.getName());
@@ -36,16 +37,16 @@ public class ConstantService {
             Constant save = constantRepository.save(constant);
             ConstantDto constantDto = converter.constantToConstantDto(save);
 
-            return converter.apiSuccess("Constant added", constantDto);
+            return converter.apiSuccess201("Constant added", constantDto);
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error Creating Constant");
+            return converter.apiError409("Error Creating Constant");
         }
     }
 
-    public ApiResponse edit(ConstantDto dto) {
+    public ResponseEntity<?> edit(ConstantDto dto) {
         try {
-            if (dto.getId() == null) return converter.apiError("id is null");
+            if (dto.getId() == null) return converter.apiError400("id is null");
 
             Constant constant;
             Optional<Constant> byId = constantRepository.findById(dto.getId());
@@ -56,58 +57,58 @@ public class ConstantService {
                 constant = constantRepository.save(constant);
 
                 ConstantDto gasCompositionDto = converter.constantToConstantDto(constant);
-                return converter.apiSuccess("Constant edited", gasCompositionDto);
+                return converter.apiSuccess202("Constant edited", gasCompositionDto);
             }
-            return converter.apiError("Constant not found");
+            return converter.apiError404("Constant not found");
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error editing Constant");
+            return converter.apiError409("Error editing Constant");
         }
     }
 
-    public ApiResponse delete(Integer id) {
+    public ResponseEntity<?> delete(Integer id) {
         try {
             if (id != null) {
                 Optional<Constant> byId = constantRepository.findById(id);
                 if (byId.isPresent()) {
                     constantRepository.deleteById(id);
-                    return converter.apiSuccess("Constant deleted ");
+                    return converter.apiSuccess200("Constant deleted ");
                 }
-                return converter.apiError("Constant not found");
+                return converter.apiError404("Constant not found");
             }
-            return converter.apiError("Id null");
+            return converter.apiError400("Id null");
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in deleting Constant", e);
+            return converter.apiError409("Error in deleting Constant", e);
         }
     }
 
-    public ApiResponse findAll() {
+    public ResponseEntity<?> findAll() {
         try {
             List<Constant> all = constantRepository.findAll();
             List<ConstantDto> collect = all.stream().map(converter::constantToConstantDto).collect(Collectors.toList());
-            return converter.apiSuccess(collect);
+            return converter.apiSuccess200(collect);
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in fetching Constants", e);
+            return converter.apiError409("Error in fetching Constants", e);
         }
     }
 
-    public ApiResponse findById(Integer id) {
+    public ResponseEntity<?> findById(Integer id) {
         try {
             if (id != null) {
                 Optional<Constant> byId = constantRepository.findById(id);
                 if (byId.isPresent()) {
                     ConstantDto gasCompositionDto = converter.constantToConstantDto(byId.get());
-                    return converter.apiSuccess(gasCompositionDto);
+                    return converter.apiSuccess200(gasCompositionDto);
                 } else {
-                    return converter.apiError("Constant not found");
+                    return converter.apiError404("Constant not found");
                 }
             }
-            return converter.apiError("Id null");
+            return converter.apiError400("Id null");
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in finding Constant", e);
+            return converter.apiError409("Error in finding Constant", e);
         }
     }
 }

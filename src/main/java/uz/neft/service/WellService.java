@@ -1,6 +1,7 @@
 package uz.neft.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.WellDto;
 import uz.neft.entity.CollectionPoint;
@@ -28,7 +29,7 @@ public class WellService {
         this.collectionPointRepository = collectionPointRepository;
     }
 
-    public ApiResponse save(WellDto dto) {
+    public ResponseEntity<?> save(WellDto dto) {
         try {
             if (dto.getId() == null) {
                 Well well = new Well();
@@ -38,20 +39,20 @@ public class WellService {
                     well.setCollectionPoint(byIdCollectionPoint.get());
                     Well save = wellRepository.save(well);
                     WellDto wellDto = converter.wellToWellDto(save);
-                    return converter.apiSuccess("Well saved", wellDto);
+                    return converter.apiSuccess201("Well saved", wellDto);
                 }
-                return converter.apiError("Collection point not found");
+                return converter.apiError404("Collection point not found");
             }
-            return converter.apiError("id shouldn't be sent");
+            return converter.apiError400("id shouldn't be sent");
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error creating well");
+            return converter.apiError409("Error creating well");
         }
     }
 
-    public ApiResponse edit(WellDto dto) {
+    public ResponseEntity<?> edit(WellDto dto) {
         try {
-            if (dto.getId() == null) return converter.apiError("Id null");
+            if (dto.getId() == null) return converter.apiError400("Id null");
 
             Well editWell;
             Optional<Well> byId = wellRepository.findById(dto.getId());
@@ -63,60 +64,60 @@ public class WellService {
                     editWell.setCollectionPoint(byIdCollectionPoint.get());
                     Well editedWell = wellRepository.save(editWell);
                     WellDto wellDto = converter.wellToWellDto(editedWell);
-                    return converter.apiSuccess("Well Edited", wellDto);
+                    return converter.apiSuccess200("Well Edited", wellDto);
                 }
-                return converter.apiError("Collection point not found");
+                return converter.apiError404("Collection point not found");
             }
-            return converter.apiError("Well not found");
+            return converter.apiError404("Well not found");
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error editing well");
+            return converter.apiError409("Error editing well");
         }
     }
 
-    public ApiResponse delete(Integer id) {
+    public ResponseEntity<?> delete(Integer id) {
         try {
             if (id != null) {
                 Optional<Well> byId = wellRepository.findById(id);
                 if (byId.isPresent()) {
                     wellRepository.deleteById(id);
-                    return converter.apiSuccess("Well deleted");
+                    return converter.apiSuccess200("Well deleted");
                 }
-                return converter.apiError("Well not found");
+                return converter.apiError404("Well not found");
             }
-            return converter.apiError("Id null");
+            return converter.apiError400("Id null");
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in deleting well", e);
+            return converter.apiError409("Error in deleting well", e);
         }
 
     }
 
-    public ApiResponse findAll() {
+    public ResponseEntity<?> findAll() {
         try {
             List<Well> all = wellRepository.findAll();
             List<WellDto> collect = all.stream().map(converter::wellToWellDto).collect(Collectors.toList());
-            return converter.apiSuccess(collect);
+            return converter.apiSuccess200(collect);
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in fetching all wells", e);
+            return converter.apiError409("Error in fetching all wells", e);
         }
     }
 
-    public ApiResponse findById(Integer id) {
+    public ResponseEntity<?> findById(Integer id) {
         try {
             if (id != null) {
                 Optional<Well> byId = wellRepository.findById(id);
                 if (byId.isPresent()) {
                     WellDto wellDto = converter.wellToWellDto(byId.get());
-                    return converter.apiSuccess(wellDto);
+                    return converter.apiSuccess200(wellDto);
                 }
-                return converter.apiError("Well not found");
+                return converter.apiError404("Well not found");
             }
-            return converter.apiError("Id null");
+            return converter.apiError400("Id null");
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in finding well", e);
+            return converter.apiError409("Error in finding well", e);
         }
 
     }

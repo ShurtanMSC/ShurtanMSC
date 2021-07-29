@@ -39,32 +39,27 @@ public class SuperAdminController {
 
     @PostMapping("/user/add")
     public HttpEntity<?> save(@RequestBody UserDto dto) {
-        ApiResponse save = userService.save(dto);
-        return ResponseEntity.ok(save);
+        return userService.save(dto);
     }
 
     @PutMapping("/user/edit")
     public HttpEntity<?> edit(@RequestBody UserDto dto) {
-        ApiResponse edit = userService.edit(dto);
-        return ResponseEntity.ok(edit);
+        return userService.edit(dto);
     }
 
     @DeleteMapping("/user/delete/{id}")
     public HttpEntity<?> delete(@PathVariable Integer id) {
-        ApiResponse delete = userService.delete(id);
-        return ResponseEntity.ok(delete);
+        return userService.delete(id);
     }
 
     @GetMapping("/user/all")
     public HttpEntity<?> all() {
-        ApiResponse all = userService.findAll();
-        return ResponseEntity.ok(all);
+        return userService.findAll();
     }
 
     @GetMapping("/user/{id}")
     public HttpEntity<?> userById(@PathVariable Integer id) {
-        ApiResponse byId = userService.findById(id);
-        return ResponseEntity.ok(byId);
+        return userService.findById(id);
     }
 
 
@@ -72,32 +67,27 @@ public class SuperAdminController {
 
     @PostMapping("/mining/add")
     public HttpEntity<?> saveMiningSystem(@RequestBody MiningSystemDto dto) {
-        ApiResponse save = miningSystemService.save(dto);
-        return ResponseEntity.ok(save);
+        return miningSystemService.save(dto);
     }
 
     @PutMapping("/mining/edit")
     public HttpEntity<?> editMining(@RequestBody MiningSystemDto dto) {
-        ApiResponse edit = miningSystemService.edit(dto);
-        return ResponseEntity.ok(edit);
+        return miningSystemService.edit(dto);
     }
 
     @DeleteMapping("/mining/delete/{id}")
     public HttpEntity<?> deleteMining(@PathVariable Integer id) {
-        ApiResponse delete = miningSystemService.delete(id);
-        return ResponseEntity.ok(delete);
+        return miningSystemService.delete(id);
     }
 
     @GetMapping("/mining/all")
     public HttpEntity<?> allMinings() {
-        ApiResponse all = miningSystemService.findAll();
-        return ResponseEntity.ok(all);
+        return miningSystemService.findAll();
     }
 
     @GetMapping("/mining/{id}")
     public HttpEntity<?> miningById(@PathVariable Integer id) {
-        ApiResponse byId = miningSystemService.findById(id);
-        return ResponseEntity.ok(byId);
+        return miningSystemService.findById(id);
     }
 
 
@@ -105,32 +95,27 @@ public class SuperAdminController {
 
     @PostMapping("/uppg/add")
     public HttpEntity<?> saveUppg(@RequestBody UppgDto dto) {
-        ApiResponse save = uppgService.save(dto);
-        return ResponseEntity.ok(save);
+        return uppgService.save(dto);
     }
 
     @PutMapping("/uppg/edit")
     public HttpEntity<?> editUppg(@RequestBody UppgDto dto) {
-        ApiResponse edit = uppgService.edit(dto);
-        return ResponseEntity.ok(edit);
+        return uppgService.edit(dto);
     }
 
     @DeleteMapping("/uppg/delete/{id}")
     public HttpEntity<?> deleteUppg(@PathVariable Integer id) {
-        ApiResponse delete = uppgService.delete(id);
-        return ResponseEntity.ok(delete);
+        return uppgService.delete(id);
     }
 
     @GetMapping("/uppg/all")
     public HttpEntity<?> allUppgs() {
-        ApiResponse all = uppgService.findAll();
-        return ResponseEntity.ok(all);
+        return uppgService.findAll();
     }
 
     @GetMapping("/uppg/{id}")
     public HttpEntity<?> uppgById(@PathVariable Integer id) {
-        ApiResponse byId = uppgService.findById(id);
-        return ResponseEntity.ok(byId);
+        return uppgService.findById(id);
     }
 
 
@@ -138,32 +123,27 @@ public class SuperAdminController {
 
     @PostMapping("/collection/add")
     public HttpEntity<?> saveCollection(@RequestBody CollectionPointDto dto) {
-        ApiResponse save = collectionPointService.save(dto);
-        return ResponseEntity.ok(save);
+        return collectionPointService.save(dto);
     }
 
     @PutMapping("/collection/edit")
     public HttpEntity<?> editCollection(@RequestBody CollectionPointDto dto) {
-        ApiResponse edit = collectionPointService.edit(dto);
-        return ResponseEntity.ok(edit);
+        return collectionPointService.edit(dto);
     }
 
     @DeleteMapping("/collection/delete/{id}")
     public HttpEntity<?> deleteCollection(@PathVariable Integer id) {
-        ApiResponse delete = collectionPointService.delete(id);
-        return ResponseEntity.ok(delete);
+        return collectionPointService.delete(id);
     }
 
     @GetMapping("/collection/all")
     public HttpEntity<?> allCollections() {
-        ApiResponse all = collectionPointService.findAll();
-        return ResponseEntity.ok(all);
+        return collectionPointService.findAll();
     }
 
     @GetMapping("/collection/{id}")
     public HttpEntity<?> collectionById(@PathVariable Integer id) {
-        ApiResponse byId = collectionPointService.findById(id);
-        return ResponseEntity.ok(byId);
+        return collectionPointService.findById(id);
     }
 
 
@@ -171,32 +151,27 @@ public class SuperAdminController {
 
     @PostMapping("/well/add")
     public HttpEntity<?> saveWell(@RequestBody WellDto dto) {
-        ApiResponse save = wellService.save(dto);
-        return ResponseEntity.ok(save);
+        return wellService.save(dto);
     }
 
     @PutMapping("/well/edit")
     public HttpEntity<?> editWell(@RequestBody WellDto dto) {
-        ApiResponse edit = wellService.edit(dto);
-        return ResponseEntity.ok(edit);
+        return wellService.edit(dto);
     }
 
     @DeleteMapping("/well/delete/{id}")
     public HttpEntity<?> deleteWell(@PathVariable Integer id) {
-        ApiResponse delete = wellService.delete(id);
-        return ResponseEntity.ok(delete);
+        return wellService.delete(id);
     }
 
     @GetMapping("/well/all")
     public HttpEntity<?> allWells() {
-        ApiResponse all = wellService.findAll();
-        return ResponseEntity.ok(all);
+        return wellService.findAll();
     }
 
     @GetMapping("/well/{id}")
     public HttpEntity<?> wellById(@PathVariable Integer id) {
-        ApiResponse byId = wellService.findById(id);
-        return ResponseEntity.ok(byId);
+        return wellService.findById(id);
     }
 
 }

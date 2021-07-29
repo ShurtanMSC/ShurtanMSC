@@ -1,5 +1,6 @@
 package uz.neft.service.action;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.action.WellActionDto;
 import uz.neft.entity.MiningSystem;
@@ -47,11 +48,11 @@ public class WellActionService {
     /**
      * Manually
      **/
-    public ApiResponse addManually(User user, WellActionDto dto) {
+    public ResponseEntity<?> addManually(User user, WellActionDto dto) {
 
         Optional<Well> well = wellRepository.findById(dto.getWellId());
 //        if (user == null) return converter.apiError();
-        if (!well.isPresent()) return converter.apiError("Quduq topilmadi!");
+        if (!well.isPresent()) return converter.apiError404("Well not found!");
 
         Integer miningSystemId = well.get().getCollectionPoint().getUppg().getMiningSystem().getId();
         MiningSystem miningSystem = well.get().getCollectionPoint().getUppg().getMiningSystem();
@@ -163,10 +164,10 @@ public class WellActionService {
 
             WellActionDto wellActionDto = converter.wellActionToWellActionDto(save);
 
-            return converter.apiSuccess(wellActionDto);
+            return converter.apiSuccess201(wellActionDto);
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError();
+            return converter.apiError404();
         }
     }
 }

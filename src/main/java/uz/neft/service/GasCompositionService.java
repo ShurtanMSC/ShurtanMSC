@@ -2,6 +2,7 @@ package uz.neft.service;
 //lord
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.CollectionPointDto;
 import uz.neft.dto.GasCompositionDto;
@@ -37,12 +38,12 @@ public class GasCompositionService {
         this.miningSystemRepository = miningSystemRepository;
     }
 
-    public ApiResponse save(GasCompositionDto dto) {
+    public ResponseEntity<?> save(GasCompositionDto dto) {
         try {
-            if (dto.getId() != null) return converter.apiError("id shouldn't be sent");
-            if (dto.getName() == null) return converter.apiError("name is null");
-            if (dto.getCriticalPressure() == null) return converter.apiError("CriticalPressure is null");
-            if (dto.getCriticalTemperature() == null) return converter.apiError("CriticalTemperature is null");
+            if (dto.getId() != null) return converter.apiError400("id shouldn't be sent");
+            if (dto.getName() == null) return converter.apiError400("name is null");
+            if (dto.getCriticalPressure() == null) return converter.apiError400("CriticalPressure is null");
+            if (dto.getCriticalTemperature() == null) return converter.apiError400("CriticalTemperature is null");
 
             GasComposition composition = new GasComposition();
             composition.setName(dto.getName());
@@ -52,16 +53,16 @@ public class GasCompositionService {
             GasComposition save = gasCompositionRepository.save(composition);
             GasCompositionDto gasCompositionDto = converter.gasCompositionToGasCompositionDto(save);
 
-            return converter.apiSuccess("Gas Composition added", gasCompositionDto);
+            return converter.apiSuccess201("Gas Composition added", gasCompositionDto);
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error Creating Gas Composition");
+            return converter.apiError409("Error Creating Gas Composition");
         }
     }
 
-    public ApiResponse edit(GasCompositionDto dto) {
+    public ResponseEntity<?> edit(GasCompositionDto dto) {
         try {
-            if (dto.getId() == null) return converter.apiError("id is null");
+            if (dto.getId() == null) return converter.apiError400("id is null");
 
             GasComposition composition;
             Optional<GasComposition> byId = gasCompositionRepository.findById(dto.getId());
@@ -73,57 +74,57 @@ public class GasCompositionService {
                 composition = gasCompositionRepository.save(composition);
 
                 GasCompositionDto gasCompositionDto = converter.gasCompositionToGasCompositionDto(composition);
-                return converter.apiSuccess("Gas Composition edited", gasCompositionDto);
+                return converter.apiSuccess202("Gas Composition edited", gasCompositionDto);
             }
-            return converter.apiError("Gas Composition not found");
+            return converter.apiError404("Gas Composition not found");
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error editing Gas Composition");
+            return converter.apiError409("Error editing Gas Composition");
         }
     }
 
-    public ApiResponse delete(Integer id) {
+    public ResponseEntity<?> delete(Integer id) {
         try {
             if (id != null) {
                 Optional<GasComposition> byId = gasCompositionRepository.findById(id);
                 if (byId.isPresent()) {
                     gasCompositionRepository.deleteById(id);
-                    return converter.apiSuccess("Gas Composition deleted ");
+                    return converter.apiSuccess200("Gas Composition deleted ");
                 }
-                return converter.apiError("Gas Composition not found");
+                return converter.apiError404("Gas Composition not found");
             }
-            return converter.apiError("Id null");
+            return converter.apiError400("Id null");
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in deleting Gas Composition", e);
+            return converter.apiError409("Error in deleting Gas Composition", e);
         }
     }
 
-    public ApiResponse findAll() {
+    public ResponseEntity<?> findAll() {
         try {
             List<GasComposition> all = gasCompositionRepository.findAll();
             List<GasCompositionDto> collect = all.stream().map(converter::gasCompositionToGasCompositionDto).collect(Collectors.toList());
-            return converter.apiSuccess(collect);
+            return converter.apiSuccess200(collect);
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in fetching Gas Compositions", e);
+            return converter.apiError409("Error in fetching Gas Compositions", e);
         }
     }
 
-    public ApiResponse findById(Integer id) {
+    public ResponseEntity<?> findById(Integer id) {
         try {
-            if (id == null) return converter.apiError("Id null");
+            if (id == null) return converter.apiError400("Id null");
 
             Optional<GasComposition> byId = gasCompositionRepository.findById(id);
             if (byId.isPresent()) {
                 GasCompositionDto gasCompositionDto = converter.gasCompositionToGasCompositionDto(byId.get());
-                return converter.apiSuccess(gasCompositionDto);
+                return converter.apiSuccess200(gasCompositionDto);
             } else {
-                return converter.apiError("Gas Composition not found");
+                return converter.apiError404("Gas Composition not found");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in finding Gas Composition", e);
+            return converter.apiError409("Error in finding Gas Composition", e);
         }
     }
 
@@ -131,23 +132,23 @@ public class GasCompositionService {
     //MiningSystemGasComposition Service methods for molar fractions
 
     // save method MiningSystemGasComposition ( MSGC )
-    public ApiResponse saveMSGC(MiningSystemGasCompositionDto dto) {
+    public ResponseEntity<?> saveMSGC(MiningSystemGasCompositionDto dto) {
         try {
-            if (dto.getId() != null) return converter.apiError("id shouldn't be sent");
-            if (dto.getMiningSystemId() == null) return converter.apiError("MiningSystemId is null");
-            if (dto.getGasCompositionId() == null) return converter.apiError("GasCompositionId is null");
-            if (dto.getMolarFraction() == null) return converter.apiError("MolarFraction is null");
+            if (dto.getId() != null) return converter.apiError400("id shouldn't be sent");
+            if (dto.getMiningSystemId() == null) return converter.apiError400("MiningSystemId is null");
+            if (dto.getGasCompositionId() == null) return converter.apiError400("GasCompositionId is null");
+            if (dto.getMolarFraction() == null) return converter.apiError400("MolarFraction is null");
 
             MiningSystemGasComposition miningSystemGasComposition = new MiningSystemGasComposition();
 
             Optional<MiningSystem> miningSystem = miningSystemRepository.findById(dto.getMiningSystemId());
             Optional<GasComposition> gasComposition = gasCompositionRepository.findById(dto.getGasCompositionId());
 
-            if (!miningSystem.isPresent()) return converter.apiError("There is no Mining System such as ID");
-            if (!gasComposition.isPresent()) return converter.apiError("There is no Gas Component such as ID");
+            if (!miningSystem.isPresent()) return converter.apiError404("There is no Mining System such as ID");
+            if (!gasComposition.isPresent()) return converter.apiError404("There is no Gas Component such as ID");
 
             Optional<MiningSystemGasComposition> firstFirstByMiningSystemAndGasComposition = miningSystemGasCompositionRepository.findFirstByMiningSystemAndGasComposition(miningSystem.get(), gasComposition.get());
-            if (firstFirstByMiningSystemAndGasComposition.isPresent()) return converter.apiError("This Molar FractionAlready exsit");
+            if (firstFirstByMiningSystemAndGasComposition.isPresent()) return converter.apiError409("This Molar Fraction Already exist");
 
             miningSystemGasComposition.setMiningSystem(miningSystem.get());
             miningSystemGasComposition.setGasComposition(gasComposition.get());
@@ -156,88 +157,88 @@ public class GasCompositionService {
             MiningSystemGasComposition save = miningSystemGasCompositionRepository.save(miningSystemGasComposition);
             MiningSystemGasCompositionDto miningSystemGasCompositionDto = converter.miningSystemGasCompositionToMiningSystemGasCompositionDto(save);
 
-            return converter.apiSuccess("Molar Fraction saved in MiningSystem_GasComposition Entity", miningSystemGasCompositionDto);
+            return converter.apiSuccess201("Molar Fraction saved in MiningSystem_GasComposition Entity", miningSystemGasCompositionDto);
         } catch (
                 Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error saving Molar Fraction in MiningSystem_GasComposition table");
+            return converter.apiError409("Error saving Molar Fraction in MiningSystem_GasComposition table");
         }
     }
 
-    public ApiResponse editMSGC(MiningSystemGasCompositionDto dto) {
+    public ResponseEntity<?> editMSGC(MiningSystemGasCompositionDto dto) {
         try {
 //            if (dto.getId() == null) return converter.apiError("id is null");
 //            if (dto.getMiningSystemId() == null) return converter.apiError("MiningSystemId is null");
 //            if (dto.getGasCompositionId() == null) return converter.apiError("GasCompositionId is null");
-            if (dto.getMolarFraction() == null) return converter.apiError("MolarFraction is null");
+            if (dto.getMolarFraction() == null) return converter.apiError400("MolarFraction is null");
 
             MiningSystemGasComposition editingMiningSystemGasComposition;
 
             Optional<MiningSystem> miningSystem = miningSystemRepository.findById(dto.getMiningSystemId());
             Optional<GasComposition> gasComposition = gasCompositionRepository.findById(dto.getGasCompositionId());
 
-            if (!miningSystem.isPresent()) return converter.apiError("There is no Mining System such as ID");
-            if (!gasComposition.isPresent()) return converter.apiError("There is no Gas Component such as ID");
+            if (!miningSystem.isPresent()) return converter.apiError404("There is no Mining System such as ID");
+            if (!gasComposition.isPresent()) return converter.apiError404("There is no Gas Component such as ID");
 
             Optional<MiningSystemGasComposition> byIdMiningSysGasComposition =
                     miningSystemGasCompositionRepository.findByIdAndMiningSystemAndGasComposition(dto.getId(), miningSystem.get(), gasComposition.get());
 
             if (!byIdMiningSysGasComposition.isPresent())
-                return converter.apiError("There is no MiningSys_GasComposition ");
+                return converter.apiError404("There is no MiningSys_GasComposition ");
 
             byIdMiningSysGasComposition.get().setMolarFraction(dto.getMolarFraction());
 
             MiningSystemGasComposition save = miningSystemGasCompositionRepository.save(byIdMiningSysGasComposition.get());
             MiningSystemGasCompositionDto miningSystemGasCompositionDto = converter.miningSystemGasCompositionToMiningSystemGasCompositionDto(save);
 
-            return converter.apiSuccess("Molar Fraction edited ", miningSystemGasCompositionDto);
+            return converter.apiSuccess200("Molar Fraction edited ", miningSystemGasCompositionDto);
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Editing Molar Fraction is ERROR in MiningSystem_GasComposition, catch");
+            return converter.apiError409("Editing Molar Fraction is ERROR in MiningSystem_GasComposition, catch");
         }
     }
 
-    public ApiResponse deleteMSGC(Integer id) {
+    public ResponseEntity<?> deleteMSGC(Integer id) {
         try {
-            if (id == null) return converter.apiError("Id is null");
+            if (id == null) return converter.apiError400("Id is null");
 
             Optional<MiningSystemGasComposition> byId = miningSystemGasCompositionRepository.findById(id);
             if (byId.isPresent()) {
                 miningSystemGasCompositionRepository.deleteById(id);
-                return converter.apiSuccess("MiningSystem_GasComposition deleted");
+                return converter.apiSuccess200("MiningSystem_GasComposition deleted");
             }
-            return converter.apiError("MiningSystem_GasComposition not found");
+            return converter.apiError404("MiningSystem_GasComposition not found");
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Deleting Molar Fraction is ERROR in MiningSystem_GasComposition, catch", e);
+            return converter.apiError409("Deleting Molar Fraction is ERROR in MiningSystem_GasComposition, catch", e);
         }
     }
 
-    public ApiResponse findAllMSGCs() {
+    public ResponseEntity<?> findAllMSGCs() {
         try {
             List<MiningSystemGasComposition> all = miningSystemGasCompositionRepository.findAll();
             List<MiningSystemGasCompositionDto> collect = all.stream().map(converter::miningSystemGasCompositionToMiningSystemGasCompositionDto).collect(Collectors.toList());
 
-            return converter.apiSuccess(collect);
+            return converter.apiSuccess200(collect);
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in fetching all Molar Fractions in MiningSystem_GasComposition table", e);
+            return converter.apiError409("Error in fetching all Molar Fractions in MiningSystem_GasComposition table", e);
         }
     }
 
-    public ApiResponse findByIdMSGC(Integer id) {
+    public ResponseEntity<?> findByIdMSGC(Integer id) {
         try {
-            if (id == null) return converter.apiError("Id null");
+            if (id == null) return converter.apiError400("Id null");
             Optional<MiningSystemGasComposition> byId = miningSystemGasCompositionRepository.findById(id);
             if (byId.isPresent()) {
                 MiningSystemGasCompositionDto dto = converter.miningSystemGasCompositionToMiningSystemGasCompositionDto(byId.get());
-                return converter.apiSuccess(dto);
+                return converter.apiSuccess200(dto);
             }
-            return converter.apiError("Molar Fraction not found in MiningSystem_GasComposition table");
+            return converter.apiError404("Molar Fraction not found in MiningSystem_GasComposition table");
 
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in finding Molar Fraction in MiningSystem_GasComposition table", e);
+            return converter.apiError409("Error in finding Molar Fraction in MiningSystem_GasComposition table", e);
         }
     }
 }

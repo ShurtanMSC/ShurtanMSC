@@ -1,6 +1,7 @@
 package uz.neft.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.MiningSystemDto;
 import uz.neft.dto.UserDto;
@@ -29,23 +30,23 @@ public class MiningSystemService {
         this.converter = converter;
     }
 
-    public ApiResponse save(MiningSystemDto dto) {
+    public ResponseEntity<?> save(MiningSystemDto dto) {
         try {
-            if (dto.getId() != null) return converter.apiError("id shouldn't be sent");
+            if (dto.getId() != null) return converter.apiError400("id shouldn't be sent");
             MiningSystem miningSystem = new MiningSystem();
             miningSystem.setName(dto.getName());
             MiningSystem save = miningSystemRepository.save(miningSystem);
             MiningSystemDto miningSystemDto = converter.miningSysToMiningSysDto(save);
-            return converter.apiSuccess("Mining system added", miningSystemDto);
+            return converter.apiSuccess201("Mining system added", miningSystemDto);
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error Creating MiningSystem");
+            return converter.apiError409("Error Creating MiningSystem");
         }
     }
 
-    public ApiResponse edit(MiningSystemDto dto) {
+    public ResponseEntity<?> edit(MiningSystemDto dto) {
         try {
-            if (dto.getId() == null) return converter.apiError("id is null");
+            if (dto.getId() == null) return converter.apiError400("id is null");
 
             MiningSystem editMiningSys;
             Optional<MiningSystem> byId = miningSystemRepository.findById(dto.getId());
@@ -54,59 +55,59 @@ public class MiningSystemService {
                 editMiningSys.setName(dto.getName());
                 editMiningSys = miningSystemRepository.save(editMiningSys);
                 MiningSystemDto miningSystemDto = converter.miningSysToMiningSysDto(editMiningSys);
-                return converter.apiSuccess("Mining system edited", miningSystemDto);
+                return converter.apiSuccess200("Mining system edited", miningSystemDto);
             }
-            return converter.apiError("Mining system not found");
+            return converter.apiError404("Mining system not found");
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error editing mining system");
+            return converter.apiError409("Error editing mining system");
         }
     }
 
-    public ApiResponse delete(Integer id) {
+    public ResponseEntity<?> delete(Integer id) {
         try {
             if (id != null) {
                 Optional<MiningSystem> byId = miningSystemRepository.findById(id);
                 if (byId.isPresent()) {
                     miningSystemRepository.deleteById(id);
-                    return converter.apiSuccess("Mining system deleted ");
+                    return converter.apiSuccess200("Mining system deleted ");
                 } else {
-                    return converter.apiError("Mining system not found");
+                    return converter.apiError404("Mining system not found");
                 }
             }
-            return converter.apiError("Id null");
+            return converter.apiError400("Id null");
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in deleting mining system", e);
+            return converter.apiError409("Error in deleting mining system", e);
         }
     }
 
-    public ApiResponse findAll() {
+    public ResponseEntity<?> findAll() {
         try {
             List<MiningSystem> all = miningSystemRepository.findAll();
             List<MiningSystemDto> collect = all.stream().map(converter::miningSysToMiningSysDto).collect(Collectors.toList());
-            return converter.apiSuccess(collect);
+            return converter.apiSuccess200(collect);
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in fetching mining systems", e);
+            return converter.apiError409("Error in fetching mining systems", e);
         }
     }
 
-    public ApiResponse findById(Integer id) {
+    public ResponseEntity<?> findById(Integer id) {
         try {
             if (id != null) {
                 Optional<MiningSystem> byId = miningSystemRepository.findById(id);
                 if (byId.isPresent()) {
                     MiningSystemDto miningSystemDto = converter.miningSysToMiningSysDto(byId.get());
-                    return converter.apiSuccess(miningSystemDto);
+                    return converter.apiSuccess200(miningSystemDto);
                 } else {
-                    return converter.apiError("Mining system not found");
+                    return converter.apiError404("Mining system not found");
                 }
             }
-            return converter.apiError("Id null");
+            return converter.apiError400("Id null");
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in finding mining system", e);
+            return converter.apiError409("Error in finding mining system", e);
         }
     }
 

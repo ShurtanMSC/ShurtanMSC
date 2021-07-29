@@ -1,6 +1,7 @@
 package uz.neft.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.UppgDto;
 import uz.neft.entity.MiningSystem;
@@ -28,9 +29,9 @@ public class UppgService {
         this.miningSystemRepository = miningSystemRepository;
     }
 
-    public ApiResponse save(UppgDto dto) {
+    public ResponseEntity<?> save(UppgDto dto) {
         try {
-            if (dto.getId() != null) return converter.apiError("id shouldn't be sent");
+            if (dto.getId() != null) return converter.apiError400("id shouldn't be sent");
             Uppg uppg = new Uppg();
             Optional<MiningSystem> byIdMining = miningSystemRepository.findById(dto.getMiningSystemId());
             if (byIdMining.isPresent()) {
@@ -38,18 +39,18 @@ public class UppgService {
                 uppg.setMiningSystem(byIdMining.get());
                 Uppg save = uppgRepository.save(uppg);
                 UppgDto uppgDto = converter.uppgToUppgDto(save);
-                return converter.apiSuccess("Uppg saved", uppgDto);
+                return converter.apiSuccess201("Uppg saved", uppgDto);
             }
-            return converter.apiError("Mining system not found");
+            return converter.apiError404("Mining system not found");
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error creating uppg");
+            return converter.apiError409("Error creating uppg");
         }
     }
 
-    public ApiResponse edit(UppgDto dto) {
+    public ResponseEntity<?> edit(UppgDto dto) {
         try {
-            if (dto.getId() == null) return converter.apiError("Id null");
+            if (dto.getId() == null) return converter.apiError400("Id null");
 
             Uppg editUppg;
             Optional<Uppg> byId = uppgRepository.findById(dto.getId());
@@ -60,63 +61,63 @@ public class UppgService {
                     editUppg.setName(dto.getName());
                     editUppg.setMiningSystem(byIdMining.get());
                     Uppg editedUppg = uppgRepository.save(editUppg);
-                    return converter.apiSuccess("Edited Mining System", editedUppg);
+                    return converter.apiSuccess200("Edited Mining System", editedUppg);
                 }
-                return converter.apiError("Mining system not found");
+                return converter.apiError404("Mining system not found");
             }
-            return converter.apiError("Uppg not found");
+            return converter.apiError404("Uppg not found");
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error edit uppg");
+            return converter.apiError409("Error edit uppg");
         }
     }
 
-    public ApiResponse delete(Integer id) {
+    public ResponseEntity<?> delete(Integer id) {
         try {
             if (id != null) {
                 Optional<Uppg> byId = uppgRepository.findById(id);
                 if (byId.isPresent()) {
                     uppgRepository.deleteById(id);
-                    return converter.apiSuccess("Uppg deleted");
+                    return converter.apiSuccess200("Uppg deleted");
                 } else {
-                    return converter.apiError("Mining system not found");
+                    return converter.apiError404("Mining system not found");
                 }
             }
-            return converter.apiError("Id null");
+            return converter.apiError400("Id null");
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in deleting uppg", e);
+            return converter.apiError409("Error in deleting uppg", e);
         }
     }
 
-    public ApiResponse findAll() {
+    public ResponseEntity<?> findAll() {
         try {
             List<Uppg> all = uppgRepository.findAll();
             List<UppgDto> collect = all.stream().map(converter::uppgToUppgDto).collect(Collectors.toList());
 
-            return converter.apiSuccess(collect);
+            return converter.apiSuccess201(collect);
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in fetching all uppgs", e);
+            return converter.apiError409("Error in fetching all uppgs", e);
         }
 
     }
 
-    public ApiResponse findById(Integer id) {
+    public ResponseEntity<?> findById(Integer id) {
         try {
             if (id != null) {
                 Optional<Uppg> byId = uppgRepository.findById(id);
                 if (byId.isPresent()) {
                     UppgDto uppgDto = converter.uppgToUppgDto(byId.get());
-                    return converter.apiSuccess(uppgDto);
+                    return converter.apiSuccess200(uppgDto);
                 } else {
-                    return converter.apiError("Uppg not found");
+                    return converter.apiError404("Uppg not found");
                 }
             }
-            return converter.apiError("Id null");
+            return converter.apiError400("Id null");
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in finding uppg", e);
+            return converter.apiError409("Error in finding uppg", e);
         }
 
     }

@@ -1,6 +1,7 @@
 package uz.neft.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.CollectionPointDto;
 import uz.neft.entity.CollectionPoint;
@@ -28,9 +29,9 @@ public class CollectionPointService {
         this.uppgRepository = uppgRepository;
     }
 
-    public ApiResponse save(CollectionPointDto dto) {
+    public ResponseEntity<?> save(CollectionPointDto dto) {
         try {
-            if (dto.getId() != null) return converter.apiError("id shouldn't be sent");
+            if (dto.getId() != null) return converter.apiError400("id shouldn't be sent");
             CollectionPoint collectionPoint = new CollectionPoint();
 
             Optional<Uppg> byIdUppg = uppgRepository.findById(dto.getUppgId());
@@ -39,18 +40,18 @@ public class CollectionPointService {
                 collectionPoint.setUppg(byIdUppg.get());
                 CollectionPoint save = collectionPointRepository.save(collectionPoint);
                 CollectionPointDto collectionPointDto = converter.collectionPointToCollectionPointDto(save);
-                return converter.apiSuccess("Collection point saved", collectionPointDto);
+                return converter.apiSuccess201("Collection point saved", collectionPointDto);
             }
-            return converter.apiError("Uppg not found");
+            return converter.apiError404("Uppg not found");
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error creating collection point");
+            return converter.apiError409("Error creating collection point");
         }
     }
 
-    public ApiResponse edit(CollectionPointDto dto) {
+    public ResponseEntity<?> edit(CollectionPointDto dto) {
         try {
-            if (dto.getId() == null) return converter.apiError("Id is null");
+            if (dto.getId() == null) return converter.apiError400("Id is null");
             CollectionPoint editCollectionPoint;
             Optional<CollectionPoint> byId = collectionPointRepository.findById(dto.getId());
             if (byId.isPresent()) {
@@ -61,60 +62,60 @@ public class CollectionPointService {
                     editCollectionPoint.setUppg(byIdUppg.get());
                     CollectionPoint save = collectionPointRepository.save(editCollectionPoint);
                     CollectionPointDto collectionPointDto = converter.collectionPointToCollectionPointDto(save);
-                    return converter.apiSuccess("Edited Mining System", collectionPointDto);
+                    return converter.apiSuccess200("Edited Mining System", collectionPointDto);
                 }
-                return converter.apiError("Uppg not found");
+                return converter.apiError404("Uppg not found");
             }
-            return converter.apiError("Collection not found!");
+            return converter.apiError404("Collection not found!");
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error edit collection point");
+            return converter.apiError409("Error edit collection point");
         }
     }
 
-    public ApiResponse delete(Integer id) {
+    public ResponseEntity<?> delete(Integer id) {
         try {
             if (id != null) {
                 Optional<CollectionPoint> byId = collectionPointRepository.findById(id);
                 if (byId.isPresent()) {
                     collectionPointRepository.deleteById(id);
-                    return converter.apiSuccess("Collection point deleted");
+                    return converter.apiSuccess200("Collection point deleted");
                 }
-                return converter.apiError("Collection point not found");
+                return converter.apiError404("Collection point not found");
             }
-            return converter.apiError("Id null");
+            return converter.apiError400("Id null");
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in deleting collection point", e);
+            return converter.apiError409("Error in deleting collection point", e);
         }
     }
 
-    public ApiResponse findAll() {
+    public ResponseEntity<?> findAll() {
         try {
             List<CollectionPoint> all = collectionPointRepository.findAll();
             List<CollectionPointDto> collect = all.stream().map(converter::collectionPointToCollectionPointDto).collect(Collectors.toList());
 
-            return converter.apiSuccess(collect);
+            return converter.apiSuccess200(collect);
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in fetching all collection points", e);
+            return converter.apiError409("Error in fetching all collection points", e);
         }
     }
 
-    public ApiResponse findById(Integer id) {
+    public ResponseEntity<?> findById(Integer id) {
         try {
             if (id != null) {
                 Optional<CollectionPoint> byId = collectionPointRepository.findById(id);
                 if (byId.isPresent()) {
                     CollectionPointDto collectionPointDto = converter.collectionPointToCollectionPointDto(byId.get());
-                    return converter.apiSuccess(collectionPointDto);
+                    return converter.apiSuccess200(collectionPointDto);
                 }
-                return converter.apiError("CollectionPoint not found");
+                return converter.apiError404("CollectionPoint not found");
             }
-            return converter.apiError("Id null");
+            return converter.apiError400("Id null");
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError("Error in finding collectionPoint", e);
+            return converter.apiError409("Error in finding collectionPoint", e);
         }
 
     }

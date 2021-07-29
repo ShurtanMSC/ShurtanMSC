@@ -21,31 +21,26 @@ public class ConstantController {
 
     @PostMapping("add")
     public HttpEntity<?> saveConstant(@RequestBody ConstantDto dto) {
-        ApiResponse save = constantService.save(dto);
-        return ResponseEntity.ok(save);
+        return constantService.save(dto);
     }
 
     @PutMapping("edit")
     public HttpEntity<?> editConstant(@RequestBody ConstantDto dto) {
-        ApiResponse edit = constantService.edit(dto);
-        return ResponseEntity.ok(edit);
+        return constantService.edit(dto);
     }
 
     @DeleteMapping("delete/{id}")
     public HttpEntity<?> deleteConstant(@PathVariable Integer id) {
-        ApiResponse delete = constantService.delete(id);
-        return ResponseEntity.ok(delete);
+        return constantService.delete(id);
     }
 
     @GetMapping("all")
     public HttpEntity<?> allConstant() {
-        ApiResponse all = constantService.findAll();
-        return ResponseEntity.ok(all);
+        return constantService.findAll();
     }
 
     @GetMapping("{id}")
     public HttpEntity<?> gasCompositionById(@PathVariable Integer id) {
-        ApiResponse byId = constantService.findById(id);
-        return ResponseEntity.ok(byId);
+        return constantService.findById(id);
     }
 }

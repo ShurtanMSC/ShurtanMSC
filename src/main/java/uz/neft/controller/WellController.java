@@ -26,7 +26,7 @@ public class WellController {
     @PostMapping("manually/add/action")
     public HttpEntity<?> addAction(@CurrentUser User user,
                                    @RequestBody WellActionDto dto){
-        return ResponseEntity.ok(wellActionService.addManually(user,dto));
+        return wellActionService.addManually(user,dto);
     }
 
 
