@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import uz.neft.entity.MiningSystem;
-import uz.neft.entity.Role;
-import uz.neft.entity.RoleName;
-import uz.neft.entity.User;
+import uz.neft.entity.*;
 import uz.neft.entity.variables.*;
 import uz.neft.entity.variables.MiningSystemGasComposition;
 import uz.neft.repository.*;
@@ -30,6 +27,12 @@ public class DataLoader implements CommandLineRunner {
     ConstantRepository constantRepository;
     MiningSystemConstantRepository miningSystemConstantRepository;
 
+    @Autowired
+    private UppgRepository uppgRepository;
+    @Autowired
+    private CollectionPointRepository collectionPointRepository;
+    @Autowired
+    private WellRepository wellRepository;
     @Autowired
     public DataLoader(UserRepository userRepository, MiningSystemConstantRepository miningSystemConstantRepository, RoleRepository roleRepository, ConstantRepository constantRepository
             , PasswordEncoder passwordEncoder, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository) {
@@ -76,6 +79,12 @@ public class DataLoader implements CommandLineRunner {
 
         try {
             MiningSystem shurtan = miningSystemRepository.save(new MiningSystem("SHURTAN"));
+
+            Uppg uppg = uppgRepository.save(new Uppg("uppg",shurtan));
+            CollectionPoint point=collectionPointRepository.save(new CollectionPoint("sp",uppg));
+            Well well=wellRepository.save(wellRepository.save(new Well(11,point)));
+
+
 
             //----------------------------------------------------
 
@@ -145,8 +154,8 @@ public class DataLoader implements CommandLineRunner {
             Constant savedRoGas = constantRepository.save(roGas);
             Constant savedRoAir = constantRepository.save(roAir);
 
-            MiningSystemConstant miningSystemConstantRoGasValue=new MiningSystemConstant(shurtan,roGas,0.772);
-            MiningSystemConstant miningSystemConstantRoAirValue=new MiningSystemConstant(shurtan,roAir,1.205);
+            MiningSystemConstant miningSystemConstantRoGasValue=miningSystemConstantRepository.save(new MiningSystemConstant(shurtan,roGas,0.772));
+            MiningSystemConstant miningSystemConstantRoAirValue=miningSystemConstantRepository.save(new MiningSystemConstant(shurtan,roAir,1.205));
 
         } catch (Exception e) {
             e.printStackTrace();

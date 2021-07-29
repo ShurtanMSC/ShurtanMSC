@@ -7,6 +7,6 @@ import uz.neft.entity.variables.MiningSystemConstant;
 
 public interface MiningSystemConstantRepository extends JpaRepository<MiningSystemConstant,Integer> {
 
-    Double findByMiningSystemAndConstant(MiningSystem miningSystem, Constant constant);
+    MiningSystemConstant findByMiningSystemAndConstant(MiningSystem miningSystem, Constant constant);
 
 }

@@ -1,17 +1,12 @@
 package uz.neft.service.action;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import uz.neft.dto.WellDto;
 import uz.neft.dto.action.WellActionDto;
 import uz.neft.entity.MiningSystem;
 import uz.neft.entity.User;
 import uz.neft.entity.Well;
 import uz.neft.entity.action.WellAction;
-import uz.neft.entity.variables.Constant;
-import uz.neft.entity.variables.ConstantNameEnums;
-import uz.neft.entity.variables.GasComposition;
-import uz.neft.entity.variables.MiningSystemGasComposition;
+import uz.neft.entity.variables.*;
 import uz.neft.payload.ApiResponse;
 import uz.neft.repository.*;
 import uz.neft.repository.action.WellActionRepository;
@@ -31,11 +26,12 @@ public class WellActionService {
     private GasCompositionRepository gasCompositionRepository;
     private MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository;
     private Calculator calculator;
-    private ConstantRepository constantRepository;
     private MiningSystemConstantRepository miningSystemConstantRepository;
+    private ConstantRepository constantRepository;
+    private UserRepository userRepository;
 
-    @Autowired
-    public WellActionService(WellActionRepository wellActionRepository, MiningSystemConstantRepository miningSystemConstantRepository, WellRepository wellRepository, Converter converter, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository, Calculator calculator) {
+
+    public WellActionService(WellActionRepository wellActionRepository, MiningSystemConstantRepository miningSystemConstantRepository, WellRepository wellRepository, Converter converter, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository, Calculator calculator, ConstantRepository constantRepository, UserRepository userRepository) {
         this.wellActionRepository = wellActionRepository;
         this.wellRepository = wellRepository;
         this.converter = converter;
@@ -44,6 +40,8 @@ public class WellActionService {
         this.miningSystemMiningSystemGasCompositionRepository = miningSystemMiningSystemGasCompositionRepository;
         this.calculator = calculator;
         this.miningSystemConstantRepository = miningSystemConstantRepository;
+        this.constantRepository = constantRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -52,7 +50,7 @@ public class WellActionService {
     public ApiResponse addManually(User user, WellActionDto dto) {
 
         Optional<Well> well = wellRepository.findById(dto.getWellId());
-        if (user == null) return converter.apiError();
+//        if (user == null) return converter.apiError();
         if (!well.isPresent()) return converter.apiError("Quduq topilmadi!");
 
         Integer miningSystemId = well.get().getCollectionPoint().getUppg().getMiningSystem().getId();
@@ -115,19 +113,19 @@ public class WellActionService {
          **/
 
         Constant constRoGas = constantRepository.findByName(ConstantNameEnums.RO_GAS);
-        Double roGas = miningSystemConstantRepository.findByMiningSystemAndConstant(miningSystem, constRoGas);
+        MiningSystemConstant roGas = miningSystemConstantRepository.findByMiningSystemAndConstant(miningSystem, constRoGas);
 
         /**
          * roAir  -  ρ_возд – плотность воздуха при стандартных условиях (standart
          * sharoitda havo zichligi), kg/m3
          **/
         Constant constRoAir = constantRepository.findByName(ConstantNameEnums.RO_AIR);
-        Double roAir = miningSystemConstantRepository.findByMiningSystemAndConstant(miningSystem, constRoAir);
+        MiningSystemConstant roAir = miningSystemConstantRepository.findByMiningSystemAndConstant(miningSystem, constRoAir);
 
         /**
          * Относительная плотность газа ( ρ_отн )
          **/
-        double Ro_otn = Calculator.relativeDensity(roGas, roAir);
+        double Ro_otn = Calculator.relativeDensity(roGas.getValue(), roAir.getValue());
 
         /**
          * Z - Коэффициент сверхсжимаемости газа
@@ -148,10 +146,11 @@ public class WellActionService {
          **/
         double D_well = Calculator.averageProductionRate(C, P_u, delta, Ro_otn, Z, T_u);
 
+
         try {
             WellAction wellAction = WellAction
                     .builder()
-                    .user(user)
+                    .user(userRepository.findById(1).get())
                     .temperature(dto.getTemperature())
                     .pressure(dto.getPressure())
                     .status(dto.getStatus())
@@ -163,6 +162,7 @@ public class WellActionService {
             WellAction save = wellActionRepository.save(wellAction);
             return converter.apiSuccess(save);
         } catch (Exception e) {
+            e.printStackTrace();
             return converter.apiError();
         }
     }

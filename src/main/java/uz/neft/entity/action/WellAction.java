@@ -41,12 +41,12 @@ public class WellAction extends AbsEntityLong {
     private Well well;
 
 
-    @LastModifiedBy
-    @Column(nullable = false)
-    private String modifiedBy;
-
-    @LastModifiedDate
-    @Column(nullable = false)
-    private LocalDateTime modified;
+//    @LastModifiedBy
+//    @Column(nullable = false)
+//    private String modifiedBy;
+//
+//    @LastModifiedDate
+//    @Column(nullable = false)
+//    private LocalDateTime modified;
 
 }
