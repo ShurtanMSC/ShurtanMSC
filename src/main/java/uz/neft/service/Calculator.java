@@ -46,7 +46,7 @@ public class Calculator {
         for (int i = 0; i < molarFractions.size(); i++) {
             s += molarFractions.get(i) * criticalPressureOrTemperature.get(i);
         }
-        return s;
+        return s / 100;
     }
 
 
@@ -127,7 +127,7 @@ public class Calculator {
 
         double D_well = 0;
         D_well = (C * P_u * delta) / (0.1013 * Math.sqrt(Ro_otn * T_u * Z));
-        return D_well;
+        return D_well*1000;
     }
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

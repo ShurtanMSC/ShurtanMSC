@@ -139,7 +139,7 @@ public class WellActionService {
         double delta = Calculator.correctionFactor_P_T(T_pr, P_pr);
 
         //MUAMMO
-        double C = 0.088;
+        double C = 88;
 
         /**
          * D_well - Средний дебит скважин месторождения Шуртан ( D_СКВ )
@@ -160,7 +160,10 @@ public class WellActionService {
                     .build();
 
             WellAction save = wellActionRepository.save(wellAction);
-            return converter.apiSuccess(save);
+
+            WellActionDto wellActionDto = converter.wellActionToWellActionDto(save);
+
+            return converter.apiSuccess(wellActionDto);
         } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError();

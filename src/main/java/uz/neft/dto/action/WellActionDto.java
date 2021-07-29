@@ -1,9 +1,6 @@
 package uz.neft.dto.action;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import uz.neft.entity.enums.WellStatus;
 
 import javax.persistence.EnumType;
@@ -13,6 +10,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class WellActionDto {
 
     // Quduq idsi
@@ -23,6 +21,9 @@ public class WellActionDto {
 
     // Tempratura
     private double temperature;
+
+    // Rasxod
+    private double expend;
 
     // Rpl
     private double rpl;

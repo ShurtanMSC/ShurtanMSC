@@ -4,7 +4,9 @@ package uz.neft.utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uz.neft.dto.*;
+import uz.neft.dto.action.WellActionDto;
 import uz.neft.entity.*;
+import uz.neft.entity.action.WellAction;
 import uz.neft.entity.variables.Constant;
 import uz.neft.entity.variables.GasComposition;
 import uz.neft.entity.variables.MiningSystemGasComposition;
@@ -198,6 +200,7 @@ public class Converter {
             return null;
         }
     }
+
     public MiningSystemGasCompositionDto miningSystemGasCompositionToMiningSystemGasCompositionDto(MiningSystemGasComposition miningSystemGasComposition) {
         try {
             return MiningSystemGasCompositionDto
@@ -206,6 +209,25 @@ public class Converter {
                     .miningSystemId(miningSystemGasComposition.getMiningSystem().getId())
                     .gasCompositionId(miningSystemGasComposition.getGasComposition().getId())
                     .molarFraction(miningSystemGasComposition.getMolarFraction())
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    public WellActionDto wellActionToWellActionDto(WellAction wellAction) {
+        try {
+            return WellActionDto
+                    .builder()
+                    .wellId(wellAction.getWell().getId())
+                    .pressure(wellAction.getPressure())
+                    .temperature(wellAction.getTemperature())
+                    .expend(wellAction.getExpend())
+                    .rpl(wellAction.getRpl())
+                    .status(wellAction.getStatus())
+                    .date(wellAction.getCreatedAt().toString())
                     .build();
         } catch (Exception e) {
             e.printStackTrace();
