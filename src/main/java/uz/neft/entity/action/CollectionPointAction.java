@@ -29,7 +29,7 @@ public class CollectionPointAction extends AbsEntityLong {
     private int temperature;
 
     // Rasxod
-    private double cost;
+    private double expand;
 
     @ManyToOne
     private User user;
