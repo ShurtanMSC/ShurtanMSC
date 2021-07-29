@@ -1,5 +1,6 @@
 package uz.neft.service;
 //lord
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.CollectionPointDto;
@@ -111,16 +112,15 @@ public class GasCompositionService {
 
     public ApiResponse findById(Integer id) {
         try {
-            if (id != null) {
-                Optional<GasComposition> byId = gasCompositionRepository.findById(id);
-                if (byId.isPresent()) {
-                    GasCompositionDto gasCompositionDto = converter.gasCompositionToGasCompositionDto(byId.get());
-                    return converter.apiSuccess(gasCompositionDto);
-                } else {
-                    return converter.apiError("Gas Composition not found");
-                }
+            if (id == null) return converter.apiError("Id null");
+
+            Optional<GasComposition> byId = gasCompositionRepository.findById(id);
+            if (byId.isPresent()) {
+                GasCompositionDto gasCompositionDto = converter.gasCompositionToGasCompositionDto(byId.get());
+                return converter.apiSuccess(gasCompositionDto);
+            } else {
+                return converter.apiError("Gas Composition not found");
             }
-            return converter.apiError("Id null");
         } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError("Error in finding Gas Composition", e);
@@ -145,6 +145,9 @@ public class GasCompositionService {
 
             if (!miningSystem.isPresent()) return converter.apiError("There is no Mining System such as ID");
             if (!gasComposition.isPresent()) return converter.apiError("There is no Gas Component such as ID");
+
+            Optional<MiningSystemGasComposition> firstFirstByMiningSystemAndGasComposition = miningSystemGasCompositionRepository.findFirstByMiningSystemAndGasComposition(miningSystem.get(), gasComposition.get());
+            if (firstFirstByMiningSystemAndGasComposition.isPresent()) return converter.apiError("This Molar FractionAlready exsit");
 
             miningSystemGasComposition.setMiningSystem(miningSystem.get());
             miningSystemGasComposition.setGasComposition(gasComposition.get());
@@ -224,7 +227,7 @@ public class GasCompositionService {
 
     public ApiResponse findByIdMSGC(Integer id) {
         try {
-            if (id != null) return converter.apiError("Id null");
+            if (id == null) return converter.apiError("Id null");
             Optional<MiningSystemGasComposition> byId = miningSystemGasCompositionRepository.findById(id);
             if (byId.isPresent()) {
                 MiningSystemGasCompositionDto dto = converter.miningSystemGasCompositionToMiningSystemGasCompositionDto(byId.get());

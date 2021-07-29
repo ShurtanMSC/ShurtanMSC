@@ -62,7 +62,7 @@ public class WellActionService {
         /**
          * List miningSystemGasCompositions
          **/
-        List<MiningSystemGasComposition> miningSystemGasCompositions = miningSystemMiningSystemGasCompositionRepository.findAllByMiningSystem(miningSystemId);
+        List<MiningSystemGasComposition> miningSystemGasCompositions = miningSystemMiningSystemGasCompositionRepository.findAllByMiningSystem(miningSystem);
 
         /**
          * List molarFractions
