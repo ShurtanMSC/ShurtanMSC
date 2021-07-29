@@ -33,7 +33,7 @@ public class CollectionPointService {
             if (dto.getId() != null) return converter.apiError("id shouldn't be sent");
             CollectionPoint collectionPoint = new CollectionPoint();
 
-            Optional<Uppg> byIdUppg = uppgRepository.findById(dto.getUppgDto().getId());
+            Optional<Uppg> byIdUppg = uppgRepository.findById(dto.getUppgId());
             if (byIdUppg.isPresent()) {
                 collectionPoint.setName(dto.getName());
                 collectionPoint.setUppg(byIdUppg.get());
@@ -54,7 +54,7 @@ public class CollectionPointService {
             CollectionPoint editCollectionPoint;
             Optional<CollectionPoint> byId = collectionPointRepository.findById(dto.getId());
             if (byId.isPresent()) {
-                Optional<Uppg> byIdUppg = uppgRepository.findById(dto.getUppgDto().getId());
+                Optional<Uppg> byIdUppg = uppgRepository.findById(dto.getUppgId());
                 if (byIdUppg.isPresent()) {
                     editCollectionPoint = byId.get();
                     editCollectionPoint.setName(dto.getName());

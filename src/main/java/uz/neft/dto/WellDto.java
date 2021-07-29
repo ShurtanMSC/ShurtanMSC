@@ -14,6 +14,6 @@ public class WellDto {
 
     private Integer id;
     private Integer number;
-    private CollectionPointDto collectionPointDto;
+    private Integer collectionPointId;
 
 }

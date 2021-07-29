@@ -32,7 +32,7 @@ public class WellService {
         try {
             if (dto.getId() == null) {
                 Well well = new Well();
-                Optional<CollectionPoint> byIdCollectionPoint = collectionPointRepository.findById(dto.getCollectionPointDto().getId());
+                Optional<CollectionPoint> byIdCollectionPoint = collectionPointRepository.findById(dto.getCollectionPointId());
                 if (byIdCollectionPoint.isPresent()) {
                     well.setNumber(dto.getNumber());
                     well.setCollectionPoint(byIdCollectionPoint.get());
@@ -56,7 +56,7 @@ public class WellService {
             Well editWell;
             Optional<Well> byId = wellRepository.findById(dto.getId());
             if (byId.isPresent()) {
-                Optional<CollectionPoint> byIdCollectionPoint = collectionPointRepository.findById(dto.getCollectionPointDto().getId());
+                Optional<CollectionPoint> byIdCollectionPoint = collectionPointRepository.findById(dto.getCollectionPointId());
                 if (byIdCollectionPoint.isPresent()) {
                     editWell = byId.get();
                     editWell.setNumber(dto.getNumber());

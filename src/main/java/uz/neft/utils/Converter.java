@@ -134,7 +134,7 @@ public class Converter {
                     .builder()
                     .id(uppg.getId())
                     .name(uppg.getName())
-                    .miningSystem(miningSysToMiningSysDto(uppg.getMiningSystem()))
+                    .miningSystemId(uppg.getMiningSystem().getId())
                     .build();
         } catch (Exception e) {
             e.printStackTrace();
@@ -148,7 +148,7 @@ public class Converter {
                     .builder()
                     .id(collectionPoint.getId())
                     .name(collectionPoint.getName())
-                    .uppgDto(uppgToUppgDto(collectionPoint.getUppg()))
+                    .uppgId(collectionPoint.getUppg().getId())
                     .build();
         } catch (Exception e) {
             e.printStackTrace();
@@ -162,7 +162,7 @@ public class Converter {
                     .builder()
                     .id(well.getId())
                     .number(well.getNumber())
-                    .collectionPointDto(collectionPointToCollectionPointDto(well.getCollectionPoint()))
+                    .collectionPointId(well.getCollectionPoint().getId())
                     .build();
         } catch (Exception e) {
             e.printStackTrace();

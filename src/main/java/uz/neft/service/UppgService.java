@@ -32,7 +32,7 @@ public class UppgService {
         try {
             if (dto.getId() != null) return converter.apiError("id shouldn't be sent");
             Uppg uppg = new Uppg();
-            Optional<MiningSystem> byIdMining = miningSystemRepository.findById(dto.getMiningSystem().getId());
+            Optional<MiningSystem> byIdMining = miningSystemRepository.findById(dto.getMiningSystemId());
             if (byIdMining.isPresent()) {
                 uppg.setName(dto.getName());
                 uppg.setMiningSystem(byIdMining.get());
@@ -54,7 +54,7 @@ public class UppgService {
             Uppg editUppg;
             Optional<Uppg> byId = uppgRepository.findById(dto.getId());
             if (byId.isPresent()) {
-                Optional<MiningSystem> byIdMining = miningSystemRepository.findById(dto.getMiningSystem().getId());
+                Optional<MiningSystem> byIdMining = miningSystemRepository.findById(dto.getMiningSystemId());
                 if (byIdMining.isPresent()) {
                     editUppg = byId.get();
                     editUppg.setName(dto.getName());

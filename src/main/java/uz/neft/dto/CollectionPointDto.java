@@ -19,5 +19,5 @@ public class CollectionPointDto {
 
     private Integer id;
     private String name;
-    private UppgDto uppgDto;
+    private Integer uppgId;
 }

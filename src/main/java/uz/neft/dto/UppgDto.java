@@ -14,6 +14,6 @@ public class UppgDto {
 
     private Integer id;
     private String name;
-    private MiningSystemDto miningSystem;
+    private Integer miningSystemId;
 
 }
