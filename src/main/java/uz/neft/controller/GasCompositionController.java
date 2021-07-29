@@ -54,32 +54,32 @@ public class GasCompositionController {
 
     // Molar fractions CRUD
 
-    @PostMapping("add")
+    @PostMapping("molar/add")
     public HttpEntity<?> saveMiningSystemGasComposition(@RequestBody MiningSystemGasCompositionDto dto) {
 
         ApiResponse save = compositionService.saveMSGC(dto);
         return ResponseEntity.ok(save);
     }
 
-    @PutMapping("edit")
+    @PutMapping("molar/edit")
     public HttpEntity<?> editMiningSystemGasComposition(@RequestBody MiningSystemGasCompositionDto dto) {
         ApiResponse edit = compositionService.editMSGC(dto);
         return ResponseEntity.ok(edit);
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("molar/delete/{id}")
     public HttpEntity<?> deleteMiningSystemGasComposition(@PathVariable Integer id) {
         ApiResponse delete = compositionService.deleteMSGC(id);
         return ResponseEntity.ok(delete);
     }
 
-    @GetMapping("all")
+    @GetMapping("molar/all")
     public HttpEntity<?> allMiningSystemGasComposition() {
         ApiResponse all = compositionService.findAllMSGCs();
         return ResponseEntity.ok(all);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("molar/{id}")
     public HttpEntity<?> gasCMiningSystemGasComposition(@PathVariable Integer id) {
         ApiResponse byId = compositionService.findByIdMSGC(id);
         return ResponseEntity.ok(byId);
