@@ -208,11 +208,10 @@ public class ConstantService {
                 constantValue.setUppg(uppg.get());
                 constantValue.setCollectionPoint(collectionPoint.get());
                 constantValue.setWell(well.get());
-                ConstantValue save = constantValuesRepository.save(constantValue);
-                ConstValueDto constValueDto = converter.constantValueToConstValueDto(save);
-                return converter.apiSuccess201("Constant Value saved", constValueDto);
             }
-
+            ConstantValue save = constantValuesRepository.save(constantValue);
+            ConstValueDto constValueDto = converter.constantValueToConstValueDto(save);
+            return converter.apiSuccess201("Constant Value saved", constValueDto);
 
         } catch (Exception e) {
             e.printStackTrace();
