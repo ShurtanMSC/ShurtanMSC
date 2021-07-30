@@ -140,6 +140,7 @@ public class ConstantService {
     public HttpEntity<?> saveValue(ConstValueDto dto) {
         try {
             if (dto.getId() != null) return converter.apiError400("id shouldn't be sent");
+            if (dto.getValue() == null) return converter.apiError400("value is null");
 
             if (dto.getConstantId() == null) return converter.apiError400("ConstantId is null");
             Optional<Constant> constant = constantRepository.findById(dto.getConstantId());
@@ -220,11 +221,11 @@ public class ConstantService {
     }
 
     public HttpEntity<?> editValue(ConstValueDto dto) {
-
         try {
-            ConstantValue constantValue;
-
             if (dto.getId() == null) return converter.apiError400("id is null");
+            if (dto.getValue() == null) return converter.apiError400("value is null");
+
+            ConstantValue constantValue;
             Optional<ConstantValue> constantValueById = constantValuesRepository.findById(dto.getId());
             if (!constantValueById.isPresent()) return converter.apiError404("constantValue not found");
             constantValue = constantValueById.get();
@@ -236,36 +237,58 @@ public class ConstantService {
             if (dto.getMSystemId() == null && dto.getUppgId() == null && dto.getCpointId() == null && dto.getWellId() == null)
                 return converter.apiError400("IDs are all null; at least one of IDs should not be null");
 
+            constantValue.setValue(dto.getValue());
+            constantValue.setConstant(constant.get());
+/**
+ MSystemId
+ **/
+            if (dto.getMSystemId() == null) return converter.apiError404("MSystemId is null");
             Optional<MiningSystem> miningSystem = miningSystemRepository.findById(dto.getMSystemId());
             if (!miningSystem.isPresent()) return converter.apiError404("mining system not found");
 
-            Optional<Uppg> uppg = uppgRepository.findById(dto.getUppgId());
-            if (!uppg.isPresent()) return converter.apiError404("mining system not found");
-
-            Optional<CollectionPoint> collectionPoint = collectionPointRepository.findById(dto.getConstantId());
-            if (!collectionPoint.isPresent()) return converter.apiError404("mining system not found");
-
-            Optional<Well> well = wellRepository.findById(dto.getWellId());
-            if (!well.isPresent()) return converter.apiError404("mining system not found");
-
-
-            constantValue.setValue(dto.getValue());
-            constantValue.setConstant(constant.get());
-
             if (dto.getMSystemId() != null && dto.getUppgId() == null && dto.getCpointId() == null && dto.getWellId() == null) {
                 constantValue.setMiningSystem(miningSystem.get());
+                ConstantValue save = constantValuesRepository.save(constantValue);
+                ConstValueDto constValueDto = converter.constantValueToConstValueDto(save);
+                return converter.apiSuccess201("Constant Value saved", constValueDto);
             }
+/**
+ MSystemId, UppgId
+ **/
+            if (dto.getUppgId() == null) return converter.apiError404("UppgId is null");
+            Optional<Uppg> uppg = uppgRepository.findById(dto.getUppgId());
+            if (!uppg.isPresent()) return converter.apiError404("Uppg not found");
 
             if (dto.getMSystemId() != null && dto.getUppgId() != null && dto.getCpointId() == null && dto.getWellId() == null) {
                 constantValue.setMiningSystem(miningSystem.get());
                 constantValue.setUppg(uppg.get());
+                ConstantValue save = constantValuesRepository.save(constantValue);
+                ConstValueDto constValueDto = converter.constantValueToConstValueDto(save);
+                return converter.apiSuccess201("Constant Value saved", constValueDto);
             }
+
+/**
+ MSystemId, UppgId, CpointId
+ **/
+            if (dto.getCpointId() == null) return converter.apiError404("CpointId is null");
+            Optional<CollectionPoint> collectionPoint = collectionPointRepository.findById(dto.getConstantId());
+            if (!collectionPoint.isPresent()) return converter.apiError404("Collection Point not found");
 
             if (dto.getMSystemId() != null && dto.getUppgId() != null && dto.getCpointId() != null && dto.getWellId() == null) {
                 constantValue.setMiningSystem(miningSystem.get());
                 constantValue.setUppg(uppg.get());
                 constantValue.setCollectionPoint(collectionPoint.get());
+                ConstantValue save = constantValuesRepository.save(constantValue);
+                ConstValueDto constValueDto = converter.constantValueToConstValueDto(save);
+                return converter.apiSuccess201("Constant Value saved", constValueDto);
             }
+
+/**
+ MSystemId, UppgId, CpointId, WellId
+ **/
+            if (dto.getWellId() == null) return converter.apiError404("WellId is null");
+            Optional<Well> well = wellRepository.findById(dto.getWellId());
+            if (!well.isPresent()) return converter.apiError404("well not found");
 
             if (dto.getMSystemId() != null && dto.getUppgId() != null && dto.getCpointId() != null && dto.getWellId() != null) {
                 constantValue.setMiningSystem(miningSystem.get());
@@ -273,13 +296,13 @@ public class ConstantService {
                 constantValue.setCollectionPoint(collectionPoint.get());
                 constantValue.setWell(well.get());
             }
-
             ConstantValue save = constantValuesRepository.save(constantValue);
             ConstValueDto constValueDto = converter.constantValueToConstValueDto(save);
-            return converter.apiSuccess201("Constant Value edited", constValueDto);
+            return converter.apiSuccess201("Constant Value saved", constValueDto);
+
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError409("Error editing ConstantValue");
+            return converter.apiError409("Error Creating ConstantValue");
         }
     }
 
