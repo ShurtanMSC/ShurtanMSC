@@ -7,9 +7,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import uz.neft.entity.*;
+import uz.neft.entity.action.WellAction;
+import uz.neft.entity.enums.WellStatus;
 import uz.neft.entity.variables.*;
 import uz.neft.entity.variables.MiningSystemGasComposition;
 import uz.neft.repository.*;
+import uz.neft.repository.action.WellActionRepository;
 import uz.neft.repository.constants.ConstantRepository;
 import uz.neft.repository.constants.MiningSystemConstantRepository;
 
@@ -35,9 +38,10 @@ public class DataLoader implements CommandLineRunner {
     private CollectionPointRepository collectionPointRepository;
     @Autowired
     private WellRepository wellRepository;
+    private WellActionRepository wellActionRepository;
     @Autowired
     public DataLoader(UserRepository userRepository, MiningSystemConstantRepository miningSystemConstantRepository, RoleRepository roleRepository, ConstantRepository constantRepository
-            , PasswordEncoder passwordEncoder, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository) {
+            , PasswordEncoder passwordEncoder, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository, WellActionRepository wellActionRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
@@ -46,6 +50,7 @@ public class DataLoader implements CommandLineRunner {
         this.miningSystemMiningSystemGasCompositionRepository = miningSystemMiningSystemGasCompositionRepository;
         this.constantRepository = constantRepository;
         this.miningSystemConstantRepository = miningSystemConstantRepository;
+        this.wellActionRepository = wellActionRepository;
     }
 
 
@@ -85,7 +90,16 @@ public class DataLoader implements CommandLineRunner {
             Uppg uppg = uppgRepository.save(new Uppg("uppg",shurtan));
             CollectionPoint point=collectionPointRepository.save(new CollectionPoint("sp",uppg));
             Well well=wellRepository.save(wellRepository.save(new Well(11,point)));
-
+            WellAction wellAction=wellActionRepository.save(WellAction
+                    .builder()
+                    .user(userRepository.findById(1).get())
+                    .pressure(1)
+                    .temperature(1)
+                    .rpl(1)
+                    .well(well)
+                    .expend(1)
+                    .status(WellStatus.IN_WORK)
+                    .build());
 
 
             //----------------------------------------------------
