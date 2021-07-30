@@ -20,26 +20,20 @@ import java.util.stream.Collectors;
 
 @Service
 public class WellActionService {
-    private WellActionRepository wellActionRepository;
-    private WellRepository wellRepository;
-    private Converter converter;
-    private MiningSystemRepository miningSystemRepository;
-    private GasCompositionRepository gasCompositionRepository;
-    private MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository;
-    private Calculator calculator;
-    private MiningSystemConstantRepository miningSystemConstantRepository;
-    private ConstantRepository constantRepository;
-    private UserRepository userRepository;
+    private final WellActionRepository wellActionRepository;
+    private final WellRepository wellRepository;
+    private final Converter converter;
+    private final MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository;
+    private final MiningSystemConstantRepository miningSystemConstantRepository;
+    private final ConstantRepository constantRepository;
+    private final UserRepository userRepository;
 
 
     public WellActionService(WellActionRepository wellActionRepository, MiningSystemConstantRepository miningSystemConstantRepository, WellRepository wellRepository, Converter converter, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository, Calculator calculator, ConstantRepository constantRepository, UserRepository userRepository) {
         this.wellActionRepository = wellActionRepository;
         this.wellRepository = wellRepository;
         this.converter = converter;
-        this.miningSystemRepository = miningSystemRepository;
-        this.gasCompositionRepository = gasCompositionRepository;
         this.miningSystemMiningSystemGasCompositionRepository = miningSystemMiningSystemGasCompositionRepository;
-        this.calculator = calculator;
         this.miningSystemConstantRepository = miningSystemConstantRepository;
         this.constantRepository = constantRepository;
         this.userRepository = userRepository;
@@ -170,4 +164,11 @@ public class WellActionService {
             return converter.apiError404();
         }
     }
+
+
+
+
+    /** Auto **/
+
+    //..... from MODBUS
 }

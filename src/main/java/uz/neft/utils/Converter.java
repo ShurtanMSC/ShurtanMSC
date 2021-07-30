@@ -6,8 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import uz.neft.dto.*;
+import uz.neft.dto.action.CollectionPointActionDto;
 import uz.neft.dto.action.WellActionDto;
 import uz.neft.entity.*;
+import uz.neft.entity.action.CollectionPointAction;
 import uz.neft.entity.action.WellAction;
 import uz.neft.entity.variables.Constant;
 import uz.neft.entity.variables.GasComposition;
@@ -29,6 +31,7 @@ public class Converter {
 
     @Autowired
     private UserRepository userRepository;
+
     /**
      * For responses
      **/
@@ -43,6 +46,7 @@ public class Converter {
     public ApiResponse api(String message, boolean success, Object object, long totalElements, Integer totalPages) {
         return new ApiResponseObjectByPageable(message, success, object, totalElements, totalPages);
     }
+
     public ApiResponse apiError() {
         return api("Error", false);
     }
@@ -91,180 +95,186 @@ public class Converter {
         return api("Success", true, object, totalElements, totalPages);
     }
 
-    /** for response with status **/
+    /**
+     * for response with status
+     **/
 
-    protected ResponseEntity<?> helpError(HttpStatus status){
+    protected ResponseEntity<?> helpError(HttpStatus status) {
         return ResponseEntity.status(status).body(apiError(status.name()));
     }
 
-    protected ResponseEntity<?> helpError(HttpStatus status,String message){
+    protected ResponseEntity<?> helpError(HttpStatus status, String message) {
         return ResponseEntity.status(status).body(apiError(message));
     }
 
-    protected ResponseEntity<?> helpError(HttpStatus status,Object object){
-        return ResponseEntity.status(status).body(apiError(status.name(),object));
+    protected ResponseEntity<?> helpError(HttpStatus status, Object object) {
+        return ResponseEntity.status(status).body(apiError(status.name(), object));
     }
 
-    protected ResponseEntity<?> helpError(HttpStatus status,String message,Object object){
-        return ResponseEntity.status(status).body(apiError(message,object));
+    protected ResponseEntity<?> helpError(HttpStatus status, String message, Object object) {
+        return ResponseEntity.status(status).body(apiError(message, object));
     }
 
-    protected ResponseEntity<?> helpSuccess(HttpStatus status){
+    protected ResponseEntity<?> helpSuccess(HttpStatus status) {
         return ResponseEntity.status(status).body(apiSuccess(status.name()));
     }
 
-    protected ResponseEntity<?> helpSuccess(HttpStatus status,String message){
+    protected ResponseEntity<?> helpSuccess(HttpStatus status, String message) {
         return ResponseEntity.status(status).body(apiSuccess(message));
     }
 
-    protected ResponseEntity<?> helpSuccess(HttpStatus status,Object object){
-        return ResponseEntity.status(status).body(apiSuccess(status.name(),object));
+    protected ResponseEntity<?> helpSuccess(HttpStatus status, Object object) {
+        return ResponseEntity.status(status).body(apiSuccess(status.name(), object));
     }
 
-    protected ResponseEntity<?> helpSuccess(HttpStatus status,String message,Object object){
-        return ResponseEntity.status(status).body(apiSuccess(message,object));
+    protected ResponseEntity<?> helpSuccess(HttpStatus status, String message, Object object) {
+        return ResponseEntity.status(status).body(apiSuccess(message, object));
     }
 
-    /** Error **/
+    /**
+     * Error
+     **/
 
     // Status 400
-    public ResponseEntity<?> apiError400(){
+    public ResponseEntity<?> apiError400() {
         return helpError(HttpStatus.BAD_REQUEST);
     }
 
-    public ResponseEntity<?> apiError400(Object object){
-        return helpError(HttpStatus.BAD_REQUEST,object);
+    public ResponseEntity<?> apiError400(Object object) {
+        return helpError(HttpStatus.BAD_REQUEST, object);
     }
 
-    public ResponseEntity<?> apiError400(String message){
-        return helpError(HttpStatus.BAD_REQUEST,message);
+    public ResponseEntity<?> apiError400(String message) {
+        return helpError(HttpStatus.BAD_REQUEST, message);
     }
 
-    public ResponseEntity<?> apiError400(String message, Object object){
-        return helpError(HttpStatus.BAD_REQUEST,message,object);
+    public ResponseEntity<?> apiError400(String message, Object object) {
+        return helpError(HttpStatus.BAD_REQUEST, message, object);
     }
 
 
     // Status 403
-    public ResponseEntity<?> apiError403(){
+    public ResponseEntity<?> apiError403() {
         return helpError(HttpStatus.FORBIDDEN);
     }
 
-    public ResponseEntity<?> apiError403(Object object){
-        return helpError(HttpStatus.FORBIDDEN,object);
+    public ResponseEntity<?> apiError403(Object object) {
+        return helpError(HttpStatus.FORBIDDEN, object);
     }
 
-    public ResponseEntity<?> apiError403(String message){
-        return helpError(HttpStatus.FORBIDDEN,message);
+    public ResponseEntity<?> apiError403(String message) {
+        return helpError(HttpStatus.FORBIDDEN, message);
     }
 
-    public ResponseEntity<?> apiError403(String message, Object object){
-        return helpError(HttpStatus.FORBIDDEN,message,object);
+    public ResponseEntity<?> apiError403(String message, Object object) {
+        return helpError(HttpStatus.FORBIDDEN, message, object);
     }
 
 
     // Status 404
-    public ResponseEntity<?> apiError404(){
+    public ResponseEntity<?> apiError404() {
         return helpError(HttpStatus.NOT_FOUND);
     }
 
-    public ResponseEntity<?> apiError404(Object object){
-        return helpError(HttpStatus.NOT_FOUND,object);
+    public ResponseEntity<?> apiError404(Object object) {
+        return helpError(HttpStatus.NOT_FOUND, object);
     }
 
-    public ResponseEntity<?> apiError404(String message){
-        return helpError(HttpStatus.NOT_FOUND,message);
+    public ResponseEntity<?> apiError404(String message) {
+        return helpError(HttpStatus.NOT_FOUND, message);
     }
 
-    public ResponseEntity<?> apiError404(String message, Object object){
-        return helpError(HttpStatus.NOT_FOUND,message,object);
+    public ResponseEntity<?> apiError404(String message, Object object) {
+        return helpError(HttpStatus.NOT_FOUND, message, object);
     }
 
     // Status 409
-    public ResponseEntity<?> apiError409(){
+    public ResponseEntity<?> apiError409() {
         return helpError(HttpStatus.CONFLICT);
     }
 
-    public ResponseEntity<?> apiError409(Object object){
-        return helpError(HttpStatus.CONFLICT,object);
+    public ResponseEntity<?> apiError409(Object object) {
+        return helpError(HttpStatus.CONFLICT, object);
     }
 
-    public ResponseEntity<?> apiError409(String message){
-        return helpError(HttpStatus.CONFLICT,message);
+    public ResponseEntity<?> apiError409(String message) {
+        return helpError(HttpStatus.CONFLICT, message);
     }
 
-    public ResponseEntity<?> apiError409(String message, Object object){
-        return helpError(HttpStatus.CONFLICT,message,object);
+    public ResponseEntity<?> apiError409(String message, Object object) {
+        return helpError(HttpStatus.CONFLICT, message, object);
     }
 
     // Status 500
-    public ResponseEntity<?> apiError500(){
+    public ResponseEntity<?> apiError500() {
         return helpError(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    public ResponseEntity<?> apiError500(Object object){
-        return helpError(HttpStatus.INTERNAL_SERVER_ERROR,object);
+    public ResponseEntity<?> apiError500(Object object) {
+        return helpError(HttpStatus.INTERNAL_SERVER_ERROR, object);
     }
 
-    public ResponseEntity<?> apiError500(String message){
-        return helpError(HttpStatus.INTERNAL_SERVER_ERROR,message);
+    public ResponseEntity<?> apiError500(String message) {
+        return helpError(HttpStatus.INTERNAL_SERVER_ERROR, message);
     }
 
-    public ResponseEntity<?> apiError500(String message, Object object){
-        return helpError(HttpStatus.INTERNAL_SERVER_ERROR,message,object);
+    public ResponseEntity<?> apiError500(String message, Object object) {
+        return helpError(HttpStatus.INTERNAL_SERVER_ERROR, message, object);
     }
 
-    /** Success **/
+    /**
+     * Success
+     **/
 
     // Status 200
-    public ResponseEntity<?> apiSuccess200(){
+    public ResponseEntity<?> apiSuccess200() {
         return helpSuccess(HttpStatus.OK);
     }
 
-    public ResponseEntity<?> apiSuccess200(Object object){
-        return helpSuccess(HttpStatus.OK,object);
+    public ResponseEntity<?> apiSuccess200(Object object) {
+        return helpSuccess(HttpStatus.OK, object);
     }
 
-    public ResponseEntity<?> apiSuccess200(String message){
-        return helpSuccess(HttpStatus.OK,message);
+    public ResponseEntity<?> apiSuccess200(String message) {
+        return helpSuccess(HttpStatus.OK, message);
     }
 
-    public ResponseEntity<?> apiSuccess200(String message, Object object){
-        return helpSuccess(HttpStatus.OK,message,object);
+    public ResponseEntity<?> apiSuccess200(String message, Object object) {
+        return helpSuccess(HttpStatus.OK, message, object);
     }
 
     // Status 201
-    public ResponseEntity<?> apiSuccess201(){
+    public ResponseEntity<?> apiSuccess201() {
         return helpSuccess(HttpStatus.CREATED);
     }
 
-    public ResponseEntity<?> apiSuccess201(Object object){
-        return helpSuccess(HttpStatus.CREATED,object);
+    public ResponseEntity<?> apiSuccess201(Object object) {
+        return helpSuccess(HttpStatus.CREATED, object);
     }
 
-    public ResponseEntity<?> apiSuccess201(String message){
-        return helpSuccess(HttpStatus.CREATED,message);
+    public ResponseEntity<?> apiSuccess201(String message) {
+        return helpSuccess(HttpStatus.CREATED, message);
     }
 
-    public ResponseEntity<?> apiSuccess201(String message, Object object){
-        return helpSuccess(HttpStatus.CREATED,message,object);
+    public ResponseEntity<?> apiSuccess201(String message, Object object) {
+        return helpSuccess(HttpStatus.CREATED, message, object);
     }
 
     // Status 202
-    public ResponseEntity<?> apiSuccess202(){
+    public ResponseEntity<?> apiSuccess202() {
         return helpSuccess(HttpStatus.ACCEPTED);
     }
 
-    public ResponseEntity<?> apiSuccess202(Object object){
-        return helpSuccess(HttpStatus.ACCEPTED,object);
+    public ResponseEntity<?> apiSuccess202(Object object) {
+        return helpSuccess(HttpStatus.ACCEPTED, object);
     }
 
-    public ResponseEntity<?> apiSuccess202(String message){
-        return helpSuccess(HttpStatus.ACCEPTED,message);
+    public ResponseEntity<?> apiSuccess202(String message) {
+        return helpSuccess(HttpStatus.ACCEPTED, message);
     }
 
-    public ResponseEntity<?> apiSuccess202(String message, Object object){
-        return helpSuccess(HttpStatus.ACCEPTED,message,object);
+    public ResponseEntity<?> apiSuccess202(String message, Object object) {
+        return helpSuccess(HttpStatus.ACCEPTED, message, object);
     }
 
     /**
@@ -399,6 +409,21 @@ public class Converter {
                     .rpl(wellAction.getRpl())
                     .status(wellAction.getStatus())
                     .date(wellAction.getCreatedAt().toString())
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public CollectionPointActionDto collectionPointActionToCollectionPointActionDto(CollectionPointAction collectionPointAction) {
+        try {
+            return CollectionPointActionDto
+                    .builder()
+                    .collectionPointId(collectionPointAction.getCollectionPoint().getId())
+                    .expand(collectionPointAction.getExpend())
+                    .pressure(collectionPointAction.getPressure())
+                    .temperature(collectionPointAction.getTemperature())
                     .build();
         } catch (Exception e) {
             e.printStackTrace();

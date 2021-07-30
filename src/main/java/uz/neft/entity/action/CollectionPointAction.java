@@ -1,9 +1,6 @@
 package uz.neft.entity.action;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import uz.neft.entity.CollectionPoint;
@@ -17,6 +14,7 @@ import java.time.LocalDateTime;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -29,7 +27,7 @@ public class CollectionPointAction extends AbsEntityLong {
     private int temperature;
 
     // Rasxod
-    private double expand;
+    private double expend;
 
     @ManyToOne
     private User user;

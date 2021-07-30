@@ -21,8 +21,6 @@ public class CollectionPointController {
     /**
      * Manually
      **/
-
-
     @PostMapping("manually/add/action")
     public HttpEntity<?> addAction(@CurrentUser User user,
                                    @RequestBody CollectionPointActionDto dto) {
@@ -31,5 +29,10 @@ public class CollectionPointController {
 
 
     /** Auto **/
+
+    // ...... from MODBUS
+
+
+
 
 }
