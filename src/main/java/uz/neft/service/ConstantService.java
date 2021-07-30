@@ -161,6 +161,9 @@ public class ConstantService {
 
             if (dto.getMSystemId() != null && dto.getUppgId() == null && dto.getCpointId() == null && dto.getWellId() == null) {
                 constantValue.setMiningSystem(miningSystem.get());
+                ConstantValue save = constantValuesRepository.save(constantValue);
+                ConstValueDto constValueDto = converter.constantValueToConstValueDto(save);
+                return converter.apiSuccess201("Constant Value saved", constValueDto);
             }
 /**
  MSystemId, UppgId
@@ -172,6 +175,9 @@ public class ConstantService {
             if (dto.getMSystemId() != null && dto.getUppgId() != null && dto.getCpointId() == null && dto.getWellId() == null) {
                 constantValue.setMiningSystem(miningSystem.get());
                 constantValue.setUppg(uppg.get());
+                ConstantValue save = constantValuesRepository.save(constantValue);
+                ConstValueDto constValueDto = converter.constantValueToConstValueDto(save);
+                return converter.apiSuccess201("Constant Value saved", constValueDto);
             }
 
 /**
@@ -185,6 +191,9 @@ public class ConstantService {
                 constantValue.setMiningSystem(miningSystem.get());
                 constantValue.setUppg(uppg.get());
                 constantValue.setCollectionPoint(collectionPoint.get());
+                ConstantValue save = constantValuesRepository.save(constantValue);
+                ConstValueDto constValueDto = converter.constantValueToConstValueDto(save);
+                return converter.apiSuccess201("Constant Value saved", constValueDto);
             }
 
 /**
@@ -199,11 +208,12 @@ public class ConstantService {
                 constantValue.setUppg(uppg.get());
                 constantValue.setCollectionPoint(collectionPoint.get());
                 constantValue.setWell(well.get());
+                ConstantValue save = constantValuesRepository.save(constantValue);
+                ConstValueDto constValueDto = converter.constantValueToConstValueDto(save);
+                return converter.apiSuccess201("Constant Value saved", constValueDto);
             }
 
-            ConstantValue save = constantValuesRepository.save(constantValue);
-            ConstValueDto constValueDto = converter.constantValueToConstValueDto(save);
-            return converter.apiSuccess201("Constant Value saved", constValueDto);
+
         } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError409("Error Creating ConstantValue");
