@@ -440,6 +440,7 @@ public class Converter {
                     .UppgId(value.getUppg() == null ? null : value.getUppg().getId())
                     .CpointId(value.getCollectionPoint() == null ? null : value.getCollectionPoint().getId())
                     .WellId(value.getWell() == null ? null : value.getWell().getId())
+                    .value(value.getValue())
                     .build();
         } catch (Exception e) {
             e.printStackTrace();
