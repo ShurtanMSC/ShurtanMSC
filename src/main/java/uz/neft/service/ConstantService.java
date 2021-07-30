@@ -120,8 +120,8 @@ public class ConstantService {
             if (id != null) {
                 Optional<Constant> byId = constantRepository.findById(id);
                 if (byId.isPresent()) {
-                    ConstantDto gasCompositionDto = converter.constantToConstantDto(byId.get());
-                    return converter.apiSuccess200(gasCompositionDto);
+                    ConstantDto constantDto = converter.constantToConstantDto(byId.get());
+                    return converter.apiSuccess200(constantDto);
                 } else {
                     return converter.apiError404("Constant not found");
                 }
@@ -192,7 +192,113 @@ public class ConstantService {
             return converter.apiSuccess201("Constant Value saved", constValueDto);
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError409("Error Creating Constant");
+            return converter.apiError409("Error Creating ConstantValue");
+        }
+    }
+
+    public HttpEntity<?> editValue(ConstValueDto dto) {
+
+        try {
+            ConstantValue constantValue;
+
+            if (dto.getId() == null) return converter.apiError400("id is null");
+            Optional<ConstantValue> constantValueById = constantValuesRepository.findById(dto.getId());
+            if (!constantValueById.isPresent()) return converter.apiError404("constantValue not found");
+            constantValue = constantValueById.get();
+
+            if (dto.getConstantId() == null) return converter.apiError400("ConstantId is null");
+            Optional<Constant> constant = constantRepository.findById(dto.getConstantId());
+            if (!constant.isPresent()) return converter.apiError404("constant not found");
+
+            if (dto.getMSystemId() == null && dto.getUppgId() == null && dto.getCpointId() == null && dto.getWellId() == null)
+                return converter.apiError400("IDs are all null; at least one of IDs should not be null");
+
+            Optional<MiningSystem> miningSystem = miningSystemRepository.findById(dto.getMSystemId());
+            if (!miningSystem.isPresent()) return converter.apiError404("mining system not found");
+
+            Optional<Uppg> uppg = uppgRepository.findById(dto.getUppgId());
+            if (!uppg.isPresent()) return converter.apiError404("mining system not found");
+
+            Optional<CollectionPoint> collectionPoint = collectionPointRepository.findById(dto.getConstantId());
+            if (!collectionPoint.isPresent()) return converter.apiError404("mining system not found");
+
+            Optional<Well> well = wellRepository.findById(dto.getWellId());
+            if (!well.isPresent()) return converter.apiError404("mining system not found");
+
+
+            constantValue.setValue(dto.getValue());
+            constantValue.setConstant(constant.get());
+
+            if (dto.getMSystemId() != null && dto.getUppgId() == null && dto.getCpointId() == null && dto.getWellId() == null) {
+                constantValue.setMiningSystem(miningSystem.get());
+            }
+
+            if (dto.getMSystemId() != null && dto.getUppgId() != null && dto.getCpointId() == null && dto.getWellId() == null) {
+                constantValue.setMiningSystem(miningSystem.get());
+                constantValue.setUppg(uppg.get());
+            }
+
+            if (dto.getMSystemId() != null && dto.getUppgId() != null && dto.getCpointId() != null && dto.getWellId() == null) {
+                constantValue.setMiningSystem(miningSystem.get());
+                constantValue.setUppg(uppg.get());
+                constantValue.setCollectionPoint(collectionPoint.get());
+            }
+
+            if (dto.getMSystemId() != null && dto.getUppgId() != null && dto.getCpointId() != null && dto.getWellId() != null) {
+                constantValue.setMiningSystem(miningSystem.get());
+                constantValue.setUppg(uppg.get());
+                constantValue.setCollectionPoint(collectionPoint.get());
+                constantValue.setWell(well.get());
+            }
+
+            ConstantValue save = constantValuesRepository.save(constantValue);
+            ConstValueDto constValueDto = converter.constantValueToConstValueDto(save);
+            return converter.apiSuccess201("Constant Value edited", constValueDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409("Error editing ConstantValue");
+        }
+    }
+
+    public HttpEntity<?> deleteValue(Integer id) {
+
+        try {
+            if (id == null) return converter.apiError400("Id null");
+            Optional<ConstantValue> byId = constantValuesRepository.findById(id);
+
+            if (!byId.isPresent()) return converter.apiError404("ConstantValue not found");
+
+            constantRepository.deleteById(id);
+            return converter.apiSuccess200("ConstantValue deleted ");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409("Error in deleting ConstantValue", e);
+        }
+    }
+
+    public HttpEntity<?> allValues() {
+        try {
+            List<ConstantValue> all = constantValuesRepository.findAll();
+            List<ConstValueDto> collect = all.stream().map(converter::constantValueToConstValueDto).collect(Collectors.toList());
+            return converter.apiSuccess200(collect);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409("Error in fetching ConstantValues", e);
+        }
+    }
+
+    public HttpEntity<?> byIdValue(Integer id) {
+        try {
+            if (id == null) return converter.apiError400("Id null");
+
+            Optional<ConstantValue> byId = constantValuesRepository.findById(id);
+            if (!byId.isPresent()) return converter.apiError404("Constant not found");
+
+            ConstValueDto constValueDto = converter.constantValueToConstValueDto(byId.get());
+            return converter.apiSuccess200(constValueDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409("Error in finding Constant", e);
         }
     }
 }

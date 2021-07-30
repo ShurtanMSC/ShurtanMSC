@@ -48,27 +48,27 @@ public class ConstantController {
 
       //constant CRUD
 
-    @PostMapping("miningsystem/add")
+    @PostMapping("value/add")
     public HttpEntity<?> saveValue(@RequestBody ConstValueDto dto) {
         return constantService.saveValue(dto);
     }
 
-    @PutMapping("miningsystem/edit")
+    @PutMapping("value/edit")
     public HttpEntity<?> editValue(@RequestBody ConstValueDto dto) {
         return constantService.editValue(dto);
     }
 
-    @DeleteMapping("miningsystem/delete/{id}")
+    @DeleteMapping("value/delete/{id}")
     public HttpEntity<?> deleteValue(@PathVariable Integer id) {
         return constantService.deleteValue(id);
     }
 
-    @GetMapping("miningsystem/all")
+    @GetMapping("value/all")
     public HttpEntity<?> allValues() {
         return constantService.allValues();
     }
 
-    @GetMapping("miningsystem/{id}")
+    @GetMapping("value/{id}")
     public HttpEntity<?> byIdValue(@PathVariable Integer id) {
         return constantService.byIdValue(id);
     }
