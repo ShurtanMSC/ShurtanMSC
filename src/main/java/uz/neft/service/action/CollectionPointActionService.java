@@ -53,7 +53,13 @@ public class CollectionPointActionService {
 
         double D_sp = 0;
 
-        D_sp = allByCollectionPoint.stream().map(wellActionRepository::findByWell).collect(Collectors.toList()).stream().mapToDouble(WellAction::getExpend).sum();
+        List<WellAction> collect = allByCollectionPoint.stream().map(wellActionRepository::findByWell).collect(Collectors.toList());
+
+        if (collect.isEmpty()) return converter.apiError404("WellActions are empty");
+
+        D_sp = collect.stream().mapToDouble(WellAction::getExpend).sum();
+
+//        D_sp = allByCollectionPoint.stream().map(wellActionRepository::findByWell).collect(Collectors.toList()).stream().mapToDouble(WellAction::getExpend).sum();
 
         try {
             CollectionPointAction collectionPointAction = CollectionPointAction
