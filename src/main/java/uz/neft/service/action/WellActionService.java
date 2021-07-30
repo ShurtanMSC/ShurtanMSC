@@ -1,5 +1,6 @@
 package uz.neft.service.action;
 
+import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.action.WellActionDto;
@@ -172,4 +173,25 @@ public class WellActionService {
     /** Auto **/
 
     //..... from MODBUS
+
+
+
+
+
+//    public ResponseEntity<?> test(Integer id){
+//        try {
+//            Optional<Well> well = wellRepository.findById(id);
+//            if (!well.isPresent()) return converter.apiError404();
+//            Optional<WellAction> first = wellActionRepository.findFirstByWell(well.get());
+//
+//            if (first.isPresent()){
+//                return converter.apiSuccess200(converter.wellAndWellActionToJson(well.get(), first.get()));
+//            }
+//            return converter.apiError409();
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            return converter.apiError409();
+//        }
+//
+//    }
 }
