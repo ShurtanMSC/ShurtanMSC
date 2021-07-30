@@ -10,6 +10,8 @@ import uz.neft.entity.*;
 import uz.neft.entity.variables.*;
 import uz.neft.entity.variables.MiningSystemGasComposition;
 import uz.neft.repository.*;
+import uz.neft.repository.constants.ConstantRepository;
+import uz.neft.repository.constants.MiningSystemConstantRepository;
 
 
 import java.util.Collections;

@@ -5,8 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.ConstantDto;
 import uz.neft.entity.variables.Constant;
-import uz.neft.payload.ApiResponse;
-import uz.neft.repository.ConstantRepository;
+import uz.neft.repository.constants.ConstantRepository;
 import uz.neft.utils.Converter;
 
 import java.util.List;

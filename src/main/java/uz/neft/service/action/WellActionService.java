@@ -8,9 +8,10 @@ import uz.neft.entity.User;
 import uz.neft.entity.Well;
 import uz.neft.entity.action.WellAction;
 import uz.neft.entity.variables.*;
-import uz.neft.payload.ApiResponse;
 import uz.neft.repository.*;
 import uz.neft.repository.action.WellActionRepository;
+import uz.neft.repository.constants.ConstantRepository;
+import uz.neft.repository.constants.MiningSystemConstantRepository;
 import uz.neft.service.Calculator;
 import uz.neft.utils.Converter;
 

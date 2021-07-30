@@ -1,4 +1,4 @@
-package uz.neft.repository;
+package uz.neft.repository.constants;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import uz.neft.entity.variables.Constant;
