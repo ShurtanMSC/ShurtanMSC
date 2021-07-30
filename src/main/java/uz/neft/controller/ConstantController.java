@@ -46,7 +46,7 @@ public class ConstantController {
     }
 
 
-      //constant CRUD
+      //constant value CRUD
 
     @PostMapping("value/add")
     public HttpEntity<?> saveValue(@RequestBody ConstValueDto dto) {
