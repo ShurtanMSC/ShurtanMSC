@@ -435,18 +435,17 @@ public class Converter {
             return ConstValueDto
                     .builder()
                     .Id(value.getId())
-                    .constantId(value.getConstant().getId())
-                    .mSystemId(value.getMiningSystem().getId())
-                    .UppgId(value.getUppg().getId())
-                    .CpointId(value.getCollectionPoint().getId())
-                    .WellId(value.getWell().getId())
+                    .constantId(value.getConstant() == null ? null : value.getConstant().getId())
+                    .mSystemId(value.getMiningSystem() == null ? null : value.getMiningSystem().getId())
+                    .UppgId(value.getUppg() == null ? null : value.getUppg().getId())
+                    .CpointId(value.getCollectionPoint() == null ? null : value.getCollectionPoint().getId())
+                    .WellId(value.getWell() == null ? null : value.getWell().getId())
                     .build();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
-
 
 
 }
