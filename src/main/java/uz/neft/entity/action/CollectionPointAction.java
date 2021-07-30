@@ -35,12 +35,12 @@ public class CollectionPointAction extends AbsEntityLong {
     @ManyToOne
     private CollectionPoint collectionPoint;
 
-    @LastModifiedBy
-    @Column(nullable = false)
-    private String modifiedBy;
-
-    @LastModifiedDate
-    @Column(nullable = false)
-    private LocalDateTime modified;
+//    @LastModifiedBy
+//    @Column(nullable = false)
+//    private String modifiedBy;
+//
+//    @LastModifiedDate
+//    @Column(nullable = false)
+//    private LocalDateTime modified;
 
 }

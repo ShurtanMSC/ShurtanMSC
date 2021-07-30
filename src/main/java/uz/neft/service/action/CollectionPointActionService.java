@@ -45,21 +45,22 @@ public class CollectionPointActionService {
      * Manually
      **/
     public HttpEntity<?> addManually(User user, CollectionPointActionDto dto) {
-        Optional<CollectionPoint> collectionPoint = collectionPointRepository.findById(dto.getCollectionPointId());
 
-        if (!collectionPoint.isPresent()) return converter.apiError404("Collection Point id is null");
+
+        if (dto.getCollectionPointId()==null) return converter.apiError400("Collection Point id is null");
+        Optional<CollectionPoint> collectionPoint = collectionPointRepository.findById(dto.getCollectionPointId());
+        if (!collectionPoint.isPresent()) return converter.apiError400("Collection Point not found");
 
         List<Well> allByCollectionPoint = wellRepository.findAllByCollectionPoint(collectionPoint.get());
 
         double D_sp = 0;
 
-        List<WellAction> collect = allByCollectionPoint.stream().map(wellActionRepository::findByWell).collect(Collectors.toList());
-
-        if (collect.isEmpty()) return converter.apiError404("WellActions are empty");
-
-        D_sp = collect.stream().mapToDouble(WellAction::getExpend).sum();
-
-//        D_sp = allByCollectionPoint.stream().map(wellActionRepository::findByWell).collect(Collectors.toList()).stream().mapToDouble(WellAction::getExpend).sum();
+        for (Well well : allByCollectionPoint) {
+            Optional<WellAction> wellAction = wellActionRepository.findFirstByWell(well);
+            if (wellAction.isPresent()){
+                D_sp+=wellAction.get().getExpend();
+            }
+        }
 
         try {
             CollectionPointAction collectionPointAction = CollectionPointAction
@@ -78,7 +79,7 @@ public class CollectionPointActionService {
             return converter.apiSuccess201(collectionPointActionDto);
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError404();
+            return converter.apiError409();
         }
     }
 

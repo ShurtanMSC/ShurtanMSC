@@ -6,9 +6,11 @@ import uz.neft.entity.Well;
 import uz.neft.entity.action.WellAction;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface WellActionRepository extends JpaRepository<WellAction,Long> {
 
-    WellAction findByWell(Well well);
+    Optional<WellAction> findFirstByWell(Well well);
+    List<WellAction> findAllByWell(Well well);
 
 }
