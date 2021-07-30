@@ -8,10 +8,12 @@ import org.springframework.stereotype.Component;
 import uz.neft.dto.*;
 import uz.neft.dto.action.CollectionPointActionDto;
 import uz.neft.dto.action.WellActionDto;
+import uz.neft.dto.constantValue.ConstValueDto;
 import uz.neft.entity.*;
 import uz.neft.entity.action.CollectionPointAction;
 import uz.neft.entity.action.WellAction;
 import uz.neft.entity.variables.Constant;
+import uz.neft.entity.variables.ConstantValue;
 import uz.neft.entity.variables.GasComposition;
 import uz.neft.entity.variables.MiningSystemGasComposition;
 import uz.neft.payload.ApiResponse;
@@ -19,9 +21,6 @@ import uz.neft.payload.ApiResponseObject;
 import uz.neft.payload.ApiResponseObjectByPageable;
 import uz.neft.repository.RoleRepository;
 import uz.neft.repository.UserRepository;
-
-
-import java.util.stream.Collectors;
 
 @Component
 public class Converter {
@@ -424,6 +423,23 @@ public class Converter {
                     .expand(collectionPointAction.getExpend())
                     .pressure(collectionPointAction.getPressure())
                     .temperature(collectionPointAction.getTemperature())
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public ConstValueDto constantValueToConstValueDto(ConstantValue value) {
+        try {
+            return ConstValueDto
+                    .builder()
+                    .Id(value.getId())
+                    .constantId(value.getConstant().getId())
+                    .mSystemId(value.getMiningSystem().getId())
+                    .UppgId(value.getUppg().getId())
+                    .CpointId(value.getCollectionPoint().getId())
+                    .WellId(value.getWell().getId())
                     .build();
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,11 +1,23 @@
 package uz.neft.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.ConstantDto;
+import uz.neft.dto.constantValue.ConstValueDto;
+import uz.neft.entity.CollectionPoint;
+import uz.neft.entity.MiningSystem;
+import uz.neft.entity.Uppg;
+import uz.neft.entity.Well;
 import uz.neft.entity.variables.Constant;
+import uz.neft.entity.variables.ConstantValue;
+import uz.neft.repository.CollectionPointRepository;
+import uz.neft.repository.MiningSystemRepository;
+import uz.neft.repository.UppgRepository;
+import uz.neft.repository.WellRepository;
 import uz.neft.repository.constants.ConstantRepository;
+import uz.neft.repository.constants.ConstantValuesRepository;
 import uz.neft.utils.Converter;
 
 import java.util.List;
@@ -17,11 +29,21 @@ public class ConstantService {
 
     private final ConstantRepository constantRepository;
     private final Converter converter;
+    private final MiningSystemRepository miningSystemRepository;
+    private final UppgRepository uppgRepository;
+    private final CollectionPointRepository collectionPointRepository;
+    private final WellRepository wellRepository;
+    private final ConstantValuesRepository constantValuesRepository;
 
     @Autowired
-    public ConstantService(ConstantRepository constantRepository, Converter converter) {
+    public ConstantService(ConstantRepository constantRepository, Converter converter, MiningSystemRepository miningSystemRepository, UppgRepository uppgRepository, CollectionPointRepository collectionPointRepository, WellRepository wellRepository, ConstantValuesRepository constantValuesRepository) {
         this.constantRepository = constantRepository;
         this.converter = converter;
+        this.miningSystemRepository = miningSystemRepository;
+        this.uppgRepository = uppgRepository;
+        this.collectionPointRepository = collectionPointRepository;
+        this.wellRepository = wellRepository;
+        this.constantValuesRepository = constantValuesRepository;
     }
 
     public ResponseEntity<?> save(ConstantDto dto) {
@@ -108,6 +130,69 @@ public class ConstantService {
         } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError409("Error in finding Constant", e);
+        }
+    }
+
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // ConstantValues Service methods
+
+    public HttpEntity<?> saveValue(ConstValueDto dto) {
+        try {
+            if (dto.getId() != null) return converter.apiError400("id shouldn't be sent");
+
+            if (dto.getConstantId() == null) return converter.apiError400("ConstantId is null");
+            Optional<Constant> constant = constantRepository.findById(dto.getConstantId());
+            if (!constant.isPresent()) return converter.apiError404("constant not found");
+
+
+            if (dto.getMSystemId() == null && dto.getUppgId() == null && dto.getCpointId() == null && dto.getWellId() == null)
+                return converter.apiError400("IDs are all null; at least one of IDs should not be null");
+
+            Optional<MiningSystem> miningSystem = miningSystemRepository.findById(dto.getMSystemId());
+            if (!miningSystem.isPresent()) return converter.apiError404("mining system not found");
+
+            Optional<Uppg> uppg = uppgRepository.findById(dto.getUppgId());
+            if (!uppg.isPresent()) return converter.apiError404("mining system not found");
+
+            Optional<CollectionPoint> collectionPoint = collectionPointRepository.findById(dto.getConstantId());
+            if (!collectionPoint.isPresent()) return converter.apiError404("mining system not found");
+
+            Optional<Well> well = wellRepository.findById(dto.getWellId());
+            if (!well.isPresent()) return converter.apiError404("mining system not found");
+
+            ConstantValue constantValue = new ConstantValue();
+            constantValue.setValue(dto.getValue());
+            constantValue.setConstant(constant.get());
+
+            if (dto.getMSystemId() != null && dto.getUppgId() == null && dto.getCpointId() == null && dto.getWellId() == null) {
+                constantValue.setMiningSystem(miningSystem.get());
+            }
+
+            if (dto.getMSystemId() != null && dto.getUppgId() != null && dto.getCpointId() == null && dto.getWellId() == null) {
+                constantValue.setMiningSystem(miningSystem.get());
+                constantValue.setUppg(uppg.get());
+            }
+
+            if (dto.getMSystemId() != null && dto.getUppgId() != null && dto.getCpointId() != null && dto.getWellId() == null) {
+                constantValue.setMiningSystem(miningSystem.get());
+                constantValue.setUppg(uppg.get());
+                constantValue.setCollectionPoint(collectionPoint.get());
+            }
+
+            if (dto.getMSystemId() != null && dto.getUppgId() != null && dto.getCpointId() != null && dto.getWellId() != null) {
+                constantValue.setMiningSystem(miningSystem.get());
+                constantValue.setUppg(uppg.get());
+                constantValue.setCollectionPoint(collectionPoint.get());
+                constantValue.setWell(well.get());
+            }
+
+            ConstantValue save = constantValuesRepository.save(constantValue);
+            ConstValueDto constValueDto = converter.constantValueToConstValueDto(save);
+            return converter.apiSuccess201("Constant Value saved", constValueDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409("Error Creating Constant");
         }
     }
 }

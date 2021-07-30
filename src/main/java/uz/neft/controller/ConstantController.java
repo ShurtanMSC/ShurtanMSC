@@ -2,10 +2,9 @@ package uz.neft.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.neft.dto.ConstantDto;
-import uz.neft.payload.ApiResponse;
+import uz.neft.dto.constantValue.ConstValueDto;
 import uz.neft.service.ConstantService;
 
 @RestController
@@ -19,28 +18,59 @@ public class ConstantController {
         this.constantService = constantService;
     }
 
+    //  constant CRUD
+
     @PostMapping("add")
-    public HttpEntity<?> saveConstant(@RequestBody ConstantDto dto) {
+    public HttpEntity<?> save(@RequestBody ConstantDto dto) {
         return constantService.save(dto);
     }
 
     @PutMapping("edit")
-    public HttpEntity<?> editConstant(@RequestBody ConstantDto dto) {
+    public HttpEntity<?> edit(@RequestBody ConstantDto dto) {
         return constantService.edit(dto);
     }
 
     @DeleteMapping("delete/{id}")
-    public HttpEntity<?> deleteConstant(@PathVariable Integer id) {
+    public HttpEntity<?> delete(@PathVariable Integer id) {
         return constantService.delete(id);
     }
 
     @GetMapping("all")
-    public HttpEntity<?> allConstant() {
+    public HttpEntity<?> all() {
         return constantService.findAll();
     }
 
     @GetMapping("{id}")
-    public HttpEntity<?> gasCompositionById(@PathVariable Integer id) {
+    public HttpEntity<?> byId(@PathVariable Integer id) {
         return constantService.findById(id);
     }
+
+
+      //constant CRUD
+
+    @PostMapping("miningsystem/add")
+    public HttpEntity<?> saveValue(@RequestBody ConstValueDto dto) {
+        return constantService.saveValue(dto);
+    }
+
+    @PutMapping("miningsystem/edit")
+    public HttpEntity<?> editValue(@RequestBody ConstValueDto dto) {
+        return constantService.editValue(dto);
+    }
+
+    @DeleteMapping("miningsystem/delete/{id}")
+    public HttpEntity<?> deleteValue(@PathVariable Integer id) {
+        return constantService.deleteValue(id);
+    }
+
+    @GetMapping("miningsystem/all")
+    public HttpEntity<?> allValues() {
+        return constantService.allValues();
+    }
+
+    @GetMapping("miningsystem/{id}")
+    public HttpEntity<?> byIdValue(@PathVariable Integer id) {
+        return constantService.byIdValue(id);
+    }
+
 }
