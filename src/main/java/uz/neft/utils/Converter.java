@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import uz.neft.dto.*;
 import uz.neft.dto.action.CollectionPointActionDto;
+import uz.neft.dto.action.CollectionPointAndActionsDto;
 import uz.neft.dto.action.UppgActionDto;
 import uz.neft.dto.action.WellActionDto;
 import uz.neft.dto.constantValue.ConstValueDto;
@@ -471,5 +472,25 @@ public class Converter {
             return null;
         }
     }
+
+
+    public CollectionPointAndActionsDto collectionPointActionToCollectionPointAndActionsDto(CollectionPointAction collectionPointAction) {
+        try {
+            return CollectionPointAndActionsDto
+                    .builder()
+                    .id(collectionPointAction.getCollectionPoint().getId())
+                    .name(collectionPointAction.getCollectionPoint().getName())
+                    .pressure(collectionPointAction.getPressure())
+                    .temperature(collectionPointAction.getTemperature())
+                    .expand(collectionPointAction.getExpend())
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+
 }
 //
