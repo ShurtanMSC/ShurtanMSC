@@ -1,12 +1,14 @@
 package uz.neft.service.action;
 
-import org.json.JSONObject;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import uz.neft.dto.CollectionPointDto;
+import uz.neft.dto.WellDto;
+import uz.neft.dto.action.CollectionPointAndActionsDto;
 import uz.neft.dto.action.WellActionDto;
-import uz.neft.entity.MiningSystem;
-import uz.neft.entity.User;
-import uz.neft.entity.Well;
+import uz.neft.entity.*;
+import uz.neft.entity.action.CollectionPointAction;
 import uz.neft.entity.action.WellAction;
 import uz.neft.entity.variables.*;
 import uz.neft.repository.*;
@@ -29,9 +31,10 @@ public class WellActionService {
     private final MiningSystemConstantRepository miningSystemConstantRepository;
     private final ConstantRepository constantRepository;
     private final UserRepository userRepository;
+    private final CollectionPointRepository collectionPointRepository;
 
 
-    public WellActionService(WellActionRepository wellActionRepository, MiningSystemConstantRepository miningSystemConstantRepository, WellRepository wellRepository, Converter converter, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository, Calculator calculator, ConstantRepository constantRepository, UserRepository userRepository) {
+    public WellActionService(WellActionRepository wellActionRepository, MiningSystemConstantRepository miningSystemConstantRepository, WellRepository wellRepository, Converter converter, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository, Calculator calculator, ConstantRepository constantRepository, UserRepository userRepository, CollectionPointRepository collectionPointRepository) {
         this.wellActionRepository = wellActionRepository;
         this.wellRepository = wellRepository;
         this.converter = converter;
@@ -39,6 +42,7 @@ public class WellActionService {
         this.miningSystemConstantRepository = miningSystemConstantRepository;
         this.constantRepository = constantRepository;
         this.userRepository = userRepository;
+        this.collectionPointRepository = collectionPointRepository;
     }
 
     /**
@@ -167,15 +171,108 @@ public class WellActionService {
         }
     }
 
+    public HttpEntity<?> getWells() {
+        try {
+            List<Well> all = wellRepository.findAll();
 
+            List<WellDto> wellDtos = all.stream().map(converter::wellToWellDto).collect(Collectors.toList());
+
+            return converter.apiSuccess200(wellDtos);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409("Error in fetching all wells");
+        }
+    }
+
+    public HttpEntity<?> getByCollectionPoint(Integer id) {
+        try {
+            Optional<CollectionPoint> byId = collectionPointRepository.findById(id);
+            if (!byId.isPresent()) return converter.apiError404("collection point not found");
+
+            List<Well> wells = wellRepository.findAllByCollectionPoint(byId.get());
+
+            List<WellDto> collect = wells.stream().map(converter::wellToWellDto).collect(Collectors.toList());
+
+            return converter.apiSuccess200(collect);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409("Error in fetching wells by collection point ");
+        }
+    }
+
+    public HttpEntity<?> getWell(Integer id) {
+        try {
+            Optional<Well> byId = wellRepository.findById(id);
+            if (!byId.isPresent()) return converter.apiError404("well not found");
+            WellDto dto = converter.wellToWellDto(byId.get());
+            return converter.apiSuccess200(dto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409("Error in fetching well by id");
+        }
+    }
+
+
+    public HttpEntity<?> getWellsWithActionByCollectionPoint(Integer id) {
+        try {
+            Optional<CollectionPoint> byId = collectionPointRepository.findById(id);
+            if (!byId.isPresent()) return converter.apiError404("collection point not found");
+
+            List<Well> wells = wellRepository.findAllByCollectionPoint(byId.get());
+
+            List<WellActionDto> collect = wells.stream().map(item -> {
+                Optional<Well> byId1 = wellRepository.findById(item.getId());
+                Optional<WellAction> firstByWell = wellActionRepository.findFirstByWell(byId1.get());
+                return converter.wellActionToWellActionDto(firstByWell.get());
+            }).collect(Collectors.toList());
+
+            return converter.apiSuccess200(collect);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409("Error in fetching wells with actions by collection point ");
+        }
+    }
+
+    public HttpEntity<?> getWellWithAction(Integer id) {
+        try {
+            Optional<Well> byId = wellRepository.findById(id);
+            if (!byId.isPresent()) return converter.apiError404("well not found");
+
+            Optional<WellAction> firstByWell = wellActionRepository.findFirstByWell(byId.get());
+            if (!firstByWell.isPresent()) return converter.apiError404("well action not found");
+
+            WellActionDto dto = converter.wellActionToWellActionDto(firstByWell.get());
+
+            return converter.apiSuccess200(dto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409("Error in fetching collection point by id");
+        }
+    }
+
+    public HttpEntity<?> getWellsWithAction() {
+        try {
+            List<Well> all = wellRepository.findAll();
+
+            List<WellActionDto> collect = all.stream().map(item -> {
+                Optional<Well> byId = wellRepository.findById(item.getId());
+                Optional<WellAction> wellAction = wellActionRepository.findFirstByWell(byId.get());
+
+                return converter.wellActionToWellActionDto(wellAction.get());
+            }).collect(Collectors.toList());
+
+            return converter.apiSuccess200(collect);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409("Error in fetching collection points with actions");
+        }
+    }
 
 
     /** Auto **/
 
     //..... from MODBUS
     //... coming soon
-
-
 
 
 //    public ResponseEntity<?> test(Integer id){

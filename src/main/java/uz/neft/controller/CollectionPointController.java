@@ -26,12 +26,17 @@ public class CollectionPointController {
 
     @GetMapping("all")
     public HttpEntity<?> allSP() {
-        return collectionPointActionService.getCollectionPointNames();
+        return collectionPointActionService.getCollectionPoints();
     }
 
     @GetMapping("all_with_actions")
     public HttpEntity<?> all() {
         return collectionPointActionService.getCollectionPointsWithActions();
+    }
+
+    @GetMapping("all_by_uppg/{id}")
+    public HttpEntity<?> getAllByUppg(@PathVariable Integer id) {
+        return collectionPointActionService.getByUppg(id);
     }
 
     @GetMapping("one/{id}")
@@ -42,11 +47,6 @@ public class CollectionPointController {
     @GetMapping("with_action/{id}")
     public HttpEntity<?> getOneWithAction(@PathVariable Integer id) {
         return collectionPointActionService.getCollectionPointWithAction(id);
-    }
-
-    @GetMapping("all_by_uppg/{id}")
-    public HttpEntity<?> getAllByUppg(@PathVariable Integer id) {
-        return collectionPointActionService.getCollectionPointsByUppg(id);
     }
 
 

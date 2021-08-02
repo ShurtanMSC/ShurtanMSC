@@ -88,14 +88,11 @@ public class CollectionPointActionService {
         }
     }
 
-    public HttpEntity<?> getCollectionPointNames() {
+    public HttpEntity<?> getCollectionPoints() {
         try {
             List<CollectionPoint> all = collectionPointRepository.findAll();
 
-            List<CollectionPointDto> collect = all.stream().map(item -> {
-                Optional<CollectionPoint> byId = collectionPointRepository.findById(item.getId());
-                return converter.collectionPointToCollectionPointDto(byId.get());
-            }).collect(Collectors.toList());
+            List<CollectionPointDto> collect = all.stream().map(converter::collectionPointToCollectionPointDto).collect(Collectors.toList());
 
             return converter.apiSuccess200(collect);
         } catch (Exception e) {
@@ -103,6 +100,37 @@ public class CollectionPointActionService {
             return converter.apiError409("Error in fetching all collection point names");
         }
     }
+
+    public HttpEntity<?> getByUppg(Integer id) {
+        try {
+            Optional<Uppg> byId = uppgRepository.findById(id);
+            if (!byId.isPresent()) return converter.apiError404("uppg not found");
+
+            List<CollectionPoint> allByUppg = collectionPointRepository.findAllByUppg(byId.get());
+
+            List<CollectionPointDto> collect = allByUppg.stream().map(converter::collectionPointToCollectionPointDto).collect(Collectors.toList());
+
+            return converter.apiSuccess200(collect);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409("Error in fetching collection point by uppg ");
+        }
+    }
+
+    public HttpEntity<?> getCollectionPoint(Integer id) {
+        try {
+            Optional<CollectionPoint> byId = collectionPointRepository.findById(id);
+            if (!byId.isPresent()) return converter.apiError404("collection point not found");
+
+            CollectionPointDto collectionPointDto = converter.collectionPointToCollectionPointDto(byId.get());
+
+            return converter.apiSuccess200(collectionPointDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409("Error in fetching collection point by id");
+        }
+    }
+
 
     public HttpEntity<?> getCollectionPointsWithActions() {
         try {
@@ -127,20 +155,6 @@ public class CollectionPointActionService {
             Optional<CollectionPoint> byId = collectionPointRepository.findById(id);
             if (!byId.isPresent()) return converter.apiError404("collection pint not found");
 
-            CollectionPointDto collectionPointDto = converter.collectionPointToCollectionPointDto(byId.get());
-
-            return converter.apiSuccess200(collectionPointDto);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return converter.apiError409("Error in fetching collection point by id");
-        }
-    }
-
-    public HttpEntity<?> getCollectionPoint(Integer id) {
-        try {
-            Optional<CollectionPoint> byId = collectionPointRepository.findById(id);
-            if (!byId.isPresent()) return converter.apiError404("collection pint not found");
-
             CollectionPointAction collectionPointAction = collectionPointActionRepository.findFirstByCollectionPoint(byId.get());
 
             CollectionPointAndActionsDto dto = converter.collectionPointActionToCollectionPointAndActionsDto(collectionPointAction);
@@ -152,23 +166,9 @@ public class CollectionPointActionService {
         }
     }
 
-    public HttpEntity<?> getCollectionPointsByUppg(Integer id) {
 
-        try {
-            Optional<Uppg> byId = uppgRepository.findById(id);
-            if (!byId.isPresent()) return converter.apiError404("uppg not found");
 
-            List<CollectionPoint> allByUppg = collectionPointRepository.findAllByUppg(byId.get());
 
-            List<CollectionPointDto> collect = allByUppg.stream().map(converter::collectionPointToCollectionPointDto).collect(Collectors.toList());
-
-            return converter.apiSuccess200(collect);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return converter.apiError409("Error in fetching collection point by uppg ");
-        }
-
-    }
 
     /** Auto **/
 
