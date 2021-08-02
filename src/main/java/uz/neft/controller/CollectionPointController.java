@@ -31,7 +31,7 @@ public class CollectionPointController {
     /** Auto **/
 
     // ...... from MODBUS
-
+    //... coming soon
 
 
 

@@ -87,4 +87,8 @@ public class CollectionPointActionService {
     /** Auto **/
 
     //..... from MODBUS
+    //... coming soon
+
+
+
 }

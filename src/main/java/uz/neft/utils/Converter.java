@@ -7,10 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import uz.neft.dto.*;
 import uz.neft.dto.action.CollectionPointActionDto;
+import uz.neft.dto.action.UppgActionDto;
 import uz.neft.dto.action.WellActionDto;
 import uz.neft.dto.constantValue.ConstValueDto;
 import uz.neft.entity.*;
 import uz.neft.entity.action.CollectionPointAction;
+import uz.neft.entity.action.UppgAction;
 import uz.neft.entity.action.WellAction;
 import uz.neft.entity.variables.Constant;
 import uz.neft.entity.variables.ConstantValue;
@@ -449,5 +451,25 @@ public class Converter {
     }
 
 
+    public UppgActionDto uppgActionToUppgActionDto(UppgAction uppgAction) {
+        try {
+            return UppgActionDto
+                    .builder()
+                    .designedPerformance(uppgAction.getDesignedPerformance())
+                    .actualPerformance(uppgAction.getActualPerformance())
+                    .expend(uppgAction.getExpend())
+                    .condensate(uppgAction.getCondensate())
+                    .onWater(uppgAction.getOnWater())
+                    .incomeTemperature(uppgAction.getIncomeTemperature())
+                    .exitTemperature(uppgAction.getExitTemperature())
+                    .incomePressure(uppgAction.getIncomePressure())
+                    .exitPressure(uppgAction.getExitPressure())
+                    .uppgId(uppgAction.getUppg().getId())
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
 //
