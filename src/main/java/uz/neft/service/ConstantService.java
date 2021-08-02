@@ -185,7 +185,7 @@ public class ConstantService {
  MSystemId, UppgId, CpointId
  **/
             if (dto.getCpointId() == null) return converter.apiError404("CpointId is null");
-            Optional<CollectionPoint> collectionPoint = collectionPointRepository.findById(dto.getConstantId());
+            Optional<CollectionPoint> collectionPoint = collectionPointRepository.findById(dto.getCpointId());
             if (!collectionPoint.isPresent()) return converter.apiError404("Collection Point not found");
 
             if (dto.getMSystemId() != null && dto.getUppgId() != null && dto.getCpointId() != null && dto.getWellId() == null) {
@@ -250,7 +250,7 @@ public class ConstantService {
                 constantValue.setMiningSystem(miningSystem.get());
                 ConstantValue save = constantValuesRepository.save(constantValue);
                 ConstValueDto constValueDto = converter.constantValueToConstValueDto(save);
-                return converter.apiSuccess201("Constant Value saved", constValueDto);
+                return converter.apiSuccess201("Constant Value edited", constValueDto);
             }
 /**
  MSystemId, UppgId
@@ -264,7 +264,7 @@ public class ConstantService {
                 constantValue.setUppg(uppg.get());
                 ConstantValue save = constantValuesRepository.save(constantValue);
                 ConstValueDto constValueDto = converter.constantValueToConstValueDto(save);
-                return converter.apiSuccess201("Constant Value saved", constValueDto);
+                return converter.apiSuccess201("Constant Value edited", constValueDto);
             }
 
 /**
@@ -280,7 +280,7 @@ public class ConstantService {
                 constantValue.setCollectionPoint(collectionPoint.get());
                 ConstantValue save = constantValuesRepository.save(constantValue);
                 ConstValueDto constValueDto = converter.constantValueToConstValueDto(save);
-                return converter.apiSuccess201("Constant Value saved", constValueDto);
+                return converter.apiSuccess201("Constant Value edited", constValueDto);
             }
 
 /**
@@ -298,7 +298,7 @@ public class ConstantService {
             }
             ConstantValue save = constantValuesRepository.save(constantValue);
             ConstValueDto constValueDto = converter.constantValueToConstValueDto(save);
-            return converter.apiSuccess201("Constant Value saved", constValueDto);
+            return converter.apiSuccess201("Constant Value edited", constValueDto);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -314,11 +314,11 @@ public class ConstantService {
 
             if (!byId.isPresent()) return converter.apiError404("ConstantValue not found");
 
-            constantRepository.deleteById(id);
+            constantValuesRepository.deleteById(id);
             return converter.apiSuccess200("ConstantValue deleted ");
         } catch (Exception e) {
             e.printStackTrace();
-            return converter.apiError409("Error in deleting ConstantValue", e);
+            return converter.apiError409("Error in deleting ConstantValue");
         }
     }
 
