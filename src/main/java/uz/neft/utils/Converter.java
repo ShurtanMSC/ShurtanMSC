@@ -9,7 +9,7 @@ import uz.neft.dto.*;
 import uz.neft.dto.action.CollectionPointActionDto;
 import uz.neft.dto.action.UppgActionDto;
 import uz.neft.dto.action.WellActionDto;
-import uz.neft.dto.constantValue.ConstValueDto;
+import uz.neft.dto.constantValue.ConstantValueDto;
 import uz.neft.entity.*;
 import uz.neft.entity.action.CollectionPointAction;
 import uz.neft.entity.action.UppgAction;
@@ -432,18 +432,18 @@ public class Converter {
         }
     }
 
-    public ConstValueDto constantValueToConstValueDto(ConstantValue value) {
+    public ConstantValueDto constantValueToConstValueDto(ConstantValue value) {
         System.out.println(value.getConstant());
         System.out.println(value.getConstant().getId());
         try {
-            return ConstValueDto
+            return ConstantValueDto
                     .builder()
                     .Id(value.getId())
                     .constantId(value.getConstant() == null ? null : value.getConstant().getId())
-                    .mSystemId(value.getMiningSystem() == null ? null : value.getMiningSystem().getId())
-                    .UppgId(value.getUppg() == null ? null : value.getUppg().getId())
-                    .CpointId(value.getCollectionPoint() == null ? null : value.getCollectionPoint().getId())
-                    .WellId(value.getWell() == null ? null : value.getWell().getId())
+                    .miningSystemId(value.getMiningSystem() == null ? null : value.getMiningSystem().getId())
+                    .uppgId(value.getUppg() == null ? null : value.getUppg().getId())
+                    .collectionPointId(value.getCollectionPoint() == null ? null : value.getCollectionPoint().getId())
+                    .wellId(value.getWell() == null ? null : value.getWell().getId())
                     .value(value.getValue())
                     .build();
         } catch (Exception e) {
