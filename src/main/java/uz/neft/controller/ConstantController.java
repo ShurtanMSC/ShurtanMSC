@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.neft.dto.ConstantDto;
-import uz.neft.dto.constantValue.ConstValueDto;
+import uz.neft.dto.constantValue.ConstantValueDto;
 import uz.neft.service.ConstantService;
 
 @RestController
@@ -49,12 +49,12 @@ public class ConstantController {
       //constant value CRUD
 
     @PostMapping("value/add")
-    public HttpEntity<?> saveValue(@RequestBody ConstValueDto dto) {
+    public HttpEntity<?> saveValue(@RequestBody ConstantValueDto dto) {
         return constantService.saveValue(dto);
     }
 
     @PutMapping("value/edit")
-    public HttpEntity<?> editValue(@RequestBody ConstValueDto dto) {
+    public HttpEntity<?> editValue(@RequestBody ConstantValueDto dto) {
         return constantService.editValue(dto);
     }
 

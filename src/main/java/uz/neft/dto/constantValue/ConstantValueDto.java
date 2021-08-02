@@ -10,16 +10,16 @@ import uz.neft.entity.variables.ConstantNameEnums;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ConstValueDto {
+public class ConstantValueDto {
     private Integer Id;
 
     private Double value;
 
     private Integer constantId;
 
-    private Integer mSystemId;
-    private Integer UppgId;
-    private Integer CpointId;
-    private Integer WellId;
+    private Integer miningSystemId;
+    private Integer uppgId;
+    private Integer collectionPointId;
+    private Integer wellId;
 
 }
