@@ -433,6 +433,8 @@ public class Converter {
     }
 
     public ConstValueDto constantValueToConstValueDto(ConstantValue value) {
+        System.out.println(value.getConstant());
+        System.out.println(value.getConstant().getId());
         try {
             return ConstValueDto
                     .builder()
