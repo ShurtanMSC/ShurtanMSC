@@ -18,7 +18,7 @@ public class CollectionPointController {
     /**
      * Manually
      **/
-
+//
     @PostMapping("manually/add/action")
     public HttpEntity<?> addAction(@CurrentUser User user, @RequestBody CollectionPointActionDto dto) {
         return collectionPointActionService.addManually(user, dto);
