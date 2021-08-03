@@ -15,7 +15,6 @@ import uz.neft.repository.constants.ConstantRepository;
 import uz.neft.repository.constants.MiningSystemConstantRepository;
 import uz.neft.service.Calculator;
 import uz.neft.utils.Converter;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -187,8 +186,6 @@ public class WellActionService {
         try {
             List<Well> all = wellRepository.findAll();
 
-
-
             return wellActionDtos(all);
         } catch (Exception e) {
             e.printStackTrace();
@@ -243,10 +240,10 @@ public class WellActionService {
             Optional<Well> byId = wellRepository.findById(id);
             if (!byId.isPresent()) return converter.apiError404("well not found");
 
-            Optional<WellAction> firstByWell = wellActionRepository.findFirstByWell(byId.get());
-            if (!firstByWell.isPresent()) return converter.apiError404("well action not found");
+            WellAction firstByWell = wellActionRepository.findFirstByWell(byId.get());
+//            if (!firstByWell.isPresent()) return converter.apiError404("well action not found");
 
-            WellActionDto dto = converter.wellActionToWellActionDto(firstByWell.get());
+            WellActionDto dto = converter.wellActionToWellActionDto(firstByWell);
 
             return converter.apiSuccess200(dto);
         } catch (Exception e) {
@@ -258,12 +255,15 @@ public class WellActionService {
 
     // helper method
     private HttpEntity<?> wellActionDtos(List<Well> wells) {
+        if (wells.isEmpty()) return converter.apiSuccess200("Empty list");
+
         List<ObjectWithActionsDto> collect = wells.stream().map(item -> {
             Optional<Well> byId1 = wellRepository.findById(item.getId());
-            Optional<WellAction> firstByWell = wellActionRepository.findFirstByWell(byId1.get());
+
+            WellAction firstByWell = wellActionRepository.findFirstByWell(byId1.get());
 
             WellDto wellDto = converter.wellToWellDto(byId1.get());
-            WellActionDto wellActionDto = converter.wellActionToWellActionDto(firstByWell.get());
+            WellActionDto wellActionDto = converter.wellActionToWellActionDto(firstByWell);
 
             return ObjectWithActionsDto
                     .builder()

@@ -29,10 +29,7 @@ public class UppgActionService {
     private final UserRepository userRepository;
     private final UppgActionRepository uppgActionRepository;
     private final UppgRepository uppgRepository;
-    private final CollectionPointActionRepository collectionPointActionRepository;
     private final Converter converter;
-    private final WellActionRepository wellActionRepository;
-    private final WellRepository wellRepository;
     private final MiningSystemRepository miningSystemRepository;
 
 
@@ -40,10 +37,7 @@ public class UppgActionService {
         this.userRepository = userRepository;
         this.uppgActionRepository = uppgActionRepository;
         this.uppgRepository = uppgRepository;
-        this.collectionPointActionRepository = collectionPointActionRepository;
         this.converter = converter;
-        this.wellActionRepository = wellActionRepository;
-        this.wellRepository = wellRepository;
         this.miningSystemRepository = miningSystemRepository;
     }
 
@@ -169,9 +163,11 @@ public class UppgActionService {
 
     // helper method
     private HttpEntity<?> uppgActionDtos(List<Uppg> uppgs) {
-        List<ObjectWithActionsDto> collect = uppgs.stream().map(item -> {
+        if (uppgs.isEmpty()) return converter.apiSuccess200("Empty list");
 
+        List<ObjectWithActionsDto> collect = uppgs.stream().map(item -> {
             Optional<Uppg> byId1 = uppgRepository.findById(item.getId());
+
             UppgAction firstByUppg = uppgActionRepository.findFirstByUppg(byId1.get());
 
             UppgDto uppgDto = converter.uppgToUppgDto(byId1.get());
