@@ -140,7 +140,17 @@ public class CollectionPointActionService {
                 Optional<CollectionPoint> byId = collectionPointRepository.findById(item.getId());
                 CollectionPointAction collectionPointAction = collectionPointActionRepository.findFirstByCollectionPoint(byId.get());
 
-                return converter.collectionPointActionToCollectionPointAndActionsDto(byId.get(), collectionPointAction);
+                if (collectionPointAction == null) return null;
+                else {
+                    CollectionPointDto collectionPointDto = converter.collectionPointToCollectionPointDto(byId.get());
+                    CollectionPointActionDto collectionPointActionDto = converter.collectionPointActionToCollectionPointActionDto(collectionPointAction);
+                    CollectionPointAndActionsDto dto = CollectionPointAndActionsDto
+                            .builder()
+                            .collectionPointDto(collectionPointDto)
+                            .collectionPointActionDto(collectionPointActionDto)
+                            .build();
+                    return dto;
+                }
             }).collect(Collectors.toList());
 
             return converter.apiSuccess200(collect);
@@ -157,7 +167,7 @@ public class CollectionPointActionService {
 
             CollectionPointAction collectionPointAction = collectionPointActionRepository.findFirstByCollectionPoint(byId.get());
 
-            CollectionPointAndActionsDto dto = converter.collectionPointActionToCollectionPointAndActionsDto(byId.get(),collectionPointAction);
+            CollectionPointAndActionsDto dto = converter.collectionPointActionToCollectionPointAndActionsDto(byId.get(), collectionPointAction);
 
             return converter.apiSuccess200(dto);
         } catch (Exception e) {
@@ -165,9 +175,6 @@ public class CollectionPointActionService {
             return converter.apiError409("Error in fetching collection point by id");
         }
     }
-
-
-
 
 
     /** Auto **/

@@ -476,25 +476,5 @@ public class Converter {
     }
 
 
-    public CollectionPointAndActionsDto collectionPointActionToCollectionPointAndActionsDto(CollectionPoint collectionPoint,
-                                                                                                     CollectionPointAction collectionPointAction) {
-        try {
-            return CollectionPointAndActionsDto
-                    .builder()
-                    .id(collectionPointAction.getId())
-                    .CPointid(collectionPoint.getId())
-                    .name(collectionPoint.getName())
-                    .pressure(collectionPointAction.getPressure())
-                    .temperature(collectionPointAction.getTemperature())
-                    .expand(collectionPointAction.getExpend())
-                    .build();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-
-
 }
-//
+
