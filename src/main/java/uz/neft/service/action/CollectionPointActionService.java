@@ -140,8 +140,8 @@ public class CollectionPointActionService {
                 Optional<CollectionPoint> byId = collectionPointRepository.findById(item.getId());
                 CollectionPointAction collectionPointAction = collectionPointActionRepository.findFirstByCollectionPoint(byId.get());
 
-                if (collectionPointAction == null) return null;
-                else {
+//                if (collectionPointAction == null) return null;
+//                else {
                     CollectionPointDto collectionPointDto = converter.collectionPointToCollectionPointDto(byId.get());
                     CollectionPointActionDto collectionPointActionDto = converter.collectionPointActionToCollectionPointActionDto(collectionPointAction);
                     CollectionPointAndActionsDto dto = CollectionPointAndActionsDto
@@ -150,7 +150,7 @@ public class CollectionPointActionService {
                             .collectionPointActionDto(collectionPointActionDto)
                             .build();
                     return dto;
-                }
+//                }
             }).collect(Collectors.toList());
 
             return converter.apiSuccess200(collect);
