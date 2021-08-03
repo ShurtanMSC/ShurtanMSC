@@ -4,6 +4,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.UppgDto;
 import uz.neft.dto.WellDto;
+import uz.neft.dto.action.ObjectWithActionsDto;
 import uz.neft.dto.action.UppgActionDto;
 import uz.neft.dto.action.WellActionDto;
 import uz.neft.entity.*;
@@ -168,16 +169,19 @@ public class UppgActionService {
 
     // helper method
     private HttpEntity<?> uppgActionDtos(List<Uppg> uppgs) {
-        List<UppgActionDto> collect = uppgs.stream().map(item -> {
+        List<ObjectWithActionsDto> collect = uppgs.stream().map(item -> {
 
             Optional<Uppg> byId1 = uppgRepository.findById(item.getId());
-
             UppgAction firstByUppg = uppgActionRepository.findFirstByUppg(byId1.get());
 
-            if (firstByUppg == null)
-                return null;
-            else
-                return converter.uppgActionToUppgActionDto(firstByUppg);
+            UppgDto uppgDto = converter.uppgToUppgDto(byId1.get());
+            UppgActionDto uppgActionDto = converter.uppgActionToUppgActionDto(firstByUppg);
+
+            return ObjectWithActionsDto
+                    .builder()
+                    .objectDto(uppgDto)
+                    .objectActionDto(uppgActionDto)
+                    .build();
         }).collect(Collectors.toList());
 
         if (collect.isEmpty()) return converter.apiSuccess200("Empty List", null);

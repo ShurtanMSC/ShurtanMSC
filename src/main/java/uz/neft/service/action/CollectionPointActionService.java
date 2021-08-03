@@ -4,7 +4,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.CollectionPointDto;
 import uz.neft.dto.action.CollectionPointActionDto;
-import uz.neft.dto.action.CollectionPointAndActionsDto;
+import uz.neft.dto.action.ObjectWithActionsDto;
 import uz.neft.entity.CollectionPoint;
 import uz.neft.entity.Uppg;
 import uz.neft.entity.User;
@@ -131,26 +131,22 @@ public class CollectionPointActionService {
         }
     }
 
-
     public HttpEntity<?> getCollectionPointsWithActions() {
         try {
             List<CollectionPoint> all = collectionPointRepository.findAll();
 
-            List<CollectionPointAndActionsDto> collect = all.stream().map(item -> {
+            List<ObjectWithActionsDto> collect = all.stream().map(item -> {
                 Optional<CollectionPoint> byId = collectionPointRepository.findById(item.getId());
                 CollectionPointAction collectionPointAction = collectionPointActionRepository.findFirstByCollectionPoint(byId.get());
 
-//                if (collectionPointAction == null) return null;
-//                else {
-                    CollectionPointDto collectionPointDto = converter.collectionPointToCollectionPointDto(byId.get());
-                    CollectionPointActionDto collectionPointActionDto = converter.collectionPointActionToCollectionPointActionDto(collectionPointAction);
-                    CollectionPointAndActionsDto dto = CollectionPointAndActionsDto
-                            .builder()
-                            .collectionPointDto(collectionPointDto)
-                            .collectionPointActionDto(collectionPointActionDto)
-                            .build();
-                    return dto;
-//                }
+                CollectionPointDto collectionPointDto = converter.collectionPointToCollectionPointDto(byId.get());
+                CollectionPointActionDto collectionPointActionDto = converter.collectionPointActionToCollectionPointActionDto(collectionPointAction);
+
+                return ObjectWithActionsDto
+                        .builder()
+                        .objectDto(collectionPointDto)
+                        .objectActionDto(collectionPointActionDto)
+                        .build();
             }).collect(Collectors.toList());
 
             return converter.apiSuccess200(collect);
@@ -169,10 +165,11 @@ public class CollectionPointActionService {
 
             CollectionPointDto collectionPointDto = converter.collectionPointToCollectionPointDto(byId.get());
             CollectionPointActionDto collectionPointActionDto = converter.collectionPointActionToCollectionPointActionDto(collectionPointAction);
-            CollectionPointAndActionsDto dto = CollectionPointAndActionsDto
+
+            ObjectWithActionsDto dto = ObjectWithActionsDto
                     .builder()
-                    .collectionPointDto(collectionPointDto)
-                    .collectionPointActionDto(collectionPointActionDto)
+                    .objectDto(collectionPointDto)
+                    .objectActionDto(collectionPointActionDto)
                     .build();
 
             return converter.apiSuccess200(dto);

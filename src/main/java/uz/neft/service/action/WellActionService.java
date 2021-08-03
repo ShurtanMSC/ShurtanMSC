@@ -3,12 +3,10 @@ package uz.neft.service.action;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import uz.neft.dto.CollectionPointDto;
 import uz.neft.dto.WellDto;
-import uz.neft.dto.action.CollectionPointAndActionsDto;
+import uz.neft.dto.action.ObjectWithActionsDto;
 import uz.neft.dto.action.WellActionDto;
 import uz.neft.entity.*;
-import uz.neft.entity.action.CollectionPointAction;
 import uz.neft.entity.action.WellAction;
 import uz.neft.entity.variables.*;
 import uz.neft.repository.*;
@@ -189,6 +187,8 @@ public class WellActionService {
         try {
             List<Well> all = wellRepository.findAll();
 
+
+
             return wellActionDtos(all);
         } catch (Exception e) {
             e.printStackTrace();
@@ -258,10 +258,18 @@ public class WellActionService {
 
     // helper method
     private HttpEntity<?> wellActionDtos(List<Well> wells) {
-        List<WellActionDto> collect = wells.stream().map(item -> {
+        List<ObjectWithActionsDto> collect = wells.stream().map(item -> {
             Optional<Well> byId1 = wellRepository.findById(item.getId());
             Optional<WellAction> firstByWell = wellActionRepository.findFirstByWell(byId1.get());
-            return converter.wellActionToWellActionDto(firstByWell.get());
+
+            WellDto wellDto = converter.wellToWellDto(byId1.get());
+            WellActionDto wellActionDto = converter.wellActionToWellActionDto(firstByWell.get());
+
+            return ObjectWithActionsDto
+                    .builder()
+                    .objectDto(wellDto)
+                    .objectActionDto(wellActionDto)
+                    .build();
         }).collect(Collectors.toList());
 
         return converter.apiSuccess200(collect);

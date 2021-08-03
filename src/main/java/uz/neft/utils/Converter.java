@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import uz.neft.dto.*;
 import uz.neft.dto.action.CollectionPointActionDto;
-import uz.neft.dto.action.CollectionPointAndActionsDto;
 import uz.neft.dto.action.UppgActionDto;
 import uz.neft.dto.action.WellActionDto;
 import uz.neft.dto.constantValue.ConstantValueDto;
