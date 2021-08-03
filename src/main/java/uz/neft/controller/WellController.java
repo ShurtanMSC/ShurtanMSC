@@ -35,10 +35,11 @@ public class WellController {
     }
 
     @GetMapping("all_with_actions")
-    public HttpEntity<?> wellsWithActionByCollectionPoint() {
+    public HttpEntity<?> wellsWithAction() {
         return wellActionService.getWellsWithAction();
     }
-    @GetMapping("all_with_actions_by_collection_point")
+
+    @GetMapping("all_with_actions_by_collection_point/{id}")
     public HttpEntity<?> wellsWithActionByCollectionPoint(@PathVariable Integer id) {
         return wellActionService.getWellsWithActionByCollectionPoint(id);
     }

@@ -45,6 +45,7 @@ public class WellActionService {
         this.collectionPointRepository = collectionPointRepository;
     }
 
+
     /**
      * Manually
      **/
@@ -184,6 +185,31 @@ public class WellActionService {
         }
     }
 
+    public HttpEntity<?> getWellsWithAction() {
+        try {
+            List<Well> all = wellRepository.findAll();
+
+            return wellActionDtos(all);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409("Error in fetching collection points with actions");
+        }
+    }
+
+    public HttpEntity<?> getWellsWithActionByCollectionPoint(Integer id) {
+        try {
+            Optional<CollectionPoint> byId = collectionPointRepository.findById(id);
+            if (!byId.isPresent()) return converter.apiError404("collection point not found");
+
+            List<Well> wells = wellRepository.findAllByCollectionPoint(byId.get());
+
+            return wellActionDtos(wells);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409("Error in fetching wells with actions by collection point ");
+        }
+    }
+
     public HttpEntity<?> getByCollectionPoint(Integer id) {
         try {
             Optional<CollectionPoint> byId = collectionPointRepository.findById(id);
@@ -212,27 +238,6 @@ public class WellActionService {
         }
     }
 
-
-    public HttpEntity<?> getWellsWithActionByCollectionPoint(Integer id) {
-        try {
-            Optional<CollectionPoint> byId = collectionPointRepository.findById(id);
-            if (!byId.isPresent()) return converter.apiError404("collection point not found");
-
-            List<Well> wells = wellRepository.findAllByCollectionPoint(byId.get());
-
-            List<WellActionDto> collect = wells.stream().map(item -> {
-                Optional<Well> byId1 = wellRepository.findById(item.getId());
-                Optional<WellAction> firstByWell = wellActionRepository.findFirstByWell(byId1.get());
-                return converter.wellActionToWellActionDto(firstByWell.get());
-            }).collect(Collectors.toList());
-
-            return converter.apiSuccess200(collect);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return converter.apiError409("Error in fetching wells with actions by collection point ");
-        }
-    }
-
     public HttpEntity<?> getWellWithAction(Integer id) {
         try {
             Optional<Well> byId = wellRepository.findById(id);
@@ -250,24 +255,17 @@ public class WellActionService {
         }
     }
 
-    public HttpEntity<?> getWellsWithAction() {
-        try {
-            List<Well> all = wellRepository.findAll();
 
-            List<WellActionDto> collect = all.stream().map(item -> {
-                Optional<Well> byId = wellRepository.findById(item.getId());
-                Optional<WellAction> wellAction = wellActionRepository.findFirstByWell(byId.get());
+    // helper method
+    private HttpEntity<?> wellActionDtos(List<Well> wells) {
+        List<WellActionDto> collect = wells.stream().map(item -> {
+            Optional<Well> byId1 = wellRepository.findById(item.getId());
+            Optional<WellAction> firstByWell = wellActionRepository.findFirstByWell(byId1.get());
+            return converter.wellActionToWellActionDto(firstByWell.get());
+        }).collect(Collectors.toList());
 
-                return converter.wellActionToWellActionDto(wellAction.get());
-            }).collect(Collectors.toList());
-
-            return converter.apiSuccess200(collect);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return converter.apiError409("Error in fetching collection points with actions");
-        }
+        return converter.apiSuccess200(collect);
     }
-
 
     /** Auto **/
 

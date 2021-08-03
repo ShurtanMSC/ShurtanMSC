@@ -2,15 +2,10 @@ package uz.neft.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import uz.neft.dto.action.CollectionPointActionDto;
+import org.springframework.web.bind.annotation.*;
 import uz.neft.dto.action.UppgActionDto;
 import uz.neft.entity.User;
 import uz.neft.secret.CurrentUser;
-import uz.neft.service.action.CollectionPointActionService;
 import uz.neft.service.action.UppgActionService;
 
 @RestController
@@ -30,11 +25,41 @@ public class UppgController {
     }
 
 
+    @GetMapping("all")
+    public HttpEntity<?> allUppgs() {
+        return uppgActionService.getUppgs();
+    }
+
+    @GetMapping("all_with_actions")
+    public HttpEntity<?> uppgsWithActionBy() {
+        return uppgActionService.getUppgsWithAction();
+    }
+
+    @GetMapping("all_with_actions_by_mining_system/{id}")
+    public HttpEntity<?> uppgsWithActionByMiningSystem(@PathVariable Integer id) {
+        return uppgActionService.getUppgsWithActionByMiningSystem(id);
+    }
+
+    @GetMapping("all_by_collection_point/{id}")
+    public HttpEntity<?> uppgsByMiningSystem(@PathVariable Integer id) {
+        return uppgActionService.getByMiningSystem(id);
+    }
+
+    @GetMapping("one/{id}")
+    public HttpEntity<?> getOne(@PathVariable Integer id) {
+        return uppgActionService.getUppg(id);
+    }
+
+    @GetMapping("with_action/{id}")
+    public HttpEntity<?> getOneWithAction(@PathVariable Integer id) {
+        return uppgActionService.getUppgWithAction(id);
+    }
+
+
     /** Auto **/
 
     // ...... from MODBUS
     //... coming soon
-
 
 
 }
