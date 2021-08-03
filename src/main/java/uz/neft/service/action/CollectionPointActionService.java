@@ -163,7 +163,7 @@ public class CollectionPointActionService {
     public HttpEntity<?> getCollectionPointWithAction(Integer id) {
         try {
             Optional<CollectionPoint> byId = collectionPointRepository.findById(id);
-            if (!byId.isPresent()) return converter.apiError404("collection pint not found");
+            if (!byId.isPresent()) return converter.apiError404("collection point not found");
 
             CollectionPointAction collectionPointAction = collectionPointActionRepository.findFirstByCollectionPoint(byId.get());
 
