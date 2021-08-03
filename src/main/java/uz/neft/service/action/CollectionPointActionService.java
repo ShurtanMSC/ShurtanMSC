@@ -140,7 +140,7 @@ public class CollectionPointActionService {
                 Optional<CollectionPoint> byId = collectionPointRepository.findById(item.getId());
                 CollectionPointAction collectionPointAction = collectionPointActionRepository.findFirstByCollectionPoint(byId.get());
 
-                return converter.collectionPointActionToCollectionPointAndActionsDto(collectionPointAction);
+                return converter.collectionPointActionToCollectionPointAndActionsDto(byId.get(), collectionPointAction);
             }).collect(Collectors.toList());
 
             return converter.apiSuccess200(collect);
@@ -157,7 +157,7 @@ public class CollectionPointActionService {
 
             CollectionPointAction collectionPointAction = collectionPointActionRepository.findFirstByCollectionPoint(byId.get());
 
-            CollectionPointAndActionsDto dto = converter.collectionPointActionToCollectionPointAndActionsDto(collectionPointAction);
+            CollectionPointAndActionsDto dto = converter.collectionPointActionToCollectionPointAndActionsDto(byId.get(),collectionPointAction);
 
             return converter.apiSuccess200(dto);
         } catch (Exception e) {

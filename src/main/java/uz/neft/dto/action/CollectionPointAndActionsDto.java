@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CollectionPointAndActionsDto {
 
-    private Integer id;
+    private Integer CPointid;
+    private Long id;
 
     private String name;
 

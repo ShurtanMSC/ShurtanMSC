@@ -476,12 +476,14 @@ public class Converter {
     }
 
 
-    public CollectionPointAndActionsDto collectionPointActionToCollectionPointAndActionsDto(CollectionPointAction collectionPointAction) {
+    public CollectionPointAndActionsDto collectionPointActionToCollectionPointAndActionsDto(CollectionPoint collectionPoint,
+                                                                                                     CollectionPointAction collectionPointAction) {
         try {
             return CollectionPointAndActionsDto
                     .builder()
-                    .id(collectionPointAction.getCollectionPoint().getId())
-                    .name(collectionPointAction.getCollectionPoint().getName())
+                    .id(collectionPointAction.getId())
+                    .CPointid(collectionPoint.getId())
+                    .name(collectionPoint.getName())
                     .pressure(collectionPointAction.getPressure())
                     .temperature(collectionPointAction.getTemperature())
                     .expand(collectionPointAction.getExpend())
