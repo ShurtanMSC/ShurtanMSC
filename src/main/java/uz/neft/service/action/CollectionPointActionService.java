@@ -167,7 +167,13 @@ public class CollectionPointActionService {
 
             CollectionPointAction collectionPointAction = collectionPointActionRepository.findFirstByCollectionPoint(byId.get());
 
-            CollectionPointAndActionsDto dto = converter.collectionPointActionToCollectionPointAndActionsDto(byId.get(), collectionPointAction);
+            CollectionPointDto collectionPointDto = converter.collectionPointToCollectionPointDto(byId.get());
+            CollectionPointActionDto collectionPointActionDto = converter.collectionPointActionToCollectionPointActionDto(collectionPointAction);
+            CollectionPointAndActionsDto dto = CollectionPointAndActionsDto
+                    .builder()
+                    .collectionPointDto(collectionPointDto)
+                    .collectionPointActionDto(collectionPointActionDto)
+                    .build();
 
             return converter.apiSuccess200(dto);
         } catch (Exception e) {
