@@ -154,10 +154,10 @@ public class UppgActionService {
             Optional<Uppg> byId = uppgRepository.findById(id);
             if (!byId.isPresent()) return converter.apiError404("uppg not found");
 
-            Optional<UppgAction> uppgAction = uppgActionRepository.findFirstByUppg(byId.get());
-            if (!uppgAction.isPresent()) return converter.apiError404("uppg action not found");
+            UppgAction uppgAction = uppgActionRepository.findFirstByUppg(byId.get());
+//            if (!uppgAction.isPresent()) return converter.apiError404("uppg action not found");
 
-            UppgActionDto dto = converter.uppgActionToUppgActionDto(uppgAction.get());
+            UppgActionDto dto = converter.uppgActionToUppgActionDto(uppgAction);
 
             return converter.apiSuccess200(dto);
         } catch (Exception e) {
@@ -169,12 +169,20 @@ public class UppgActionService {
     // helper method
     private HttpEntity<?> uppgActionDtos(List<Uppg> uppgs) {
         List<UppgActionDto> collect = uppgs.stream().map(item -> {
+
             Optional<Uppg> byId1 = uppgRepository.findById(item.getId());
-            Optional<UppgAction> firstByUppg = uppgActionRepository.findFirstByUppg(byId1.get());
-            return converter.uppgActionToUppgActionDto(firstByUppg.get());
+
+            UppgAction firstByUppg = uppgActionRepository.findFirstByUppg(byId1.get());
+
+            if (firstByUppg == null)
+                return null;
+            else
+                return converter.uppgActionToUppgActionDto(firstByUppg);
         }).collect(Collectors.toList());
 
-        return converter.apiSuccess200(collect);
+        if (collect.isEmpty()) return converter.apiSuccess200("Empty List", null);
+        else
+            return converter.apiSuccess200(collect);
     }
 
 

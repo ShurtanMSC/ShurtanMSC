@@ -40,7 +40,7 @@ public class UppgController {
         return uppgActionService.getUppgsWithActionByMiningSystem(id);
     }
 
-    @GetMapping("all_by_collection_point/{id}")
+    @GetMapping("all_by_mining_system/{id}")
     public HttpEntity<?> uppgsByMiningSystem(@PathVariable Integer id) {
         return uppgActionService.getByMiningSystem(id);
     }

@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface UppgActionRepository extends JpaRepository<UppgAction,Long> {
 
-//    UppgAction findFirstByUppg(Uppg uppg);
+    UppgAction findFirstByUppg(Uppg uppg);
 
-    Optional<UppgAction> findFirstByUppg(Uppg uppg);
+//    Optional<UppgAction> findFirstByUppg(Uppg uppg);
 }

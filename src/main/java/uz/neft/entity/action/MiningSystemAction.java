@@ -26,11 +26,11 @@ public class MiningSystemAction extends AbsEntityLong {
     @ManyToOne
     private MiningSystem miningSystem;
 
-    @LastModifiedBy
-    @Column(nullable = false)
-    private String modifiedBy;
-
-    @LastModifiedDate
-    @Column(nullable = false)
-    private LocalDateTime modified;
+//    @LastModifiedBy
+//    @Column(nullable = false)
+//    private String modifiedBy;
+//
+//    @LastModifiedDate
+//    @Column(nullable = false)
+//    private LocalDateTime modified;
 }
