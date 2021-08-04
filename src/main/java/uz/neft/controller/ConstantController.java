@@ -11,7 +11,7 @@ import uz.neft.service.ConstantService;
 @RequestMapping("api/constant")
 public class ConstantController {
 
-    private ConstantService constantService;
+    private final ConstantService constantService;
 
     @Autowired
     public ConstantController(ConstantService constantService) {
