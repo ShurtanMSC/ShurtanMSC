@@ -10,6 +10,7 @@ import uz.neft.service.action.CollectionPointActionService;
 
 @RestController
 @RequestMapping("api/collection_point")
+@CrossOrigin
 public class CollectionPointController {
 
     @Autowired

@@ -13,6 +13,7 @@ import uz.neft.service.GasCompositionService;
 
 @RestController
 @RequestMapping("api/gas_composition")
+@CrossOrigin
 public class GasCompositionController {
 
     GasCompositionService compositionService;

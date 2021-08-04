@@ -9,6 +9,7 @@ import uz.neft.service.ConstantService;
 
 @RestController
 @RequestMapping("api/constant")
+@CrossOrigin
 public class ConstantController {
 
     private final ConstantService constantService;

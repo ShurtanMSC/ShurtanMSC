@@ -11,6 +11,7 @@ import uz.neft.service.action.WellActionService;
 
 @RestController
 @RequestMapping("api/well")
+@CrossOrigin
 public class WellController {
 
     @Autowired

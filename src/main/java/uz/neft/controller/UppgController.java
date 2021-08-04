@@ -10,6 +10,7 @@ import uz.neft.service.action.UppgActionService;
 
 @RestController
 @RequestMapping("api/uppg")
+@CrossOrigin
 public class UppgController {
 
     @Autowired
