@@ -45,6 +45,7 @@ public class UppgActionService {
     /**
      * Manually
      **/
+
     public HttpEntity<?> addManually(User user, UppgActionDto dto) {
 
         if (dto.getUppgId() == null) return converter.apiError400("Uppg id is null");
@@ -152,7 +153,14 @@ public class UppgActionService {
             UppgAction uppgAction = uppgActionRepository.findFirstByUppg(byId.get());
 //            if (!uppgAction.isPresent()) return converter.apiError404("uppg action not found");
 
-            UppgActionDto dto = converter.uppgActionToUppgActionDto(uppgAction);
+            UppgDto uppgDto = converter.uppgToUppgDto(byId.get());
+            UppgActionDto uppgActionDto = converter.uppgActionToUppgActionDto(uppgAction);
+
+            ObjectWithActionsDto dto=ObjectWithActionsDto
+                    .builder()
+                    .objectDto(uppgDto)
+                    .objectActionDto(uppgActionDto)
+                    .build();
 
             return converter.apiSuccess200(dto);
         } catch (Exception e) {
