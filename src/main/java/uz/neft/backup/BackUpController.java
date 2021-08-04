@@ -1,5 +1,6 @@
 package uz.neft.backup;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,11 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/backup")
 public class BackUpController {
 
+    @Autowired
+    private Test test;
     @GetMapping("")
     public HttpEntity<?> backUp() throws Exception {
         BackupMiningSystem backupMiningSystem = new BackupMiningSystem();
-        backupMiningSystem.dump();
-        return ResponseEntity.ok(HttpStatus.OK);
+
+        return ResponseEntity.ok(test.backup());
     }
 
 
