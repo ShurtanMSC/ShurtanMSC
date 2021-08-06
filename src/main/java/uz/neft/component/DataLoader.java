@@ -98,6 +98,8 @@ public class DataLoader implements CommandLineRunner {
             CollectionPoint pointtandircha=collectionPointRepository.save(new CollectionPoint("sptandircha",uppg3));
             CollectionPoint pointtandircha2=collectionPointRepository.save(new CollectionPoint("sptandircha2",uppg4));
             Well well=wellRepository.save(wellRepository.save(new Well(11,point)));
+            Well well2=wellRepository.save(wellRepository.save(new Well(12,point)));
+            Well well3=wellRepository.save(wellRepository.save(new Well(3,pointtandircha2)));
             WellAction wellAction=wellActionRepository.save(WellAction
                     .builder()
                     .user(userRepository.findById(1).get())

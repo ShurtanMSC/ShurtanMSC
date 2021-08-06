@@ -289,15 +289,7 @@ public class WellActionService {
     public HttpEntity<?> getAllByUppg(Integer id){
         try{
             if (id==null) return converter.apiError400("id is null!");
-//            Optional<MiningSystem> miningSystem = miningSystemRepository.findById(id);
-//            if (!miningSystem.isPresent()) return converter.apiError404("Mining system not found!");
-//            List<Uppg> uppgList = uppgRepository.findAllByMiningSystem(miningSystem.get());
-//            List<CollectionPoint> collectionPointList =new ArrayList<>();
             List<Well> wellList =wellRepository.findAllByUppgId(id);
-//            for (Uppg uppg : uppgList) {
-//                List<CollectionPoint> allByUppg = collectionPointRepository.findAllByUppg(uppg);
-//                collectionPointList.addAll(allByUppg);
-//            }
             return converter.apiSuccess200(wellList.stream().map(converter::wellToWellDto).collect(Collectors.toList()));
         }catch (Exception e) {
             e.printStackTrace();
@@ -321,6 +313,18 @@ public class WellActionService {
                                                             wellActionRepository
                                                                     .findFirstByWell(w)))));
             return converter.apiSuccess200(list);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409();
+        }
+    }
+
+
+    public HttpEntity<?> getAllByMiningSystem(Integer id){
+        try{
+            if (id==null) return converter.apiError400("id is null!");
+            List<Well> wellList =wellRepository.findAllByMiningSystemId(id);
+            return converter.apiSuccess200(wellList.stream().map(converter::wellToWellDto).collect(Collectors.toList()));
         }catch (Exception e) {
             e.printStackTrace();
             return converter.apiError409();

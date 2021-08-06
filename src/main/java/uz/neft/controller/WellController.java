@@ -54,6 +54,17 @@ public class WellController {
         return wellActionService.getByCollectionPoint(id);
     }
 
+
+    @GetMapping("all/mining_system/{id}")
+    public HttpEntity<?> getAllByMiningSystem(@PathVariable Integer id) {
+        return wellActionService.getAllByMiningSystem(id);
+    }
+
+    @GetMapping("all/action/uppg/{id}")
+    public HttpEntity<?> getAllActionByMiningSystem(@PathVariable Integer id) {
+        return wellActionService.getAllWithActionsByUppg(id);
+    }
+
     @GetMapping("one/{id}")
     public HttpEntity<?> getOne(@PathVariable Integer id) {
         return wellActionService.getWell(id);
