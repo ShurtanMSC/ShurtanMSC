@@ -86,12 +86,17 @@ public class DataLoader implements CommandLineRunner {
 
         try {
             MiningSystem shurtan = miningSystemRepository.save(new MiningSystem("SHURTAN"));
+            MiningSystem tandircha = miningSystemRepository.save(new MiningSystem("tandircha"));
 
             Uppg uppg = uppgRepository.save(new Uppg("uppg",shurtan));
             Uppg uppg2 = uppgRepository.save(new Uppg("uppg2",shurtan));
+            Uppg uppg3 = uppgRepository.save(new Uppg("uppgtandir",tandircha));
+            Uppg uppg4 = uppgRepository.save(new Uppg("uppgtandir2",tandircha));
             CollectionPoint point=collectionPointRepository.save(new CollectionPoint("sp",uppg));
             CollectionPoint point1=collectionPointRepository.save(new CollectionPoint("sp1",uppg));
             CollectionPoint point2=collectionPointRepository.save(new CollectionPoint("sp2",uppg2));
+            CollectionPoint pointtandircha=collectionPointRepository.save(new CollectionPoint("sptandircha",uppg3));
+            CollectionPoint pointtandircha2=collectionPointRepository.save(new CollectionPoint("sptandircha2",uppg4));
             Well well=wellRepository.save(wellRepository.save(new Well(11,point)));
             WellAction wellAction=wellActionRepository.save(WellAction
                     .builder()

@@ -101,15 +101,38 @@ public class CollectionPointActionService {
     public HttpEntity<?> getAllByMiningSystem(Integer id){
         try{
             if (id==null) return converter.apiError400("id is null!");
-            Optional<MiningSystem> miningSystem = miningSystemRepository.findById(id);
-            if (!miningSystem.isPresent()) return converter.apiError404("Mining system not found!");
-            List<Uppg> uppgList = uppgRepository.findAllByMiningSystem(miningSystem.get());
-            List<CollectionPoint> collectionPointList =new ArrayList<>();
-            for (Uppg uppg : uppgList) {
-                List<CollectionPoint> allByUppg = collectionPointRepository.findAllByUppg(uppg);
-                collectionPointList.addAll(allByUppg);
-            }
-            return converter.apiSuccess200(collectionPointList);
+//            Optional<MiningSystem> miningSystem = miningSystemRepository.findById(id);
+//            if (!miningSystem.isPresent()) return converter.apiError404("Mining system not found!");
+//            List<Uppg> uppgList = uppgRepository.findAllByMiningSystem(miningSystem.get());
+//            List<CollectionPoint> collectionPointList =new ArrayList<>();
+            List<CollectionPoint> collectionPointList =collectionPointRepository.findAllByMiningSystemId(id);
+//            for (Uppg uppg : uppgList) {
+//                List<CollectionPoint> allByUppg = collectionPointRepository.findAllByUppg(uppg);
+//                collectionPointList.addAll(allByUppg);
+//            }
+            return converter.apiSuccess200(collectionPointList.stream().map(converter::collectionPointToCollectionPointDto).collect(Collectors.toList()));
+        }catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409();
+        }
+    }
+
+    public HttpEntity<?> getAllWithActionsByMiningSystem(Integer id){
+        try{
+            if (id==null) return converter.apiError400("id is null!");
+            List<CollectionPoint> collectionPointList =collectionPointRepository.findAllByMiningSystemId(id);
+            List<ObjectWithActionsDto> list=new ArrayList<>();
+
+            collectionPointList
+                    .forEach(
+                            c->
+                            list
+                                    .add(new ObjectWithActionsDto(
+                                            converter.collectionPointToCollectionPointDto(c),
+                                            converter.collectionPointActionToCollectionPointActionDto(
+                                                    collectionPointActionRepository
+                                                    .findFirstByCollectionPoint(c)))));
+            return converter.apiSuccess200(list);
         }catch (Exception e) {
             e.printStackTrace();
             return converter.apiError409();

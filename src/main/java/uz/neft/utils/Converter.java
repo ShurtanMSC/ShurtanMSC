@@ -418,6 +418,7 @@ public class Converter {
     }
 
     public CollectionPointActionDto collectionPointActionToCollectionPointActionDto(CollectionPointAction collectionPointAction) {
+        if (collectionPointAction==null) return null;
         try {
             return CollectionPointActionDto
                     .builder()

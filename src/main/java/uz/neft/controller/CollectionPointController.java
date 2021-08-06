@@ -45,6 +45,11 @@ public class CollectionPointController {
         return collectionPointActionService.getAllByMiningSystem(id);
     }
 
+    @GetMapping("all/action/mining_system/{id}")
+    public HttpEntity<?> getAllActionByMiningSystem(@PathVariable Integer id) {
+        return collectionPointActionService.getAllWithActionsByMiningSystem(id);
+    }
+
     @GetMapping("one/{id}")
     public HttpEntity<?> getOne(@PathVariable Integer id) {
         return collectionPointActionService.getCollectionPoint(id);
