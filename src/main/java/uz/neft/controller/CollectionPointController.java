@@ -14,7 +14,7 @@ import uz.neft.service.action.CollectionPointActionService;
 public class CollectionPointController {
 
     @Autowired
-    CollectionPointActionService collectionPointActionService;
+    private CollectionPointActionService collectionPointActionService;
 
     /**
      * Manually
@@ -30,14 +30,19 @@ public class CollectionPointController {
         return collectionPointActionService.getCollectionPoints();
     }
 
-    @GetMapping("all_with_actions")
+    @GetMapping("all/actions")
     public HttpEntity<?> all() {
         return collectionPointActionService.getCollectionPointsWithActions();
     }
 
-    @GetMapping("all_by_uppg/{id}")
+    @GetMapping("all/uppg/{id}")
     public HttpEntity<?> getAllByUppg(@PathVariable Integer id) {
         return collectionPointActionService.getByUppg(id);
+    }
+
+    @GetMapping("all/mining_system/{id}")
+    public HttpEntity<?> getAllByMiningSystem(@PathVariable Integer id) {
+        return collectionPointActionService.getAllByMiningSystem(id);
     }
 
     @GetMapping("one/{id}")
@@ -45,7 +50,7 @@ public class CollectionPointController {
         return collectionPointActionService.getCollectionPoint(id);
     }
 
-    @GetMapping("with_action/{id}")
+    @GetMapping("one/action/{id}")
     public HttpEntity<?> getOneWithAction(@PathVariable Integer id) {
         return collectionPointActionService.getCollectionPointWithAction(id);
     }

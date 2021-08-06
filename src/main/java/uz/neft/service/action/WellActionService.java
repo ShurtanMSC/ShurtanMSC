@@ -261,7 +261,7 @@ public class WellActionService {
 
 
     // helper method
-    private HttpEntity<?> wellActionDtos(List<Well> wells) {
+    public HttpEntity<?> wellActionDtos(List<Well> wells) {
         if (wells.isEmpty()) return converter.apiSuccess200("Empty list");
 
         List<ObjectWithActionsDto> collect = wells.stream().map(item -> {
@@ -281,6 +281,20 @@ public class WellActionService {
 
         return converter.apiSuccess200(collect);
     }
+
+
+
+
+    public ResponseEntity<?> getCountByInWork() {
+        try {
+            return converter.apiSuccess200();
+        }catch (Exception e){
+            e.printStackTrace();
+            return converter.apiError409();
+        }
+    }
+
+
 
     /** Auto **/
 

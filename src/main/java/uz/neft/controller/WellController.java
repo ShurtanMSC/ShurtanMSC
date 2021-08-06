@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import uz.neft.dto.action.WellActionDto;
 import uz.neft.entity.User;
 import uz.neft.secret.CurrentUser;
+import uz.neft.service.WellService;
 import uz.neft.service.action.WellActionService;
 
 @RestController
@@ -16,6 +17,9 @@ public class WellController {
 
     @Autowired
     private WellActionService wellActionService;
+
+    @Autowired
+    private WellService wellService;
 
 
     /**
@@ -35,17 +39,17 @@ public class WellController {
         return wellActionService.getWells();
     }
 
-    @GetMapping("all_with_actions")
+    @GetMapping("all/actions")
     public HttpEntity<?> wellsWithAction() {
         return wellActionService.getWellsWithAction();
     }
 
-    @GetMapping("all_with_actions_by_collection_point/{id}")
+    @GetMapping("all/actions/collection_point/{id}")
     public HttpEntity<?> wellsWithActionByCollectionPoint(@PathVariable Integer id) {
         return wellActionService.getWellsWithActionByCollectionPoint(id);
     }
 
-    @GetMapping("all_by_collection_point/{id}")
+    @GetMapping("all/collection_point/{id}")
     public HttpEntity<?> wellsByCollectionPoint(@PathVariable Integer id) {
         return wellActionService.getByCollectionPoint(id);
     }
@@ -55,11 +59,21 @@ public class WellController {
         return wellActionService.getWell(id);
     }
 
-    @GetMapping("with_action/{id}")
+    @GetMapping("one/action/{id}")
     public HttpEntity<?> getOneWithAction(@PathVariable Integer id) {
         return wellActionService.getWellWithAction(id);
     }
 
+
+
+
+
+    /** Statistics **/
+
+    @GetMapping("count_by_in_work")
+    public HttpEntity<?> getCountByInWork() {
+        return wellActionService.getCountByInWork();
+    }
 
 
 

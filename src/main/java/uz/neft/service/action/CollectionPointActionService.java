@@ -5,20 +5,15 @@ import org.springframework.stereotype.Service;
 import uz.neft.dto.CollectionPointDto;
 import uz.neft.dto.action.CollectionPointActionDto;
 import uz.neft.dto.action.ObjectWithActionsDto;
-import uz.neft.entity.CollectionPoint;
-import uz.neft.entity.Uppg;
-import uz.neft.entity.User;
-import uz.neft.entity.Well;
+import uz.neft.entity.*;
 import uz.neft.entity.action.CollectionPointAction;
 import uz.neft.entity.action.WellAction;
-import uz.neft.repository.CollectionPointRepository;
-import uz.neft.repository.UppgRepository;
-import uz.neft.repository.UserRepository;
-import uz.neft.repository.WellRepository;
+import uz.neft.repository.*;
 import uz.neft.repository.action.CollectionPointActionRepository;
 import uz.neft.repository.action.WellActionRepository;
 import uz.neft.utils.Converter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,9 +28,10 @@ public class CollectionPointActionService {
     private final WellActionRepository wellActionRepository;
     private final WellRepository wellRepository;
     private final UppgRepository uppgRepository;
+    private final MiningSystemRepository miningSystemRepository;
 
 
-    public CollectionPointActionService(UserRepository userRepository, CollectionPointRepository collectionPointRepository, CollectionPointActionRepository collectionPointActionRepository, Converter converter, WellActionRepository wellActionRepository, WellRepository wellRepository, UppgRepository uppgRepository) {
+    public CollectionPointActionService(UserRepository userRepository, CollectionPointRepository collectionPointRepository, CollectionPointActionRepository collectionPointActionRepository, Converter converter, WellActionRepository wellActionRepository, WellRepository wellRepository, UppgRepository uppgRepository, MiningSystemRepository miningSystemRepository) {
         this.userRepository = userRepository;
         this.collectionPointRepository = collectionPointRepository;
         this.collectionPointActionRepository = collectionPointActionRepository;
@@ -43,6 +39,7 @@ public class CollectionPointActionService {
         this.wellActionRepository = wellActionRepository;
         this.wellRepository = wellRepository;
         this.uppgRepository = uppgRepository;
+        this.miningSystemRepository = miningSystemRepository;
     }
 
 
@@ -98,6 +95,24 @@ public class CollectionPointActionService {
         } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError409("Error in fetching all collection point names");
+        }
+    }
+
+    public HttpEntity<?> getAllByMiningSystem(Integer id){
+        try{
+            if (id==null) return converter.apiError400("id is null!");
+            Optional<MiningSystem> miningSystem = miningSystemRepository.findById(id);
+            if (!miningSystem.isPresent()) return converter.apiError404("Mining system not found!");
+            List<Uppg> uppgList = uppgRepository.findAllByMiningSystem(miningSystem.get());
+            List<CollectionPoint> collectionPointList =new ArrayList<>();
+            for (Uppg uppg : uppgList) {
+                List<CollectionPoint> allByUppg = collectionPointRepository.findAllByUppg(uppg);
+                collectionPointList.addAll(allByUppg);
+            }
+            return converter.apiSuccess200(collectionPointList);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409();
         }
     }
 

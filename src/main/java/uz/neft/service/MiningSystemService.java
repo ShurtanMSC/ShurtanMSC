@@ -104,7 +104,7 @@ public class MiningSystemService {
                     return converter.apiError404("Mining system not found");
                 }
             }
-            return converter.apiError400("Id null");
+            return converter.apiError400("Mining system id is null");
         } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError409("Error in finding mining system", e);
