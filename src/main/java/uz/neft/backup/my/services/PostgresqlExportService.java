@@ -18,9 +18,7 @@ import java.util.Properties;
 import static uz.neft.backup.my.options.PropertiesOptions.*;
 
 
-/**
- * Created by lcarretti on 30-Sep-19.
- */
+
 public class PostgresqlExportService {
 
     private Statement stmt;
