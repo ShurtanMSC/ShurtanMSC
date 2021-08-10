@@ -10,6 +10,8 @@ import uz.neft.service.MiningSystemService;
 import uz.neft.service.action.MiningSystemActionService;
 import uz.neft.service.action.WellActionService;
 
+import java.time.Month;
+
 @RestController
 @RequestMapping("api/mining_system")
 @CrossOrigin
@@ -42,6 +44,18 @@ public class MiningSystemController {
     }
 
 
+
+    @PostMapping("add/forecast")
+    public HttpEntity<?> add_forecast(@RequestParam Integer id,
+                                      @RequestParam int year,
+                                      @RequestParam Month month){
+        return miningSystemActionService.addForecast(id,year,month);
+    }
+
+    @GetMapping("all/forecast")
+    public HttpEntity<?> all_forecast(){
+        return miningSystemActionService.allForecast();
+    }
 
 
     /**
