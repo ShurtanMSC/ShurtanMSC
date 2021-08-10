@@ -45,17 +45,7 @@ public class MiningSystemController {
 
 
 
-    @PostMapping("add/forecast")
-    public HttpEntity<?> add_forecast(@RequestParam Integer id,
-                                      @RequestParam int year,
-                                      @RequestParam Month month){
-        return miningSystemActionService.addForecast(id,year,month);
-    }
 
-    @GetMapping("all/forecast")
-    public HttpEntity<?> all_forecast(){
-        return miningSystemActionService.allForecast();
-    }
 
 
     /**
