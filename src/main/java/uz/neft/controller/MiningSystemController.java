@@ -46,44 +46,10 @@ public class MiningSystemController {
 
 
 
-
-
     /**
      * Manually
      **/
 
-//
-//    @GetMapping("all")
-//    public HttpEntity<?> allWells() {
-//        return wellActionService.getWells();
-//    }
-//
-//    @GetMapping("all_with_actions")
-//    public HttpEntity<?> wellsWithAction() {
-//        return wellActionService.getWellsWithAction();
-//    }
-//
-//    @GetMapping("all_with_actions_by_collection_point/{id}")
-//    public HttpEntity<?> wellsWithActionByCollectionPoint(@PathVariable Integer id) {
-//        return wellActionService.getWellsWithActionByCollectionPoint(id);
-//    }
-//
-//    @GetMapping("all_by_collection_point/{id}")
-//    public HttpEntity<?> wellsByCollectionPoint(@PathVariable Integer id) {
-//        return wellActionService.getByCollectionPoint(id);
-//    }
-//
-//    @GetMapping("one/{id}")
-//    public HttpEntity<?> getOne(@PathVariable Integer id) {
-//        return wellActionService.getWell(id);
-//    }
-//
-//    @GetMapping("with_action/{id}")
-//    public HttpEntity<?> getOneWithAction(@PathVariable Integer id) {
-//        return wellActionService.getWellWithAction(id);
-//    }
-//
-//
 
 
     /** Auto **/
