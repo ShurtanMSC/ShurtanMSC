@@ -16,10 +16,10 @@ import java.time.Month;
 @Entity
 @Builder
 @Table(uniqueConstraints={@UniqueConstraint(columnNames = {"year", "month", "mining_system_id"})})
-public class MiningSystemForecast extends AbsEntityInteger {
+public class ForecastGas extends AbsEntityInteger {
     private int year;
     private Month month;
-    private String expandGas;
+    private String expand;
     @ManyToOne
     private MiningSystem miningSystem;
 }

@@ -6,17 +6,15 @@ import org.springframework.stereotype.Service;
 import uz.neft.dto.MiningSystemDto;
 import uz.neft.dto.action.ObjectWithActionsDto;
 import uz.neft.entity.MiningSystem;
-import uz.neft.entity.MiningSystemForecast;
 import uz.neft.entity.action.MiningSystemAction;
 import uz.neft.repository.*;
 import uz.neft.repository.action.MiningSystemActionRepository;
 import uz.neft.repository.constants.ConstantRepository;
 import uz.neft.repository.constants.MiningSystemConstantRepository;
-import uz.neft.repository.constants.ForecastRepository;
+import uz.neft.repository.constants.ForecastGasRepository;
 import uz.neft.service.Calculator;
 import uz.neft.utils.Converter;
 
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,10 +30,10 @@ public class MiningSystemActionService {
     private final UserRepository userRepository;
     private final CollectionPointRepository collectionPointRepository;
     private final MiningSystemActionRepository miningSystemActionRepository;
-    private final ForecastRepository forecastRepository;
+    private final ForecastGasRepository forecastGasRepository;
 
 
-    public MiningSystemActionService(MiningSystemActionRepository miningSystemActionRepository, MiningSystemConstantRepository miningSystemConstantRepository, Converter converter, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository, Calculator calculator, ConstantRepository constantRepository, UserRepository userRepository, CollectionPointRepository collectionPointRepository, MiningSystemActionRepository findAllByCollectionPoint, MiningSystemRepository miningSystemRepository1, ForecastRepository forecastRepository) {
+    public MiningSystemActionService(MiningSystemActionRepository miningSystemActionRepository, MiningSystemConstantRepository miningSystemConstantRepository, Converter converter, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository, Calculator calculator, ConstantRepository constantRepository, UserRepository userRepository, CollectionPointRepository collectionPointRepository, MiningSystemActionRepository findAllByCollectionPoint, MiningSystemRepository miningSystemRepository1, ForecastGasRepository forecastGasRepository) {
         this.miningSystemRepository = miningSystemRepository;
         this.converter = converter;
         this.miningSystemMiningSystemGasCompositionRepository = miningSystemMiningSystemGasCompositionRepository;
@@ -44,7 +42,7 @@ public class MiningSystemActionService {
         this.userRepository = userRepository;
         this.collectionPointRepository = collectionPointRepository;
         this.miningSystemActionRepository = miningSystemActionRepository;
-        this.forecastRepository = forecastRepository;
+        this.forecastGasRepository = forecastGasRepository;
     }
 
 
