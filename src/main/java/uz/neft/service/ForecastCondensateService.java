@@ -37,7 +37,7 @@ public class ForecastCondensateService implements ForecastMethodInterface{
                     .miningSystem(miningSystem.get())
                     .month(month)
                     .year(year)
-                    .expand("2131")
+                    .forecast(300)
                     .build();
             ForecastCondensate save = forecastCondensateRepository.save(forecast);
             return converter.apiSuccess201("Forecast created",save);
@@ -59,16 +59,40 @@ public class ForecastCondensateService implements ForecastMethodInterface{
 
     @Override
     public HttpEntity<?> allForecastByObjectId(Integer id) {
-        return null;
+        try {
+            if (id==null) return converter.apiError400("id is null");
+            Optional<MiningSystem> miningSystem = miningSystemRepository.findById(id);
+            if (!miningSystem.isPresent()) return converter.apiError404("Mining system not found");
+            return converter.apiSuccess200(forecastCondensateRepository.findAllByMiningSystem(miningSystem.get()));
+        }catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409();
+        }
     }
 
     @Override
     public HttpEntity<?> allForecastByObjectAndYearBetween(Integer id, int from, int to) {
-        return null;
+        try {
+            if (id==null) return converter.apiError400("id is null");
+            Optional<MiningSystem> miningSystem = miningSystemRepository.findById(id);
+            if (!miningSystem.isPresent()) return converter.apiError404("Mining system not found");
+            return converter.apiSuccess200(forecastCondensateRepository.findAllByMiningSystemAndYearBetween(miningSystem.get(),from,to));
+        }catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409();
+        }
     }
 
     @Override
     public HttpEntity<?> allForecastByObjectAndYear(Integer id, int year) {
-        return null;
+        try {
+            if (id==null) return converter.apiError400("id is null");
+            Optional<MiningSystem> miningSystem = miningSystemRepository.findById(id);
+            if (!miningSystem.isPresent()) return converter.apiError404("Mining system not found");
+            return converter.apiSuccess200(forecastCondensateRepository.findAllByMiningSystemAndYearBetween(miningSystem.get(),year,year));
+        }catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409();
+        }
     }
 }
