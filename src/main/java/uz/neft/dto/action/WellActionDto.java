@@ -33,4 +33,7 @@ public class WellActionDto {
 
     // Vaqt
     private String date;
+
+    private int perforation_min;
+    private int perforation_max;
 }

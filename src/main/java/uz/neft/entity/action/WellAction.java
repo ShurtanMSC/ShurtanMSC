@@ -40,6 +40,8 @@ public class WellAction extends AbsEntityLong {
     @ManyToOne
     private Well well;
 
+    private int perforation_min;
+    private int perforation_max;
 
 //    @LastModifiedBy
 //    @Column(nullable = false)

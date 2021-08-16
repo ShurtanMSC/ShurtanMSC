@@ -19,7 +19,8 @@ import java.time.Month;
 public class ForecastGas extends AbsEntityInteger {
     private int year;
     private Month month;
-    private String expand;
+    private double forecast;
+    private double real;
     @ManyToOne
     private MiningSystem miningSystem;
 }

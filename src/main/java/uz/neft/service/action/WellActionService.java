@@ -53,11 +53,9 @@ public class WellActionService {
         Optional<Well> well = wellRepository.findById(dto.getWellId());
 //        if (user == null) return converter.apiError();
         if (!well.isPresent()) return converter.apiError404("Well not found!");
-
         Integer miningSystemId = well.get().getCollectionPoint().getUppg().getMiningSystem().getId();
         MiningSystem miningSystem = well.get().getCollectionPoint().getUppg().getMiningSystem();
-
-
+        Optional<WellAction> oldAction = wellActionRepository.findFirstByWell(well.get());
         /**
          * List miningSystemGasCompositions
          **/
@@ -159,7 +157,6 @@ public class WellActionService {
                     .well(well.get())
                     .expend(D_well)
                     .build();
-
             WellAction save = wellActionRepository.save(wellAction);
 
             WellActionDto wellActionDto = converter.wellActionToWellActionDto(save);
@@ -242,11 +239,11 @@ public class WellActionService {
             Optional<Well> byId = wellRepository.findById(id);
             if (!byId.isPresent()) return converter.apiError404("well not found");
 
-            WellAction firstByWell = wellActionRepository.findFirstByWell(byId.get());
+            Optional<WellAction> firstByWell = wellActionRepository.findFirstByWell(byId.get());
 //            if (!firstByWell.isPresent()) return converter.apiError404("well action not found");
 
             WellDto wellDto = converter.wellToWellDto(byId.get());
-            WellActionDto wellActionDto = converter.wellActionToWellActionDto(firstByWell);
+            WellActionDto wellActionDto = converter.wellActionToWellActionDto(firstByWell.get());
 
             ObjectWithActionsDto dto=ObjectWithActionsDto
                     .builder()
@@ -269,10 +266,10 @@ public class WellActionService {
         List<ObjectWithActionsDto> collect = wells.stream().map(item -> {
             Optional<Well> byId1 = wellRepository.findById(item.getId());
 
-            WellAction firstByWell = wellActionRepository.findFirstByWell(byId1.get());
+            Optional<WellAction> firstByWell = wellActionRepository.findFirstByWell(byId1.get());
 
             WellDto wellDto = converter.wellToWellDto(byId1.get());
-            WellActionDto wellActionDto = converter.wellActionToWellActionDto(firstByWell);
+            WellActionDto wellActionDto = converter.wellActionToWellActionDto(firstByWell.get());
 
             return ObjectWithActionsDto
                     .builder()
@@ -311,7 +308,7 @@ public class WellActionService {
                                                     converter.wellToWellDto(w),
                                                     converter.wellActionToWellActionDto(
                                                             wellActionRepository
-                                                                    .findFirstByWell(w)))));
+                                                                    .findFirstByWell(w).get()))));
             return converter.apiSuccess200(list);
         }catch (Exception e) {
             e.printStackTrace();

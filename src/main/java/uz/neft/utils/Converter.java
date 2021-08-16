@@ -410,6 +410,8 @@ public class Converter {
                     .rpl(wellAction.getRpl())
                     .status(wellAction.getStatus())
                     .date(wellAction.getCreatedAt().toString())
+                    .perforation_min(wellAction.getPerforation_min())
+                    .perforation_max(wellAction.getPerforation_max())
                     .build();
         } catch (Exception e) {
             e.printStackTrace();

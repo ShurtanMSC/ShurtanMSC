@@ -58,9 +58,9 @@ public class CollectionPointActionService {
         double D_sp = 0;
 
         for (Well well : allByCollectionPoint) {
-            WellAction wellAction = wellActionRepository.findFirstByWell(well);
-            if (wellAction!=null) {
-                D_sp += wellAction.getExpend();
+            Optional<WellAction> wellAction = wellActionRepository.findFirstByWell(well);
+            if (wellAction.isPresent()) {
+                D_sp += wellAction.get().getExpend();
             }
         }
 
