@@ -34,12 +34,12 @@ public class MiningSystemController {
     }
 
     @GetMapping("one/action/{id}")
-    public HttpEntity<?> with_action(@PathVariable Integer id){
+    public HttpEntity<?> miningSystemWithAction(@PathVariable Integer id){
         return miningSystemActionService.findByIdWithAction(id);
     }
 
     @GetMapping("all/actions")
-    public HttpEntity<?> all_with_actions(){
+    public HttpEntity<?> allWithAction(){
         return miningSystemActionService.allWithActions();
     }
 

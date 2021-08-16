@@ -44,7 +44,7 @@ public class GasCompositionController {
     }
 
     @GetMapping("{id}")
-    public HttpEntity<?> gasCompositionById(@PathVariable Integer id) {
+    public HttpEntity<?> getGasCompositionById(@PathVariable Integer id) {
         return compositionService.findById(id);
     }
 
@@ -71,7 +71,7 @@ public class GasCompositionController {
     }
 
     @GetMapping("molar/{id}")
-    public HttpEntity<?> gasCMiningSystemGasComposition(@PathVariable Integer id) {
+    public HttpEntity<?> getMiningSystemGasComposition(@PathVariable Integer id) {
         return compositionService.findByIdMSGC(id);
     }
 

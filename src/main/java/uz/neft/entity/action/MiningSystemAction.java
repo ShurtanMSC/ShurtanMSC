@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @Entity
 public class MiningSystemAction extends AbsEntityLong {
 
-    private double cost;
+    private double expend;
 
     @ManyToOne
     private MiningSystem miningSystem;

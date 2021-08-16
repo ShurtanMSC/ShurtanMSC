@@ -26,12 +26,12 @@ public class CollectionPointController {
     }
 
     @GetMapping("all")
-    public HttpEntity<?> allSP() {
+    public HttpEntity<?> allCollectionPoints() {
         return collectionPointActionService.getCollectionPoints();
     }
 
     @GetMapping("all/actions")
-    public HttpEntity<?> all() {
+    public HttpEntity<?> allCollectionsWithAction() {
         return collectionPointActionService.getCollectionPointsWithActions();
     }
 
@@ -46,7 +46,7 @@ public class CollectionPointController {
     }
 
     @GetMapping("all/action/mining_system/{id}")
-    public HttpEntity<?> getAllActionByMiningSystem(@PathVariable Integer id) {
+    public HttpEntity<?> collectionsWithActionByMiningSystem(@PathVariable Integer id) {
         return collectionPointActionService.getAllWithActionsByMiningSystem(id);
     }
 

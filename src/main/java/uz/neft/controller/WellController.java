@@ -61,7 +61,7 @@ public class WellController {
     }
 
     @GetMapping("all/action/uppg/{id}")
-    public HttpEntity<?> getAllActionByMiningSystem(@PathVariable Integer id) {
+    public HttpEntity<?> getAllActionByUppg(@PathVariable Integer id) {
         return wellActionService.getAllWithActionsByUppg(id);
     }
 

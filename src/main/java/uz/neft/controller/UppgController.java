@@ -32,7 +32,7 @@ public class UppgController {
     }
 
     @GetMapping("all/actions")
-    public HttpEntity<?> uppgsWithActionBy() {
+    public HttpEntity<?> uppgsWithAction() {
         return uppgActionService.getUppgsWithAction();
     }
 

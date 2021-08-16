@@ -248,7 +248,7 @@ public class WellActionService {
             WellDto wellDto = converter.wellToWellDto(byId.get());
             WellActionDto wellActionDto = converter.wellActionToWellActionDto(firstByWell);
 
-            ObjectWithActionsDto dto=ObjectWithActionsDto
+            ObjectWithActionsDto dto = ObjectWithActionsDto
                     .builder()
                     .objectDto(wellDto)
                     .objectActionDto(wellActionDto)
@@ -285,27 +285,26 @@ public class WellActionService {
     }
 
 
-
-    public HttpEntity<?> getAllByUppg(Integer id){
-        try{
-            if (id==null) return converter.apiError400("id is null!");
-            List<Well> wellList =wellRepository.findAllByUppgId(id);
+    public HttpEntity<?> getAllByUppg(Integer id) {
+        try {
+            if (id == null) return converter.apiError400("id is null!");
+            List<Well> wellList = wellRepository.findAllByUppgId(id);
             return converter.apiSuccess200(wellList.stream().map(converter::wellToWellDto).collect(Collectors.toList()));
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError409();
         }
     }
 
-    public HttpEntity<?> getAllWithActionsByUppg(Integer id){
-        try{
-            if (id==null) return converter.apiError400("id is null!");
-            List<Well> wellList =wellRepository.findAllByUppgId(id);
-            List<ObjectWithActionsDto> list=new ArrayList<>();
+    public HttpEntity<?> getAllWithActionsByUppg(Integer id) {
+        try {
+            if (id == null) return converter.apiError400("id is null!");
+            List<Well> wellList = wellRepository.findAllByUppgId(id);
+            List<ObjectWithActionsDto> list = new ArrayList<>();
 
             wellList
                     .forEach(
-                            w->
+                            w ->
                                     list
                                             .add(new ObjectWithActionsDto(
                                                     converter.wellToWellDto(w),
@@ -313,35 +312,33 @@ public class WellActionService {
                                                             wellActionRepository
                                                                     .findFirstByWell(w)))));
             return converter.apiSuccess200(list);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError409();
         }
     }
 
 
-    public HttpEntity<?> getAllByMiningSystem(Integer id){
-        try{
-            if (id==null) return converter.apiError400("id is null!");
-            List<Well> wellList =wellRepository.findAllByMiningSystemId(id);
+    public HttpEntity<?> getAllByMiningSystem(Integer id) {
+        try {
+            if (id == null) return converter.apiError400("id is null!");
+            List<Well> wellList = wellRepository.findAllByMiningSystemId(id);
             return converter.apiSuccess200(wellList.stream().map(converter::wellToWellDto).collect(Collectors.toList()));
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError409();
         }
     }
-
 
 
     public ResponseEntity<?> getCountByInWork() {
         try {
             return converter.apiSuccess200();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError409();
         }
     }
-
 
 
     /** Auto **/
