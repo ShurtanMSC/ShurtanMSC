@@ -1,6 +1,7 @@
 package uz.neft.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.ElectricityDto;
@@ -105,6 +106,18 @@ public class ElectricityService {
                 else electricityList.add(null);
             }
             return converter.apiSuccess200("all",electricityList);
+        }catch (Exception e){
+            e.printStackTrace();
+            return converter.apiError409();
+        }
+    }
+
+    public ResponseEntity<?> delete(Integer id) {
+        try {
+            if (id==null) return converter.apiError400("Id is null");
+            if (!electricityRepository.existsById(id)) return converter.apiError404("Electricity not found!");
+            electricityRepository.deleteById(id);
+            return converter.apiSuccess200("Deleted");
         }catch (Exception e){
             e.printStackTrace();
             return converter.apiError409();
