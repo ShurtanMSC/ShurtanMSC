@@ -32,11 +32,21 @@ public class WellService {
     public ResponseEntity<?> save(WellDto dto) {
         try {
             if (dto.getId() == null) {
-                Well well = new Well();
+
                 Optional<CollectionPoint> byIdCollectionPoint = collectionPointRepository.findById(dto.getCollectionPointId());
                 if (byIdCollectionPoint.isPresent()) {
-                    well.setNumber(dto.getNumber());
-                    well.setCollectionPoint(byIdCollectionPoint.get());
+                    Well well = Well
+                            .builder()
+                            .collectionPoint(byIdCollectionPoint.get())
+                            .altitude(dto.getAltitude())
+                            .commissioningDate(dto.getCommissioningDate())
+                            .depth(dto.getDepth())
+                            .drillingStartDate(dto.getDrillingStartDate())
+                            .horizon(dto.getHorizon())
+                            .number(dto.getNumber())
+                            .x(dto.getX())
+                            .y(dto.getY())
+                            .build();
                     Well save = wellRepository.save(well);
                     WellDto wellDto = converter.wellToWellDto(save);
                     return converter.apiSuccess201("Well saved", wellDto);
@@ -62,6 +72,13 @@ public class WellService {
                     editWell = byId.get();
                     editWell.setNumber(dto.getNumber());
                     editWell.setCollectionPoint(byIdCollectionPoint.get());
+                    editWell.setAltitude(dto.getAltitude());
+                    editWell.setCommissioningDate(dto.getCommissioningDate());
+                    editWell.setDepth(dto.getDepth());
+                    editWell.setDrillingStartDate(dto.getDrillingStartDate());
+                    editWell.setHorizon(dto.getHorizon());
+                    editWell.setX(dto.getX());
+                    editWell.setY(dto.getY());
                     Well editedWell = wellRepository.save(editWell);
                     WellDto wellDto = converter.wellToWellDto(editedWell);
                     return converter.apiSuccess200("Well Edited", wellDto);

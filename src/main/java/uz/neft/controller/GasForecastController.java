@@ -9,9 +9,9 @@ import uz.neft.service.MiningSystemService;
 import java.time.Month;
 
 @RestController
-@RequestMapping("api/forecast")
+@RequestMapping("api/forecast/gas")
 @CrossOrigin
-public class ForecastController {
+public class GasForecastController {
     @Autowired
     private MiningSystemService miningSystemService;
     @Autowired

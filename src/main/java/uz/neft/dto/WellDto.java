@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
 
 @Data
 @AllArgsConstructor
@@ -15,5 +17,14 @@ public class WellDto {
     private Integer id;
     private Integer number;
     private Integer collectionPointId;
+
+    private Timestamp commissioningDate;
+    private Timestamp drillingStartDate;
+
+    private String horizon;
+    private double altitude;
+    private double depth;
+    private double x;
+    private double y;
 
 }

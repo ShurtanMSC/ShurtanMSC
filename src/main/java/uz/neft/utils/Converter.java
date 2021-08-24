@@ -347,6 +347,13 @@ public class Converter {
                     .builder()
                     .id(well.getId())
                     .number(well.getNumber())
+                    .horizon(well.getHorizon())
+                    .altitude(well.getAltitude())
+                    .commissioningDate(well.getCommissioningDate())
+                    .depth(well.getDepth())
+                    .drillingStartDate(well.getDrillingStartDate())
+                    .x(well.getX())
+                    .y(well.getY())
                     .collectionPointId(well.getCollectionPoint().getId())
                     .build();
         } catch (Exception e) {
