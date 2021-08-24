@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import uz.neft.entity.enums.WellCategory;
 
 import java.sql.Timestamp;
 
@@ -26,5 +27,6 @@ public class WellDto {
     private double depth;
     private double x;
     private double y;
+    private WellCategory category;
 
 }

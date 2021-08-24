@@ -46,6 +46,7 @@ public class WellService {
                             .number(dto.getNumber())
                             .x(dto.getX())
                             .y(dto.getY())
+                            .category(dto.getCategory())
                             .build();
                     Well save = wellRepository.save(well);
                     WellDto wellDto = converter.wellToWellDto(save);
@@ -79,6 +80,7 @@ public class WellService {
                     editWell.setHorizon(dto.getHorizon());
                     editWell.setX(dto.getX());
                     editWell.setY(dto.getY());
+                    editWell.setCategory(dto.getCategory());
                     Well editedWell = wellRepository.save(editWell);
                     WellDto wellDto = converter.wellToWellDto(editedWell);
                     return converter.apiSuccess200("Well Edited", wellDto);

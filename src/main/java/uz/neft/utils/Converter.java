@@ -355,6 +355,7 @@ public class Converter {
                     .x(well.getX())
                     .y(well.getY())
                     .collectionPointId(well.getCollectionPoint().getId())
+                    .category(well.getCategory())
                     .build();
         } catch (Exception e) {
             e.printStackTrace();
