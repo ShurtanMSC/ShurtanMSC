@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import uz.neft.secret.JwtFilter;
 import uz.neft.service.AuthService;
@@ -56,6 +57,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf()
                 .disable()
+//                .exceptionHandling().accessDeniedHandler(accessDeniedHandler())
+//                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
@@ -75,4 +78,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
         http.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
     }
+
+//    @Bean
+//    public AccessDeniedHandler accessDeniedHandler(){
+//        return new CustomAccessDeniedHandler();
+//    }
+
 }

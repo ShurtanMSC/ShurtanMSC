@@ -85,7 +85,8 @@ public class DataLoader implements CommandLineRunner {
 //        }
 
         try {
-            MiningSystem shurtan = miningSystemRepository.save(new MiningSystem("SHURTAN"));
+
+            MiningSystem shurtan = miningSystemRepository.save(new MiningSystem(InitialNames.SHURTAN));
             MiningSystem tandircha = miningSystemRepository.save(new MiningSystem("tandircha"));
 
             Uppg uppg = uppgRepository.save(new Uppg("uppg",shurtan));

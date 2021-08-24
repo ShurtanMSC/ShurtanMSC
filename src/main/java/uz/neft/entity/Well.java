@@ -25,6 +25,11 @@ public class Well extends AbsEntityInteger {
     @ManyToOne
     private CollectionPoint collectionPoint;
 
+    public Well(@NotNull Integer number, CollectionPoint collectionPoint) {
+        this.number = number;
+        this.collectionPoint = collectionPoint;
+    }
+
     private Timestamp commissioningDate;
     private Timestamp drillingStartDate;
 
