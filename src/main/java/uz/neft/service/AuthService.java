@@ -44,8 +44,6 @@ public class AuthService implements UserDetailsService {
 
     public ResToken signIn(SignIn signIn) {
         try {
-//            System.out.println("sign in " + signIn.getPassword());
-//            System.out.println("sign in " + signIn.getUsername());
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(signIn.getUsername(), signIn.getPassword())
             );

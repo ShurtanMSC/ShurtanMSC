@@ -79,6 +79,75 @@ public class DataLoader implements CommandLineRunner {
                             .username("admin")
                             .build()
             );
+            userRepository.save(
+                    User
+                            .builder()
+                            .active(true)
+                            .email("operator")
+                            .password(passwordEncoder.encode("operator"))
+                            .fio("operator")
+                            .phone("+998993793877")
+                            .roles(Collections.singleton(operator))
+                            .username("operator")
+                            .build()
+            );
+
+            userRepository.save(
+                    User
+                            .builder()
+                            .active(true)
+                            .email("employee")
+                            .password(passwordEncoder.encode("employee"))
+                            .fio("employee")
+                            .phone("+998993793877")
+                            .roles(Collections.singleton(employee))
+                            .username("employee")
+                            .build()
+            );
+
+            userRepository.save(
+                    User
+                            .builder()
+                            .active(true)
+                            .email("energetic")
+                            .password(passwordEncoder.encode("energetic"))
+                            .fio("energetic")
+                            .phone("+998993793877")
+                            .roles(Collections.singleton(energetic))
+                            .username("energetic")
+                            .build()
+            );
+
+            userRepository.save(
+                    User
+                            .builder()
+                            .active(true)
+                            .email("metrologist")
+                            .password(passwordEncoder.encode("metrologist"))
+                            .fio("metrologist")
+                            .phone("+998993793877")
+                            .roles(Collections.singleton(metrologist))
+                            .username("metrologist")
+                            .build()
+            );
+
+            userRepository.save(
+                    User
+                            .builder()
+                            .active(true)
+                            .email("geologist")
+                            .password(passwordEncoder.encode("geologist"))
+                            .fio("geologist")
+                            .phone("+998993793877")
+                            .roles(Collections.singleton(metrologist))
+                            .username("geologist")
+                            .build()
+            );
+
+
+
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
