@@ -59,11 +59,11 @@
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui -->
-		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>1.5.10</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.springdoc</groupId>-->
+<!--			<artifactId>springdoc-openapi-ui</artifactId>-->
+<!--			<version>1.5.10</version>-->
+<!--		</dependency>-->
 
 <!--		&lt;!&ndash; https://mvnrepository.com/artifact/com.github.ludoviccarretti/postgresql-backup4j &ndash;&gt;-->
 <!--		<dependency>-->
