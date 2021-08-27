@@ -24,54 +24,54 @@ public class GasCompositionController {
     }
 
     @PostMapping("add")
-    public HttpEntity<?> saveGasComposition(@RequestBody GasCompositionDto dto) {
+    public HttpEntity<?> add(@RequestBody GasCompositionDto dto) {
         return compositionService.save(dto);
     }
 
     @PutMapping("edit")
-    public HttpEntity<?> editGasComposition(@RequestBody GasCompositionDto dto) {
+    public HttpEntity<?> edit(@RequestBody GasCompositionDto dto) {
         return compositionService.edit(dto);
     }
 
     @DeleteMapping("delete/{id}")
-    public HttpEntity<?> deleteGasComposition(@PathVariable Integer id) {
+    public HttpEntity<?> delete(@PathVariable Integer id) {
         return compositionService.delete(id);
     }
 
     @GetMapping("all")
-    public HttpEntity<?> allGasComposition() {
+    public HttpEntity<?> all() {
         return compositionService.findAll();
     }
 
     @GetMapping("{id}")
-    public HttpEntity<?> getGasCompositionById(@PathVariable Integer id) {
+    public HttpEntity<?> one(@PathVariable Integer id) {
         return compositionService.findById(id);
     }
 
     // Molar fractions CRUD
 
     @PostMapping("molar/add")
-    public HttpEntity<?> saveMiningSystemGasComposition(@RequestBody MiningSystemGasCompositionDto dto) {
+    public HttpEntity<?> addMolar(@RequestBody MiningSystemGasCompositionDto dto) {
         return compositionService.saveMSGC(dto);
     }
 
     @PutMapping("molar/edit")
-    public HttpEntity<?> editMiningSystemGasComposition(@RequestBody MiningSystemGasCompositionDto dto) {
+    public HttpEntity<?> editMolar(@RequestBody MiningSystemGasCompositionDto dto) {
         return compositionService.editMSGC(dto);
     }
 
     @DeleteMapping("molar/delete/{id}")
-    public HttpEntity<?> deleteMiningSystemGasComposition(@PathVariable Integer id) {
+    public HttpEntity<?> deleteMolar(@PathVariable Integer id) {
         return compositionService.deleteMSGC(id);
     }
 
     @GetMapping("molar/all")
-    public HttpEntity<?> allMiningSystemGasComposition() {
+    public HttpEntity<?> allMolar() {
         return compositionService.findAllMSGCs();
     }
 
     @GetMapping("molar/{id}")
-    public HttpEntity<?> getMiningSystemGasComposition(@PathVariable Integer id) {
+    public HttpEntity<?> oneMolar(@PathVariable Integer id) {
         return compositionService.findByIdMSGC(id);
     }
 

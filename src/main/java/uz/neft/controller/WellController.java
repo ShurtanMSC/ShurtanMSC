@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import uz.neft.dto.WellDto;
 import uz.neft.dto.action.WellActionDto;
 import uz.neft.entity.User;
 import uz.neft.secret.CurrentUser;
@@ -34,10 +35,32 @@ public class WellController {
     }
 
 
+    @PostMapping("add")
+    public HttpEntity<?> saveWell(@RequestBody WellDto dto) {
+        return wellService.save(dto);
+    }
+
+    @PutMapping("edit")
+    public HttpEntity<?> editWell(@RequestBody WellDto dto) {
+        return wellService.edit(dto);
+    }
+
+    @DeleteMapping("delete/{id}")
+    public HttpEntity<?> deleteWell(@PathVariable Integer id) {
+        return wellService.delete(id);
+    }
+
     @GetMapping("all")
     public HttpEntity<?> allWells() {
-        return wellActionService.getWells();
+        return wellService.findAll();
     }
+
+    @GetMapping("{id}")
+    public HttpEntity<?> wellById(@PathVariable Integer id) {
+        return wellService.findById(id);
+    }
+
+
 
     @GetMapping("all/actions")
     public HttpEntity<?> wellsWithAction() {

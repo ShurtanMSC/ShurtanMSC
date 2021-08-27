@@ -12,7 +12,7 @@ import java.time.Month;
 @RestController
 @RequestMapping("api/forecast/condensate")
 @CrossOrigin
-public class CondensateForecastController {
+public class ForecastCondensateController {
     @Autowired
     private MiningSystemService miningSystemService;
     @Autowired
@@ -21,29 +21,29 @@ public class CondensateForecastController {
 
 
     @PostMapping("add")
-    public HttpEntity<?> addForecast(@RequestParam Integer id,
+    public HttpEntity<?> add(@RequestParam Integer id,
                                       @RequestParam int year,
                                       @RequestParam Month month){
         return forecastCondensateService.addForecast(id,year,month);
     }
 
     @GetMapping("all")
-    public HttpEntity<?> allForecast(){
+    public HttpEntity<?> all(){
         return forecastCondensateService.allForecast();
     }
 
     @GetMapping("all/mining_system/{id}")
-    public HttpEntity<?> allForecast_by_mining_system_id(@PathVariable Integer id){
+    public HttpEntity<?> allByMiningSystemId(@PathVariable Integer id){
         return forecastCondensateService.allForecastByObjectId(id);
     }
 
     @GetMapping("all/mining_system/{id}/{year}")
-    public HttpEntity<?> allForecast_by_mining_system_id_and_year(@PathVariable Integer id, @PathVariable int year){
+    public HttpEntity<?> allByMiningSystemIdAndYear(@PathVariable Integer id, @PathVariable int year){
         return forecastCondensateService.allForecastByObjectAndYear(id,year);
     }
 
     @GetMapping("all/mining_system/{id}/{from}/{to}")
-    public HttpEntity<?> allForecast_by_mining_system_id_and_year_between(@PathVariable Integer id, @PathVariable int from, @PathVariable int to){
+    public HttpEntity<?> allByMiningSystemIdAndYearBetween(@PathVariable Integer id, @PathVariable int from, @PathVariable int to){
         return forecastCondensateService.allForecastByObjectAndYearBetween(id,from,to);
     }
 }

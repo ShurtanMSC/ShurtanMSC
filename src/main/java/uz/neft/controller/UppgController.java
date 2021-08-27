@@ -3,9 +3,11 @@ package uz.neft.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.*;
+import uz.neft.dto.UppgDto;
 import uz.neft.dto.action.UppgActionDto;
 import uz.neft.entity.User;
 import uz.neft.secret.CurrentUser;
+import uz.neft.service.UppgService;
 import uz.neft.service.action.UppgActionService;
 
 @RestController
@@ -14,8 +16,9 @@ import uz.neft.service.action.UppgActionService;
 public class UppgController {
 
     @Autowired
-    UppgActionService uppgActionService;
-
+    private UppgActionService uppgActionService;
+    @Autowired
+    private UppgService uppgService;
     /**
      * Manually
      **/
@@ -26,10 +29,33 @@ public class UppgController {
     }
 
 
+    @PostMapping("add")
+    public HttpEntity<?> saveUppg(@RequestBody UppgDto dto) {
+        return uppgService.save(dto);
+    }
+
+    @PutMapping("edit")
+    public HttpEntity<?> editUppg(@RequestBody UppgDto dto) {
+        return uppgService.edit(dto);
+    }
+
+    @DeleteMapping("delete/{id}")
+    public HttpEntity<?> deleteUppg(@PathVariable Integer id) {
+        return uppgService.delete(id);
+    }
+
     @GetMapping("all")
     public HttpEntity<?> allUppgs() {
-        return uppgActionService.getUppgs();
+        return uppgService.findAll();
     }
+
+    @GetMapping("{id}")
+    public HttpEntity<?> uppgById(@PathVariable Integer id) {
+        return uppgService.findById(id);
+    }
+
+
+
 
     @GetMapping("all/actions")
     public HttpEntity<?> uppgsWithAction() {

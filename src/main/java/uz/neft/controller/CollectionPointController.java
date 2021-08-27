@@ -3,9 +3,11 @@ package uz.neft.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.*;
+import uz.neft.dto.CollectionPointDto;
 import uz.neft.dto.action.CollectionPointActionDto;
 import uz.neft.entity.User;
 import uz.neft.secret.CurrentUser;
+import uz.neft.service.CollectionPointService;
 import uz.neft.service.action.CollectionPointActionService;
 
 @RestController
@@ -15,6 +17,37 @@ public class CollectionPointController {
 
     @Autowired
     private CollectionPointActionService collectionPointActionService;
+    @Autowired
+    private CollectionPointService collectionPointService;
+
+
+
+    @PostMapping("add")
+    public HttpEntity<?> add(@RequestBody CollectionPointDto dto) {
+        return collectionPointService.save(dto);
+    }
+
+    @PutMapping("edit")
+    public HttpEntity<?> edit(@RequestBody CollectionPointDto dto) {
+        return collectionPointService.edit(dto);
+    }
+
+    @DeleteMapping("delete/{id}")
+    public HttpEntity<?> delete(@PathVariable Integer id) {
+        return collectionPointService.delete(id);
+    }
+
+    @GetMapping("all")
+    public HttpEntity<?> all() {
+        return collectionPointService.findAll();
+    }
+
+    @GetMapping("{id}")
+    public HttpEntity<?> one(@PathVariable Integer id) {
+        return collectionPointService.findById(id);
+    }
+
+
 
     /**
      * Manually
@@ -25,13 +58,12 @@ public class CollectionPointController {
         return collectionPointActionService.addManually(user, dto);
     }
 
-    @GetMapping("all")
-    public HttpEntity<?> allCollectionPoints() {
-        return collectionPointActionService.getCollectionPoints();
-    }
+
+
+
 
     @GetMapping("all/actions")
-    public HttpEntity<?> allCollectionsWithAction() {
+    public HttpEntity<?> allWithAction() {
         return collectionPointActionService.getCollectionPointsWithActions();
     }
 

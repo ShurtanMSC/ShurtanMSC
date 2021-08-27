@@ -18,12 +18,12 @@ public class ElectricityController {
 
 
     @PostMapping("add")
-    public HttpEntity<?> addElectricity(@RequestBody ElectricityDto dto){
+    public HttpEntity<?> add(@RequestBody ElectricityDto dto){
         return electricityService.save(dto);
     }
 
     @PutMapping("edit")
-    public HttpEntity<?> editElectricity(@RequestBody ElectricityDto dto){
+    public HttpEntity<?> edit(@RequestBody ElectricityDto dto){
         return electricityService.edit(dto);
     }
 
@@ -33,22 +33,22 @@ public class ElectricityController {
     }
 
     @GetMapping("all")
-    public HttpEntity<?> allElectricity(){
+    public HttpEntity<?> all(){
         return electricityService.allElectricity();
     }
 
     @GetMapping("all/last")
-    public HttpEntity<?> allElectricityByLastAdded(){
+    public HttpEntity<?> allByLastAdded(){
         return electricityService.allFirstBy();
     }
 
     @GetMapping("one/{id}")
-    public HttpEntity<?> oneElectricity(@PathVariable Integer id){
+    public HttpEntity<?> one(@PathVariable Integer id){
         return electricityService.getOne(id);
     }
 
     @GetMapping("one/mining_system/{id}")
-    public HttpEntity<?> oneElectricityByMiningSystem(@PathVariable Integer id){
+    public HttpEntity<?> oneByMiningSystem(@PathVariable Integer id){
         return electricityService.getOneByMiningSystem(id);
     }
 

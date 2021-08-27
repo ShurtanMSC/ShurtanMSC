@@ -42,7 +42,7 @@ public class ConstantController {
     }
 
     @GetMapping("{id}")
-    public HttpEntity<?> byId(@PathVariable Integer id) {
+    public HttpEntity<?> one(@PathVariable Integer id) {
         return constantService.findById(id);
     }
 
