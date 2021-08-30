@@ -46,9 +46,11 @@ public class ForecastCondensateService implements ForecastMethodInterface{
                 condensate=forecastCondensate.get();
             }
             condensate.trans(dto);
+            condensate.setMiningSystem(miningSystem.get());
 //            ForecastCondensate save = forecastCondensateRepository.save(condensate);
             return converter.apiSuccess(condensate);
         }catch (Exception e){
+            e.printStackTrace();
             return converter.apiError();
         }
     }
@@ -68,9 +70,11 @@ public class ForecastCondensateService implements ForecastMethodInterface{
                 condensate=forecastCondensate.get();
             }
             condensate.trans(dto);
+            condensate.setMiningSystem(miningSystem.get());
             ForecastCondensate save = forecastCondensateRepository.save(condensate);
             return converter.apiSuccess200(save);
         }catch (Exception e){
+            e.printStackTrace();
             return converter.apiError409();
         }
     }
@@ -80,10 +84,11 @@ public class ForecastCondensateService implements ForecastMethodInterface{
         try {
             List<ForecastCondensate> condensateList=new ArrayList<>();
             for (ForecastDto dto : dtoList) {
-                ApiResponseObject apiResponse = (ApiResponseObject) add(dto);
+                ApiResponse apiResponse = add(dto);
                 if (!apiResponse.isSuccess()) return converter.apiError409(apiResponse.getMessage());
                 else {
-                    condensateList.add((ForecastCondensate) apiResponse.getObject());
+                    ApiResponseObject apiResponseObject= (ApiResponseObject) apiResponse;
+                    condensateList.add((ForecastCondensate) apiResponseObject.getObject());
                 }
             }
             for (int i = 0; i <condensateList.size() ; i++) {
@@ -92,6 +97,7 @@ public class ForecastCondensateService implements ForecastMethodInterface{
             return converter.apiSuccess200(condensateList);
 
         }catch (Exception e){
+            e.printStackTrace();
             return converter.apiError409();
         }
     }

@@ -48,9 +48,11 @@ public class ForecastGasService implements ForecastMethodInterface{
                 gas=forecastGas.get();
             }
             gas.trans(dto);
+            gas.setMiningSystem(miningSystem.get());
 //            ForecastCondensate save = forecastCondensateRepository.save(condensate);
             return converter.apiSuccess(gas);
         }catch (Exception e){
+            e.printStackTrace();
             return converter.apiError();
         }
     }
@@ -70,9 +72,11 @@ public class ForecastGasService implements ForecastMethodInterface{
                 gas=forecastGas.get();
             }
             gas.trans(dto);
+            gas.setMiningSystem(miningSystem.get());
             ForecastGas save = forecastGasRepository.save(gas);
             return converter.apiSuccess200(save);
         }catch (Exception e){
+            e.printStackTrace();
             return converter.apiError409();
         }
     }
@@ -82,10 +86,11 @@ public class ForecastGasService implements ForecastMethodInterface{
         try {
             List<ForecastGas> gasList=new ArrayList<>();
             for (ForecastDto dto : dtoList) {
-                ApiResponseObject apiResponse = (ApiResponseObject) add(dto);
+                ApiResponse apiResponse = add(dto);
                 if (!apiResponse.isSuccess()) return converter.apiError409(apiResponse.getMessage());
                 else {
-                    gasList.add((ForecastGas) apiResponse.getObject());
+                    ApiResponseObject apiResponseObject= (ApiResponseObject) apiResponse;
+                    gasList.add((ForecastGas) apiResponseObject.getObject());
                 }
             }
             for (int i = 0; i <gasList.size() ; i++) {
@@ -94,6 +99,7 @@ public class ForecastGasService implements ForecastMethodInterface{
             return converter.apiSuccess200(gasList);
 
         }catch (Exception e){
+            e.printStackTrace();
             return converter.apiError409();
         }
     }
