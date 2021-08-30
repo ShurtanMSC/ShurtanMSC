@@ -1,6 +1,7 @@
 package uz.neft.entity;
 
 import lombok.*;
+import uz.neft.dto.ForecastDto;
 import uz.neft.entity.template.AbsEntityInteger;
 
 import javax.persistence.Entity;
@@ -19,8 +20,16 @@ import java.time.Month;
 public class ForecastCondensate extends AbsEntityInteger {
     private int year;
     private Month month;
-    private double forecast;
+    private double amount;
     private double real;
     @ManyToOne
     private MiningSystem miningSystem;
+
+    public void trans(ForecastDto dto){
+        if (year==0&&month==null&&miningSystem==null){
+            this.setMonth(dto.getMonth());
+            this.setYear(dto.getYear());
+        }
+        this.amount=dto.getAmount();
+    }
 }
