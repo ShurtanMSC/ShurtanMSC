@@ -158,28 +158,51 @@ public class DataLoader implements CommandLineRunner {
             MiningSystem shurtan = miningSystemRepository.save(new MiningSystem(InitialNames.SHURTAN));
             MiningSystem tandircha = miningSystemRepository.save(new MiningSystem("tandircha"));
 
-            Uppg uppg = uppgRepository.save(new Uppg("uppg",shurtan));
-            Uppg uppg2 = uppgRepository.save(new Uppg("uppg2",shurtan));
+            Uppg uppg = uppgRepository.save(new Uppg("УППГ-1",shurtan));
+            Uppg uppg2 = uppgRepository.save(new Uppg("УППГ-2",shurtan));
+
             Uppg uppg3 = uppgRepository.save(new Uppg("uppgtandir",tandircha));
             Uppg uppg4 = uppgRepository.save(new Uppg("uppgtandir2",tandircha));
-            CollectionPoint point=collectionPointRepository.save(new CollectionPoint("sp",uppg));
-            CollectionPoint point1=collectionPointRepository.save(new CollectionPoint("sp1",uppg));
-            CollectionPoint point2=collectionPointRepository.save(new CollectionPoint("sp2",uppg2));
+
+            CollectionPoint cp1=collectionPointRepository.save(new CollectionPoint("СП-1",uppg));
+            CollectionPoint cp2=collectionPointRepository.save(new CollectionPoint("СП-2",uppg));
+            CollectionPoint cp3=collectionPointRepository.save(new CollectionPoint("СП-3",uppg));
+            CollectionPoint cp4=collectionPointRepository.save(new CollectionPoint("СП-4",uppg));
+            CollectionPoint cp5=collectionPointRepository.save(new CollectionPoint("СП-5",uppg));
+            CollectionPoint cp6=collectionPointRepository.save(new CollectionPoint("СП-6",uppg));
+            CollectionPoint cp7=collectionPointRepository.save(new CollectionPoint("СП-7",uppg));
+            CollectionPoint cp8=collectionPointRepository.save(new CollectionPoint("СП-8",uppg));
+
+
+            CollectionPoint cp9=collectionPointRepository.save(new CollectionPoint("СП-9",uppg2));
+            CollectionPoint cp10=collectionPointRepository.save(new CollectionPoint("СП-10",uppg2));
+            CollectionPoint cp11=collectionPointRepository.save(new CollectionPoint("СП-11",uppg2));
+            CollectionPoint cp12=collectionPointRepository.save(new CollectionPoint("СП-12",uppg2));
+            CollectionPoint cp13=collectionPointRepository.save(new CollectionPoint("СП-13",uppg2));
+            CollectionPoint cp14=collectionPointRepository.save(new CollectionPoint("СП-14",uppg2));
+            CollectionPoint cp15=collectionPointRepository.save(new CollectionPoint("СП-15",uppg2));
+            CollectionPoint cp16=collectionPointRepository.save(new CollectionPoint("СП-16",uppg2));
+            CollectionPoint cp17=collectionPointRepository.save(new CollectionPoint("СП-17",uppg2));
+            CollectionPoint cp18=collectionPointRepository.save(new CollectionPoint("СП-18",uppg2));
+            CollectionPoint cp19=collectionPointRepository.save(new CollectionPoint("СП-19",uppg2));
+            CollectionPoint cp20=collectionPointRepository.save(new CollectionPoint("СП-20",uppg2));
+            CollectionPoint cp21=collectionPointRepository.save(new CollectionPoint("СП-21",uppg2));
+
             CollectionPoint pointtandircha=collectionPointRepository.save(new CollectionPoint("sptandircha",uppg3));
             CollectionPoint pointtandircha2=collectionPointRepository.save(new CollectionPoint("sptandircha2",uppg4));
-            Well well=wellRepository.save(wellRepository.save(new Well(11,point)));
-            Well well2=wellRepository.save(wellRepository.save(new Well(12,point)));
-            Well well3=wellRepository.save(wellRepository.save(new Well(3,pointtandircha2)));
-            WellAction wellAction=wellActionRepository.save(WellAction
-                    .builder()
-                    .user(userRepository.findById(1).get())
-                    .pressure(1)
-                    .temperature(1)
-                    .rpl(1)
-                    .well(well)
-                    .expend(1)
-                    .status(WellStatus.IN_WORK)
-                    .build());
+//            Well well=wellRepository.save(wellRepository.save(new Well(11,point)));
+//            Well well2=wellRepository.save(wellRepository.save(new Well(12,point)));
+//            Well well3=wellRepository.save(wellRepository.save(new Well(3,pointtandircha2)));
+//            WellAction wellAction=wellActionRepository.save(WellAction
+//                    .builder()
+//                    .user(userRepository.findById(1).get())
+//                    .pressure(1)
+//                    .temperature(1)
+//                    .rpl(1)
+//                    .well(well)
+//                    .expend(1)
+//                    .status(WellStatus.IN_WORK)
+//                    .build());
 
 
             //----------------------------------------------------
