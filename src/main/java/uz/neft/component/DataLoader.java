@@ -31,6 +31,7 @@ public class DataLoader implements CommandLineRunner {
     MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository;
     ConstantRepository constantRepository;
     MiningSystemConstantRepository miningSystemConstantRepository;
+    WellActionRepository wellActionRepository;
 
     @Autowired
     private UppgRepository uppgRepository;
@@ -38,7 +39,6 @@ public class DataLoader implements CommandLineRunner {
     private CollectionPointRepository collectionPointRepository;
     @Autowired
     private WellRepository wellRepository;
-    private WellActionRepository wellActionRepository;
     @Autowired
     public DataLoader(UserRepository userRepository, MiningSystemConstantRepository miningSystemConstantRepository, RoleRepository roleRepository, ConstantRepository constantRepository
             , PasswordEncoder passwordEncoder, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository, WellActionRepository wellActionRepository) {
