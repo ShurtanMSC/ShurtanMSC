@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public interface ForecastGasRepository extends JpaRepository<ForecastGas,Integer> {
     List<ForecastGas> findAllByMiningSystem(MiningSystem miningSystem);
+    List<ForecastGas> findAllByMiningSystemOrderByCreatedAtAsc(MiningSystem miningSystem);
     List<ForecastGas> findAllByYear(int year);
     List<ForecastGas> findAllByMonth(Month month);
     List<ForecastGas> findAllByYearAndMonth(int year, Month month);
