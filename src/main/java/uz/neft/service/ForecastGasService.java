@@ -169,7 +169,7 @@ public class ForecastGasService implements ForecastMethodInterface{
             if (id==null) return converter.apiError400("id is null");
             Optional<MiningSystem> miningSystem = miningSystemRepository.findById(id);
             if (!miningSystem.isPresent()) return converter.apiError404("Mining system not found");
-            return converter.apiSuccess200(forecastGasRepository.findAllByMiningSystemAndYearBetween(miningSystem.get(),from,to));
+            return converter.apiSuccess200(forecastGasRepository.findAllByMiningSystemAndYearBetweenOrderByCreatedAtAsc(miningSystem.get(),from,to));
         }catch (Exception e) {
             e.printStackTrace();
             return converter.apiError409();
