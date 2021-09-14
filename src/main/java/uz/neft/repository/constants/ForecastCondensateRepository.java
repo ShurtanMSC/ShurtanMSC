@@ -19,5 +19,6 @@ public interface ForecastCondensateRepository extends JpaRepository<ForecastCond
     List<ForecastCondensate> findAllByYearBetween(int from, int to);
 
     List<ForecastCondensate> findAllByMiningSystemAndYearBetween(MiningSystem miningSystem, int from, int to);
+    List<ForecastCondensate> findAllByMiningSystemAndYearBetweenOrderByCreatedAtAsc(MiningSystem miningSystem, int from, int to);
     Optional<ForecastCondensate> findByMiningSystemAndYearAndMonth(MiningSystem miningSystem, int year, Month month);
 }
