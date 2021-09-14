@@ -19,7 +19,9 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<repackage.classifier/>
 		<spring-native.version>0.10.0</spring-native.version>
+		<sonar.projectKey>kalish</sonar.projectKey>
 	</properties>
+
 
 <!--	<repositories>-->
 <!--		<repository>-->
