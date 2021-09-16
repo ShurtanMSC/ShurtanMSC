@@ -4,9 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import uz.neft.entity.enums.WellCategory;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 
 @Data
@@ -19,8 +21,13 @@ public class WellDto {
     private Integer number;
     private Integer collectionPointId;
 
-    private Timestamp commissioningDate;
-    private Timestamp drillingStartDate;
+//    @Column(name="manager_birthday", columnDefinition = "date")
+    @DateTimeFormat(pattern="dd.MM.yyyy")
+    private Date commissioningDate;
+
+//    @Column(name="manager_birthday", columnDefinition = "date")
+    @DateTimeFormat(pattern="dd.MM.yyyy")
+    private Date drillingStartDate;
 
     private String horizon;
     private double altitude;

@@ -1,15 +1,14 @@
 package uz.neft.entity;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 import uz.neft.entity.enums.WellCategory;
 import uz.neft.entity.template.AbsEntityInteger;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.util.Date;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -30,8 +29,14 @@ public class Well extends AbsEntityInteger {
         this.collectionPoint = collectionPoint;
     }
 
-    private Timestamp commissioningDate;
-    private Timestamp drillingStartDate;
+    @Column(columnDefinition = "date")
+    @DateTimeFormat(pattern="dd.MM.yyyy")
+    private Date commissioningDate;
+
+
+    @Column(columnDefinition = "date")
+    @DateTimeFormat(pattern="dd.MM.yyyy")
+    private Date drillingStartDate;
 
     private String horizon;
     private double altitude;
