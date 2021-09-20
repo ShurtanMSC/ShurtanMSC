@@ -167,26 +167,26 @@ public class DataLoader implements CommandLineRunner {
             CollectionPoint cp1=collectionPointRepository.save(new CollectionPoint("СП-1",uppg));
             CollectionPoint cp2=collectionPointRepository.save(new CollectionPoint("СП-2",uppg));
             CollectionPoint cp3=collectionPointRepository.save(new CollectionPoint("СП-3",uppg));
-            CollectionPoint cp4=collectionPointRepository.save(new CollectionPoint("СП-4",uppg));
-            CollectionPoint cp5=collectionPointRepository.save(new CollectionPoint("СП-5",uppg));
-            CollectionPoint cp6=collectionPointRepository.save(new CollectionPoint("СП-6",uppg));
-            CollectionPoint cp7=collectionPointRepository.save(new CollectionPoint("СП-7",uppg));
-            CollectionPoint cp8=collectionPointRepository.save(new CollectionPoint("СП-8",uppg));
+            CollectionPoint cp4=collectionPointRepository.save(new CollectionPoint("СП-12",uppg));
+            CollectionPoint cp5=collectionPointRepository.save(new CollectionPoint("СП-14",uppg));
+            CollectionPoint cp6=collectionPointRepository.save(new CollectionPoint("СП-15",uppg));
+            CollectionPoint cp7=collectionPointRepository.save(new CollectionPoint("СП-22",uppg));
+            CollectionPoint cp8=collectionPointRepository.save(new CollectionPoint("СП-26",uppg));
 
 
-            CollectionPoint cp9=collectionPointRepository.save(new CollectionPoint("СП-9",uppg2));
-            CollectionPoint cp10=collectionPointRepository.save(new CollectionPoint("СП-10",uppg2));
-            CollectionPoint cp11=collectionPointRepository.save(new CollectionPoint("СП-11",uppg2));
-            CollectionPoint cp12=collectionPointRepository.save(new CollectionPoint("СП-12",uppg2));
-            CollectionPoint cp13=collectionPointRepository.save(new CollectionPoint("СП-13",uppg2));
-            CollectionPoint cp14=collectionPointRepository.save(new CollectionPoint("СП-14",uppg2));
-            CollectionPoint cp15=collectionPointRepository.save(new CollectionPoint("СП-15",uppg2));
-            CollectionPoint cp16=collectionPointRepository.save(new CollectionPoint("СП-16",uppg2));
-            CollectionPoint cp17=collectionPointRepository.save(new CollectionPoint("СП-17",uppg2));
-            CollectionPoint cp18=collectionPointRepository.save(new CollectionPoint("СП-18",uppg2));
-            CollectionPoint cp19=collectionPointRepository.save(new CollectionPoint("СП-19",uppg2));
-            CollectionPoint cp20=collectionPointRepository.save(new CollectionPoint("СП-20",uppg2));
-            CollectionPoint cp21=collectionPointRepository.save(new CollectionPoint("СП-21",uppg2));
+            CollectionPoint cp9=collectionPointRepository.save(new CollectionPoint("СП-4",uppg2));
+            CollectionPoint cp10=collectionPointRepository.save(new CollectionPoint("СП-6",uppg2));
+            CollectionPoint cp11=collectionPointRepository.save(new CollectionPoint("СП-9",uppg2));
+            CollectionPoint cp12=collectionPointRepository.save(new CollectionPoint("СП-10",uppg2));
+            CollectionPoint cp13=collectionPointRepository.save(new CollectionPoint("СП-20",uppg2));
+            CollectionPoint cp14=collectionPointRepository.save(new CollectionPoint("СП-24",uppg2));
+            CollectionPoint cp15=collectionPointRepository.save(new CollectionPoint("БТ-5",uppg2));
+            CollectionPoint cp16=collectionPointRepository.save(new CollectionPoint("БТ-16",uppg2));
+            CollectionPoint cp17=collectionPointRepository.save(new CollectionPoint("БТ-17",uppg2));
+            CollectionPoint cp18=collectionPointRepository.save(new CollectionPoint("БТ-19",uppg2));
+            CollectionPoint cp19=collectionPointRepository.save(new CollectionPoint("БТ-21",uppg2));
+            CollectionPoint cp20=collectionPointRepository.save(new CollectionPoint("БТ-30",uppg2));
+            CollectionPoint cp21=collectionPointRepository.save(new CollectionPoint("БТ-34",uppg2));
 
             CollectionPoint pointtandircha=collectionPointRepository.save(new CollectionPoint("sptandircha",uppg3));
             CollectionPoint pointtandircha2=collectionPointRepository.save(new CollectionPoint("sptandircha2",uppg4));
