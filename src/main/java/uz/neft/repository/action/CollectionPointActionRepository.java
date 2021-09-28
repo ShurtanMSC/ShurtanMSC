@@ -12,7 +12,12 @@ import java.util.List;
 
 public interface CollectionPointActionRepository extends JpaRepository<CollectionPointAction, Long> {
 
+
+//    CollectionPointAction findLast1ByCollectionPoint(CollectionPoint collectionPoint);
+    CollectionPointAction findFirstByCollectionPointOrderByCreatedAtDesc(CollectionPoint collectionPoint);
     CollectionPointAction findFirstByCollectionPoint(CollectionPoint collectionPoint);
+//    CollectionPointAction findFirst1ByOrderByCreatedAtDescAndByCollectionPoint(CollectionPoint collectionPoint);
+
 
     List<CollectionPointAction> findAllByCreatedAtBetween(Timestamp from,Timestamp until);
 

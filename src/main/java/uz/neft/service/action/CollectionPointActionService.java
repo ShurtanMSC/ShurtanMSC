@@ -123,6 +123,8 @@ public class CollectionPointActionService {
             List<CollectionPoint> collectionPointList =collectionPointRepository.findAllByMiningSystemId(id);
             List<ObjectWithActionsDto> list=new ArrayList<>();
 
+//            collectionPointList.forEach(c->System.out.println(collectionPointActionRepository.findFirstByCollectionPointOrderByCreatedAtDesc(c)));
+
             collectionPointList
                     .forEach(
                             c->
@@ -131,7 +133,7 @@ public class CollectionPointActionService {
                                             converter.collectionPointToCollectionPointDto(c),
                                             converter.collectionPointActionToCollectionPointActionDto(
                                                     collectionPointActionRepository
-                                                    .findFirstByCollectionPoint(c)))));
+                                                    .findFirstByCollectionPointOrderByCreatedAtDesc(c)))));
             return converter.apiSuccess200(list);
         }catch (Exception e) {
             e.printStackTrace();
@@ -175,7 +177,7 @@ public class CollectionPointActionService {
 
             List<ObjectWithActionsDto> collect = all.stream().map(item -> {
                 Optional<CollectionPoint> byId = collectionPointRepository.findById(item.getId());
-                CollectionPointAction collectionPointAction = collectionPointActionRepository.findFirstByCollectionPoint(byId.get());
+                CollectionPointAction collectionPointAction = collectionPointActionRepository.findFirstByCollectionPointOrderByCreatedAtDesc(byId.get());
 
                 CollectionPointDto collectionPointDto = converter.collectionPointToCollectionPointDto(byId.get());
                 CollectionPointActionDto collectionPointActionDto = converter.collectionPointActionToCollectionPointActionDto(collectionPointAction);
@@ -199,7 +201,7 @@ public class CollectionPointActionService {
             Optional<CollectionPoint> byId = collectionPointRepository.findById(id);
             if (!byId.isPresent()) return converter.apiError404("collection point not found");
 
-            CollectionPointAction collectionPointAction = collectionPointActionRepository.findFirstByCollectionPoint(byId.get());
+            CollectionPointAction collectionPointAction = collectionPointActionRepository.findFirstByCollectionPointOrderByCreatedAtDesc(byId.get());
 
             CollectionPointDto collectionPointDto = converter.collectionPointToCollectionPointDto(byId.get());
             CollectionPointActionDto collectionPointActionDto = converter.collectionPointActionToCollectionPointActionDto(collectionPointAction);
