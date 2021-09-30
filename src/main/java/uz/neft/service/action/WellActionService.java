@@ -243,7 +243,10 @@ public class WellActionService {
 //            if (!firstByWell.isPresent()) return converter.apiError404("well action not found");
 
             WellDto wellDto = converter.wellToWellDto(byId.get());
-            WellActionDto wellActionDto = converter.wellActionToWellActionDto(firstByWell.get());
+            WellActionDto wellActionDto=new WellActionDto();
+            if (firstByWell.isPresent()){
+                wellActionDto = converter.wellActionToWellActionDto(firstByWell.get());
+            }
 
             ObjectWithActionsDto dto = ObjectWithActionsDto
                     .builder()
@@ -269,7 +272,10 @@ public class WellActionService {
             Optional<WellAction> firstByWell = wellActionRepository.findFirstByWellOrderByCreatedAtDesc(byId1.get());
 
             WellDto wellDto = converter.wellToWellDto(byId1.get());
-            WellActionDto wellActionDto = converter.wellActionToWellActionDto(firstByWell.get());
+            WellActionDto wellActionDto=new WellActionDto();
+            if (firstByWell.isPresent()){
+                wellActionDto = converter.wellActionToWellActionDto(firstByWell.get());
+            }
 
             return ObjectWithActionsDto
                     .builder()
