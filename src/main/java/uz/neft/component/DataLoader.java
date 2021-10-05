@@ -159,9 +159,9 @@ public class DataLoader implements CommandLineRunner {
         try {
             String pythonServer="http://127.0.0.1:8000/opc/";
             String localServer="http://localhost:8080/api/simulate/test";
-            String herokuServer="";
-            OpcServer serverReal = opcServerRepository.save(new OpcServer("Ecograph", "Haqiqiy server", "EH_Wetzer.OPC_DA_Server.4",localServer));
-            OpcServer serverSimulation = opcServerRepository.save(new OpcServer("Matrikon", "Simulyatsion server", "Matrikon.OPC.Simulation.1",localServer));
+            String herokuServer="http://shurtanback.herokuapp.com/api/simulate/test";
+            OpcServer serverReal = opcServerRepository.save(new OpcServer("Ecograph", "Haqiqiy server", "EH_Wetzer.OPC_DA_Server.4",herokuServer));
+            OpcServer serverSimulation = opcServerRepository.save(new OpcServer("Matrikon", "Simulyatsion server", "Matrikon.OPC.Simulation.1",herokuServer));
 
             String random="Random.Real";
 
