@@ -26,7 +26,7 @@ public class CollectionPointActionDto {
     private double pressure;
 
     // Tempratura
-    private int temperature;
+    private double temperature;
 
     // Rasxod
     private double expand;

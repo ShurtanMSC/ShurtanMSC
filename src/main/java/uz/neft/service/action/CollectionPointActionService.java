@@ -225,5 +225,27 @@ public class CollectionPointActionService {
     //..... from MODBUS
     //... coming soon
 
+    public void setAll(int id){
+        try {
+
+            List<CollectionPoint> all = collectionPointRepository.findAllByMiningSystemId(id);
+            for (CollectionPoint collectionPoint : all) {
+                CollectionPointAction action = CollectionPointAction
+                        .builder()
+                        .collectionPoint(collectionPoint)
+                        .build();
+                action.setPressure(action.getPressureOpc());
+//                Thread.sleep(1000);
+                action.setTemperature(action.getTemperatureOpc());
+                Thread.sleep(1000);
+//                System.out.println(action.toString());
+                collectionPointActionRepository.save(action);
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
 }

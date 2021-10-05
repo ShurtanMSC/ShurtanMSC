@@ -3,6 +3,7 @@ package uz.neft.component;
 
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -40,6 +41,8 @@ public class DataLoader implements CommandLineRunner {
     @Autowired
     private WellRepository wellRepository;
     @Autowired
+    private OpcServerRepository opcServerRepository;
+    @Autowired
     public DataLoader(UserRepository userRepository, MiningSystemConstantRepository miningSystemConstantRepository, RoleRepository roleRepository, ConstantRepository constantRepository
             , PasswordEncoder passwordEncoder, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository, WellActionRepository wellActionRepository) {
         this.userRepository = userRepository;
@@ -53,8 +56,8 @@ public class DataLoader implements CommandLineRunner {
         this.wellActionRepository = wellActionRepository;
     }
 
-
-    //    @Value("${spring.datasource.initialization-mode}")
+//
+//        @Value("${spring.datasource.initialization-mode}")
 //    private String mode;
 
     @Override
@@ -154,6 +157,13 @@ public class DataLoader implements CommandLineRunner {
 //        }
 
         try {
+            String pythonServer="http://127.0.0.1:8000/opc/";
+            String localServer="http://localhost:8080/api/simulate/test";
+            String herokuServer="";
+            OpcServer serverReal = opcServerRepository.save(new OpcServer("Ecograph", "Haqiqiy server", "EH_Wetzer.OPC_DA_Server.4",localServer));
+            OpcServer serverSimulation = opcServerRepository.save(new OpcServer("Matrikon", "Simulyatsion server", "Matrikon.OPC.Simulation.1",localServer));
+
+            String random="Random.Real";
 
             MiningSystem shurtan = miningSystemRepository.save(new MiningSystem(InitialNames.SHURTAN));
             MiningSystem tandircha = miningSystemRepository.save(new MiningSystem("tandircha"));
@@ -164,32 +174,32 @@ public class DataLoader implements CommandLineRunner {
             Uppg uppg3 = uppgRepository.save(new Uppg("uppgtandir",tandircha));
             Uppg uppg4 = uppgRepository.save(new Uppg("uppgtandir2",tandircha));
 
-            CollectionPoint cp1=collectionPointRepository.save(new CollectionPoint("СП-1",uppg));
-            CollectionPoint cp2=collectionPointRepository.save(new CollectionPoint("СП-2",uppg));
-            CollectionPoint cp3=collectionPointRepository.save(new CollectionPoint("СП-3",uppg));
-            CollectionPoint cp4=collectionPointRepository.save(new CollectionPoint("СП-12",uppg));
-            CollectionPoint cp5=collectionPointRepository.save(new CollectionPoint("СП-14",uppg));
-            CollectionPoint cp6=collectionPointRepository.save(new CollectionPoint("СП-15",uppg));
-            CollectionPoint cp7=collectionPointRepository.save(new CollectionPoint("СП-22",uppg));
-            CollectionPoint cp8=collectionPointRepository.save(new CollectionPoint("СП-26",uppg));
+            CollectionPoint cp1=collectionPointRepository.save(new CollectionPoint("СП-1",uppg,random,random,serverSimulation));
+            CollectionPoint cp2=collectionPointRepository.save(new CollectionPoint("СП-2",uppg,random,random,serverSimulation));
+            CollectionPoint cp3=collectionPointRepository.save(new CollectionPoint("СП-3",uppg,random,random,serverSimulation));
+            CollectionPoint cp4=collectionPointRepository.save(new CollectionPoint("СП-12",uppg,random,random,serverSimulation));
+            CollectionPoint cp5=collectionPointRepository.save(new CollectionPoint("СП-14",uppg,random,random,serverSimulation));
+            CollectionPoint cp6=collectionPointRepository.save(new CollectionPoint("СП-15",uppg,random,random,serverSimulation));
+            CollectionPoint cp7=collectionPointRepository.save(new CollectionPoint("СП-22",uppg,random,random,serverSimulation));
+            CollectionPoint cp8=collectionPointRepository.save(new CollectionPoint("СП-26",uppg,random,random,serverSimulation));
 
 
-            CollectionPoint cp9=collectionPointRepository.save(new CollectionPoint("СП-4",uppg2));
-            CollectionPoint cp10=collectionPointRepository.save(new CollectionPoint("СП-6",uppg2));
-            CollectionPoint cp11=collectionPointRepository.save(new CollectionPoint("СП-9",uppg2));
-            CollectionPoint cp12=collectionPointRepository.save(new CollectionPoint("СП-10",uppg2));
-            CollectionPoint cp13=collectionPointRepository.save(new CollectionPoint("СП-20",uppg2));
-            CollectionPoint cp14=collectionPointRepository.save(new CollectionPoint("СП-24",uppg2));
-            CollectionPoint cp15=collectionPointRepository.save(new CollectionPoint("БТ-5",uppg2));
-            CollectionPoint cp16=collectionPointRepository.save(new CollectionPoint("БТ-16",uppg2));
-            CollectionPoint cp17=collectionPointRepository.save(new CollectionPoint("БТ-17",uppg2));
-            CollectionPoint cp18=collectionPointRepository.save(new CollectionPoint("БТ-19",uppg2));
-            CollectionPoint cp19=collectionPointRepository.save(new CollectionPoint("БТ-21",uppg2));
-            CollectionPoint cp20=collectionPointRepository.save(new CollectionPoint("БТ-30",uppg2));
-            CollectionPoint cp21=collectionPointRepository.save(new CollectionPoint("БТ-34",uppg2));
+            CollectionPoint cp9=collectionPointRepository.save(new CollectionPoint("СП-4",uppg2,random,random,serverSimulation));
+            CollectionPoint cp10=collectionPointRepository.save(new CollectionPoint("СП-6",uppg2,random,random,serverSimulation));
+            CollectionPoint cp11=collectionPointRepository.save(new CollectionPoint("СП-9",uppg2,random,random,serverSimulation));
+            CollectionPoint cp12=collectionPointRepository.save(new CollectionPoint("СП-10",uppg2,random,random,serverSimulation));
+            CollectionPoint cp13=collectionPointRepository.save(new CollectionPoint("СП-20",uppg2,random,random,serverSimulation));
+            CollectionPoint cp14=collectionPointRepository.save(new CollectionPoint("СП-24",uppg2,random,random,serverSimulation));
+            CollectionPoint cp15=collectionPointRepository.save(new CollectionPoint("БТ-5",uppg2,random,random,serverSimulation));
+            CollectionPoint cp16=collectionPointRepository.save(new CollectionPoint("БТ-16",uppg2,random,random,serverSimulation));
+            CollectionPoint cp17=collectionPointRepository.save(new CollectionPoint("БТ-17",uppg2,random,random,serverSimulation));
+            CollectionPoint cp18=collectionPointRepository.save(new CollectionPoint("БТ-19",uppg2,random,random,serverSimulation));
+            CollectionPoint cp19=collectionPointRepository.save(new CollectionPoint("БТ-21",uppg2,random,random,serverSimulation));
+            CollectionPoint cp20=collectionPointRepository.save(new CollectionPoint("БТ-30",uppg2,random,random,serverSimulation));
+            CollectionPoint cp21=collectionPointRepository.save(new CollectionPoint("БТ-34",uppg2,random,random,serverSimulation));
 
-            CollectionPoint pointtandircha=collectionPointRepository.save(new CollectionPoint("sptandircha",uppg3));
-            CollectionPoint pointtandircha2=collectionPointRepository.save(new CollectionPoint("sptandircha2",uppg4));
+            CollectionPoint pointtandircha=collectionPointRepository.save(new CollectionPoint("sptandircha",uppg3,random,random,serverSimulation));
+            CollectionPoint pointtandircha2=collectionPointRepository.save(new CollectionPoint("sptandircha2",uppg4,random,random,serverSimulation));
 //            Well well=wellRepository.save(wellRepository.save(new Well(11,point)));
 //            Well well2=wellRepository.save(wellRepository.save(new Well(12,point)));
 //            Well well3=wellRepository.save(wellRepository.save(new Well(3,pointtandircha2)));

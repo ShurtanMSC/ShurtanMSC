@@ -23,5 +23,29 @@ public class CollectionPoint extends AbsEntityInteger {
     @ManyToOne
     private Uppg uppg;
 
+    private String temperatureUnit;
+    private String pressureUnit;
+
+    @ManyToOne
+    private OpcServer opcServer;
+
+    public String jsonRequestBodyTemperature(){
+        if (opcServer!=null){
+            return "{\n" +
+                    "    \"server\":\""+opcServer.getAddress()+"\",\n" +
+                    "    \"unit\":\""+temperatureUnit+"\"\n" +
+                    "}";
+        }
+        return "";
+    }
+
+    public String jsonRequestBodyPressure(){
+        if (opcServer!=null){
+            return "{\r\n    \"server\":\""+opcServer.getAddress()+"\",\r\n    \"unit\":\""+pressureUnit+"\"\r\n}";
+        }
+        return "";
+    }
+
+
 
 }
