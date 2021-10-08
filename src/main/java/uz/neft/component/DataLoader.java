@@ -185,7 +185,7 @@ public class DataLoader implements CommandLineRunner {
 
 
             /** UPPG1 **/
-            CollectionPoint cp1=collectionPointRepository.save(new CollectionPoint("СП-1",uppg,temperature,pressure,serverReal));
+            CollectionPoint cp1=collectionPointRepository.save(new CollectionPoint("СП-1",uppg,temperature,pressure,serverSimulation));
 
 
 
