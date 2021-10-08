@@ -19,7 +19,10 @@ import uz.neft.repository.constants.ConstantRepository;
 import uz.neft.repository.constants.MiningSystemConstantRepository;
 
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 @Component
 @NoArgsConstructor
@@ -177,13 +180,12 @@ public class DataLoader implements CommandLineRunner {
             Uppg uppg3 = uppgRepository.save(new Uppg("uppgtandir",tandircha));
             Uppg uppg4 = uppgRepository.save(new Uppg("uppgtandir2",tandircha));
 
+
+
+            /** UPPG1 **/
             CollectionPoint cp1=collectionPointRepository.save(new CollectionPoint("СП-1",uppg,temperature,pressure,serverReal));
 
-            Well well154=wellRepository.save(
-                    Well.builder()
-                            .number(154)
-                            .category(WellCategory.MINING)
-                            .build());
+
 
             CollectionPoint cp2=collectionPointRepository.save(new CollectionPoint("СП-2",uppg,random,random,serverSimulation));
             CollectionPoint cp3=collectionPointRepository.save(new CollectionPoint("СП-3",uppg,random,random,serverSimulation));
@@ -194,6 +196,9 @@ public class DataLoader implements CommandLineRunner {
             CollectionPoint cp8=collectionPointRepository.save(new CollectionPoint("СП-26",uppg,random,random,serverSimulation));
 
 
+
+
+            /** UPPG2 **/
             CollectionPoint cp9=collectionPointRepository.save(new CollectionPoint("СП-4",uppg2,random,random,serverSimulation));
             CollectionPoint cp10=collectionPointRepository.save(new CollectionPoint("СП-6",uppg2,random,random,serverSimulation));
             CollectionPoint cp11=collectionPointRepository.save(new CollectionPoint("СП-9",uppg2,random,random,serverSimulation));
@@ -210,6 +215,80 @@ public class DataLoader implements CommandLineRunner {
 
             CollectionPoint pointtandircha=collectionPointRepository.save(new CollectionPoint("sptandircha",uppg3,random,random,serverSimulation));
             CollectionPoint pointtandircha2=collectionPointRepository.save(new CollectionPoint("sptandircha2",uppg4,random,random,serverSimulation));
+
+            List<CollectionPoint> collectionPointList=new ArrayList<>();
+            collectionPointList.add(cp1);
+            collectionPointList.add(cp2);
+            collectionPointList.add(cp3);
+            collectionPointList.add(cp4);
+            collectionPointList.add(cp5);
+            collectionPointList.add(cp6);
+            collectionPointList.add(cp7);
+            collectionPointList.add(cp8);
+            collectionPointList.add(cp9);
+            collectionPointList.add(cp10);
+            collectionPointList.add(cp11);
+            collectionPointList.add(cp12);
+            collectionPointList.add(cp13);
+            collectionPointList.add(cp14);
+            collectionPointList.add(cp15);
+            collectionPointList.add(cp16);
+            collectionPointList.add(cp17);
+            collectionPointList.add(cp18);
+            collectionPointList.add(cp19);
+            collectionPointList.add(cp20);
+            collectionPointList.add(cp21);
+
+            Integer[] array_cp1 = {154,155,157,169,312,158,309};
+            Integer[] array_cp2 = {4,170,171,172,173,185,313};
+            Integer[] array_cp3 = {13,52,120,122,219,275,315};
+            Integer[] array_cp4 = {125,128,129,130,132,136,278,305,314,320,323};
+            Integer[] array_cp5 = {137,139,140,141,153,283};
+            Integer[] array_cp6 = {3,160,151,282,284,296,311};
+            Integer[] array_cp7 = {2,53,55,57,1,304,316};
+            Integer[] array_cp8 = {167,174,175,182,183,184,103};
+
+            Integer[] array_cp9 = {127,300,301,37,321};
+            Integer[] array_cp10 = {14,197,199,208,211,218,252,253,254,257,288,289};
+            Integer[] array_cp11 = {10,15,119,196,201,202,203,207,115,118,258,260,285,293,306,307};
+            Integer[] array_cp12 = {61,198,200,169,51,56,292,256};
+            Integer[] array_cp13 = {67,5,190,192,193,194,195,303,259,261,280,308,310,317,318};
+            Integer[] array_cp14 = {33,161,164,165};
+            Integer[] array_cp15 = {92,102,123,178,210,251,286,287};
+            Integer[] array_cp16 = {83,86,131,225,240};
+            Integer[] array_cp17 = {23,79};
+            Integer[] array_cp18 = {72,163,21,71,144,145,179,244};
+            Integer[] array_cp19 = {236,233,290,319};
+            Integer[] array_cp20 = {96,101,108,110,7};
+            Integer[] array_cp21 = {264,266,267,268};
+
+
+            saverPerCp(array_cp1,cp1);
+            saverPerCp(array_cp2,cp2);
+            saverPerCp(array_cp3,cp3);
+            saverPerCp(array_cp4,cp4);
+            saverPerCp(array_cp5,cp5);
+            saverPerCp(array_cp6,cp6);
+            saverPerCp(array_cp7,cp7);
+            saverPerCp(array_cp8,cp8);
+            saverPerCp(array_cp9,cp9);
+            saverPerCp(array_cp10,cp10);
+            saverPerCp(array_cp11,cp11);
+            saverPerCp(array_cp12,cp12);
+            saverPerCp(array_cp13,cp13);
+            saverPerCp(array_cp14,cp14);
+            saverPerCp(array_cp15,cp15);
+            saverPerCp(array_cp16,cp16);
+            saverPerCp(array_cp17,cp17);
+            saverPerCp(array_cp18,cp18);
+            saverPerCp(array_cp19,cp19);
+            saverPerCp(array_cp20,cp20);
+            saverPerCp(array_cp21,cp21);
+
+
+
+
+
 //            Well well=wellRepository.save(wellRepository.save(new Well(11,point)));
 //            Well well2=wellRepository.save(wellRepository.save(new Well(12,point)));
 //            Well well3=wellRepository.save(wellRepository.save(new Well(3,pointtandircha2)));
@@ -300,6 +379,40 @@ public class DataLoader implements CommandLineRunner {
             e.printStackTrace();
         }
 
+    }
+
+
+    public void saverPerCp(Integer[] array,CollectionPoint cp){
+        for (Integer integer : array) {
+            saver(integer, cp);
+        }
+    }
+
+    public void saver(Integer number,CollectionPoint cp){
+        Well well154=wellRepository.save(
+                Well.builder()
+                        .number(number)
+                        .category(WellCategory.MINING)
+                        .altitude(10)
+                        .collectionPoint(cp)
+                        .depth(10)
+                        .x(10)
+                        .y(10)
+                        .horizon("h")
+                        .commissioningDate(new Date())
+                        .drillingStartDate(new Date())
+                        .build());
+        WellAction wellAction154=wellActionRepository.save(WellAction
+                .builder()
+                .well(well154)
+                .pressure(1900000)
+                .temperature(46.85)
+                .expend(141)
+                .rpl(37.22)
+                .status(WellStatus.IN_WORK)
+                .perforation_max(1000)
+                .perforation_min(500)
+                .build());
     }
 }
 
