@@ -15,6 +15,7 @@ public interface WellActionRepository extends JpaRepository<WellAction,Long> {
 
     Optional<WellAction> findFirstByWell(Well well);
     Optional<WellAction> findFirstByWellOrderByCreatedAtDesc(Well well);
+//    Optional<WellAction> findFirstByWellOrderByCreatedAtDesc(Well well);
 
 //    Optional<WellAction> findFirstByWell(Well well);
 

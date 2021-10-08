@@ -161,8 +161,10 @@ public class DataLoader implements CommandLineRunner {
 
         try {
             String pythonServer="http://10.10.24.120:8000/opc/";
-            String localServer="http://10.10.24.120:8080/api/simulate/collection_point";
+//            String localServer="http://10.10.24.120:8080/api/simulate/collection_point";
+            String localServer="http://localhost:8080/api/simulate/collection_point";
             String herokuServer= "https://shurtanback.herokuapp.com/api/simulate/test";
+
             OpcServer serverReal = opcServerRepository.save(new OpcServer("Ecograph", "Haqiqiy server", "EH_Wetzer.OPC_DA_Server.4",pythonServer));
             OpcServer serverRealSim = opcServerRepository.save(new OpcServer("Ecograph", "Haqiqiy server", "EH_Wetzer.OPC_DA_Server.4",localServer));
             OpcServer serverSimulation = opcServerRepository.save(new OpcServer("Matrikon", "Simulyatsion server", "Matrikon.OPC.Simulation.1",localServer));
@@ -405,7 +407,7 @@ public class DataLoader implements CommandLineRunner {
         WellAction wellAction154=wellActionRepository.save(WellAction
                 .builder()
                 .well(well154)
-                .pressure(1900000)
+                .pressure(85)
                 .temperature(46.85)
                 .expend(141)
                 .rpl(37.22)
