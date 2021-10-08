@@ -237,7 +237,7 @@ public class CollectionPointActionService {
                 action.setPressure(action.getPressureOpc());
 //                Thread.sleep(1000);
                 action.setTemperature(action.getTemperatureOpc());
-                Thread.sleep(1000);
+                Thread.sleep(500);
 //                System.out.println(action.toString());
                 collectionPointActionRepository.save(action);
             }

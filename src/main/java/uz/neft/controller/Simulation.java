@@ -12,10 +12,10 @@ import java.util.Random;
 @CrossOrigin
 public class Simulation {
 
-    @PostMapping("test")
+    @PostMapping("collection_point")
     public String[] test(@RequestBody Simulate simulate){
         String[] a=new String[3];
-        a[0]= String.valueOf(new SecureRandom().nextFloat()*10000);
+        a[0]= String.valueOf(new SecureRandom().nextFloat()*50);
         a[1]="Good";
         a[2]= String.valueOf(new Date());
         return a;

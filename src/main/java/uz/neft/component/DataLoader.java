@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import uz.neft.entity.*;
 import uz.neft.entity.action.WellAction;
+import uz.neft.entity.enums.WellCategory;
 import uz.neft.entity.enums.WellStatus;
 import uz.neft.entity.variables.*;
 import uz.neft.entity.variables.MiningSystemGasComposition;
@@ -154,16 +155,18 @@ public class DataLoader implements CommandLineRunner {
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        }
 
         try {
-            String pythonServer="http://127.0.0.1:8000/opc/";
-            String localServer="http://localhost:8080/api/simulate/test";
-            String herokuServer="http://shurtanback.herokuapp.com/api/simulate/test";
-            OpcServer serverReal = opcServerRepository.save(new OpcServer("Ecograph", "Haqiqiy server", "EH_Wetzer.OPC_DA_Server.4",herokuServer));
-            OpcServer serverSimulation = opcServerRepository.save(new OpcServer("Matrikon", "Simulyatsion server", "Matrikon.OPC.Simulation.1",herokuServer));
+            String pythonServer="http://10.10.24.120:8000/opc/";
+            String localServer="http://10.10.24.120:8080/api/simulate/collection_point";
+            String herokuServer= "https://shurtanback.herokuapp.com/api/simulate/test";
+            OpcServer serverReal = opcServerRepository.save(new OpcServer("Ecograph", "Haqiqiy server", "EH_Wetzer.OPC_DA_Server.4",pythonServer));
+            OpcServer serverRealSim = opcServerRepository.save(new OpcServer("Ecograph", "Haqiqiy server", "EH_Wetzer.OPC_DA_Server.4",localServer));
+            OpcServer serverSimulation = opcServerRepository.save(new OpcServer("Matrikon", "Simulyatsion server", "Matrikon.OPC.Simulation.1",localServer));
 
             String random="Random.Real";
+            String temperature="Unit1.YYYYY.VT_R4";
+            String pressure="Unit1.Channel_1.VT_R4";
 
             MiningSystem shurtan = miningSystemRepository.save(new MiningSystem(InitialNames.SHURTAN));
             MiningSystem tandircha = miningSystemRepository.save(new MiningSystem("tandircha"));
@@ -174,7 +177,14 @@ public class DataLoader implements CommandLineRunner {
             Uppg uppg3 = uppgRepository.save(new Uppg("uppgtandir",tandircha));
             Uppg uppg4 = uppgRepository.save(new Uppg("uppgtandir2",tandircha));
 
-            CollectionPoint cp1=collectionPointRepository.save(new CollectionPoint("СП-1",uppg,random,random,serverSimulation));
+            CollectionPoint cp1=collectionPointRepository.save(new CollectionPoint("СП-1",uppg,temperature,pressure,serverReal));
+
+            Well well154=wellRepository.save(
+                    Well.builder()
+                            .number(154)
+                            .category(WellCategory.MINING)
+                            .build());
+
             CollectionPoint cp2=collectionPointRepository.save(new CollectionPoint("СП-2",uppg,random,random,serverSimulation));
             CollectionPoint cp3=collectionPointRepository.save(new CollectionPoint("СП-3",uppg,random,random,serverSimulation));
             CollectionPoint cp4=collectionPointRepository.save(new CollectionPoint("СП-12",uppg,random,random,serverSimulation));
