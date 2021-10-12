@@ -167,7 +167,7 @@ public class DataLoader implements CommandLineRunner {
 
             OpcServer serverReal = opcServerRepository.save(new OpcServer("Ecograph", "Haqiqiy server", "EH_Wetzer.OPC_DA_Server.4",pythonServer));
             OpcServer serverRealSim = opcServerRepository.save(new OpcServer("Ecograph", "Haqiqiy server", "EH_Wetzer.OPC_DA_Server.4",localServer));
-            OpcServer serverSimulation = opcServerRepository.save(new OpcServer("Matrikon", "Simulyatsion server", "Matrikon.OPC.Simulation.1",herokuServer));
+            OpcServer serverSimulation = opcServerRepository.save(new OpcServer("Matrikon", "Simulyatsion server", "Matrikon.OPC.Simulation.1",localServer));
 
             String random="Random.Real";
             String temperature="Unit1.YYYYY.VT_R4";
@@ -185,7 +185,7 @@ public class DataLoader implements CommandLineRunner {
 
 
             /** UPPG1 **/
-            CollectionPoint cp1=collectionPointRepository.save(new CollectionPoint("СП-1",uppg,temperature,pressure,serverSimulation));
+            CollectionPoint cp1=collectionPointRepository.save(new CollectionPoint("СП-1",uppg,temperature,pressure,serverReal));
 
 
 
@@ -407,7 +407,7 @@ public class DataLoader implements CommandLineRunner {
         WellAction wellAction154=wellActionRepository.save(WellAction
                 .builder()
                 .well(well154)
-                .pressure(85)
+                .pressure(40)
                 .temperature(46.85)
                 .expend(141)
                 .rpl(37.22)

@@ -6,8 +6,11 @@ import org.springframework.stereotype.Service;
 import uz.neft.dto.WellDto;
 import uz.neft.dto.action.ObjectWithActionsDto;
 import uz.neft.dto.action.WellActionDto;
+import uz.neft.dto.special.CollectionPointAndWells;
+import uz.neft.dto.special.WellActionLite;
 import uz.neft.entity.*;
 import uz.neft.entity.action.WellAction;
+import uz.neft.entity.enums.WellStatus;
 import uz.neft.entity.variables.*;
 import uz.neft.repository.*;
 import uz.neft.repository.action.WellActionRepository;
@@ -16,9 +19,7 @@ import uz.neft.repository.constants.MiningSystemConstantRepository;
 import uz.neft.service.Calculator;
 import uz.neft.utils.Converter;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +32,7 @@ public class WellActionService {
     private final ConstantRepository constantRepository;
     private final UserRepository userRepository;
     private final CollectionPointRepository collectionPointRepository;
+    private final MiningSystemRepository miningSystemRepository;
 
 
     public WellActionService(WellActionRepository wellActionRepository, MiningSystemConstantRepository miningSystemConstantRepository, WellRepository wellRepository, Converter converter, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository, Calculator calculator, ConstantRepository constantRepository, UserRepository userRepository, CollectionPointRepository collectionPointRepository) {
@@ -42,6 +44,7 @@ public class WellActionService {
         this.constantRepository = constantRepository;
         this.userRepository = userRepository;
         this.collectionPointRepository = collectionPointRepository;
+        this.miningSystemRepository = miningSystemRepository;
     }
 
 
@@ -396,7 +399,6 @@ public class WellActionService {
             if (id == null) return converter.apiError400("id is null!");
             List<Well> wellList = wellRepository.findAllByUppgId(id);
             List<ObjectWithActionsDto> list = new ArrayList<>();
-
             wellList
                     .forEach(
                             w ->
@@ -426,10 +428,130 @@ public class WellActionService {
     }
 
 
+    public HttpEntity<?> getAllWithActionByMiningSystem(Integer id) {
+        try {
+            if (id == null) return converter.apiError400("id is null!");
+            List<Well> wellList = wellRepository.findAllByMiningSystemId(id);
+            List<ObjectWithActionsDto> list = new ArrayList<>();
+            wellList
+                    .forEach(
+                            w ->
+                                    list
+                                            .add(new ObjectWithActionsDto(
+                                                    converter.wellToWellDto(w),
+                                                    converter.wellActionToWellActionDto(
+                                                            wellActionRepository
+                                                                    .findFirstByWellOrderByCreatedAtDesc(w).get()))));
+            return converter.apiSuccess200(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409();
+        }
+    }
+
     public ResponseEntity<?> getCountByInWork() {
         try {
             return converter.apiSuccess200();
         } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409();
+        }
+    }
+
+    public HttpEntity<?> getStatByStatus() {
+        try{
+            List<MiningSystem> miningSystemList = miningSystemRepository.findAll();
+
+//            Map<String, Integer> map=new HashMap<>();
+            Map<String,Map<String,Integer>> result=new HashMap<>();
+            for (MiningSystem miningSystem : miningSystemList) {
+                int IN_WORK_A = 0;
+                int IN_IDLE_A = 0;
+                int IN_CONSERVATION_A = 0;
+                int IN_LIQUIDATION_A = 0;
+                int IN_REPAIR_A = 0;
+                List<Well> wellList = wellRepository.findAllByMiningSystemId(miningSystem.getId());
+
+                for (Well well : wellList){
+                    Optional<WellAction> action = wellActionRepository.findFirstByWellOrderByCreatedAtDesc(well);
+                    if (action.isPresent()){
+                        switch (action.get().getStatus()){
+                            case IN_WORK: IN_WORK_A++;break;
+                            case IN_IDLE:IN_IDLE_A++; break;
+                            case IN_LIQUIDATION:IN_LIQUIDATION_A++; break;
+                            case IN_CONSERVATION:IN_CONSERVATION_A++; break;
+                            case IN_REPAIR:IN_REPAIR_A++; break;
+                            default: break;
+                        }
+                    }
+
+
+                }
+                Map<String, Integer> map = new HashMap<>();
+                map.put(WellStatus.IN_WORK.name(), IN_WORK_A);
+                map.put(WellStatus.IN_IDLE.name(), IN_IDLE_A);
+                map.put(WellStatus.IN_CONSERVATION.name(), IN_CONSERVATION_A);
+                map.put(WellStatus.IN_LIQUIDATION.name(), IN_LIQUIDATION_A);
+                map.put(WellStatus.IN_REPAIR.name(), IN_REPAIR_A);
+                result.put(miningSystem.getName(),map);
+            }
+            return converter.apiSuccess200(result);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409();
+        }
+    }
+
+    public ResponseEntity<?> addSpecial(User user, CollectionPoint collectionPoint, List<WellActionLite> wells) {
+        try {
+            for (WellActionLite wellLite : wells) {
+                if (!wellRepository.existsByCollectionPointAndId(collectionPoint, wellLite.getWellId()))
+                    return converter.apiError404("Well not found");
+                else {
+                    Optional<Well> well=wellRepository.findById(wellLite.getWellId());
+
+                    if(well.isPresent()){
+                        Optional<WellAction> wellAction=wellActionRepository.findFirstByWellOrderByCreatedAtDesc(well.get());
+
+                        if (wellAction.isPresent()){
+                            WellAction action=wellAction.get();
+                            WellActionDto dto=WellActionDto
+                                    .builder()
+                                    .wellId(well.get().getId())
+                                    .perforation_max(action.getPerforation_max())
+                                    .perforation_min(action.getPerforation_min())
+                                    .rpl(wellLite.getRpl()>0?wellLite.getRpl():0)
+                                    .pressure(wellLite.getPressure()>0?wellLite.getPressure():0)
+                                    .temperature(wellLite.getTemperature()>0?wellLite.getTemperature():0)
+                                    .status(wellLite.getStatus())
+                                    .build();
+                            ResponseEntity<?> response = addManually(user, dto);
+                            if (response.getStatusCode().value()!=201) return response;
+                        }
+                        else {
+                            WellActionDto dto=WellActionDto
+                                    .builder()
+                                    .wellId(well.get().getId())
+                                    .perforation_max(100)
+                                    .perforation_min(200)
+                                    .rpl(wellLite.getRpl()>0?wellLite.getRpl():0)
+                                    .pressure(wellLite.getPressure()>0?wellLite.getPressure():0)
+                                    .temperature(wellLite.getTemperature()>0?wellLite.getTemperature():0)
+                                    .status(wellLite.getStatus())
+                                    .build();
+                            ResponseEntity<?> response = addManually(user, dto);
+                            if (response.getStatusCode().value()!=201) return response;
+                        }
+
+                    }
+                    else return converter.apiError404("Well not found");
+
+                }
+            }
+            return converter.apiSuccess200();
+
+
+        }catch (Exception e){
             e.printStackTrace();
             return converter.apiError409();
         }

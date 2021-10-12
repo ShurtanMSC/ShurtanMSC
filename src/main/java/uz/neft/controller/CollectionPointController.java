@@ -5,6 +5,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.neft.dto.CollectionPointDto;
 import uz.neft.dto.action.CollectionPointActionDto;
+import uz.neft.dto.special.CollectionPointAndWells;
 import uz.neft.entity.User;
 import uz.neft.secret.CurrentUser;
 import uz.neft.service.CollectionPointService;
@@ -56,6 +57,12 @@ public class CollectionPointController {
     @PostMapping("manually/add/action")
     public HttpEntity<?> addAction(@CurrentUser User user, @RequestBody CollectionPointActionDto dto) {
         return collectionPointActionService.addManually(user, dto);
+    }
+
+
+    @PostMapping("manually/add/special")
+    public HttpEntity<?> addSpecial(@CurrentUser User user,@RequestBody CollectionPointAndWells collectionPointAndWells){
+        return collectionPointActionService.addSpecial(user,collectionPointAndWells);
     }
 
 

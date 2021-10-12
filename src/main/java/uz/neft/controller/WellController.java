@@ -83,6 +83,11 @@ public class WellController {
         return wellActionService.getAllByMiningSystem(id);
     }
 
+    @GetMapping("all/action/mining_system/{id}")
+    public HttpEntity<?> getAllActionByMiningSystem(@PathVariable Integer id) {
+        return wellActionService.getAllWithActionByMiningSystem(id);
+    }
+
     @GetMapping("all/action/uppg/{id}")
     public HttpEntity<?> getAllActionByUppg(@PathVariable Integer id) {
         return wellActionService.getAllWithActionsByUppg(id);
@@ -109,6 +114,11 @@ public class WellController {
         return wellActionService.getCountByInWork();
     }
 
+
+    @GetMapping("stat/status")
+    public HttpEntity<?> getStatByStatus(){
+        return wellActionService.getStatByStatus();
+    }
 
 
     /** Auto **/

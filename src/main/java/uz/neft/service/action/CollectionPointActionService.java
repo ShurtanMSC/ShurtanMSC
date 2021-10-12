@@ -1,10 +1,12 @@
 package uz.neft.service.action;
 
 import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.CollectionPointDto;
 import uz.neft.dto.action.CollectionPointActionDto;
 import uz.neft.dto.action.ObjectWithActionsDto;
+import uz.neft.dto.special.CollectionPointAndWells;
 import uz.neft.entity.*;
 import uz.neft.entity.action.CollectionPointAction;
 import uz.neft.entity.action.WellAction;
@@ -83,6 +85,26 @@ public class CollectionPointActionService {
 
             return converter.apiSuccess201(collectionPointActionDto);
         } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409();
+        }
+    }
+
+
+    public HttpEntity<?> addSpecial(User user, CollectionPointAndWells collectionPointAndWells){
+        try {
+            Optional<CollectionPoint> collectionPoint = collectionPointRepository.findById(collectionPointAndWells.getCollectionPointId());
+            if (!collectionPoint.isPresent()) return converter.apiError404("Collection point not found");
+            ResponseEntity<?> response = wellActionService.addSpecial(user, collectionPoint.get(), collectionPointAndWells.getWellList());
+            if (response.getStatusCode().value()!=200) return response;
+            CollectionPointActionDto dto= CollectionPointActionDto
+                    .builder()
+                    .collectionPointId(collectionPoint.get().getId())
+                    .pressure(collectionPointAndWells.getPressure()>0?collectionPointAndWells.getPressure():0)
+                    .temperature(collectionPointAndWells.getTemperature()>0?collectionPointAndWells.getTemperature():0)
+                    .build();
+            return addManually(user, dto);
+        }catch (Exception e){
             e.printStackTrace();
             return converter.apiError409();
         }
@@ -262,9 +284,11 @@ public class CollectionPointActionService {
                 if (action.isPresent()) {
                     if (action.get().getPressure() < cpAction.getPressure()) {
                         action.get().setExpend(0);
+                        if (action.get().getStatus()==WellStatus.IN_WORK)
                         action.get().setStatus(WellStatus.IN_IDLE);
                     }
                     else{
+                        if (action.get().getStatus()==WellStatus.IN_IDLE)
                         action.get().setStatus(WellStatus.IN_WORK);
                         double expend = wellActionService.expend(action.get().getTemperature(), action.get().getPressure(), cp.getUppg().getMiningSystem());
                         action.get().setExpend(expend);
