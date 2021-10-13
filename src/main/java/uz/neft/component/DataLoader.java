@@ -253,7 +253,7 @@ public class DataLoader implements CommandLineRunner {
             Integer[] array_cp9 = {127,300,301,37,321};
             Integer[] array_cp10 = {14,197,199,208,211,218,252,253,254,257,288,289};
             Integer[] array_cp11 = {10,15,119,196,201,202,203,207,115,118,258,260,285,293,306,307};
-            Integer[] array_cp12 = {61,198,200,169,51,56,292,256};
+            Integer[] array_cp12 = {61,198,200,51,56,292,256};
             Integer[] array_cp13 = {67,5,190,192,193,194,195,303,259,261,280,308,310,317,318};
             Integer[] array_cp14 = {33,161,164,165};
             Integer[] array_cp15 = {92,102,123,178,210,251,286,287};
