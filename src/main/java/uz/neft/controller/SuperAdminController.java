@@ -31,6 +31,7 @@ public class SuperAdminController {
 
 
     /** Roles **/
+    @GetMapping("/role/all")
     public HttpEntity<?> getRoles(){
         return ResponseEntity.ok(roleRepository.findAll());
     }

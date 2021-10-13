@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import uz.neft.dto.WellDto;
 import uz.neft.dto.action.ObjectWithActionsDto;
 import uz.neft.dto.action.WellActionDto;
-import uz.neft.dto.special.CollectionPointAndWells;
 import uz.neft.dto.special.WellActionLite;
 import uz.neft.entity.*;
 import uz.neft.entity.action.WellAction;
@@ -33,9 +32,10 @@ public class WellActionService {
     private final UserRepository userRepository;
     private final CollectionPointRepository collectionPointRepository;
     private final MiningSystemRepository miningSystemRepository;
+    private final UppgRepository uppgRepository;
 
 
-    public WellActionService(WellActionRepository wellActionRepository, MiningSystemConstantRepository miningSystemConstantRepository, WellRepository wellRepository, Converter converter, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository, Calculator calculator, ConstantRepository constantRepository, UserRepository userRepository, CollectionPointRepository collectionPointRepository) {
+    public WellActionService(WellActionRepository wellActionRepository, MiningSystemConstantRepository miningSystemConstantRepository, WellRepository wellRepository, Converter converter, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository, Calculator calculator, ConstantRepository constantRepository, UserRepository userRepository, CollectionPointRepository collectionPointRepository, UppgRepository uppgRepository) {
         this.wellActionRepository = wellActionRepository;
         this.wellRepository = wellRepository;
         this.converter = converter;
@@ -45,6 +45,7 @@ public class WellActionService {
         this.userRepository = userRepository;
         this.collectionPointRepository = collectionPointRepository;
         this.miningSystemRepository = miningSystemRepository;
+        this.uppgRepository = uppgRepository;
     }
 
 
@@ -243,19 +244,21 @@ public class WellActionService {
 
         try {
             WellAction wellAction = WellAction
-                    .builder()
+                     .builder()
                     .user(userRepository.findById(1).get())
                     .temperature(dto.getTemperature())
                     .pressure(dto.getPressure())
                     .status(dto.getStatus())
                     .rpl(dto.getRpl())
                     .well(well.get())
+                    .average_expend(D_well)
                     .expend(D_well)
                     .build();
             WellAction save = wellActionRepository.save(wellAction);
 
             WellActionDto wellActionDto = converter.wellActionToWellActionDto(save);
 
+            System.out.println("DEBIT = "+sumAllExpendByUppg(well.get().getCollectionPoint().getUppg()));
             return converter.apiSuccess201(wellActionDto);
         } catch (Exception e) {
             e.printStackTrace();
@@ -564,20 +567,45 @@ public class WellActionService {
     //... coming soon
 
 
-//    public ResponseEntity<?> test(Integer id){
-//        try {
-//            Optional<Well> well = wellRepository.findById(id);
-//            if (!well.isPresent()) return converter.apiError404();
-//            Optional<WellAction> first = wellActionRepository.findFirstByWell(well.get());
-//
-//            if (first.isPresent()){
-//                return converter.apiSuccess200(converter.wellAndWellActionToJson(well.get(), first.get()));
-//            }
-//            return converter.apiError409();
-//        }catch (Exception e){
-//            e.printStackTrace();
-//            return converter.apiError409();
-//        }
-//
-//    }
+
+
+
+
+
+
+
+    protected Double sumAllExpendByUppg(Uppg uppg){
+        try {
+            double sum=0;
+            List<CollectionPoint> collectionPointList = collectionPointRepository.findAllByUppg(uppg);
+            for (CollectionPoint collectionPoint : collectionPointList) {
+                sum += sumAllExpendByCollectionPoint(collectionPoint);
+            }
+            return sum;
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0.0;
+        }
+    }
+
+
+    protected Double sumAllExpendByCollectionPoint(CollectionPoint collectionPoint){
+        try {
+            double sum=0.0;
+            List<Well> wellList = wellRepository.findAllByCollectionPoint(collectionPoint);
+            for (Well well : wellList) {
+                Optional<WellAction> action = wellActionRepository.findFirstByWellOrderByCreatedAtDesc(well);
+                if (action.isPresent()) {
+                    sum += action.get().getAverage_expend();
+                }
+            }
+            return sum;
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0.0;
+        }
+    }
+
+
 }

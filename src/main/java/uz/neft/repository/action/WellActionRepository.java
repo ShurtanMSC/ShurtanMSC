@@ -21,7 +21,6 @@ public interface WellActionRepository extends JpaRepository<WellAction,Long> {
 
     List<WellAction> findAllByWell(Well well);
 
-
     List<WellAction> findAllByCreatedAtBetween(Timestamp from, Timestamp until);
 
     List<WellAction> findAllByWellAndCreatedAtBetween(Well well, Timestamp from, Timestamp until);

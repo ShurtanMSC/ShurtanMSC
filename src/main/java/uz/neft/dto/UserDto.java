@@ -23,5 +23,6 @@ public class UserDto {
     private String phone;
     private String fio;
     private Short roleId;
+    private String roleName;
     private boolean active=true;
 }

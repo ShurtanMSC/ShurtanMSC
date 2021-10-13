@@ -293,6 +293,7 @@ public class Converter {
                     .phone(user.getPhone())
                     .username(user.getUsername())
                     .roleId(user.getRoles().stream().findFirst().get().getId())
+                    .roleName(user.getRoles().stream().findFirst().get().getRoleName().name())
                     .build();
         } catch (Exception e) {
             e.printStackTrace();
