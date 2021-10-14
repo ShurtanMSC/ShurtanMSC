@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import uz.neft.dto.action.WellActionDto;
 import uz.neft.entity.*;
 import uz.neft.entity.action.WellAction;
 import uz.neft.entity.enums.WellCategory;
@@ -17,6 +18,7 @@ import uz.neft.repository.*;
 import uz.neft.repository.action.WellActionRepository;
 import uz.neft.repository.constants.ConstantRepository;
 import uz.neft.repository.constants.MiningSystemConstantRepository;
+import uz.neft.service.action.WellActionService;
 
 
 import java.util.ArrayList;
@@ -46,6 +48,8 @@ public class DataLoader implements CommandLineRunner {
     private WellRepository wellRepository;
     @Autowired
     private OpcServerRepository opcServerRepository;
+    @Autowired
+    private WellActionService wellActionService;
     @Autowired
     public DataLoader(UserRepository userRepository, MiningSystemConstantRepository miningSystemConstantRepository, RoleRepository roleRepository, ConstantRepository constantRepository
             , PasswordEncoder passwordEncoder, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository, WellActionRepository wellActionRepository) {
@@ -80,7 +84,7 @@ public class DataLoader implements CommandLineRunner {
                             .active(true)
                             .email("admin")
                             .password(passwordEncoder.encode("admin"))
-                            .fio("admin")
+                            .fio("Амонулло Исмаили")
                             .phone("+998993793877")
                             .roles(Collections.singleton(director))
                             .username("admin")
@@ -92,7 +96,7 @@ public class DataLoader implements CommandLineRunner {
                             .active(true)
                             .email("operator")
                             .password(passwordEncoder.encode("operator"))
-                            .fio("operator")
+                            .fio("Азизжон Усманов")
                             .phone("+998993793877")
                             .roles(Collections.singleton(operator))
                             .username("operator")
@@ -118,7 +122,7 @@ public class DataLoader implements CommandLineRunner {
                             .active(true)
                             .email("energetic")
                             .password(passwordEncoder.encode("energetic"))
-                            .fio("energetic")
+                            .fio("Махмуд Саломов")
                             .phone("+998993793877")
                             .roles(Collections.singleton(energetic))
                             .username("energetic")
@@ -131,7 +135,7 @@ public class DataLoader implements CommandLineRunner {
                             .active(true)
                             .email("metrologist")
                             .password(passwordEncoder.encode("metrologist"))
-                            .fio("metrologist")
+                            .fio("Уткир Мусурманкулов")
                             .phone("+998993793877")
                             .roles(Collections.singleton(metrologist))
                             .username("metrologist")
@@ -144,7 +148,7 @@ public class DataLoader implements CommandLineRunner {
                             .active(true)
                             .email("geologist")
                             .password(passwordEncoder.encode("geologist"))
-                            .fio("geologist")
+                            .fio("Джавлон Турсун-Ходжаев")
                             .phone("+998993793877")
                             .roles(Collections.singleton(metrologist))
                             .username("geologist")
@@ -265,27 +269,6 @@ public class DataLoader implements CommandLineRunner {
             Integer[] array_cp21 = {264,266,267,268};
 
 
-            saverPerCp(array_cp1,cp1);
-            saverPerCp(array_cp2,cp2);
-            saverPerCp(array_cp3,cp3);
-            saverPerCp(array_cp4,cp4);
-            saverPerCp(array_cp5,cp5);
-            saverPerCp(array_cp6,cp6);
-            saverPerCp(array_cp7,cp7);
-            saverPerCp(array_cp8,cp8);
-            saverPerCp(array_cp9,cp9);
-            saverPerCp(array_cp10,cp10);
-            saverPerCp(array_cp11,cp11);
-            saverPerCp(array_cp12,cp12);
-            saverPerCp(array_cp13,cp13);
-            saverPerCp(array_cp14,cp14);
-            saverPerCp(array_cp15,cp15);
-            saverPerCp(array_cp16,cp16);
-            saverPerCp(array_cp17,cp17);
-            saverPerCp(array_cp18,cp18);
-            saverPerCp(array_cp19,cp19);
-            saverPerCp(array_cp20,cp20);
-            saverPerCp(array_cp21,cp21);
 
 
 
@@ -377,6 +360,29 @@ public class DataLoader implements CommandLineRunner {
             MiningSystemConstant miningSystemConstantRoGasValue=miningSystemConstantRepository.save(new MiningSystemConstant(shurtan,roGas,0.772));
             MiningSystemConstant miningSystemConstantRoAirValue=miningSystemConstantRepository.save(new MiningSystemConstant(shurtan,roAir,1.205));
 
+
+            saverPerCp(array_cp1,cp1);
+            saverPerCp(array_cp2,cp2);
+            saverPerCp(array_cp3,cp3);
+            saverPerCp(array_cp4,cp4);
+            saverPerCp(array_cp5,cp5);
+            saverPerCp(array_cp6,cp6);
+            saverPerCp(array_cp7,cp7);
+            saverPerCp(array_cp8,cp8);
+            saverPerCp(array_cp9,cp9);
+            saverPerCp(array_cp10,cp10);
+            saverPerCp(array_cp11,cp11);
+            saverPerCp(array_cp12,cp12);
+            saverPerCp(array_cp13,cp13);
+            saverPerCp(array_cp14,cp14);
+            saverPerCp(array_cp15,cp15);
+            saverPerCp(array_cp16,cp16);
+            saverPerCp(array_cp17,cp17);
+            saverPerCp(array_cp18,cp18);
+            saverPerCp(array_cp19,cp19);
+            saverPerCp(array_cp20,cp20);
+            saverPerCp(array_cp21,cp21);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -404,17 +410,30 @@ public class DataLoader implements CommandLineRunner {
                         .commissioningDate(new Date())
                         .drillingStartDate(new Date())
                         .build());
-        WellAction wellAction154=wellActionRepository.save(WellAction
+
+        WellActionDto wellActionDto= WellActionDto
                 .builder()
-                .well(well154)
-                .pressure(40)
-                .temperature(46.85)
-                .expend(141)
+                .pressure(1.9)
                 .rpl(37.22)
-                .status(WellStatus.IN_WORK)
-                .perforation_max(1000)
+                .wellId(well154.getId())
                 .perforation_min(500)
-                .build());
+                .perforation_max(1000)
+                .temperature(47)
+                .status(WellStatus.IN_WORK)
+                .build();
+        wellActionService.addManually(new User(),wellActionDto);
+
+//        WellAction wellAction154=wellActionRepository.save(WellAction
+//                .builder()
+//                .well(well154)
+//                .pressure(40)
+//                .temperature(46.85)
+//                .expend(141)
+//                .rpl(37.22)
+//                .status(WellStatus.IN_WORK)
+//                .perforation_max(1000)
+//                .perforation_min(500)
+//                .build());
     }
 }
 

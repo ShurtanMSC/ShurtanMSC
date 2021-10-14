@@ -262,11 +262,17 @@ public class CollectionPointActionService {
                 action.setPressure(action.getPressureOpc());
 //                Thread.sleep(1000);
                 action.setTemperature(action.getTemperatureOpc());
+                wellActionService.execute(collectionPoint.getUppg());
 
                 Thread.sleep(500);
 //                System.out.println(action.toString());
-                double expendCp = checkWells(collectionPoint, action);
-                action.setExpend(expendCp);
+                if (action.getPressure()==0){
+                    action.setExpend(0);
+                }else {
+                    double expendCp = checkWells(collectionPoint, action);
+                    action.setExpend(expendCp);
+                }
+
                 collectionPointActionRepository.save(action);
             }
 

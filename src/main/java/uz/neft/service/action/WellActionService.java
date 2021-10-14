@@ -8,10 +8,12 @@ import uz.neft.dto.action.ObjectWithActionsDto;
 import uz.neft.dto.action.WellActionDto;
 import uz.neft.dto.special.WellActionLite;
 import uz.neft.entity.*;
+import uz.neft.entity.action.CollectionPointAction;
 import uz.neft.entity.action.WellAction;
 import uz.neft.entity.enums.WellStatus;
 import uz.neft.entity.variables.*;
 import uz.neft.repository.*;
+import uz.neft.repository.action.CollectionPointActionRepository;
 import uz.neft.repository.action.WellActionRepository;
 import uz.neft.repository.constants.ConstantRepository;
 import uz.neft.repository.constants.MiningSystemConstantRepository;
@@ -33,9 +35,10 @@ public class WellActionService {
     private final CollectionPointRepository collectionPointRepository;
     private final MiningSystemRepository miningSystemRepository;
     private final UppgRepository uppgRepository;
+    private final CollectionPointActionRepository collectionPointActionRepository;
 
 
-    public WellActionService(WellActionRepository wellActionRepository, MiningSystemConstantRepository miningSystemConstantRepository, WellRepository wellRepository, Converter converter, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository, Calculator calculator, ConstantRepository constantRepository, UserRepository userRepository, CollectionPointRepository collectionPointRepository, UppgRepository uppgRepository) {
+    public WellActionService(WellActionRepository wellActionRepository, MiningSystemConstantRepository miningSystemConstantRepository, WellRepository wellRepository, Converter converter, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository, Calculator calculator, ConstantRepository constantRepository, UserRepository userRepository, CollectionPointRepository collectionPointRepository, UppgRepository uppgRepository, CollectionPointActionRepository collectionPointActionRepository) {
         this.wellActionRepository = wellActionRepository;
         this.wellRepository = wellRepository;
         this.converter = converter;
@@ -46,6 +49,7 @@ public class WellActionService {
         this.collectionPointRepository = collectionPointRepository;
         this.miningSystemRepository = miningSystemRepository;
         this.uppgRepository = uppgRepository;
+        this.collectionPointActionRepository = collectionPointActionRepository;
     }
 
 
@@ -242,6 +246,8 @@ public class WellActionService {
         double D_well = Calculator.averageProductionRate(C, P_u, delta, Ro_otn, Z, T_u);
 
 
+
+
         try {
             WellAction wellAction = WellAction
                      .builder()
@@ -257,8 +263,9 @@ public class WellActionService {
             WellAction save = wellActionRepository.save(wellAction);
 
             WellActionDto wellActionDto = converter.wellActionToWellActionDto(save);
+            execute(well.get().getCollectionPoint().getUppg());
+//            System.out.println("DEBIT = "+sumAllExpendByUppg(well.get().getCollectionPoint().getUppg()));
 
-            System.out.println("DEBIT = "+sumAllExpendByUppg(well.get().getCollectionPoint().getUppg()));
             return converter.apiSuccess201(wellActionDto);
         } catch (Exception e) {
             e.printStackTrace();
@@ -567,6 +574,29 @@ public class WellActionService {
     //... coming soon
 
 
+
+    protected void execute(Uppg uppg){
+        double q_well=sumAllExpendByUppg(uppg);
+        List<CollectionPoint> collectionPointList = collectionPointRepository.findAllByUppg(uppg);
+        for (CollectionPoint collectionPoint : collectionPointList) {
+            List<Well> wellList=wellRepository.findAllByCollectionPoint(collectionPoint);
+            CollectionPointAction pointAction = collectionPointActionRepository.findFirstByCollectionPointOrderByCreatedAtDesc(collectionPoint);
+            for (Well well : wellList){
+                Optional<WellAction> action=wellActionRepository.findFirstByWellOrderByCreatedAtDesc(well);
+                if (action.isPresent()){
+
+                    if (pointAction!=null&&(action.get().getPressure()<pointAction.getPressure()||pointAction.getPressure()==0)){
+                        action.get().setExpend(0);
+                    }
+                    else {
+                        action.get().setExpend(8000000*(action.get().getAverage_expend()/q_well));
+                    }
+                    wellActionRepository.save(action.get());
+                }
+
+            }
+        }
+    }
 
 
 

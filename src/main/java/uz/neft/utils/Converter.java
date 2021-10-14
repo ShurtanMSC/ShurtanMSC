@@ -415,7 +415,7 @@ public class Converter {
                     .wellId(wellAction.getWell().getId())
                     .pressure(wellAction.getPressure())
                     .temperature(wellAction.getTemperature())
-                    .expend(wellAction.getExpend())
+                    .expend(wellAction.getExpend()/1000)
                     .rpl(wellAction.getRpl())
                     .status(wellAction.getStatus())
                     .date(wellAction.getCreatedAt().toString())
@@ -434,7 +434,7 @@ public class Converter {
             return CollectionPointActionDto
                     .builder()
                     .collectionPointId(collectionPointAction.getCollectionPoint().getId())
-                    .expand(collectionPointAction.getExpend())
+                    .expand(collectionPointAction.getExpend()/1000)
                     .pressure(collectionPointAction.getPressure())
                     .temperature(collectionPointAction.getTemperature())
                     .build();

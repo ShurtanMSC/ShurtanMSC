@@ -21,4 +21,22 @@ public class Simulation {
         return a;
     }
 
+    @PostMapping("collection_point/temperature")
+    public String[] testT(@RequestBody Simulate simulate){
+        String[] a=new String[3];
+        a[0]= String.valueOf(new SecureRandom().nextFloat()*(60.0-50.0)+50.0);
+        a[1]="Good";
+        a[2]= String.valueOf(new Date());
+        return a;
+    }
+
+    @PostMapping("collection_point/pressure")
+    public String[] testP(@RequestBody Simulate simulate){
+        String[] a=new String[3];
+        a[0]= String.valueOf(new SecureRandom().nextFloat()*(1.5-1.0)+1.0);
+        a[1]="Good";
+        a[2]= String.valueOf(new Date());
+        return a;
+    }
+
 }

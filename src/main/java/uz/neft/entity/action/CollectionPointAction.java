@@ -49,7 +49,7 @@ public class CollectionPointAction extends AbsEntityLong {
     public Double getTemperatureOpc(){
         try {
             Gson gson=new Gson();
-            HttpResponse<JsonNode> response = Unirest.post(collectionPoint.getOpcServer().getUrl())
+            HttpResponse<JsonNode> response = Unirest.post(collectionPoint.getOpcServer().getUrl()+"/temperature")
                     .header("Content-Type", "application/json")
                     .body(collectionPoint.jsonRequestBodyTemperature())
                     .asJson();
@@ -76,7 +76,7 @@ public class CollectionPointAction extends AbsEntityLong {
         try {
 
             Gson gson=new Gson();
-            HttpResponse<JsonNode> response = Unirest.post(collectionPoint.getOpcServer().getUrl())
+            HttpResponse<JsonNode> response = Unirest.post(collectionPoint.getOpcServer().getUrl()+"/pressure")
                     .header("Content-Type", "application/json")
                     .body(collectionPoint.jsonRequestBodyPressure())
                     .asJson();
