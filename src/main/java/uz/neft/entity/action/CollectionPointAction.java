@@ -49,10 +49,19 @@ public class CollectionPointAction extends AbsEntityLong {
     public Double getTemperatureOpc(){
         try {
             Gson gson=new Gson();
-            HttpResponse<JsonNode> response = Unirest.post(collectionPoint.getOpcServer().getUrl()+"/temperature")
-                    .header("Content-Type", "application/json")
-                    .body(collectionPoint.jsonRequestBodyTemperature())
-                    .asJson();
+            HttpResponse<JsonNode> response;
+            if (collectionPoint.getId()!=1){
+                response = Unirest.post(collectionPoint.getOpcServer().getUrl()+"/temperature")
+                        .header("Content-Type", "application/json")
+                        .body(collectionPoint.jsonRequestBodyTemperature())
+                        .asJson();
+            }
+            else {
+                response = Unirest.post(collectionPoint.getOpcServer().getUrl())
+                        .header("Content-Type", "application/json")
+                        .body(collectionPoint.jsonRequestBodyTemperature())
+                        .asJson();
+            }
 //            System.out.println(response);
 //            System.out.println(response.getStatus());
             if (response.getBody()!=null){
@@ -76,10 +85,20 @@ public class CollectionPointAction extends AbsEntityLong {
         try {
 
             Gson gson=new Gson();
-            HttpResponse<JsonNode> response = Unirest.post(collectionPoint.getOpcServer().getUrl()+"/pressure")
-                    .header("Content-Type", "application/json")
-                    .body(collectionPoint.jsonRequestBodyPressure())
-                    .asJson();
+            HttpResponse<JsonNode> response;
+            if (collectionPoint.getId()!=1){
+                response = Unirest.post(collectionPoint.getOpcServer().getUrl()+"/pressure")
+                        .header("Content-Type", "application/json")
+                        .body(collectionPoint.jsonRequestBodyPressure())
+                        .asJson();
+            }
+            else {
+                response = Unirest.post(collectionPoint.getOpcServer().getUrl())
+                        .header("Content-Type", "application/json")
+                        .body(collectionPoint.jsonRequestBodyPressure())
+                        .asJson();
+            }
+
 //            System.out.println(response);
 //            System.out.println(response.getStatus());
             if (response.getBody()!=null){
