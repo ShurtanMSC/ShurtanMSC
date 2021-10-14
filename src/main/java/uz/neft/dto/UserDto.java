@@ -18,8 +18,8 @@ import java.util.Set;
 public class UserDto {
     private Integer id;
     private String username;
-    private String password;
     private String email;
+    private String password;
     private String phone;
     private String fio;
     private Short roleId;

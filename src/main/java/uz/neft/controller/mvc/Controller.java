@@ -1,48 +1,57 @@
 package uz.neft.controller.mvc;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.http.HttpEntity;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import uz.neft.dto.UserDto;
+import uz.neft.service.UserService;
 
 @org.springframework.stereotype.Controller
 @RequestMapping("admin")
 public class Controller {
+    private final UserService userService;
+
+    public Controller(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("")
-    public String main(){
+    public String main() {
         return "index";
     }
 
+    /**
+     * Mining
+     **/
 
 
-
-
-
-
-    /** Mining **/
-
+//    USER CRUD
     @GetMapping("users")
-    public String users(){
+    public String users() {
+
         return "mining/users";
     }
 
+    //    UPPG CRUD
     @GetMapping("uppg")
-    public String uppg(){
+    public String uppg() {
         return "mining/uppg";
     }
 
+    //    COLLECTION POINT CRUD
     @GetMapping("collection_point")
-    public String collection_point(){
+    public String collection_point() {
         return "mining/collection_point";
     }
 
 
     @GetMapping("well")
-    public String well(){
+    public String well() {
         return "mining/well";
     }
 
     @GetMapping("system_variables")
-    public String system_variables(){
+    public String system_variables() {
         return "mining/system_variables";
     }
 

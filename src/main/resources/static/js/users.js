@@ -12,6 +12,22 @@ function getAllUsers() {
         })
 }
 
+// function addUser(e) {
+//     e.preventDefault()
+//     const form = document.getElementById('addUser');
+//     const name = form.elements['username'];
+//     const email = form.elements['email'];
+//
+// // getting the element's value
+//     let fullName = name.value;
+//     let emailAddress = email.value;
+//     console.log("e.target.valuee.target.value")
+//     console.log(fullName+" "+ emailAddress)
+// }
+//
+// function readFormData(){
+//     var formDat={}
+// }
 
 function getAllRoles() {
     axios.get("/api/admin/role/all")
