@@ -35,7 +35,7 @@ function createViewTable(users) {
             "                                    <td>"+user.roleName+"</td>\n" +
             "                                    <td>"+user.phone+"</td>\n" +
             "                                    <td>"+user.email+"</td>\n" +
-            "                                    <td><button class='btn btn-success' id='btn-edit-user'>Edit</button></td>\n" +
+            "                                    <td><button class='btn btn-success' id='btn-edit-user'>Редактировать</button></td>\n" +
             "                                </tr>"
     })
     return out;

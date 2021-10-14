@@ -1,0 +1,9 @@
+.side-word{
+    /*color: black;*/
+
+    font-weight: bold;
+}
+
+.side-word:hover{
+    color: #FFE5D3!important;
+}
