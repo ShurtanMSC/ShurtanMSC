@@ -46,6 +46,37 @@ public class WellAction extends AbsEntityLong {
     // Rpl
     private double rpl;
 
+
+    //Р_ПКР
+    private double P_pkr;
+
+
+    //T_ПКР
+    private double T_pkr;
+
+
+    //P_pr
+    private double P_pr;
+
+    //T_pr
+    private double T_pr;
+
+    //Относительная плотность газа ( ρ_отн )
+    private double Ro_otn;
+
+
+    //Z - Коэффициент сверхсжимаемости газа
+    private double Z;
+
+
+    //delta - Поправочный коэффициент, зависящий от приведенных давления и температуры (δ)
+    private double delta;
+
+
+    //Шайбный коэффициент расхода, С
+    private double C;
+
+
     @Enumerated(EnumType.STRING)
     private WellStatus status;
 

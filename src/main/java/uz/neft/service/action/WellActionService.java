@@ -250,7 +250,7 @@ public class WellActionService {
 
         try {
             WellAction wellAction = WellAction
-                     .builder()
+                    .builder()
                     .user(userRepository.findById(1).get())
                     .temperature(dto.getTemperature())
                     .pressure(dto.getPressure())
@@ -259,6 +259,13 @@ public class WellActionService {
                     .well(well.get())
                     .average_expend(D_well)
                     .expend(D_well)
+                    .P_pkr(P_pkr)
+                    .P_pr(P_pr)
+                    .T_pkr(T_pkr)
+                    .T_pr(T_pr)
+                    .Z(Z)
+                    .Ro_otn(Ro_otn)
+                    .delta(delta)
                     .build();
             WellAction save = wellActionRepository.save(wellAction);
 

@@ -1,9 +1,6 @@
 package uz.neft.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import uz.neft.entity.template.AbsEntityInteger;
 
 import javax.persistence.Entity;
@@ -15,6 +12,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "collection_point")
+@Builder
 public class CollectionPoint extends AbsEntityInteger {
 
     @NotNull
