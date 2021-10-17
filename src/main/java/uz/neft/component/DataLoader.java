@@ -168,7 +168,7 @@ public class DataLoader implements CommandLineRunner {
 
             OpcServer serverReal = opcServerRepository.save(new OpcServer("Ecograph", "Haqiqiy server", "EH_Wetzer.OPC_DA_Server.4",pythonServer));
             OpcServer serverRealSim = opcServerRepository.save(new OpcServer("Ecograph", "Haqiqiy server", "EH_Wetzer.OPC_DA_Server.4",localServer));
-            OpcServer serverSimulation = opcServerRepository.save(new OpcServer("Matrikon", "Simulyatsion server", "Matrikon.OPC.Simulation.1",herokuServer));
+            OpcServer serverSimulation = opcServerRepository.save(new OpcServer("Matrikon", "Simulyatsion server", "Matrikon.OPC.Simulation.1",localServer));
 
             String random="Random.Real";
             String temperature="Unit1.YYYYY.VT_R4";
