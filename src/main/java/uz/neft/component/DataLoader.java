@@ -164,11 +164,11 @@ public class DataLoader implements CommandLineRunner {
             String pythonServer="http://10.10.24.120:8000/opc/";
 //            String localServer="http://10.10.24.120:8080/api/simulate/collection_point";
             String localServer="http://localhost:8080/api/simulate/collection_point";
-            String herokuServer= "https://shurtanback.herokuapp.com/api/simulate/test";
+            String herokuServer= "https://shurtanback.herokuapp.com/api/simulate/collection_point";
 
             OpcServer serverReal = opcServerRepository.save(new OpcServer("Ecograph", "Haqiqiy server", "EH_Wetzer.OPC_DA_Server.4",pythonServer));
             OpcServer serverRealSim = opcServerRepository.save(new OpcServer("Ecograph", "Haqiqiy server", "EH_Wetzer.OPC_DA_Server.4",localServer));
-            OpcServer serverSimulation = opcServerRepository.save(new OpcServer("Matrikon", "Simulyatsion server", "Matrikon.OPC.Simulation.1",localServer));
+            OpcServer serverSimulation = opcServerRepository.save(new OpcServer("Matrikon", "Simulyatsion server", "Matrikon.OPC.Simulation.1",herokuServer));
 
             String random="Random.Real";
             String temperature="Unit1.YYYYY.VT_R4";
