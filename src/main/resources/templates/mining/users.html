@@ -72,7 +72,7 @@
                                 <div class="wrap w-100">
                                     <button type="button" class="btn btn-primary py-2 px-4" data-toggle="modal"
                                             data-target="#exampleModalCenter">
-                                        Add User
+                                        Добавить пользователя
                                     </button>
 
                                     <!-- Modal -->
@@ -87,37 +87,41 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button"
-                                            class="close d-flex align-items-center justify-content-center h-25"
+                                            class="close d-flex align-items-center justify-content-center h-25 "
+                                            id="closeFormBtn"
                                             data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true" class="ion-ios-close">x</span>
                                     </button>
                                 </div>
                                 <div class="modal-body  pb-md-5 pl-md-5 pr-md-5 pt-md-2">
-                                    <h3 class="text-center mb-4">Add User</h3>
-                                    <form action="/" class="login-form" id="addUser" onsubmit="event.preventDefault();addUser();">
+                                    <h3 class="text-center mb-4">Добавить пользователя</h3>
+                                    <form action="#" class="login-form" name="addOrEditUserForm" id="addOrEditUserForm" onsubmit="addOrEditUser(event)">
                                         <div class="form-group">
-                                                <input name="username"  type="text" class="form-control rounded-left" placeholder="Username">
+                                                <input name="id"  type="text" class="form-control rounded-left" hidden>
+                                        </div>
+                                        <div class="form-group">
+                                                <input name="username"  type="text" class="form-control rounded-left" placeholder="Имя пользователя">
                                         </div>
                                         <div class="form-group d-flex">
-                                                <input name="email" type="email" class="form-control rounded-left" placeholder="Email">
+                                                <input name="email" type="email" class="form-control rounded-left" placeholder="Эл. адрес">
                                         </div>
                                         <div class="form-group d-flex">
-                                                <input  type="password" class="form-control rounded-left"
-                                                       placeholder="Password">
+                                                <input name="password" type="password" class="form-control rounded-left"
+                                                       placeholder="Пароль">
                                         </div>
                                         <div class="form-group d-flex">
-                                                <input type="tel" class="form-control rounded-left"
-                                                       placeholder="Phone Number">
+                                                <input name="phone" type="tel" class="form-control rounded-left"
+                                                       placeholder="Номер телефона">
                                         </div>
                                         <div class="form-group d-flex">
-                                                <input  type="text" class="form-control rounded-left"
-                                                       placeholder="Full Name">
+                                                <input name="fio" type="text" class="form-control rounded-left"
+                                                       placeholder="Полное имя">
                                         </div>
                                         <div class="form-group d-flex">
-                                            <select  class="custom-select form-control rounded-left"
+                                            <select name="roleId" class="custom-select form-control rounded-left"
                                                     id="inputGroupSelect03"
                                                     aria-label="Example select with button addon">
-                                                <option selected>Roles</option>
+                                                <option selected>Роли</option>
                                                 <option value="1">Admin</option>
                                                 <option value="2">Super Admin</option>
                                                 <option value="3">Geolic</option>
@@ -127,7 +131,7 @@
 
                                         <div class="form-group">
                                             <button type="submit"
-                                                    class="form-control btn btn-primary rounded submit px-3">Add
+                                                    class="form-control btn btn-primary rounded submit px-3">Добавлять
                                             </button>
                                         </div>
 
@@ -207,6 +211,11 @@
                                                     aria-label="Salary: activate to sort column ascending"
                                                     style="width: 67.001px;">Редактировать
                                                 </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-label="Salary: activate to sort column ascending"
+                                                    style="width: 67.001px;">Удалить
+                                                </th>
                                             </tr>
                                             </thead>
                                             <tfoot>
@@ -219,6 +228,7 @@
                                                 <th class="users-table-title" rowspan="1" colspan="1">Телефон</th>
                                                 <th class="users-table-title" rowspan="1" colspan="1">Эл. адрес</th>
                                                 <th class="users-table-title" rowspan="1" colspan="1">Редактировать</th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Удалить</th>
                                             </tr>
                                             </tfoot>
                                             <tbody id="userTable">
