@@ -28,8 +28,42 @@ public class WellActionDto {
     // Rpl
     private double rpl;
 
-    //C
+    //Р_ПКР
+    private double P_pkr;
+
+
+    //T_ПКР
+    private double T_pkr;
+
+
+    //P_pr
+    private double P_pr;
+
+    //T_pr
+    private double T_pr;
+
+    //Относительная плотность газа ( ρ_отн )
+    private double Ro_otn;
+
+
+    //Z - Коэффициент сверхсжимаемости газа
+    private double Z;
+
+
+    //delta - Поправочный коэффициент, зависящий от приведенных давления и температуры (δ)
+    private double delta;
+
+
+    //Шайбный коэффициент расхода, С
     private double c;
+
+
+    //ρ_газа – плотность газа при стандартных условиях
+    private double ro_gas;
+
+
+    //ρ_возд – плотность воздуха при стандартных условиях
+    private double ro_air;
 
     @Enumerated(EnumType.STRING)
     private WellStatus status;

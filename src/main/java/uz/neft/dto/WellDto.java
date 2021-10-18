@@ -34,6 +34,7 @@ public class WellDto {
     private double depth;
     private double x;
     private double y;
+    private double c;
     private WellCategory category;
 
 }

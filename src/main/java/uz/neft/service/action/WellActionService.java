@@ -245,9 +245,6 @@ public class WellActionService {
          **/
         double D_well = Calculator.averageProductionRate(C, P_u, delta, Ro_otn, Z, T_u);
 
-
-
-
         try {
             WellAction wellAction = WellAction
                     .builder()
@@ -264,7 +261,7 @@ public class WellActionService {
                     .T_pkr(T_pkr)
                     .T_pr(T_pr)
                     .Z(Z)
-                    .C(C)
+                    .c(C)
                     .Ro_otn(Ro_otn)
                     .delta(delta)
                     .ro_gas(roGas.getValue())
@@ -281,6 +278,17 @@ public class WellActionService {
             e.printStackTrace();
             return converter.apiError404();
         }
+    }
+
+
+    //Алгоритм расчета прогнозных отборов газа и конденсата (для диаграммы)
+    public void rpl(Well well){
+        Optional<WellAction> action = wellActionRepository.findFirstByWellOrderByCreatedAtDesc(well);
+        Constant constA = constantRepository.findByName(ConstantNameEnums.A);
+        Constant constB = constantRepository.findByName(ConstantNameEnums.B);
+        MiningSystemConstant A = miningSystemConstantRepository.findByMiningSystemAndConstant(well.getCollectionPoint().getUppg().getMiningSystem(), constA);
+        MiningSystemConstant B = miningSystemConstantRepository.findByMiningSystemAndConstant(well.getCollectionPoint().getUppg().getMiningSystem(), constB);
+
     }
 
     public HttpEntity<?> getWells() {
