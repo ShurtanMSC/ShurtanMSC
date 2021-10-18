@@ -77,6 +77,14 @@ public class WellAction extends AbsEntityLong {
     private double C;
 
 
+    //ρ_газа – плотность газа при стандартных условиях
+    private double ro_gas;
+
+
+    //ρ_возд – плотность воздуха при стандартных условиях
+    private double ro_air;
+
+
     @Enumerated(EnumType.STRING)
     private WellStatus status;
 

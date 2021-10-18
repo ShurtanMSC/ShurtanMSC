@@ -266,6 +266,8 @@ public class WellActionService {
                     .Z(Z)
                     .Ro_otn(Ro_otn)
                     .delta(delta)
+                    .ro_gas(roGas.getValue())
+                    .ro_air(roAir.getValue())
                     .build();
             WellAction save = wellActionRepository.save(wellAction);
 
@@ -477,10 +479,11 @@ public class WellActionService {
 
     public HttpEntity<?> getStatByStatus() {
         try{
-            List<MiningSystem> miningSystemList = miningSystemRepository.findAll();
+            List<MiningSystem> miningSystemList = miningSystemRepository.findAllByOrderById();
 
 //            Map<String, Integer> map=new HashMap<>();
-            Map<String,Map<String,Integer>> result=new HashMap<>();
+            List<Map<String,Object>> stats=new ArrayList<>();
+//            Map<String,Map<String,Object>> result=new HashMap<>();
             for (MiningSystem miningSystem : miningSystemList) {
                 int IN_WORK_A = 0;
                 int IN_IDLE_A = 0;
@@ -504,15 +507,17 @@ public class WellActionService {
 
 
                 }
-                Map<String, Integer> map = new HashMap<>();
+                Map<String, Object> map = new HashMap<>();
+                map.put("name",miningSystem.getName());
                 map.put(WellStatus.IN_WORK.name(), IN_WORK_A);
                 map.put(WellStatus.IN_IDLE.name(), IN_IDLE_A);
                 map.put(WellStatus.IN_CONSERVATION.name(), IN_CONSERVATION_A);
                 map.put(WellStatus.IN_LIQUIDATION.name(), IN_LIQUIDATION_A);
                 map.put(WellStatus.IN_REPAIR.name(), IN_REPAIR_A);
-                result.put(miningSystem.getName(),map);
+                stats.add(map);
+//                result.put(miningSystem.getName(),map);
             }
-            return converter.apiSuccess200(result);
+            return converter.apiSuccess200(stats);
         }catch (Exception e) {
             e.printStackTrace();
             return converter.apiError409();
