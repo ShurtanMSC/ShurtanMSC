@@ -261,7 +261,7 @@ public class WellActionService {
                     .T_pkr(T_pkr)
                     .T_pr(T_pr)
                     .Z(Z)
-                    .c(C)
+                    .C(C)
                     .Ro_otn(Ro_otn)
                     .delta(delta)
                     .ro_gas(roGas.getValue())
