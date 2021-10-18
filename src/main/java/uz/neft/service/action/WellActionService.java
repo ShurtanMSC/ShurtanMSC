@@ -509,6 +509,7 @@ public class WellActionService {
                 }
                 Map<String, Object> map = new HashMap<>();
                 map.put("name",miningSystem.getName());
+                map.put("id",miningSystem.getId());
                 map.put(WellStatus.IN_WORK.name(), IN_WORK_A);
                 map.put(WellStatus.IN_IDLE.name(), IN_IDLE_A);
                 map.put(WellStatus.IN_CONSERVATION.name(), IN_CONSERVATION_A);
