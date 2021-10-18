@@ -9,5 +9,7 @@ public enum ConstantNameEnums {
     RO_GAS,
     RO_AIR,
     C,
+    A,
+    B
 
 }

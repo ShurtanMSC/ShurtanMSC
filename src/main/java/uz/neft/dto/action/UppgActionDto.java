@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import uz.neft.entity.CollectionPoint;
 
 import javax.persistence.ManyToOne;
+import java.sql.Timestamp;
 
 @Getter
 @AllArgsConstructor
@@ -42,6 +43,8 @@ public class UppgActionDto {
     private double exitPressure;
 
     private Integer uppgId;
+
+    private Timestamp date;
 
 
 //    @LastModifiedBy

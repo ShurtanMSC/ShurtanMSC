@@ -9,12 +9,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import uz.neft.dto.action.WellActionDto;
 import uz.neft.entity.*;
+import uz.neft.entity.action.UppgAction;
 import uz.neft.entity.action.WellAction;
 import uz.neft.entity.enums.WellCategory;
 import uz.neft.entity.enums.WellStatus;
 import uz.neft.entity.variables.*;
 import uz.neft.entity.variables.MiningSystemGasComposition;
 import uz.neft.repository.*;
+import uz.neft.repository.action.UppgActionRepository;
 import uz.neft.repository.action.WellActionRepository;
 import uz.neft.repository.constants.ConstantRepository;
 import uz.neft.repository.constants.MiningSystemConstantRepository;
@@ -50,6 +52,8 @@ public class DataLoader implements CommandLineRunner {
     private OpcServerRepository opcServerRepository;
     @Autowired
     private WellActionService wellActionService;
+    @Autowired
+    private UppgActionRepository uppgActionRepository;
     @Autowired
     public DataLoader(UserRepository userRepository, MiningSystemConstantRepository miningSystemConstantRepository, RoleRepository roleRepository, ConstantRepository constantRepository
             , PasswordEncoder passwordEncoder, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository, WellActionRepository wellActionRepository) {
@@ -179,6 +183,38 @@ public class DataLoader implements CommandLineRunner {
 
             Uppg uppg = uppgRepository.save(new Uppg("УППГ-1",shurtan));
             Uppg uppg2 = uppgRepository.save(new Uppg("УППГ-2",shurtan));
+
+            UppgAction uppgAction1= UppgAction
+                    .builder()
+                    .uppg(uppg)
+                    .expend(8000)
+                    .incomePressure(15)
+                    .exitPressure(15)
+                    .condensate(15)
+                    .incomePressure(50)
+                    .exitTemperature(50)
+                    .onWater(15)
+                    .actualPerformance(15)
+                    .designedPerformance(20)
+                    .build();
+            uppgActionRepository.save(uppgAction1);
+
+
+
+            UppgAction uppgAction2= UppgAction
+                    .builder()
+                    .uppg(uppg2)
+                    .expend(8000)
+                    .incomePressure(15)
+                    .exitPressure(15)
+                    .condensate(15)
+                    .incomePressure(50)
+                    .exitTemperature(50)
+                    .onWater(15)
+                    .actualPerformance(15)
+                    .designedPerformance(20)
+                    .build();
+            uppgActionRepository.save(uppgAction2);
 
             Uppg uppg3 = uppgRepository.save(new Uppg("uppgtandir",tandircha));
             Uppg uppg4 = uppgRepository.save(new Uppg("uppgtandir2",tandircha));
@@ -351,11 +387,22 @@ public class DataLoader implements CommandLineRunner {
             Constant roAir = new Constant(ConstantNameEnums.RO_AIR, "ρвозд – плотность воздуха при стандартных условиях (standart" +
                     "sharoitda havo zichligi), kg/m3");
 
-            Constant savedRoGas = constantRepository.save(roGas);
-            Constant savedRoAir = constantRepository.save(roAir);
+            Constant frcA=new Constant(ConstantNameEnums.A,"Коэффициент фильтрационного сопротивления А (Filtrlanishga qarshilik koeffitsienti A)");
+            Constant frcB=new Constant(ConstantNameEnums.B,"Коэффициент фильтрационного сопротивления B (Filtrlanishga qarshilik koeffitsienti B)");
+
+            roGas = constantRepository.save(roGas);
+            roAir = constantRepository.save(roAir);
+            frcA = constantRepository.save(frcA);
+            frcB = constantRepository.save(frcB);
+
+
 
             MiningSystemConstant miningSystemConstantRoGasValue=miningSystemConstantRepository.save(new MiningSystemConstant(shurtan,roGas,0.772));
             MiningSystemConstant miningSystemConstantRoAirValue=miningSystemConstantRepository.save(new MiningSystemConstant(shurtan,roAir,1.205));
+            MiningSystemConstant miningSystemConstantFrcAValue=miningSystemConstantRepository.save(new MiningSystemConstant(shurtan,frcA,2.9200));
+            MiningSystemConstant miningSystemConstantFrcBValue=miningSystemConstantRepository.save(new MiningSystemConstant(shurtan,frcB,0.0053));
+
+
 
 
             saverPerCp(array_cp1,cp1);

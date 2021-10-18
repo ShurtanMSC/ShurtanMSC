@@ -467,6 +467,7 @@ public class Converter {
 
     public UppgActionDto uppgActionToUppgActionDto(UppgAction uppgAction) {
         try {
+            if (uppgAction==null) return null;
             return UppgActionDto
                     .builder()
                     .designedPerformance(uppgAction.getDesignedPerformance())
@@ -479,6 +480,7 @@ public class Converter {
                     .incomePressure(uppgAction.getIncomePressure())
                     .exitPressure(uppgAction.getExitPressure())
                     .uppgId(uppgAction.getUppg().getId())
+                    .date(uppgAction.getCreatedAt())
                     .build();
         } catch (Exception e) {
             e.printStackTrace();

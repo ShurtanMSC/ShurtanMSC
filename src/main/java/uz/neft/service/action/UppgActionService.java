@@ -150,11 +150,16 @@ public class UppgActionService {
             Optional<Uppg> byId = uppgRepository.findById(id);
             if (!byId.isPresent()) return converter.apiError404("uppg not found");
 
-            UppgAction uppgAction = uppgActionRepository.findFirstByUppg(byId.get());
+            Optional<UppgAction> uppgAction = uppgActionRepository.findFirstByUppgOrderByCreatedAtDesc(byId.get());
 //            if (!uppgAction.isPresent()) return converter.apiError404("uppg action not found");
 
+            UppgActionDto uppgActionDto=new UppgActionDto();
             UppgDto uppgDto = converter.uppgToUppgDto(byId.get());
-            UppgActionDto uppgActionDto = converter.uppgActionToUppgActionDto(uppgAction);
+            if (uppgAction.isPresent()){
+                uppgActionDto = converter.uppgActionToUppgActionDto(uppgAction.get());
+            } else {
+                uppgActionDto = converter.uppgActionToUppgActionDto(null);
+            }
 
             ObjectWithActionsDto dto=ObjectWithActionsDto
                     .builder()
@@ -175,11 +180,17 @@ public class UppgActionService {
 
         List<ObjectWithActionsDto> collect = uppgs.stream().map(item -> {
             Optional<Uppg> byId1 = uppgRepository.findById(item.getId());
-
-            UppgAction firstByUppg = uppgActionRepository.findFirstByUppg(byId1.get());
+            if (!byId1.isPresent()) converter.apiSuccess200("Empty list");
+            Optional<UppgAction> firstByUppg = uppgActionRepository.findFirstByUppgOrderByCreatedAtDesc(byId1.get());
 
             UppgDto uppgDto = converter.uppgToUppgDto(byId1.get());
-            UppgActionDto uppgActionDto = converter.uppgActionToUppgActionDto(firstByUppg);
+            UppgActionDto uppgActionDto = new UppgActionDto();
+
+            if (firstByUppg.isPresent()){
+                uppgActionDto = converter.uppgActionToUppgActionDto(firstByUppg.get());
+            } else {
+                uppgActionDto = converter.uppgActionToUppgActionDto(null);
+            }
 
             return ObjectWithActionsDto
                     .builder()
