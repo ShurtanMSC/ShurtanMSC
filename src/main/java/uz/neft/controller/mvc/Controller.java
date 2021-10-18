@@ -32,6 +32,11 @@ public class Controller {
         return "mining/users";
     }
 
+    @GetMapping("mining_system")
+    public String mining_system() {
+        return "mining/mining_system";
+    }
+
     //    UPPG CRUD
     @GetMapping("uppg")
     public String uppg() {

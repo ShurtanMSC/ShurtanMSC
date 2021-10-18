@@ -1,9 +1,6 @@
 package uz.neft.entity.action;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import uz.neft.entity.MiningSystem;
@@ -19,6 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 public class MiningSystemAction extends AbsEntityLong {
 
     private double expend;

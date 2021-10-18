@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import uz.neft.dto.action.WellActionDto;
 import uz.neft.entity.*;
+import uz.neft.entity.action.MiningSystemAction;
 import uz.neft.entity.action.UppgAction;
 import uz.neft.entity.action.WellAction;
 import uz.neft.entity.enums.WellCategory;
@@ -16,6 +17,7 @@ import uz.neft.entity.enums.WellStatus;
 import uz.neft.entity.variables.*;
 import uz.neft.entity.variables.MiningSystemGasComposition;
 import uz.neft.repository.*;
+import uz.neft.repository.action.MiningSystemActionRepository;
 import uz.neft.repository.action.UppgActionRepository;
 import uz.neft.repository.action.WellActionRepository;
 import uz.neft.repository.constants.ConstantRepository;
@@ -40,6 +42,8 @@ public class DataLoader implements CommandLineRunner {
     MiningSystemConstantRepository miningSystemConstantRepository;
     WellActionRepository wellActionRepository;
 
+    @Autowired
+    private MiningSystemActionRepository miningSystemActionRepository;
     @Autowired
     private UppgRepository uppgRepository;
     @Autowired
@@ -177,7 +181,19 @@ public class DataLoader implements CommandLineRunner {
             String pressure="Unit1.Channel_1.VT_R4";
 
             MiningSystem shurtan = miningSystemRepository.save(new MiningSystem(InitialNames.SHURTAN));
-            MiningSystem tandircha = miningSystemRepository.save(new MiningSystem("tandircha"));
+            MiningSystem south_tandyrcha = miningSystemRepository.save(new MiningSystem(InitialNames.SOUTH_TANDYRCHA));
+
+            MiningSystemAction miningSystemAction1=miningSystemActionRepository.save(MiningSystemAction
+                    .builder()
+                    .miningSystem(shurtan)
+                    .expend(10000)
+                    .build());
+
+            MiningSystemAction miningSystemAction2=miningSystemActionRepository.save(MiningSystemAction
+                    .builder()
+                    .miningSystem(south_tandyrcha)
+                    .expend(10000)
+                    .build());
 
             Uppg uppg = uppgRepository.save(new Uppg("УППГ-1",shurtan));
             Uppg uppg2 = uppgRepository.save(new Uppg("УППГ-2",shurtan));
@@ -214,8 +230,8 @@ public class DataLoader implements CommandLineRunner {
                     .build();
             uppgActionRepository.save(uppgAction2);
 
-            Uppg uppg3 = uppgRepository.save(new Uppg("uppgtandir",tandircha));
-            Uppg uppg4 = uppgRepository.save(new Uppg("uppgtandir2",tandircha));
+            Uppg uppg3 = uppgRepository.save(new Uppg("uppgtandir",south_tandyrcha));
+            Uppg uppg4 = uppgRepository.save(new Uppg("uppgtandir2",south_tandyrcha));
 
 
 
