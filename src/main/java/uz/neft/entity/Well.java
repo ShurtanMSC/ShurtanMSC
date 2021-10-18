@@ -45,4 +45,5 @@ public class Well extends AbsEntityInteger {
     private double y;
     @Enumerated(EnumType.STRING)
     private WellCategory category;
+    private double c;
 }

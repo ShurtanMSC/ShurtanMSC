@@ -307,6 +307,8 @@ public class DataLoader implements CommandLineRunner {
 
 
 
+
+
 //            Well well=wellRepository.save(wellRepository.save(new Well(11,point)));
 //            Well well2=wellRepository.save(wellRepository.save(new Well(12,point)));
 //            Well well3=wellRepository.save(wellRepository.save(new Well(3,pointtandircha2)));
@@ -427,6 +429,25 @@ public class DataLoader implements CommandLineRunner {
             saverPerCp(array_cp20,cp20);
             saverPerCp(array_cp21,cp21);
 
+
+
+            double[] arrayC={88,88,124,32.6,78.1,29.9,62,83.1,88.8,135,112,155,
+                    83.1,88.8,93.3,27.4,83.1,93.3,150,73.6,73.6,78.1,93.3,73.6,78.1,78.1,88.8,44.7,50.8,
+                    62,50.8,73.6,100,100,100,93.3,100,65.7,78.1,124,27.4,78.1,78.1,58.3,73.6,83.1,83.1,100,69.6,
+                    88.8,50.8,83.1,124,104,112,154,104,135,78.1,135,124,112,112,58.3,124,124,135,
+                    142,124,104,20.5,88.8,94.3,62,104,124,65.7,142,112,148,158,138,140,100,50.8,112,
+                    94.3,94.3,104,88.8,73.6,150,135,140,41.4,50.8,41.4,83.1,130,118,135,62,124,120,124,112,62,
+                    65.7,58.3,78.1,69.6,83.1,78.1,8.57,124,112,116,104,112,104,112,112,112,88.8,78.1,110,119,128,
+                    124,124,41.4,24.8,104,112,130,118,124,112,118,93.3,78.1,41.4,88.8,54.8,124,124,130,124,135,135,116,124,135};
+
+            List<Well> wellList=wellRepository.findAllByMiningSystemId(1);
+
+            for (int i = 0; i <wellList.size() ; i++) {
+                Well well=wellList.get(i);
+                well.setC(arrayC[i]);
+                wellActionSaver(well);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -455,17 +476,17 @@ public class DataLoader implements CommandLineRunner {
                         .drillingStartDate(new Date())
                         .build());
 
-        WellActionDto wellActionDto= WellActionDto
-                .builder()
-                .pressure(1.9)
-                .rpl(37.22)
-                .wellId(well154.getId())
-                .perforation_min(500)
-                .perforation_max(1000)
-                .temperature(47)
-                .status(WellStatus.IN_WORK)
-                .build();
-        wellActionService.addManually(new User(),wellActionDto);
+//        WellActionDto wellActionDto= WellActionDto
+//                .builder()
+//                .pressure(1.9)
+//                .rpl(37.22)
+//                .wellId(well154.getId())
+//                .perforation_min(500)
+//                .perforation_max(1000)
+//                .temperature(47)
+//                .status(WellStatus.IN_WORK)
+//                .build();
+//        wellActionService.addManually(new User(),wellActionDto);
 
 //        WellAction wellAction154=wellActionRepository.save(WellAction
 //                .builder()
@@ -478,6 +499,24 @@ public class DataLoader implements CommandLineRunner {
 //                .perforation_max(1000)
 //                .perforation_min(500)
 //                .build());
+    }
+
+    public void wellActionSaver(Well well){
+        try {
+            WellActionDto wellActionDto= WellActionDto
+                    .builder()
+                    .pressure(1.9)
+                    .rpl(37.22)
+                    .wellId(well.getId())
+                    .perforation_min(500)
+                    .perforation_max(1000)
+                    .temperature(47)
+                    .status(WellStatus.IN_WORK)
+                    .build();
+            wellActionService.addManually(new User(),wellActionDto);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
 

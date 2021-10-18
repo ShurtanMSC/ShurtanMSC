@@ -103,7 +103,7 @@ public class ReportService{
                         ws.value(0,i,array[i]);
                     }
 
-                    ws.freezePane(18,1);
+//                    ws.freezePane(18,1);
                     ws.range(0,0,0,array.length).style().bold().set();
 
                 counter++;

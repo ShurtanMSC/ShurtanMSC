@@ -238,7 +238,7 @@ public class WellActionService {
         double delta = Calculator.correctionFactor_P_T(T_pr, P_pr);
 
         //MUAMMO
-        double C = 88;
+        double C = well.get().getC();
 
         /**
          * D_well - Средний дебит скважин месторождения Шуртан ( D_СКВ )
@@ -264,6 +264,7 @@ public class WellActionService {
                     .T_pkr(T_pkr)
                     .T_pr(T_pr)
                     .Z(Z)
+                    .C(C)
                     .Ro_otn(Ro_otn)
                     .delta(delta)
                     .ro_gas(roGas.getValue())

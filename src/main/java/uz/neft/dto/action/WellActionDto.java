@@ -28,6 +28,9 @@ public class WellActionDto {
     // Rpl
     private double rpl;
 
+    //C
+    private double c;
+
     @Enumerated(EnumType.STRING)
     private WellStatus status;
 
