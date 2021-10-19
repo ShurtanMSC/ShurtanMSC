@@ -239,11 +239,13 @@ public class WellActionService {
 
         //MUAMMO
         double C = well.get().getC();
+        if (C==0) C=88;
 
         /**
          * D_well - Средний дебит скважин месторождения Шуртан ( D_СКВ )
          **/
         double D_well = Calculator.averageProductionRate(C, P_u, delta, Ro_otn, Z, T_u);
+        System.out.println("D_well = "+D_well);
 
         try {
             WellAction wellAction = WellAction
@@ -282,12 +284,23 @@ public class WellActionService {
 
 
     //Алгоритм расчета прогнозных отборов газа и конденсата (для диаграммы)
-    public void rpl(Well well){
-        Optional<WellAction> action = wellActionRepository.findFirstByWellOrderByCreatedAtDesc(well);
-        Constant constA = constantRepository.findByName(ConstantNameEnums.A);
-        Constant constB = constantRepository.findByName(ConstantNameEnums.B);
-        MiningSystemConstant A = miningSystemConstantRepository.findByMiningSystemAndConstant(well.getCollectionPoint().getUppg().getMiningSystem(), constA);
-        MiningSystemConstant B = miningSystemConstantRepository.findByMiningSystemAndConstant(well.getCollectionPoint().getUppg().getMiningSystem(), constB);
+    public double rpl(WellAction action){
+        try {
+            //        Optional<WellAction> action = wellActionRepository.findFirstByWellOrderByCreatedAtDesc(well);
+            Constant constA = constantRepository.findByName(ConstantNameEnums.A);
+            Constant constB = constantRepository.findByName(ConstantNameEnums.B);
+            Constant constS = constantRepository.findByName(ConstantNameEnums.S);
+            Constant constTeta = constantRepository.findByName(ConstantNameEnums.TETA);
+
+            MiningSystemConstant A = miningSystemConstantRepository.findByMiningSystemAndConstant(action.getWell().getCollectionPoint().getUppg().getMiningSystem(), constA);
+            MiningSystemConstant B = miningSystemConstantRepository.findByMiningSystemAndConstant(action.getWell().getCollectionPoint().getUppg().getMiningSystem(), constB);
+            MiningSystemConstant S = miningSystemConstantRepository.findByMiningSystemAndConstant(action.getWell().getCollectionPoint().getUppg().getMiningSystem(), constS);
+            MiningSystemConstant Teta = miningSystemConstantRepository.findByMiningSystemAndConstant(action.getWell().getCollectionPoint().getUppg().getMiningSystem(), constTeta);
+            return Calculator.rplWell(action.getPressure(),S.getValue(),A.getValue(),B.getValue(),Teta.getValue(),action.getExpend());
+
+        }catch (Exception e){
+            return 0;
+        }
 
     }
 
@@ -557,6 +570,18 @@ public class WellActionService {
                                     .temperature(wellLite.getTemperature()>0?wellLite.getTemperature():0)
                                     .status(wellLite.getStatus())
                                     .build();
+                            CollectionPointAction collectionPointAction = collectionPointActionRepository.findFirstByCollectionPointOrderByCreatedAtDesc(collectionPoint);
+                            if (wellLite.getStatus()==WellStatus.IN_WORK){
+                                if (wellLite.getPressure()<collectionPointAction.getPressure()){
+                                    dto.setStatus(WellStatus.IN_IDLE);
+                                }
+                            }
+
+                            if (wellLite.getStatus()==WellStatus.IN_IDLE){
+                                if (wellLite.getPressure()>=collectionPointAction.getPressure()){
+                                    dto.setStatus(WellStatus.IN_WORK);
+                                }
+                            }
                             ResponseEntity<?> response = addManually(user, dto);
                             if (response.getStatusCode().value()!=201) return response;
                         }
@@ -609,9 +634,11 @@ public class WellActionService {
 
                     if (pointAction!=null&&(action.get().getPressure()<pointAction.getPressure()||pointAction.getPressure()==0)){
                         action.get().setExpend(0);
+                        action.get().setRpl(rpl(action.get()));
                     }
                     else {
                         action.get().setExpend(8000000*(action.get().getAverage_expend()/q_well));
+                        action.get().setRpl(rpl(action.get()));
                     }
                     wellActionRepository.save(action.get());
                 }

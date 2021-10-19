@@ -9,5 +9,6 @@ import java.util.Optional;
 
 public interface ElectricityRepository extends JpaRepository<Electricity,Integer> {
     Optional<Electricity> findFirstByMiningSystem(MiningSystem miningSystem);
+    Optional<Electricity> findFirstByMiningSystemOrderByCreatedAtDesc(MiningSystem miningSystem);
 
 }

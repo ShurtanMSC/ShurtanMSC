@@ -74,7 +74,7 @@ public class UserService {
                 if (role.isPresent()) {
                     editingUser.setRoles(new HashSet<>(Collections.singletonList(role.get())));
                 }
-                if (dto.getPassword() != null && !passwordEncoder.matches(byId.get().getPassword(), dto.getPassword())) {
+                if (dto.getPassword() != null && dto.getPassword().length()>3 && !passwordEncoder.matches(byId.get().getPassword(), dto.getPassword())) {
                     editingUser.setPassword(passwordEncoder.encode(dto.getPassword()));
                 }
                 editingUser = userRepository.save(editingUser);

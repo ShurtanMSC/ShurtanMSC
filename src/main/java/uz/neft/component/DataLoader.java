@@ -405,11 +405,18 @@ public class DataLoader implements CommandLineRunner {
 
             Constant frcA=new Constant(ConstantNameEnums.A,"Коэффициент фильтрационного сопротивления А (Filtrlanishga qarshilik koeffitsienti A)");
             Constant frcB=new Constant(ConstantNameEnums.B,"Коэффициент фильтрационного сопротивления B (Filtrlanishga qarshilik koeffitsienti B)");
+            Constant rlcS=new Constant(ConstantNameEnums.S,"Сопротивление жидких компонентов по НКТ (Quvurlar bo'ylab suyuq komponentlarning qarshiligi S)");
+
+            Constant trTeta=new Constant(ConstantNameEnums.TETA,"Сопротивление НКТ (Quvurlarga qarshilik θ)");
 
             roGas = constantRepository.save(roGas);
             roAir = constantRepository.save(roAir);
             frcA = constantRepository.save(frcA);
             frcB = constantRepository.save(frcB);
+
+            rlcS = constantRepository.save(rlcS);
+
+            trTeta = constantRepository.save(trTeta);
 
 
 
@@ -417,6 +424,10 @@ public class DataLoader implements CommandLineRunner {
             MiningSystemConstant miningSystemConstantRoAirValue=miningSystemConstantRepository.save(new MiningSystemConstant(shurtan,roAir,1.205));
             MiningSystemConstant miningSystemConstantFrcAValue=miningSystemConstantRepository.save(new MiningSystemConstant(shurtan,frcA,2.9200));
             MiningSystemConstant miningSystemConstantFrcBValue=miningSystemConstantRepository.save(new MiningSystemConstant(shurtan,frcB,0.0053));
+            MiningSystemConstant miningSystemConstantRlcSValue=miningSystemConstantRepository.save(new MiningSystemConstant(shurtan,rlcS,0.78));
+
+            MiningSystemConstant miningSystemConstantTrTetaValue=miningSystemConstantRepository.save(new MiningSystemConstant(shurtan,trTeta,0.0306));
+
 
 
 

@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 public class ElectricityDto {
     private Integer id;
     private double hourly;
-    private int hourPerDay;
-    private int dayPerWeek;
+    private double daily;
+    private double monthly;
+    private double yearly;
     private Integer miningSystemId;
 }

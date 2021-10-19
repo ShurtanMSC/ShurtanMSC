@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import uz.neft.dto.ElectricityDto;
 import uz.neft.service.ElectricityService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/electricity")
 @CrossOrigin
@@ -20,6 +22,11 @@ public class ElectricityController {
     @PostMapping("add")
     public HttpEntity<?> add(@RequestBody ElectricityDto dto){
         return electricityService.save(dto);
+    }
+
+    @PostMapping("add/all")
+    public HttpEntity<?> addAll(@RequestBody List<ElectricityDto> dtoList){
+        return electricityService.saveAll(dtoList);
     }
 
     @PutMapping("edit")
