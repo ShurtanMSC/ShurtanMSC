@@ -10,6 +10,8 @@ public enum ConstantNameEnums {
     RO_AIR,
     C,
     A,
-    B
+    B,
+    S,
+    TETA
 
 }

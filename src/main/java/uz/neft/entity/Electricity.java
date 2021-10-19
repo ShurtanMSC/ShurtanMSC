@@ -14,8 +14,10 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Electricity extends AbsEntityInteger {
     private double hourly;
-    private int hourPerDay;
-    private int dayPerWeek;
+    private int hourPerDay=24;
+    private int dayPerWeek=7;
+    private int dayPerMonth=30;
+    private int dayPerYear=365;
     @ManyToOne
     private MiningSystem miningSystem;
 }
