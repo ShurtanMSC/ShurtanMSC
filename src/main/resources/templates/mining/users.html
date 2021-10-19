@@ -71,7 +71,9 @@
                             <div class="col-md-6 d-flex ">
                                 <div class="wrap w-100">
                                     <button type="button" class="btn btn-primary py-2 px-4" data-toggle="modal"
-                                            data-target="#exampleModalCenter">
+                                            data-target="#exampleModalCenter"
+                                    id="addUserBtn"
+                                    >
                                         Добавить пользователя
                                     </button>
 
@@ -94,7 +96,7 @@
                                     </button>
                                 </div>
                                 <div class="modal-body  pb-md-5 pl-md-5 pr-md-5 pt-md-2">
-                                    <h3 class="text-center mb-4">Добавить пользователя</h3>
+                                    <h3 class="text-center mb-4 " id="addOrEditUserH3">Добавить пользователя</h3>
                                     <form action="#" class="login-form" name="addOrEditUserForm" id="addOrEditUserForm" onsubmit="addOrEditUser(event)">
                                         <div class="form-group">
                                                 <input name="id"  type="text" class="form-control rounded-left" hidden>
@@ -122,16 +124,19 @@
                                                     id="inputGroupSelect03"
                                                     aria-label="Example select with button addon">
                                                 <option selected>Роли</option>
-                                                <option value="1">Admin</option>
-                                                <option value="2">Super Admin</option>
-                                                <option value="3">Geolic</option>
-                                                <option value="4">Electric</option>
+                                                <option value="1">SUPER ADMIN</option>
+                                                <option value="2">OPERATOR</option>
+                                                <option value="3">EMPLOYEE</option>
+                                                <option value="4">ENERGETIC</option>
+                                                <option value="5">METROLOGIST</option>
+                                                <option value="5">GEOLOGIST</option>
                                             </select>
                                         </div>
 
                                         <div class="form-group">
                                             <button type="submit"
-                                                    class="form-control btn btn-primary rounded submit px-3">Добавлять
+                                                    id="addOrEditUserBtn"
+                                                    class="form-control btn btn-primary rounded submit px-3">Добавить
                                             </button>
                                         </div>
 
@@ -433,5 +438,11 @@
 <script src="/static/js/demo/chart-pie-demo.js" th:src="@{/js/demo/chart-pie-demo.js}"></script>
 
 </body>
-
+<script>
+    $(document).ready(function(){
+        $("#exampleModalCenter").on('hide.bs.modal', function(){
+            document.getElementById('addOrEditUserForm').reset();
+        });
+    });
+</script>
 </html>
