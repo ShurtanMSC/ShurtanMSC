@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Setter
 @Builder
 public class WellActionDto {
 

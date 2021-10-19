@@ -570,6 +570,18 @@ public class WellActionService {
                                     .temperature(wellLite.getTemperature()>0?wellLite.getTemperature():0)
                                     .status(wellLite.getStatus())
                                     .build();
+                            CollectionPointAction collectionPointAction = collectionPointActionRepository.findFirstByCollectionPointOrderByCreatedAtDesc(collectionPoint);
+                            if (wellLite.getStatus()==WellStatus.IN_WORK){
+                                if (wellLite.getPressure()<collectionPointAction.getPressure()){
+                                    dto.setStatus(WellStatus.IN_IDLE);
+                                }
+                            }
+
+                            if (wellLite.getStatus()==WellStatus.IN_IDLE){
+                                if (wellLite.getPressure()>=collectionPointAction.getPressure()){
+                                    dto.setStatus(WellStatus.IN_WORK);
+                                }
+                            }
                             ResponseEntity<?> response = addManually(user, dto);
                             if (response.getStatusCode().value()!=201) return response;
                         }
