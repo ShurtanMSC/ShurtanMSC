@@ -49,6 +49,11 @@ public class UppgController {
         return uppgService.findAll();
     }
 
+    @GetMapping("all/mining_system/{id}")
+    public HttpEntity<?> uppgsByMiningSystem(@PathVariable Integer id) {
+        return uppgActionService.getByMiningSystem(id);
+    }
+
     @GetMapping("{id}")
     public HttpEntity<?> uppgById(@PathVariable Integer id) {
         return uppgService.findById(id);
@@ -65,11 +70,6 @@ public class UppgController {
     @GetMapping("all/actions/mining_system/{id}")
     public HttpEntity<?> uppgsWithActionByMiningSystem(@PathVariable Integer id) {
         return uppgActionService.getUppgsWithActionByMiningSystem(id);
-    }
-
-    @GetMapping("all/mining_system/{id}")
-    public HttpEntity<?> uppgsByMiningSystem(@PathVariable Integer id) {
-        return uppgActionService.getByMiningSystem(id);
     }
 
     @GetMapping("one/{id}")
