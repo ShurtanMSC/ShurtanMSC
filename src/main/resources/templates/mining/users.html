@@ -72,7 +72,7 @@
                                 <div class="wrap w-100">
                                     <button type="button" class="btn btn-primary py-2 px-4" data-toggle="modal"
                                             data-target="#exampleModalCenter"
-                                    id="addUserBtn"
+                                            id="addUserBtn"
                                     >
                                         Добавить пользователя
                                     </button>
@@ -97,33 +97,36 @@
                                 </div>
                                 <div class="modal-body  pb-md-5 pl-md-5 pr-md-5 pt-md-2">
                                     <h3 class="text-center mb-4 " id="addOrEditUserH3">Добавить пользователя</h3>
-                                    <form action="#" class="login-form" name="addOrEditUserForm" id="addOrEditUserForm" onsubmit="addOrEditUser(event)">
+                                    <form action="#" class="login-form" name="addOrEditUserForm" id="addOrEditUserForm"
+                                          onsubmit="addOrEditUser(event)">
                                         <div class="form-group">
-                                                <input name="id"  type="text" class="form-control rounded-left" hidden>
+                                            <input name="id" type="text" class="form-control rounded-left" hidden>
                                         </div>
                                         <div class="form-group">
-                                                <input name="username"  type="text" class="form-control rounded-left" placeholder="Имя пользователя">
+                                            <input name="username" type="text" class="form-control rounded-left"
+                                                   placeholder="Имя пользователя" required>
                                         </div>
                                         <div class="form-group d-flex">
-                                                <input name="email" type="email" class="form-control rounded-left" placeholder="Эл. адрес">
+                                            <input name="email" type="email" class="form-control rounded-left"
+                                                   placeholder="Эл. адрес" required>
                                         </div>
                                         <div class="form-group d-flex">
-                                                <input name="password" type="password" class="form-control rounded-left"
-                                                       placeholder="Пароль">
+                                            <input name="password" type="password" class="form-control rounded-left"
+                                                   placeholder="Пароль" required>
                                         </div>
                                         <div class="form-group d-flex">
-                                                <input name="phone" type="tel" class="form-control rounded-left"
-                                                       placeholder="Номер телефона">
+                                            <input name="phone" type="tel" class="form-control rounded-left"
+                                                   placeholder="Номер телефона" required>
                                         </div>
                                         <div class="form-group d-flex">
-                                                <input name="fio" type="text" class="form-control rounded-left"
-                                                       placeholder="Полное имя">
+                                            <input name="fio" type="text" class="form-control rounded-left"
+                                                   placeholder="Полное имя" required>
                                         </div>
                                         <div class="form-group d-flex">
                                             <select name="roleId" class="custom-select form-control rounded-left"
                                                     id="inputGroupSelect03"
-                                                    aria-label="Example select with button addon">
-                                                <option selected>Роли</option>
+                                                    aria-label="Example select with button addon" required>
+                                                <option value="">Роли</option>
                                                 <option value="1">SUPER ADMIN</option>
                                                 <option value="2">OPERATOR</option>
                                                 <option value="3">EMPLOYEE</option>
@@ -184,43 +187,39 @@
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-sort="ascending"
                                                     aria-label="Name: activate to sort column descending"
-                                                    style="width: 64.001px;">ID
+                                                >ID
                                                 </th>
                                                 <th class="sorting users-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Position: activate to sort column ascending"
-                                                    style="width: 75.001px;">Полное имя
+                                                >Полное имя
                                                 </th>
                                                 <th class="sorting users-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Office: activate to sort column ascending"
-                                                    style="width: 53.001px;">Имя пользователя
+                                                >Имя пользователя
                                                 </th>
                                                 <th class="sorting users-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Age: activate to sort column ascending"
-                                                    style="width: 30.001px;">Роль
+                                                >Роль
                                                 </th>
                                                 <th class="sorting users-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Start date: activate to sort column ascending"
-                                                    style="width: 69.001px;">Телефон
+                                                >Телефон
                                                 </th>
                                                 <th class="sorting users-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Salary: activate to sort column ascending"
-                                                    style="width: 67.001px;">Эл. адрес
+                                                >Эл. адрес
                                                 </th>
                                                 <th class="sorting users-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Salary: activate to sort column ascending"
-                                                    style="width: 67.001px;">Редактировать
+                                                >Редактировать
                                                 </th>
-                                                <th class="sorting users-table-title" tabindex="0"
-                                                    aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    aria-label="Salary: activate to sort column ascending"
-                                                    style="width: 67.001px;">Удалить
-                                                </th>
+
                                             </tr>
                                             </thead>
                                             <tfoot>
@@ -233,90 +232,18 @@
                                                 <th class="users-table-title" rowspan="1" colspan="1">Телефон</th>
                                                 <th class="users-table-title" rowspan="1" colspan="1">Эл. адрес</th>
                                                 <th class="users-table-title" rowspan="1" colspan="1">Редактировать</th>
-                                                <th class="users-table-title" rowspan="1" colspan="1">Удалить</th>
                                             </tr>
                                             </tfoot>
                                             <tbody id="userTable">
                                             <tr class="odd">
-                                                <td class="sorting_1">Airi Satou</td>
-                                                <td>Accountant</td>
-                                                <td>Tokyo</td>
-                                                <td>33</td>
-                                                <td>2008/11/28</td>
-                                                <td>$162,700</td>
+                                                <td class="sorting_1">Loading. . .</td>
+                                                <td>Loading. . .</td>
+                                                <td>Loading. . .</td>
+                                                <td>Loading. . .</td>
+                                                <td>Loading. . .</td>
+                                                <td>Loading. . .</td>
                                             </tr>
-                                            <tr class="even">
-                                                <td class="sorting_1">Angelica Ramos</td>
-                                                <td>Chief Executive Officer (CEO)</td>
-                                                <td>London</td>
-                                                <td>47</td>
-                                                <td>2009/10/09</td>
-                                                <td>$1,200,000</td>
-                                            </tr>
-                                            <tr class="odd">
-                                                <td class="sorting_1">Ashton Cox</td>
-                                                <td>Junior Technical Author</td>
-                                                <td>San Francisco</td>
-                                                <td>66</td>
-                                                <td>2009/01/12</td>
-                                                <td>$86,000</td>
-                                            </tr>
-                                            <tr class="even">
-                                                <td class="sorting_1">Bradley Greer</td>
-                                                <td>Software Engineer</td>
-                                                <td>London</td>
-                                                <td>41</td>
-                                                <td>2012/10/13</td>
-                                                <td>$132,000</td>
-                                            </tr>
-                                            <tr class="odd">
-                                                <td class="sorting_1">Brenden Wagner</td>
-                                                <td>Software Engineer</td>
-                                                <td>San Francisco</td>
-                                                <td>28</td>
-                                                <td>2011/06/07</td>
-                                                <td>$206,850</td>
-                                            </tr>
-                                            <tr class="even">
-                                                <td class="sorting_1">Brielle Williamson</td>
-                                                <td>Integration Specialist</td>
-                                                <td>New York</td>
-                                                <td>61</td>
-                                                <td>2012/12/02</td>
-                                                <td>$372,000</td>
-                                            </tr>
-                                            <tr class="odd">
-                                                <td class="sorting_1">Bruno Nash</td>
-                                                <td>Software Engineer</td>
-                                                <td>London</td>
-                                                <td>38</td>
-                                                <td>2011/05/03</td>
-                                                <td>$163,500</td>
-                                            </tr>
-                                            <tr class="even">
-                                                <td class="sorting_1">Caesar Vance</td>
-                                                <td>Pre-Sales Support</td>
-                                                <td>New York</td>
-                                                <td>21</td>
-                                                <td>2011/12/12</td>
-                                                <td>$106,450</td>
-                                            </tr>
-                                            <tr class="odd">
-                                                <td class="sorting_1">Cara Stevens</td>
-                                                <td>Sales Assistant</td>
-                                                <td>New York</td>
-                                                <td>46</td>
-                                                <td>2011/12/06</td>
-                                                <td>$145,600</td>
-                                            </tr>
-                                            <tr class="even">
-                                                <td class="sorting_1">Cedric Kelly</td>
-                                                <td>Senior Javascript Developer</td>
-                                                <td>Edinburgh</td>
-                                                <td>22</td>
-                                                <td>2012/03/29</td>
-                                                <td>$433,060</td>
-                                            </tr>
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -432,17 +359,19 @@
 
 <!-- Page level plugins -->
 <script src="/static/vendor/chart.js/Chart.min.js" th:src="@{/vendor/chart.js/Chart.min.js}"></script>
-
+<script src="/static/js/users.js" th:src="@{/js/sidebar.js}"></script>
 <!-- Page level custom scripts -->
 <script src="/static/js/demo/chart-area-demo.js" th:src="@{/js/demo/chart-area-demo.js}"></script>
 <script src="/static/js/demo/chart-pie-demo.js" th:src="@{/js/demo/chart-pie-demo.js}"></script>
 
 </body>
 <script>
-    $(document).ready(function(){
-        $("#exampleModalCenter").on('hide.bs.modal', function(){
+    $(document).ready(function () {
+        $("#exampleModalCenter").on('hide.bs.modal', function () {
             document.getElementById('addOrEditUserForm').reset();
         });
     });
+
+
 </script>
 </html>

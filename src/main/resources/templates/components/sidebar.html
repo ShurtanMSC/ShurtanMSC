@@ -22,12 +22,11 @@
                 <hr class="sidebar-divider my-0">
 
                 <!-- Nav Item - Dashboard -->
-                <li class="nav-item active">
+                <li class="nav-item sidebarLi" id="sidebarAdmin">
                     <a class="nav-link" href="/admin">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
                         <span>Панель администратора</span></a>
                 </li>
-
 
                 <!-- Divider -->
                 <hr class="sidebar-divider">
@@ -38,21 +37,21 @@
 
 
                 <!-- Nav Item - Users -->
-                <li class="nav-item">
+                <li class="nav-item sidebarLi">
                     <a class="nav-link" href="/admin/users">
                         <i class="fas fa-users"></i>
                         <span class="side-word">Пользователи</span></a>
                 </li>
 
                 <!-- Nav Item - Mining system -->
-                <li class="nav-item">
+                <li class="nav-item sidebarLi">
                     <a class="nav-link" href="/admin/mining_system">
                         <i class="fas fa-burn"></i>
                         <span class="side-word">Месторождений</span></a>
                 </li>
 
                 <!-- Nav Item - Uppg -->
-                <li class="nav-item">
+                <li class="nav-item sidebarLi">
                     <a class="nav-link" href="/admin/uppg">
                         <i class="fas fa-fw fa-chart-area"></i>
                         <!--      <img th:src="icon/uppg.svg">-->
@@ -61,7 +60,7 @@
 
 
                 <!-- Nav Item - Collection point -->
-                <li class="nav-item">
+                <li class="nav-item sidebarLi">
                     <a class="nav-link" href="/admin/collection_point">
                         <i class="fas fa-fw fa-chart-area"></i>
                         <span class="side-word">Сборный пункт</span></a>
@@ -69,7 +68,7 @@
 
 
                 <!-- Nav Item - Well -->
-                <li class="nav-item">
+                <li class="nav-item sidebarLi">
                     <a class="nav-link" href="/admin/well">
                         <i class="fas fa-burn"></i>
                         <span class="side-word">Скважина</span></a>
@@ -77,113 +76,14 @@
 
 
                 <!-- Nav Item - System variables -->
-                <li class="nav-item">
+                <li class="nav-item sidebarLi">
                     <a class="nav-link" href="/admin/system_variables">
                         <i class="fas fa-fw fa-chart-area"></i>
                         <span class="side-word">Системные переменные</span></a>
                 </li>
 
 
-                <!--  <hr class="sidebar-divider">-->
-
-
-                <!--  &lt;!&ndash; Heading &ndash;&gt;-->
-                <!--  <div class="sidebar-heading">-->
-                <!--    Interface-->
-                <!--  </div>-->
-
-                <!--  &lt;!&ndash; Nav Item - Pages Collapse Menu &ndash;&gt;-->
-                <!--  <li class="nav-item">-->
-                <!--    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"-->
-                <!--       aria-expanded="true" aria-controls="collapseTwo">-->
-                <!--      <i class="fas fa-fw fa-cog"></i>-->
-                <!--      <span>Components</span>-->
-                <!--    </a>-->
-                <!--    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">-->
-                <!--      <div class="bg-white py-2 collapse-inner rounded">-->
-                <!--        <h6 class="collapse-header">Custom Components:</h6>-->
-                <!--        <a class="collapse-item" href="buttons.html">Buttons</a>-->
-                <!--        <a class="collapse-item" href="cards.html">Cards</a>-->
-                <!--      </div>-->
-                <!--    </div>-->
-                <!--  </li>-->
-
-                <!--  &lt;!&ndash; Nav Item - Utilities Collapse Menu &ndash;&gt;-->
-                <!--  <li class="nav-item">-->
-                <!--    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"-->
-                <!--       aria-expanded="true" aria-controls="collapseUtilities">-->
-                <!--      <i class="fas fa-fw fa-wrench"></i>-->
-                <!--      <span>Utilities</span>-->
-                <!--    </a>-->
-                <!--    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"-->
-                <!--         data-parent="#accordionSidebar">-->
-                <!--      <div class="bg-white py-2 collapse-inner rounded">-->
-                <!--        <h6 class="collapse-header">Custom Utilities:</h6>-->
-                <!--        <a class="collapse-item" href="utilities-color.html">Colors</a>-->
-                <!--        <a class="collapse-item" href="utilities-border.html">Borders</a>-->
-                <!--        <a class="collapse-item" href="utilities-animation.html">Animations</a>-->
-                <!--        <a class="collapse-item" href="utilities-other.html">Other</a>-->
-                <!--      </div>-->
-                <!--    </div>-->
-                <!--  </li>-->
-
-                <!--  &lt;!&ndash; Divider &ndash;&gt;-->
-                <!--  <hr class="sidebar-divider">-->
-
-                <!--  &lt;!&ndash; Heading &ndash;&gt;-->
-                <!--  <div class="sidebar-heading">-->
-                <!--    Addons-->
-                <!--  </div>-->
-
-                <!--  &lt;!&ndash; Nav Item - Pages Collapse Menu &ndash;&gt;-->
-                <!--  <li class="nav-item">-->
-                <!--    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"-->
-                <!--       aria-expanded="true" aria-controls="collapsePages">-->
-                <!--      <i class="fas fa-fw fa-folder"></i>-->
-                <!--      <span>Pages</span>-->
-                <!--    </a>-->
-                <!--    <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">-->
-                <!--      <div class="bg-white py-2 collapse-inner rounded">-->
-                <!--        <h6 class="collapse-header">Login Screens:</h6>-->
-                <!--        <a class="collapse-item" href="login.html">Login</a>-->
-                <!--        <a class="collapse-item" href="register.html">Register</a>-->
-                <!--        <a class="collapse-item" href="forgot-password.html">Forgot Password</a>-->
-                <!--        <div class="collapse-divider"></div>-->
-                <!--        <h6 class="collapse-header">Other Pages:</h6>-->
-                <!--        <a class="collapse-item" href="404.html">404 Page</a>-->
-                <!--        <a class="collapse-item" href="blank.html">Blank Page</a>-->
-                <!--      </div>-->
-                <!--    </div>-->
-                <!--  </li>-->
-
-                <!--  &lt;!&ndash; Nav Item - Charts &ndash;&gt;-->
-                <!--  <li class="nav-item">-->
-                <!--    <a class="nav-link" href="charts.html">-->
-                <!--      <i class="fas fa-fw fa-chart-area"></i>-->
-                <!--      <span>Charts</span></a>-->
-                <!--  </li>-->
-
-                <!--  &lt;!&ndash; Nav Item - Tables &ndash;&gt;-->
-                <!--  <li class="nav-item">-->
-                <!--    <a class="nav-link" href="tables.html">-->
-                <!--      <i class="fas fa-fw fa-table"></i>-->
-                <!--      <span>Tables</span></a>-->
-                <!--  </li>-->
-
-                <!--  &lt;!&ndash; Divider &ndash;&gt;-->
-                <!--  <hr class="sidebar-divider d-none d-md-block">-->
-
-                <!-- Sidebar Toggler (Sidebar) -->
-
-
-                <!--            &lt;!&ndash; Sidebar Message &ndash;&gt;-->
-                <!--            <div class="sidebar-card d-none d-lg-flex">-->
-                <!--                <img class="sidebar-card-illustration mb-2" src="/static/img/undraw_rocket.svg" alt="...">-->
-                <!--                <p class="text-center mb-2"><strong>SB Admin Pro</strong> is packed with premium features, components, and more!</p>-->
-                <!--                <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to Pro!</a>-->
-                <!--            </div>-->
-
-                <li class="nav-item " style="text-align: center; ">
+                <li class="nav-item sidebarLi " style="text-align: center; ">
                     <div class="text-center d-none d-md-inline">
                         <button class="rounded-circle border-0" id="sidebarToggle"></button>
                     </div>
@@ -197,3 +97,4 @@
 
 
 </div>
+<script src="/static/js/users.js" th:src="@{/js/sidebar.js}"></script>

@@ -25,6 +25,10 @@
           th:href="@{/css/sb-admin-2.min.css}"
           rel="stylesheet">
 
+    <link href="/static/css/uppgs.css"
+          th:href="@{/css/uppgs.css}"
+          rel="stylesheet">
+
     <link href="/static/css/users.css"
           th:href="@{/css/users.css}"
           rel="stylesheet">
@@ -61,7 +65,7 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">Пользователи</h1>
+                <h1 class="h3 mb-2 text-gray-800">УППГ</h1>
                 <p class="mb-4">УППГ в системе</p>
 
                 <!--// Add Uppg button and modal-->
@@ -104,10 +108,10 @@
                                         </div>
                                         <div class="form-group">
                                             <input name="name" type="text" class="form-control rounded-left"
-                                                   placeholder="Имя уппг">
+                                                   placeholder="Имя уппг" required>
                                         </div>
                                         <div class="form-group d-flex">
-                                            <input name="miningSystemId" type="number" class="form-control rounded-left"
+                                            <input name="miningSystemId" value="1" type="number" class="form-control rounded-left"
                                                    hidden>
                                         </div>
 
@@ -158,46 +162,40 @@
                                                style="width: 100%;">
                                             <thead>
                                             <tr role="row">
-                                                <th class="sorting sorting_asc users-table-title" tabindex="0"
+                                                <th class="sorting sorting_asc uppgs-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-sort="ascending"
                                                     aria-label="Name: activate to sort column descending"
                                                     style="width: 64.001px;">ID
                                                 </th>
-                                                <th class="sorting users-table-title" tabindex="0"
+                                                <th class="sorting uppgs-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Position: activate to sort column ascending"
                                                     style="width: 75.001px;">Имя УППГ
                                                 </th>
-                                                <th class="sorting users-table-title" tabindex="0"
+                                                <th class="sorting uppgs-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Office: activate to sort column ascending"
-                                                    style="width: 53.001px;">Имя пользователя
+                                                    style="width: 53.001px;" hidden>MiningSystem
                                                 </th>
-                                                <th class="sorting users-table-title" tabindex="0"
+                                                <th class="sorting uppgs-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Salary: activate to sort column ascending"
                                                     style="width: 67.001px;">Редактировать
                                                 </th>
-                                                <th class="sorting users-table-title" tabindex="0"
-                                                    aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    aria-label="Salary: activate to sort column ascending"
-                                                    style="width: 67.001px;">Удалить
-                                                </th>
+
                                             </tr>
                                             </thead>
                                             <tfoot>
                                             <tr>
-                                                <th class="users-table-title" rowspan="1" colspan="1">ID</th>
-                                                <th class="users-table-title" rowspan="1" colspan="1">Имя УППГ</th>
-                                                <th class="users-table-title" rowspan="1" colspan="1">Имя пользователя
-                                                </th>
+                                                <th class="uppgs-table-title" rowspan="1" colspan="1">ID</th>
+                                                <th class="uppgs-table-title" rowspan="1" colspan="1">Имя УППГ</th>
+                                                <th class="uppgs-table-title" rowspan="1" colspan="1" hidden>Mining System</th>
 
-                                                <th class="users-table-title" rowspan="1" colspan="1">Редактировать</th>
-                                                <th class="users-table-title" rowspan="1" colspan="1">Удалить</th>
+                                                <th class="uppgs-table-title" rowspan="1" colspan="1">Редактировать</th>
                                             </tr>
                                             </tfoot>
-                                            <tbody id="userTable">
+                                            <tbody id="uppgTable">
                                             <tr class="odd">
                                                 <td class="sorting_1">Loading. . .</td>
                                                 <td>Loading. . .</td>
@@ -302,10 +300,9 @@
 </div>
 
 <!-- Bootstrap core JavaScript-->
-<script src="/static/js/users.js" th:src="@{/js/users.js}"></script>
+<script src="/static/js/uppg.js" th:src="@{/js/uppg.js}"></script>
 <script>
     getAllUppgs();
-    getAllRoles();
 </script>
 <script src="/static/vendor/jquery/jquery.min.js" th:src="@{/vendor/jquery/jquery.min.js}"></script>
 <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"

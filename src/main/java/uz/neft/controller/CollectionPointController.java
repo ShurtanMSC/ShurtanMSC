@@ -21,10 +21,9 @@ public class CollectionPointController {
     @Autowired
     private CollectionPointService collectionPointService;
 
-
-
     @PostMapping("add")
     public HttpEntity<?> add(@RequestBody CollectionPointDto dto) {
+        System.out.println(dto);
         return collectionPointService.save(dto);
     }
 
@@ -41,6 +40,11 @@ public class CollectionPointController {
     @GetMapping("all")
     public HttpEntity<?> all() {
         return collectionPointService.findAll();
+    }
+
+    @GetMapping("all/uppg/{id}")
+    public HttpEntity<?> getAllByUppg(@PathVariable Integer id) {
+        return collectionPointActionService.getByUppg(id);
     }
 
     @GetMapping("{id}")
@@ -66,18 +70,12 @@ public class CollectionPointController {
     }
 
 
-
-
-
     @GetMapping("all/actions")
     public HttpEntity<?> allWithAction() {
         return collectionPointActionService.getCollectionPointsWithActions();
     }
 
-    @GetMapping("all/uppg/{id}")
-    public HttpEntity<?> getAllByUppg(@PathVariable Integer id) {
-        return collectionPointActionService.getByUppg(id);
-    }
+
 
     @GetMapping("all/mining_system/{id}")
     public HttpEntity<?> getAllByMiningSystem(@PathVariable Integer id) {

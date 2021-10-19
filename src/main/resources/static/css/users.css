@@ -1,3 +1,8 @@
-.users-table-title{
+.users-table-title,.uppgs-table-title,.collection_points-table-title,
+.wells-table-title{
     background: #FFE5D3!important;
+}
+
+.activeSideBar{
+    background-color: red;
 }

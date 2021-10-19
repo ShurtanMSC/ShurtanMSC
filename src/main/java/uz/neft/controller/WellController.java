@@ -2,7 +2,6 @@ package uz.neft.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.neft.dto.WellDto;
 import uz.neft.dto.action.WellActionDto;
@@ -22,18 +21,15 @@ public class WellController {
     @Autowired
     private WellService wellService;
 
-
     /**
      * Manually
      **/
-
 
     @PostMapping("manually/add/action")
     public HttpEntity<?> addAction(@CurrentUser User user,
                                    @RequestBody WellActionDto dto) {
         return wellActionService.addManually(user, dto);
     }
-
 
     @PostMapping("add")
     public HttpEntity<?> saveWell(@RequestBody WellDto dto) {
@@ -55,12 +51,15 @@ public class WellController {
         return wellService.findAll();
     }
 
+    @GetMapping("all/collection_point/{id}")
+    public HttpEntity<?> wellsByCollectionPoint(@PathVariable Integer id) {
+        return wellActionService.getByCollectionPoint(id);
+    }
+
     @GetMapping("{id}")
     public HttpEntity<?> wellById(@PathVariable Integer id) {
         return wellService.findById(id);
     }
-
-
 
     @GetMapping("all/actions")
     public HttpEntity<?> wellsWithAction() {
@@ -72,10 +71,7 @@ public class WellController {
         return wellActionService.getWellsWithActionByCollectionPoint(id);
     }
 
-    @GetMapping("all/collection_point/{id}")
-    public HttpEntity<?> wellsByCollectionPoint(@PathVariable Integer id) {
-        return wellActionService.getByCollectionPoint(id);
-    }
+
 
 
     @GetMapping("all/mining_system/{id}")

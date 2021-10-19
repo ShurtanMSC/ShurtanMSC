@@ -70,7 +70,7 @@ function addOrEditUser(event) {
 }
 
 function editUser(id) {
-    document.getElementById('addOrEditUserH3').innerText = 'Редактировать'
+    document.getElementById('addOrEditUserH3').innerText = 'Редактировать пользователя'
     document.getElementById('addOrEditUserBtn').innerText = 'Редактировать'
     let editUser = usersList.find(user => user.id == id)
     let formField = document.getElementById('addOrEditUserForm')
@@ -106,15 +106,15 @@ function createViewTable(users) {
             "                                    <td>" + user.roleName + "</td>\n" +
             "                                    <td>" + user.phone + "</td>\n" +
             "                                    <td>" + user.email + "</td>\n" +
-            "                                    <td><button data-target=\"#exampleModalCenter\" data-toggle=\"modal\" class='btn btn-success' id='btn-edit-user' value='" + user.id + "' onclick='editUser(this.value)'>Редактировать</button></td>\n" +
-            "                                    <td><button class='btn btn-danger' id='btn-edit-user' value='" + user.id + "' onclick='deleteUser(this.value)'>Удалить</button></td>\n" +
+            "                                    <td><button data-target=\"#exampleModalCenter\" data-toggle=\"modal\" class='btn btn-success mt-1' id='btn-edit-user' value='" + user.id + "' onclick='editUser(this.value)'>Редактировать</button>\n" +
+            "                                    <button class='btn btn-danger ml-2 mt-1' id='btn-edit-user' value='" + user.id + "' onclick='deleteUser(this.value)'>Удалить</button></td>\n" +
             "                                </tr>"
     })
     return out;
 }
 
 function addOptionRoles(roles) {
-    let out = "<option selected>Роли</option>";
+    let out = "<option value=''>Роли</option>";
     roles.map(role => {
         out += "<option value='"+role.id+"'>"+role.roleName+"</option>"
     })

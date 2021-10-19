@@ -13,10 +13,10 @@ function getAllUppgs() {
         })
 }
 
-document.getElementById('addUppgBtn').addEventListener('click', addUppgBtn)
+document.getElementById('addUppgBtn').addEventListener('click', addUppgBtn);
 
 function addUppgBtn() {
-    document.getElementById('addOrEditUppgH3').innerText = 'Добавить пользователя'
+    document.getElementById('addOrEditUppgH3').innerText = 'Добавить УППГ'
     document.getElementById('addOrEditUppgBtn').innerText = 'Добавить'
 }
 
@@ -31,7 +31,7 @@ function addOrEditUppg(event) {
 
     const data = {}
     formData.forEach((value, key) => (data[key] = value));
-
+    console.log(data)
     let config = {
         method: '',
         url: '',
@@ -59,14 +59,14 @@ function addOrEditUppg(event) {
 }
 
 function editUppg(id) {
-    document.getElementById('addOrEditUppgH3').innerText = 'Редактировать'
+    document.getElementById('addOrEditUppgH3').innerText = 'Редактировать УППГ'
     document.getElementById('addOrEditUppgBtn').innerText = 'Редактировать'
     let editUppg = uppgsList.find(uppg => uppg.id == id)
     let formField = document.getElementById('addOrEditUppgForm')
 
     formField['id'].value = editUppg.id;
     formField['name'].value = editUppg.name;
-    // formField['email'].value = editUppg.email;
+    formField['miningSystemId'].value = editUppg.miningSystemId;
 }
 
 function deleteUppg(id) {
@@ -86,9 +86,9 @@ function createViewTable(uppgs) {
         out += "<tr class=\"uppg_table_row\">\n" +
             "   <td class=\"sorting_1\">" + uppg.id + "</td>\n" +
             "    <td>" + uppg.name + "</td>\n" +
-            // "     <td>" + uppg.miningsiystemId + "</td>\n" +
-            "     <td><button data-target=\"#exampleModalCenter\" data-toggle=\"modal\" class='btn btn-success' id='btn-edit-uppg' value='" + uppg.id + "' onclick='editUppg(this.value)'>Редактировать</button></td>\n" +
-            "      <td><button class='btn btn-danger' id='btn-edit-uppg' value='" + uppg.id + "' onclick='deleteUppg(this.value)'>Удалить</button></td>\n" +
+            "     <td hidden value='" + uppg.miningsiystemId + "'>" + uppg.miningsiystemId + "</td>\n" +
+            "     <td><button data-target=\"#exampleModalCenter\" data-toggle=\"modal\" class='btn btn-success mt-1' id='btn-edit-uppg' value='" + uppg.id + "' onclick='editUppg(this.value)'>Редактировать</button>\n" +
+            "      <button class='btn btn-danger ml-2 mt-1' id='btn-edit-uppg' value='" + uppg.id + "' onclick='deleteUppg(this.value)'>Удалить</button></td>\n" +
             "   </tr>"
     })
     return out;

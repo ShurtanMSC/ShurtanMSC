@@ -32,7 +32,7 @@ public class CollectionPointService {
     public ResponseEntity<?> save(CollectionPointDto dto) {
         try {
             if (dto.getId() != null) return converter.apiError400("id shouldn't be sent");
-            if (dto.getUppgId() != null) return converter.apiError400("Uppg id is null");
+            if (dto.getUppgId() == null) return converter.apiError400("Uppg id is null");
             CollectionPoint collectionPoint = new CollectionPoint();
 
             Optional<Uppg> byIdUppg = uppgRepository.findById(dto.getUppgId());
