@@ -102,7 +102,7 @@ public class WellActionService {
         /**
          * T_pr
          **/
-        double T_pr = Calculator.reducedPressure(T_u, T_pkr);
+        double T_pr = Calculator.reducedTemperature(T_u, T_pkr);
 
         /**
          * roGas   -   ρ_газа – плотность газа при стандартных условиях (standart

@@ -1,6 +1,6 @@
 package uz.neft.service.document;
 
-import org.dhatim.fastexcel.Workbook;
+
 import org.dhatim.fastexcel.Worksheet;
 import uz.neft.entity.CollectionPoint;
 import uz.neft.entity.Uppg;
@@ -8,10 +8,7 @@ import uz.neft.service.document.fastexcel.ExcelTemplate;
 
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+
 
 public class Main {
     public static void main(String[] args) {

@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uz.neft.service.ReportService;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("api/report")
 @CrossOrigin
@@ -18,8 +20,8 @@ public class ReportController {
     private ReportService reportService;
 
     @GetMapping("/test")
-    public HttpEntity<?> report(){
-        reportService.generate(1);
+    public HttpEntity<?> report() throws IOException {
+        reportService.generateReport(1);
         return ResponseEntity.ok("Ok");
     }
 

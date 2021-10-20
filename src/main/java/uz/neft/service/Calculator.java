@@ -171,29 +171,43 @@ public static double rplWell(double P_u, double S, double a, double b, double te
         double rpl=0;
 
         //Agar bosin mpa bo'lsa
-        P_u=(double) P_u*1000000/98068;
+        P_u=(double) pascal_to_kgf_sm2(P_u*1000000);
 
         //Agar debit mln metr kub bo'lsa
         Q_well=(double) Q_well/1000;
 
-        System.out.println("*********************************************************************************************************************************");
-        System.out.println("P = "+P_u);
-        System.out.println("S = "+S);
-        System.out.println("a = "+a);
-        System.out.println("b = "+b);
-        System.out.println("teta = "+teta);
-        System.out.println("Q_well = "+Q_well);
+//        System.out.println("*********************************************************************************************************************************");
+//        System.out.println("P = "+P_u);
+//        System.out.println("S = "+S);
+//        System.out.println("a = "+a);
+//        System.out.println("b = "+b);
+//        System.out.println("teta = "+teta);
+//        System.out.println("Q_well = "+Q_well);
         rpl=Math.sqrt(P_u*P_u*Math.exp(2*S)+a*Q_well+(b+teta)*Q_well*Q_well);
-        System.out.println("RPL = "+rpl);
-        System.out.println("*********************************************************************************************************************************");
+//        System.out.println("RPL = "+rpl);
+//        System.out.println("*********************************************************************************************************************************");
 
 
 
         return rpl;
 }
 
+//Pascal
+public static double pascal_to_kgf_sm2(double pascal){
+        return pascal/98066.5;
+}
 
+public static double kgf_sm2_to_pascal(double kgfsm2){
+        return kgfsm2*98066.5;
+}
 
+public static double c_to_k(double celsius){
+        return celsius+273.15;
+}
+
+public static double k_to_c(double kelvin){
+        return kelvin-273.15;
+}
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

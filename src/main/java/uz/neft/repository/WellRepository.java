@@ -21,6 +21,9 @@ public interface WellRepository extends JpaRepository<Well,Integer> {
     @Query(value="select * from well where collection_point_id in (select id from collection_point where uppg_id in (select id from uppg where mining_system_id=:mining_system_id))", nativeQuery = true)
     List<Well> findAllByMiningSystemId(Integer mining_system_id);
 
+    @Query(value="select * from well where collection_point_id in (select id from collection_point where uppg_id in (select id from uppg where mining_system_id=:mining_system_id)) order by well.number asc", nativeQuery = true)
+    List<Well> findAllByMiningSystemIdSorted(Integer mining_system_id);
+
 
 
 }

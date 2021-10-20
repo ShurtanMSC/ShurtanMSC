@@ -15,9 +15,14 @@ import uz.neft.repository.UppgRepository;
 import uz.neft.repository.WellRepository;
 import uz.neft.repository.action.WellActionRepository;
 import uz.neft.service.document.fastexcel.ExcelTemplate;
+import uz.neft.service.document.report.Excel;
+import uz.neft.service.document.report.Helper;
 
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -186,6 +191,78 @@ public class ReportService{
     }
 
 
+    public void generateReport(Integer mining_system_id) throws IOException {
+        Excel excel=new Excel("salom","salom");
+        Worksheet ws=excel.worksheet;
+        ws= Helper.operatingModeWell(ws);
+
+        List<Well> wellList = wellRepository.findAllByMiningSystemIdSorted(mining_system_id);
+        List<WellAction> actionList=new ArrayList<>();
+
+        for (Well well : wellList) {
+            Optional<WellAction> action = wellActionRepository.findFirstByWellOrderByCreatedAtDesc(well);
+            if (action.isPresent()) {
+                actionList.add(action.get());
+            } else {
+                actionList.add(null);
+            }
+        }
+
+
+        for (int i = 0; i <actionList.size() ; i++) {
+            ws.value(4+i,0,i+1);
+            ws.value(4+i,1,actionList.get(i)!=null?actionList.get(i).getWell().getNumber():wellList.get(i).getNumber());
+            ws.value(4+i,2,actionList.get(i)!=null?actionList.get(i).getWell().getHorizon():wellList.get(i).getHorizon());
+
+            //D екс.кол
+            ws.value(4+i,3,0);
+            //Искусственный забой
+            ws.value(4+i,4,0);
+
+            if (actionList.get(i)!=null){
+                if (actionList.get(i).getPerforation_max()==0||actionList.get(i).getPerforation_min()==0){
+                    ws.value(4+i,5,"открытый стволь");
+                    ws.range(4+i,5,4+i,6).merge();
+                }else {
+                    ws.value(4+i,5,actionList.get(i).getPerforation_max());
+                    ws.value(4+i,6,actionList.get(i).getPerforation_min());
+                }
+            }else {
+                ws.value(4+i,5,"открытый стволь");
+                ws.range(4+i,5,4+i,6).merge();
+            }
+
+            ws.value(4+i,7,wellList.get(i).getC());
+            ws.value(4+i,8,0);
+            ws.value(4+i,9,0);
+            ws.value(4+i,10,0);
+            ws.value(4+i,11,0);
+            ws.value(4+i,12,0);
+            ws.value(4+i,13,0);
+            ws.value(4+i,14,0);
+
+            ws.value(4+i,15,actionList.get(i)!=null?actionList.get(i).getRpl():0);
+            ws.value(4+i,16,actionList.get(i)!=null?actionList.get(i).getPressure():0);
+            ws.value(4+i,17,actionList.get(i)!=null?actionList.get(i).getExpend()/1000:0);
+            ws.value(4+i,18,0);
+            ws.value(4+i,19,0);
+            ws.value(4+i,20,0);
+            ws.value(4+i,21,0);
+            ws.value(4+i,22,0);
+            ws.value(4+i,23,0);
+            ws.value(4+i,24,0);
+            ws.value(4+i,25,0);
+
+            ws.value(4+i,26,actionList.get(i)!=null?actionList.get(i).getRpl():0);
+            ws.value(4+i,27,actionList.get(i)!=null?actionList.get(i).getPressure():0);
+            ws.value(4+i,28,actionList.get(i)!=null?actionList.get(i).getExpend()/1000:0);
+            ws.value(4+i,29,0);
+            ws.value(4+i,30,0);
+            ws.value(4+i,31,0);
+        }
+
+        excel.generate();
+    }
 
 
     public void autoSizeColumns(Workbook workbook) {

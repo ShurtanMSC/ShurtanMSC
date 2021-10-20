@@ -470,6 +470,7 @@ public class DataLoader implements CommandLineRunner {
             for (int i = 0; i <wellList.size() ; i++) {
                 Well well=wellList.get(i);
                 well.setC(arrayC[i]);
+                well=wellRepository.save(well);
                 wellActionSaver(well);
             }
 
