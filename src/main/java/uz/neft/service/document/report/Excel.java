@@ -20,17 +20,19 @@ public class Excel {
     private Workbook workbook;
 
     public Worksheet worksheet;
+    private OutputStream os;
 
     public Excel(String excel_file_name, String sheet_name) throws FileNotFoundException {
         this.file = excel_file_name;
         this.name = sheet_name;
-        OutputStream os = new FileOutputStream(file+".xlsx");
+        os = new FileOutputStream(file+".xlsx");
         workbook=new Workbook(os,sheet_name,"1.0");
         worksheet=workbook.newWorksheet(sheet_name);
     }
 
-    public void generate() throws IOException {
+    public OutputStream generate() throws IOException {
         workbook.finish();
+        return os;
     }
 
 

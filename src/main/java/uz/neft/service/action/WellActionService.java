@@ -245,7 +245,7 @@ public class WellActionService {
          * D_well - Средний дебит скважин месторождения Шуртан ( D_СКВ )
          **/
         double D_well = Calculator.averageProductionRate(C, P_u, delta, Ro_otn, Z, T_u);
-        System.out.println("D_well = "+D_well);
+//        System.out.println("D_well = "+D_well);
 
         try {
             WellAction wellAction = WellAction

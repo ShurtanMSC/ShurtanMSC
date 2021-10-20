@@ -4,8 +4,8 @@ import org.dhatim.fastexcel.Worksheet;
 
 public class Helper {
 
-    public static Worksheet operatingModeWell(Worksheet ws){
-        ws.range(0,0,200,100).style().wrapText(true).horizontalAlignment("center").verticalAlignment("center").set();
+    public static Worksheet operatingModeWell(Worksheet ws,int h,int w){
+        ws.range(0,0,h,w).style().wrapText(true).horizontalAlignment("center").verticalAlignment("center").set();
         for (int i = 1; i <= 32; i++) {
             ws.value(3,i-1,i);
         }

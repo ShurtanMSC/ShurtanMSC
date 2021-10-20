@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Excel excel=new Excel("salom","salom");
         Worksheet ws=excel.worksheet;
-        ws=Helper.operatingModeWell(ws);
+        ws=Helper.operatingModeWell(ws,200,100);
 
 
 

@@ -1,15 +1,20 @@
 package uz.neft.controller;
 
+import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.core.io.FileUrlResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
 import uz.neft.service.ReportService;
 
-import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Date;
 
 @RestController
 @RequestMapping("api/report")
@@ -20,9 +25,40 @@ public class ReportController {
     private ReportService reportService;
 
     @GetMapping("/test")
-    public HttpEntity<?> report() throws IOException {
-        reportService.generateReport(1);
-        return ResponseEntity.ok("Ok");
+    public HttpEntity<?> report(HttpServletResponse response) throws IOException {
+        Date date=new Date();
+        String name=String.valueOf(date.getTime());
+        OutputStream outputStream = reportService.generateReport(1, name);
+
+        String filePath = name+".xlsx";
+        InputStream inputStream = new FileInputStream(new File(filePath));
+        String fileName = URLEncoder.encode(name, "UTF-8");
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline: filename\""+ fileName)
+                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                .contentLength(Files.size(Paths.get(filePath)))
+                .body(new FileUrlResource(filePath));
+
     }
+
+
+    @GetMapping("/test/{name}")
+    public HttpEntity<?> report(HttpServletResponse response, @PathVariable String name) throws IOException {
+        Date date=new Date();
+//        String name=String.valueOf(date.getTime());
+        OutputStream outputStream = reportService.generateReport(1, name);
+
+        String filePath = name+".xlsx";
+        InputStream inputStream = new FileInputStream(new File(filePath));
+        String fileName = URLEncoder.encode(name, "UTF-8");
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline: filename\""+ fileName)
+                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                .contentLength(Files.size(Paths.get(filePath)))
+                .body(new FileUrlResource(filePath));
+
+    }
+
+
 
 }

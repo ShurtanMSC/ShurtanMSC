@@ -191,14 +191,15 @@ public class ReportService{
     }
 
 
-    public void generateReport(Integer mining_system_id) throws IOException {
-        Excel excel=new Excel("salom","salom");
-        Worksheet ws=excel.worksheet;
-        ws= Helper.operatingModeWell(ws);
+    public OutputStream generateReport(Integer mining_system_id,String name) throws IOException {
+
 
         List<Well> wellList = wellRepository.findAllByMiningSystemIdSorted(mining_system_id);
         List<WellAction> actionList=new ArrayList<>();
 
+        Excel excel=new Excel(name,name);
+        Worksheet ws=excel.worksheet;
+        ws= Helper.operatingModeWell(ws,wellList.size()+5,33);
         for (Well well : wellList) {
             Optional<WellAction> action = wellActionRepository.findFirstByWellOrderByCreatedAtDesc(well);
             if (action.isPresent()) {
@@ -261,7 +262,8 @@ public class ReportService{
             ws.value(4+i,31,0);
         }
 
-        excel.generate();
+        return excel.generate();
+
     }
 
 
