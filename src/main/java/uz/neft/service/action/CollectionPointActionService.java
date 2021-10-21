@@ -58,7 +58,7 @@ public class CollectionPointActionService {
         Optional<CollectionPoint> collectionPoint = collectionPointRepository.findById(dto.getCollectionPointId());
         if (!collectionPoint.isPresent()) return converter.apiError400("Collection Point not found");
 
-        List<Well> allByCollectionPoint = wellRepository.findAllByCollectionPoint(collectionPoint.get());
+        List<Well> allByCollectionPoint = wellRepository.findAllByCollectionPointOrderByIdAsc(collectionPoint.get());
 
         double D_sp = 0;
 
@@ -284,7 +284,7 @@ public class CollectionPointActionService {
     public double checkWells(CollectionPoint cp,CollectionPointAction cpAction){
         double expendCp=0;
         try{
-            List<Well> wellList = wellRepository.findAllByCollectionPoint(cp);
+            List<Well> wellList = wellRepository.findAllByCollectionPointOrderByIdAsc(cp);
             for (Well well : wellList) {
                 Optional<WellAction> action = wellActionRepository.findFirstByWellOrderByCreatedAtDesc(well);
                 if (action.isPresent()) {
