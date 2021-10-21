@@ -1,12 +1,41 @@
 let uppgsList = []
+let miningSystemId = 1;
 
-function getAllUppgs() {
-    axios.get("/api/uppg/all/mining_system/" + 1)
+function selectHandle() {
+    miningSystemId = document.getElementById('miningSelect').value;
+    getAllUppgs()
+}
+
+function getAllMiningSystems() {
+    axios.get("/api/mining_system/all")
         .then(function (response) {
             if (response.data.message === "OK") {
-                uppgsList = response.data.object
+                document.getElementById("miningSelect").innerHTML = createViewSelect(response.data.object)
             }
-            document.getElementById("uppgTable").innerHTML = createViewTable(response.data.object)
+            getAllUppgs()
+        })
+        .catch(function (error) {
+            console.log(error)
+        })
+}
+
+function getAllUppgs() {
+    axios.get("/api/uppg/all/mining_system/" + parseInt(miningSystemId))
+        .then(function (response) {
+            console.log(response.data.object)
+            if (!response.data.object.length > 0) {
+                alert("В этом месторождении нет УППГ");
+                document.getElementById("uppgTable").innerHTML = "<tr class=\"odd\">\n" +
+                    "                                                <td class=\"sorting_1\">-</td>\n" +
+                    "                                                <td>-</td>\n" +
+                    "                                                <td>-</td>\n" +
+                    "\n" +
+                    "                                            </tr>"
+            }
+            if (response.data.message === "OK" && response.data.object.length > 0) {
+                uppgsList = response.data.object
+                document.getElementById("uppgTable").innerHTML = createViewTable(response.data.object)
+            }
         })
         .catch(function (error) {
             console.log(error)
@@ -91,6 +120,14 @@ function createViewTable(uppgs) {
             "     <td><button data-target=\"#exampleModalCenter\" data-toggle=\"modal\" class='btn btn-success mt-1' id='btn-edit-uppg' value='" + uppg.id + "' onclick='editUppg(this.value)'>Редактировать</button>\n" +
             "      <button class='btn btn-danger ml-2 mt-1' id='btn-edit-uppg' value='" + uppg.id + "' onclick='deleteUppg(this.value)'>Удалить</button></td>\n" +
             "   </tr>"
+    })
+    return out;
+}
+
+function createViewSelect(minings) {
+    let out = "";
+    minings.map(mining => {
+        out += "<option value='" + mining.id + "'>" + mining.name + "</option>"
     })
     return out;
 }

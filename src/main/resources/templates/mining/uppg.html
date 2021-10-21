@@ -49,7 +49,6 @@
     <div th:insert="components/sidebar::sidebar" style="background: #0088bc;"></div>
     <!-- End of Sidebar -->
 
-
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
 
@@ -60,28 +59,34 @@
             <div th:insert="components/navbar::navbar"></div>
             <!-- End of Topbar -->
 
-
             <!-- Begin Page Content -->
             <div class="container-fluid">
 
                 <!-- Page Heading -->
                 <h1 class="h3 mb-2 text-gray-800">УППГ</h1>
-                <p class="mb-4">УППГ в системе</p>
+                <p class="mb-2">УППГ в системе</p>
 
                 <!--// Add Uppg button and modal-->
                 <div>
                     <section class="ftco-section pb-2">
                         <div class="row">
-                            <div class="col-md-6 d-flex ">
-                                <div class="wrap w-100">
+                            <div class="col-md-12 d-flex ">
+                                <div class="wrap mr-5">
                                     <button type="button" class="btn btn-primary py-2 px-4" data-toggle="modal"
                                             data-target="#exampleModalCenter"
                                             id="addUppgBtn"
                                     >
                                         Добавить УППГ
                                     </button>
-
-                                    <!-- Modal -->
+                                </div>
+                                <div class="form-group ">
+                                    <select name="miningSelect" class="custom-select form-control rounded-left mt-1"
+                                            id="miningSelect"
+                                            onchange="selectHandle()"
+                                            aria-label="Example select with button addon" required>
+                                        <option value="">Месторождений</option>
+                                        <option value="">Loading. . .</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -132,9 +137,6 @@
 
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Пример таблиц данных</h6>
-                    </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
@@ -183,7 +185,6 @@
                                                     aria-label="Salary: activate to sort column ascending"
                                                     style="width: 67.001px;">Редактировать
                                                 </th>
-
                                             </tr>
                                             </thead>
                                             <tfoot>
@@ -198,7 +199,6 @@
                                             <tbody id="uppgTable">
                                             <tr class="odd">
                                                 <td class="sorting_1">Loading. . .</td>
-                                                <td>Loading. . .</td>
                                                 <td>Loading. . .</td>
                                                 <td>Loading. . .</td>
 
@@ -302,6 +302,7 @@
 <!-- Bootstrap core JavaScript-->
 <script src="/static/js/uppg.js" th:src="@{/js/uppg.js}"></script>
 <script>
+    getAllMiningSystems()
     getAllUppgs();
 </script>
 <script src="/static/vendor/jquery/jquery.min.js" th:src="@{/vendor/jquery/jquery.min.js}"></script>
