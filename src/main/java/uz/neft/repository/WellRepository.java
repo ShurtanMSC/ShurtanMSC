@@ -12,13 +12,14 @@ import java.util.List;
 public interface WellRepository extends JpaRepository<Well,Integer> {
 
     List<Well> findAllByCollectionPoint(CollectionPoint collectionPoint);
+    List<Well> findAllByCollectionPointOrderByIdAsc(CollectionPoint collectionPoint);
 
-    @Query(value="select * from well where collection_point_id in (select id from collection_point where uppg_id = :uppg_id)", nativeQuery = true)
+    @Query(value="select * from well where collection_point_id in (select id from collection_point where uppg_id = :uppg_id) order by well.id asc", nativeQuery = true)
     List<Well> findAllByUppgId(Integer uppg_id);
 
     boolean existsByCollectionPointAndId(CollectionPoint collectionPoint, Integer id);
 
-    @Query(value="select * from well where collection_point_id in (select id from collection_point where uppg_id in (select id from uppg where mining_system_id=:mining_system_id))", nativeQuery = true)
+    @Query(value="select * from well where collection_point_id in (select id from collection_point where uppg_id in (select id from uppg where mining_system_id=:mining_system_id)) order by well.id asc", nativeQuery = true)
     List<Well> findAllByMiningSystemId(Integer mining_system_id);
 
     @Query(value="select * from well where collection_point_id in (select id from collection_point where uppg_id in (select id from uppg where mining_system_id=:mining_system_id)) order by well.number asc", nativeQuery = true)

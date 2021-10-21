@@ -1,16 +1,13 @@
 package uz.neft.controller;
 
-import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileUrlResource;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import uz.neft.service.ReportService;
+import uz.neft.service.document.ReportService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -25,7 +22,7 @@ public class ReportController {
     private ReportService reportService;
 
     @GetMapping("/test")
-    public HttpEntity<?> report(HttpServletResponse response) throws IOException {
+    public HttpEntity<?> report(HttpServletResponse response) throws Exception {
         Date date=new Date();
         String name=String.valueOf(date.getTime());
         OutputStream outputStream = reportService.generateReport(1, name);
@@ -43,7 +40,7 @@ public class ReportController {
 
 
     @GetMapping("/test/{name}")
-    public HttpEntity<?> report(HttpServletResponse response, @PathVariable String name) throws IOException {
+    public HttpEntity<?> report(HttpServletResponse response, @PathVariable String name) throws Exception {
         Date date=new Date();
 //        String name=String.valueOf(date.getTime());
         OutputStream outputStream = reportService.generateReport(1, name);

@@ -333,7 +333,7 @@ public class WellActionService {
             Optional<CollectionPoint> byId = collectionPointRepository.findById(id);
             if (!byId.isPresent()) return converter.apiError404("collection point not found");
 
-            List<Well> wells = wellRepository.findAllByCollectionPoint(byId.get());
+            List<Well> wells = wellRepository.findAllByCollectionPointOrderByIdAsc(byId.get());
 
             return wellActionDtos(wells);
         } catch (Exception e) {
@@ -347,7 +347,7 @@ public class WellActionService {
             Optional<CollectionPoint> byId = collectionPointRepository.findById(id);
             if (!byId.isPresent()) return converter.apiError404("collection point not found");
 
-            List<Well> wells = wellRepository.findAllByCollectionPoint(byId.get());
+            List<Well> wells = wellRepository.findAllByCollectionPointOrderByIdAsc(byId.get());
 
             List<WellDto> collect = wells.stream().map(converter::wellToWellDto).collect(Collectors.toList());
 
@@ -626,7 +626,7 @@ public class WellActionService {
         double q_well=sumAllExpendByUppg(uppg);
         List<CollectionPoint> collectionPointList = collectionPointRepository.findAllByUppg(uppg);
         for (CollectionPoint collectionPoint : collectionPointList) {
-            List<Well> wellList=wellRepository.findAllByCollectionPoint(collectionPoint);
+            List<Well> wellList=wellRepository.findAllByCollectionPointOrderByIdAsc(collectionPoint);
             CollectionPointAction pointAction = collectionPointActionRepository.findFirstByCollectionPointOrderByCreatedAtDesc(collectionPoint);
             for (Well well : wellList){
                 Optional<WellAction> action=wellActionRepository.findFirstByWellOrderByCreatedAtDesc(well);
@@ -672,7 +672,7 @@ public class WellActionService {
     protected Double sumAllExpendByCollectionPoint(CollectionPoint collectionPoint){
         try {
             double sum=0.0;
-            List<Well> wellList = wellRepository.findAllByCollectionPoint(collectionPoint);
+            List<Well> wellList = wellRepository.findAllByCollectionPointOrderByIdAsc(collectionPoint);
             for (Well well : wellList) {
                 Optional<WellAction> action = wellActionRepository.findFirstByWellOrderByCreatedAtDesc(well);
                 if (action.isPresent()) {
