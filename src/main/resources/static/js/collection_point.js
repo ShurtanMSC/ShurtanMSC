@@ -68,6 +68,8 @@ document.getElementById('addCollectionPointBtn').addEventListener('click', addCo
 function addCollectionPointBtn() {
     document.getElementById('addOrEditCollectionPointH3').innerText = 'Добавить Сборный пункт'
     document.getElementById('addOrEditCollectionPointBtn').innerText = 'Добавить'
+    let formField = document.getElementById('addOrEditCollectionPointForm')
+    formField['uppgId'].value = uppgId;
 }
 
 function resetAndCloseForm() {
@@ -116,7 +118,7 @@ function editCollectionPoint(id) {
 
     formField['id'].value = editCollectionPoint.id;
     formField['name'].value = editCollectionPoint.name;
-    formField['miningSystemId'].value = editCollectionPoint.miningSystemId;
+    formField['uppgId'].value = editCollectionPoint.uppgId;
 }
 
 function deleteCollectionPoint(id) {

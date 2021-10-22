@@ -1,16 +1,100 @@
-let wellsList = []
 
-function getAllWells() {
-    axios.get("/api/well/all/collection_point/" + 1)
+let wellsList = []
+let miningSystemId = 1;
+let uppgId = 1
+let collectionPointId = 1
+
+function selectHandleMining() {
+    miningSystemId = document.getElementById('miningSelect').value;
+    getAllUppgs()
+}
+
+function selectHandleUppg() {
+    uppgId = document.getElementById('uppgSelect').value;
+    getAllCollectionPoints()
+}
+
+function selectHandleSP() {
+    collectionPointId = document.getElementById('collectionPointSelect').value;
+    document.getElementsByName("collectionPointId").value = collectionPointId;
+    getAllWells()
+}
+
+function getAllMiningSystems() {
+    axios.get("/api/mining_system/all")
         .then(function (response) {
             if (response.data.message === "OK") {
-                wellsList = response.data.object
+                document.getElementById("miningSelect").innerHTML = createViewMiningOrUppgOrSPSelect(response.data.object)
             }
-            document.getElementById("wellTable").innerHTML = createViewTable(response.data.object)
         })
         .catch(function (error) {
             console.log(error)
         })
+}
+
+function getAllUppgs() {
+    axios.get("/api/uppg/all/mining_system/" + miningSystemId)
+        .then(function (response) {
+            if (response.data.message === "OK") {
+                document.getElementById("uppgSelect").innerHTML = createViewMiningOrUppgOrSPSelect(response.data.object)
+                uppgId = document.getElementById('uppgSelect').value;
+                getAllCollectionPoints()
+            }
+        })
+        .catch(function (error) {
+            console.log(error)
+        })
+}
+
+
+function getAllCollectionPoints() {
+    if (uppgId == "" || uppgId == null) {
+        document.getElementById("uppgSelect").innerHTML = "<option value=''>Нет УППГ</option>"
+        document.getElementById("collectionPointSelect").innerHTML = "<option value=''>Нет СП</option>"
+        document.getElementById("wellTable").innerHTML = "<tr class=\"odd\">\n" +
+            "                                                <td class=\"sorting_1\">-</td>\n" +
+            "                                                <td>-</td>\n" +
+            "                                                <td>-</td>\n" +
+            "                                            </tr>"
+        alert("В этом месторождении нет УППГ, СП  и Скважина")
+    } else {
+        axios.get("/api/collection_point/all/uppg/" + uppgId)
+            .then(function (response) {
+                if (response.data.message === "OK") {
+                    document.getElementById("collectionPointSelect").innerHTML = createViewMiningOrUppgOrSPSelect(response.data.object)
+                    collectionPointId = document.getElementById('collectionPointSelect').value;
+                    getAllWells()
+                }
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
+    }
+}
+
+function getAllWells() {
+    if (collectionPointId == "" || collectionPointId == null) {
+        document.getElementById("collectionPointSelect").innerHTML = "<option value=''>Нет СП</option>"
+        document.getElementById("wellTable").innerHTML = "<tr class=\"odd\">\n" +
+            "                                                <td class=\"sorting_1\">-</td>\n" +
+            "                                                <td>-</td>\n" +
+            "                                                <td>-</td>\n" +
+            "\n" +
+            "                                            </tr>"
+
+        alert("В этом УППГ нет Скважина ")
+    } else {
+        axios.get("/api/well/all/collection_point/" + collectionPointId)
+            .then(function (response) {
+                if (response.data.message === "OK") {
+                    wellsList = response.data.object
+                }
+                document.getElementById("wellTable").innerHTML = createViewTable(response.data.object)
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
+    }
 }
 
 document.getElementById('addWellBtn').addEventListener('click', addWellBtn);
@@ -18,6 +102,8 @@ document.getElementById('addWellBtn').addEventListener('click', addWellBtn);
 function addWellBtn() {
     document.getElementById('addOrEditWellH3').innerText = 'Добавить cкважина'
     document.getElementById('addOrEditWellBtn').innerText = 'Добавить'
+    let formField = document.getElementById('addOrEditWellForm')
+    formField['collectionPointId'].value = collectionPointId;
 }
 
 function resetAndCloseForm() {
@@ -38,6 +124,8 @@ function addOrEditWell(event) {
         data
     };
 
+    console.log(data)
+
     if (data.id === "" || data.id == null) {
         config.method = 'post';
         config.url = '/api/well/add'
@@ -52,7 +140,7 @@ function addOrEditWell(event) {
             resetAndCloseForm();
         })
         .catch(function (error) {
-            console.log(error);
+            console.log(error.response.data);
         });
 }
 
@@ -60,6 +148,7 @@ function editWell(id) {
     document.getElementById('addOrEditWellH3').innerText = 'Редактировать cкважина'
     document.getElementById('addOrEditWellBtn').innerText = 'Редактировать'
     let editWell = wellsList.find(well => well.id == id)
+
     let formField = document.getElementById('addOrEditWellForm')
 
     formField['id'].value = editWell.id;
@@ -92,19 +181,18 @@ function createViewTable(wells) {
     let out = "";
     wells.map(well => {
 
-        const commissioningDate = new Date(''+well.commissioningDate+'');
+        const commissioningDate = new Date('' + well.commissioningDate + '');
         const commissioningDayOfMonth = commissioningDate.getDate();
         const commissioningMonth = commissioningDate.getMonth(); // Be careful! January is 0, not 1
         const commissioningYear = commissioningDate.getFullYear();
         const commissioningDateString = commissioningDayOfMonth + "-" + (commissioningMonth + 1) + "-" + commissioningYear;
 
-        const drillingStartDate = new Date(''+well.drillingStartDate+'');
-        const drillingStartDayOfMonth = commissioningDate.getDate();
-        const drillingStartMonth = commissioningDate.getMonth(); // Be careful! January is 0, not 1
-        const drillingStartYear = commissioningDate.getFullYear();
+        const drillingStartDate = new Date('' + well.drillingStartDate + '');
+        const drillingStartDayOfMonth = drillingStartDate.getDate();
+        const drillingStartMonth = drillingStartDate.getMonth(); // Be careful! January is 0, not 1
+        const drillingStartYear = drillingStartDate.getFullYear();
         const drillingStartDateString = drillingStartDayOfMonth + "-" + (drillingStartMonth + 1) + "-" + drillingStartYear;
 
-        console.log(commissioningDate.getDate())
         out += "<tr class=\"well_table_row\">\n" +
             "   <td class=\"sorting_1\">" + well.id + "</td>\n" +
             "    <td>" + well.number + "</td>\n" +
@@ -121,6 +209,14 @@ function createViewTable(wells) {
             "     <td><button data-target=\"#exampleModalCenter\" data-toggle=\"modal\" class='btn btn-success mt-1' id='btn-edit-well' value='" + well.id + "' onclick='editWell(this.value)'>Редактировать</button>\n" +
             "      <button class='btn btn-danger ml-2 mt-1' id='btn-edit-well' value='" + well.id + "' onclick='deleteWell(this.value)'>Удалить</button></td>\n" +
             "   </tr>"
+    })
+    return out;
+}
+
+function createViewMiningOrUppgOrSPSelect(miningsOrUppgsOrSP) {
+    let out = "";
+    miningsOrUppgsOrSP.map(item => {
+        out += "<option value='" + item.id + "'>" + item.name + "</option>"
     })
     return out;
 }

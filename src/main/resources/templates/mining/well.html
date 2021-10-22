@@ -49,7 +49,6 @@
     <div th:insert="components/sidebar::sidebar" style="background: #0088bc;"></div>
     <!-- End of Sidebar -->
 
-
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
 
@@ -59,7 +58,6 @@
             <!-- Topbar -->
             <div th:insert="components/navbar::navbar"></div>
             <!-- End of Topbar -->
-
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
@@ -72,16 +70,38 @@
                 <div>
                     <section class="ftco-section pb-2">
                         <div class="row">
-                            <div class="col-md-6 d-flex ">
-                                <div class="wrap w-100">
+                            <div class="col-md-12 d-flex ">
+                                <div class="wrap mr-5">
                                     <button type="button" class="btn btn-primary py-2 px-4" data-toggle="modal"
                                             data-target="#exampleModalCenter"
                                             id="addWellBtn"
                                     >
                                         Добавить Скважина
                                     </button>
-
-                                    <!-- Modal -->
+                                </div>
+                                <div class="form-group mr-5">
+                                    <select name="miningSelect" class="custom-select form-control rounded-left mt-1"
+                                            id="miningSelect"
+                                            onchange="selectHandleMining()"
+                                            aria-label="Example select with button addon" >
+                                        <option value="">Loading. . .</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mr-5">
+                                    <select name="uppgSelect" class="custom-select form-control rounded-left mt-1"
+                                            id="uppgSelect"
+                                            onchange="selectHandleUppg()"
+                                            aria-label="Example select with button addon" >
+                                        <option value="">Loading. . .</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mr-5">
+                                    <select name="collectionPointSelect" class="custom-select form-control rounded-left mt-1"
+                                            id="collectionPointSelect"
+                                            onchange="selectHandleSP()"
+                                            aria-label="Example select with button addon" >
+                                        <option value="">Loading. . .</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -111,7 +131,7 @@
                                                    placeholder="номер cкважина" required>
                                         </div>
                                         <div class="form-group d-flex">
-                                            <input name="collectionPointId" value="1" type="number"
+                                            <input name="collectionPointId" value="" type="number"
                                                    class="form-control rounded-left" required hidden>
                                         </div>
                                         <div class="form-group d-flex">
@@ -128,23 +148,23 @@
                                                    class="form-control rounded-left" placeholder="горизонт" required>
                                         </div>
                                         <div class="form-group d-flex">
-                                            <input name="altitude"  type="number"
+                                            <input name="altitude"  type="number" step=any
                                                    class="form-control rounded-left" placeholder="высота" required>
                                         </div>
                                         <div class="form-group d-flex">
-                                            <input name="depth"  type=""
+                                            <input name="depth"  type="number" step=any
                                                    class="form-control rounded-left" placeholder="глубина" required>
                                         </div>
                                         <div class="form-group d-flex">
-                                            <input name="x"  type="number"
+                                            <input name="x"  type="number" step=any
                                                    class="form-control rounded-left" placeholder="x" required>
                                         </div>
                                         <div class="form-group d-flex">
-                                            <input name="y"  type="number"
+                                            <input name="y"  type="number" step=any
                                                    class="form-control rounded-left" placeholder="y" required>
                                         </div>
                                         <div class="form-group d-flex">
-                                            <input name="c"  type="number"
+                                            <input name="c"  type="number" step=any
                                                    class="form-control rounded-left" placeholder="c" required>
                                         </div>
 
@@ -407,6 +427,9 @@
 <!-- Bootstrap core JavaScript-->
 <script src="/static/js/well.js" th:src="@{/js/well.js}"></script>
 <script>
+    getAllMiningSystems();
+    getAllUppgs();
+    getAllCollectionPoints();
     getAllWells();
 </script>
 <script src="/static/vendor/jquery/jquery.min.js" th:src="@{/vendor/jquery/jquery.min.js}"></script>

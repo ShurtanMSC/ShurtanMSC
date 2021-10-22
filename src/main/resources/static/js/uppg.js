@@ -22,7 +22,7 @@ function getAllMiningSystems() {
 function getAllUppgs() {
     axios.get("/api/uppg/all/mining_system/" + parseInt(miningSystemId))
         .then(function (response) {
-            console.log(response.data.object)
+            // console.log(response.data.object)
             if (!response.data.object.length > 0) {
                 alert("В этом месторождении нет УППГ");
                 document.getElementById("uppgTable").innerHTML = "<tr class=\"odd\">\n" +
@@ -47,6 +47,8 @@ document.getElementById('addUppgBtn').addEventListener('click', addUppgBtn);
 function addUppgBtn() {
     document.getElementById('addOrEditUppgH3').innerText = 'Добавить УППГ'
     document.getElementById('addOrEditUppgBtn').innerText = 'Добавить'
+    let formField = document.getElementById('addOrEditUppgForm')
+    formField['miningSystemId'].value = miningSystemId;
 }
 
 function resetAndCloseForm() {
@@ -60,7 +62,7 @@ function addOrEditUppg(event) {
 
     const data = {}
     formData.forEach((value, key) => (data[key] = value));
-    console.log(data)
+    // console.log(data)
     let config = {
         method: '',
         url: '',
