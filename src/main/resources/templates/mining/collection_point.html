@@ -72,15 +72,31 @@
                 <div>
                     <section class="ftco-section pb-2">
                         <div class="row">
-                            <div class="col-md-6 d-flex ">
-                                <div class="wrap w-100">
+                            <div class="col-md-12 d-flex ">
+                                <div class="wrap mr-5">
                                     <button type="button" class="btn btn-primary py-2 px-4" data-toggle="modal"
                                             data-target="#exampleModalCenter"
                                             id="addCollectionPointBtn" >
                                         Добавить Сборный пункт
                                     </button>
-
-                                    <!-- Modal -->
+                                </div>
+                                <div class="form-group mr-5">
+                                    <select name="miningSelect" class="custom-select form-control rounded-left mt-1"
+                                            id="miningSelect"
+                                            onchange="selectHandleMining()"
+                                            aria-label="Example select with button addon" >
+                                        <option value="">Месторождений</option>
+                                        <option value="">Loading. . .</option>
+                                    </select>
+                                </div>
+                                <div class="form-group ">
+                                    <select name="uppgSelect" class="custom-select form-control rounded-left mt-1"
+                                            id="uppgSelect"
+                                            onchange="selectHandleUppg()"
+                                            aria-label="Example select with button addon" >
+                                        <option value="">УППГ</option>
+                                        <option value="">Loading. . .</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -303,6 +319,8 @@
 <!-- Bootstrap core JavaScript-->
 <script src="/static/js/collection_point.js" th:src="@{/js/collection_point.js}"></script>
 <script>
+    getAllMiningSystems();
+    getAllUppgs();
     getAllCollectionPoints();
 </script>
 <script src="/static/vendor/jquery/jquery.min.js" th:src="@{/vendor/jquery/jquery.min.js}"></script>

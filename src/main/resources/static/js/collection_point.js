@@ -1,16 +1,66 @@
 let collectionPointsList = []
+let miningSystemId = 1;
+let uppgId = 1
 
-function getAllCollectionPoints() {
-    axios.get("/api/collection_point/all/uppg/" + 1)
+function getAllMiningSystems() {
+    axios.get("/api/mining_system/all")
         .then(function (response) {
             if (response.data.message === "OK") {
-                collectionPointsList = response.data.object
+                document.getElementById("miningSelect").innerHTML = createViewMiningOrUppgSelect(response.data.object)
             }
-            document.getElementById("collectionPointTable").innerHTML = createViewTable(response.data.object)
         })
         .catch(function (error) {
             console.log(error)
         })
+}
+
+function getAllUppgs() {
+        axios.get("/api/uppg/all/mining_system/" + miningSystemId)
+            .then(function (response) {
+                if (response.data.message === "OK") {
+                    document.getElementById("uppgSelect").innerHTML = createViewMiningOrUppgSelect(response.data.object)
+                    uppgId = document.getElementById('uppgSelect').value;
+                    getAllCollectionPoints()
+                }
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
+}
+
+function selectHandleMining() {
+    miningSystemId = document.getElementById('miningSelect').value;
+    getAllUppgs()
+}
+
+function selectHandleUppg() {
+    uppgId = document.getElementById('uppgSelect').value;
+    getAllCollectionPoints()
+}
+
+function getAllCollectionPoints() {
+    if (uppgId == "" || uppgId == null) {
+        document.getElementById("uppgSelect").innerHTML = "<option value=''>Нет УППГ</option>"
+        document.getElementById("collectionPointTable").innerHTML = "<tr class=\"odd\">\n" +
+            "                                                <td class=\"sorting_1\">-</td>\n" +
+            "                                                <td>-</td>\n" +
+            "                                                <td>-</td>\n" +
+            "\n" +
+            "                                            </tr>"
+
+        alert("В этом месторождении нет УППГ и СП ")
+    } else {
+        axios.get("/api/collection_point/all/uppg/" + uppgId)
+            .then(function (response) {
+                if (response.data.message === "OK") {
+                    collectionPointsList = response.data.object
+                }
+                document.getElementById("collectionPointTable").innerHTML = createViewTable(response.data.object)
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
+    }
 }
 
 document.getElementById('addCollectionPointBtn').addEventListener('click', addCollectionPointBtn);
@@ -90,6 +140,14 @@ function createViewTable(collectionPoints) {
             "     <td><button data-target=\"#exampleModalCenter\" data-toggle=\"modal\" class='btn btn-success mt-1' id='btn-edit-collectionPoint' value='" + collectionPoint.id + "' onclick='editCollectionPoint(this.value)'>Редактировать</button>\n" +
             "      <button class='btn btn-danger ml-2 mt-1' id='btn-edit-collectionPoint' value='" + collectionPoint.id + "' onclick='deleteCollectionPoint(this.value)'>Удалить</button></td>\n" +
             "   </tr>"
+    })
+    return out;
+}
+
+function createViewMiningOrUppgSelect(miningsOrUppgs) {
+    let out = "";
+    miningsOrUppgs.map(item => {
+        out += "<option value='" + item.id + "'>" + item.name + "</option>"
     })
     return out;
 }
