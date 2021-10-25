@@ -23,6 +23,8 @@ public interface UppgActionRepository extends JpaRepository<UppgAction,Long> {
 
     List<UppgAction> findAllByCreatedAtBetween(Timestamp from, Timestamp until);
 
+    List<UppgAction> findAllByUppgOrderByCreatedAtDesc(Uppg uppg);
+
     List<UppgAction> findAllByUppgAndCreatedAtBetween(Uppg uppg, Timestamp from, Timestamp until);
 
 }

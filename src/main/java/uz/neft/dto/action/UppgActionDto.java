@@ -8,6 +8,7 @@ import uz.neft.entity.CollectionPoint;
 
 import javax.persistence.ManyToOne;
 import java.sql.Timestamp;
+import java.util.Date;
 
 @Getter
 @AllArgsConstructor
@@ -15,14 +16,17 @@ import java.sql.Timestamp;
 @Builder
 public class UppgActionDto {
 
+    private Long actionId;
+
+    // По газу, тыс.м³  // mln m^3/sutka
+    private double expend;
+
     //Проектная производительность, м³/год
     private double designedPerformance;
 
     //Фактическая производителность, м³/год
     private double actualPerformance;
 
-    // По газу, тыс.м³  // mln m^3/sutka
-    private double expend;
 
     // По конденсату, тыс.т
     private double condensate;
@@ -44,7 +48,7 @@ public class UppgActionDto {
 
     private Integer uppgId;
 
-    private Timestamp date;
+    private Date date;
 
 
 //    @LastModifiedBy

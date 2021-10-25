@@ -1,13 +1,16 @@
 package uz.neft.service.action;
 
 import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.UppgDto;
 import uz.neft.dto.WellDto;
+import uz.neft.dto.action.MiningSystemActionDto;
 import uz.neft.dto.action.ObjectWithActionsDto;
 import uz.neft.dto.action.UppgActionDto;
 import uz.neft.dto.action.WellActionDto;
 import uz.neft.entity.*;
+import uz.neft.entity.action.MiningSystemAction;
 import uz.neft.entity.action.UppgAction;
 import uz.neft.entity.action.WellAction;
 import uz.neft.repository.MiningSystemRepository;
@@ -22,6 +25,7 @@ import uz.neft.utils.Converter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class UppgActionService {
@@ -79,6 +83,24 @@ public class UppgActionService {
         }
     }
 
+    public ResponseEntity<?> deleteUppgAction(Long id) {
+        try {
+            if (id != null) {
+                Optional<UppgAction> byId = uppgActionRepository.findById(id);
+                if (byId.isPresent()) {
+                    uppgActionRepository.delete(byId.get());
+                    return converter.apiSuccess200("Uppg action deleted");
+                } else {
+                    return converter.apiError404("UppgAction found");
+                }
+            }
+            return converter.apiError400("Id null");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409("Error in deleting uppg action", e);
+        }
+    }
+
     public HttpEntity<?> getUppgs() {
         try {
             List<Uppg> all = uppgRepository.findAll();
@@ -111,6 +133,21 @@ public class UppgActionService {
             List<Uppg> uppgs = uppgRepository.findAllByMiningSystem(byId.get());
 
             return uppgActionDtos(uppgs);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409("Error in fetching uppgs with actions by mining system ");
+        }
+    }
+
+    public HttpEntity<?> getUppgActionsByUppgId(Integer id) {
+        try {
+            Optional<Uppg> byId1 = uppgRepository.findById(id);
+            if (!byId1.isPresent()) return converter.apiError404("uppg not found");
+
+            List<UppgAction> allByUppgOrderByCreatedAtDesc = uppgActionRepository.findAllByUppgOrderByCreatedAtDesc(byId1.get());
+            Stream<UppgActionDto> uppgActionDtoStream = allByUppgOrderByCreatedAtDesc.stream().map(converter::uppgActionToUppgActionDto);
+
+            return converter.apiSuccess200(uppgActionDtoStream);
         } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError409("Error in fetching uppgs with actions by mining system ");
@@ -153,15 +190,15 @@ public class UppgActionService {
             Optional<UppgAction> uppgAction = uppgActionRepository.findFirstByUppgOrderByCreatedAtDesc(byId.get());
 //            if (!uppgAction.isPresent()) return converter.apiError404("uppg action not found");
 
-            UppgActionDto uppgActionDto=new UppgActionDto();
+            UppgActionDto uppgActionDto = new UppgActionDto();
             UppgDto uppgDto = converter.uppgToUppgDto(byId.get());
-            if (uppgAction.isPresent()){
+            if (uppgAction.isPresent()) {
                 uppgActionDto = converter.uppgActionToUppgActionDto(uppgAction.get());
             } else {
                 uppgActionDto = converter.uppgActionToUppgActionDto(null);
             }
 
-            ObjectWithActionsDto dto=ObjectWithActionsDto
+            ObjectWithActionsDto dto = ObjectWithActionsDto
                     .builder()
                     .objectDto(uppgDto)
                     .objectActionDto(uppgActionDto)
@@ -186,7 +223,7 @@ public class UppgActionService {
             UppgDto uppgDto = converter.uppgToUppgDto(byId1.get());
             UppgActionDto uppgActionDto = new UppgActionDto();
 
-            if (firstByUppg.isPresent()){
+            if (firstByUppg.isPresent()) {
                 uppgActionDto = converter.uppgActionToUppgActionDto(firstByUppg.get());
             } else {
                 uppgActionDto = converter.uppgActionToUppgActionDto(null);
@@ -202,6 +239,37 @@ public class UppgActionService {
         if (collect.isEmpty()) return converter.apiSuccess200("Empty List", null);
         else
             return converter.apiSuccess200(collect);
+    }
+
+    public HttpEntity<?> editAction(UppgActionDto dto) {
+        try {
+            if (dto.getActionId()== null) return converter.apiError400("Action Id is null");
+
+            Optional<Uppg> uppg = uppgRepository.findById(dto.getUppgId());
+
+            UppgAction uppgAction;
+            Optional<UppgAction> byId = uppgActionRepository.findById(dto.getActionId());
+            if (byId.isPresent()) {
+                uppgAction = byId.get();
+                uppgAction.setExpend(dto.getExpend());
+                uppgAction.setUppg(uppg.get());
+                uppgAction.setActualPerformance(dto.getActualPerformance());
+                uppgAction.setCondensate(dto.getCondensate());
+                uppgAction.setDesignedPerformance(dto.getDesignedPerformance());
+                uppgAction.setExitPressure(dto.getExitPressure());
+                uppgAction.setExitTemperature(dto.getExitTemperature());
+                uppgAction.setIncomePressure(dto.getIncomePressure());
+                uppgAction.setIncomeTemperature(dto.getIncomeTemperature());
+                uppgAction.setOnWater(dto.getOnWater());
+                UppgAction save = uppgActionRepository.save(uppgAction);
+                UppgActionDto uppgActionDto = converter.uppgActionToUppgActionDto(save);
+                return converter.apiSuccess200("Uppg action edited", uppgActionDto);
+            }
+            return converter.apiError404("Uppg action not found");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409("Error editing Uppg action");
+        }
     }
 
 

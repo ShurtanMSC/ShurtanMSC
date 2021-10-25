@@ -63,35 +63,49 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">УППГ</h1>
-                <p class="mb-2">УППГ в системе</p>
+                <div class="col-12 d-flex p-0 mt-3">
+                    <div class="col-5 mb-4  p-0">
+                        <button onclick="goOutFromAction()" id="goOutActionsIcon" style="display: none;"
+                                type="button" class="btn btn-outline-info">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="28" style="color: #35B8CB;"
+                                 class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                      d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                            </svg>
+                            Назад
+                        </button>
+                    </div>
+                    <div class="col-6 p-0 ml-3">
+                        <h1 class="h3 mb-2 text-gray-800" id="actionUppgH1">УППГ</h1>
+                    </div>
+                </div>
+
 
                 <!--// Add Uppg button and modal-->
                 <div>
                     <section class="ftco-section pb-2">
                         <div class="row">
                             <div class="col-md-12 d-flex ">
-                                <div class="wrap mr-5">
+                                <div class="col-6 p-0">
                                     <button type="button" class="btn btn-primary py-2 px-4" data-toggle="modal"
                                             data-target="#exampleModalCenter"
-                                            id="addUppgBtn"
-                                    >
+                                            id="addUppgBtn">
                                         Добавить УППГ
                                     </button>
                                 </div>
-                                <div class="form-group ">
-                                    <select name="miningSelect" class="custom-select form-control rounded-left mt-1"
-                                            id="miningSelect"
-                                            onchange="selectHandle()"
-                                            aria-label="Example select with button addon" >
-                                        <option value="">Месторождений</option>
-                                        <option value="">Loading. . .</option>
-                                    </select>
+                                <div class="col-6 d-flex justify-content-end p-0">
+                                    <button type="button" class="btn btn-outline-info py-2 px-4"
+                                            data-toggle="modal" style="display: none;"
+                                            id="addActionUppgBtn"
+                                            data-target="#exampleModalCenterAction">
+                                        Добавить действие УППГ
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </section>
 
+                    <!--mining system  form-->
                     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
                          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -133,10 +147,62 @@
                             </div>
                         </div>
                     </div>
+
+                    <!--mining system ACTION form-->
+                    <div class="modal fade" id="exampleModalCenterAction" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button"
+                                            class="close d-flex align-items-center justify-content-center h-25"
+                                            id="closeFormBtnAction"
+                                            data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true" class="ion-ios-close">x</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body  pb-md-5 pl-md-5 pr-md-5 pt-md-2">
+                                    <h3 class="text-center mb-4" id="addOrEditUppgActionH3">Добавить действие
+                                        уппг</h3>
+                                    <form action="/" class="login-form" id="addOrEditUppgActionForm"
+                                          onsubmit="addOrEditUppgAction(event);">
+                                        <div class="form-group">
+                                            <input name="actionId" type="number" class="form-control rounded-left"
+                                                   hidden>
+                                        </div>
+                                        <div class="form-group d-flex">
+                                            <input name="expend" type="number" step=any
+                                                   class="form-control rounded-left"
+                                                   placeholder="Расходъ">
+                                        </div>
+
+                                        <div class="form-group d-flex">
+                                            <input name="designedPerformance" type="number" step=any
+                                                   class="form-control rounded-left"
+                                                   placeholder="Проектная производительность, м³/год">
+                                        </div>
+
+                                        <div class="form-group d-flex">
+                                            <input name="uppgId" id="uppgId" value="" type="number"
+                                                   class="form-control rounded-left"
+                                                   hidden>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit"
+                                                    id="addOrEditUppgActionBtn"
+                                                    class="form-control btn btn-info rounded submit px-3">Добавить
+                                            </button>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- DataTales Example -->
-                <div class="card shadow mb-4">
+                <div id="cardTableUppg" class="card shadow mb-4">
                     <div class="card-body">
                         <div class="table-responsive">
                             <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
@@ -258,11 +324,168 @@
                     </div>
                 </div>
 
+
+                <!-- Action DataTales -->
+                <div id="cardTableUppgAction" style="display: none" class="card shadow mb-4">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div id="dataTable_wrapperr" class="dataTables_wrapper dt-bootstrap4">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="dataTables_length" id="dataTable_lengthh"><label>Show <select
+                                                name="dataTable_length" aria-controls="dataTable"
+                                                class="custom-select custom-select-sm form-control form-control-sm">
+                                            <option value="10">10</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select> entries</label></div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div id="dataTable_filterr" class="dataTables_filter"><label>Search:<input
+                                                type="search" class="form-control form-control-sm" placeholder=""
+                                                aria-controls="dataTable"></label></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table class="table table-bordered dataTable" id="dataTableAction" width="100%"
+                                               cellspacing="0" role="grid" aria-describedby="dataTable_info"
+                                               style="width: 100%;">
+                                            <thead>
+                                            <tr role="row">
+                                                <th class="sorting sorting_asc users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-sort="ascending"
+                                                    >ID действие
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    >Расходъ
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    >Проектная производительность, м³/год
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    >Фактическая производителность, м³/год
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    >По конденсату, тыс.т
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    >По воде, тыс.т
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    > Входная температура ( °C )
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    > Выходная температура ( °C )
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    > Входное давление ( кгс/см² )
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    > Выходное давление ( кгс/см²)
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    style="width: 53.001px;">Дата создания
+                                                </th>
+                                                <th class="sorting uppgs-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    style="width: 53.001px;" hidden>Уппг
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    style="width: 67.001px;">Редактировать action
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tfoot>
+                                            <tr>
+                                                <th class="users-table-title" rowspan="1" colspan="1">ID действие</th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Имя action</th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Расходъ действие</th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Дата создания</th>
+                                            </tr>
+                                            </tfoot>
+                                            <tbody id="uppgTableAction">
+                                            <tr class="odd">
+                                                <td class="sorting_1">Loading. . .</td>
+                                                <td>Loading. . .</td>
+                                                <td>Loading. . .</td>
+                                                <td>Loading. . .</td>
+
+                                            </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5">
+                                        <div class="dataTables_info" id="dataTable_infoAction" role="status"
+                                             aria-live="polite">Showing 1 to 10 of 57 entries
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7">
+                                        <div class="dataTables_paginate paging_simple_numbers"
+                                             id="dataTable_paginateAction">
+                                            <ul class="pagination">
+                                                <li class="paginate_button page-item previous disabled"
+                                                    id="dataTable_previousAction"><a href="#" aria-controls="dataTable"
+                                                                                     data-dt-idx="0" tabindex="0"
+                                                                                     class="page-link">Previous</a></li>
+                                                <li class="paginate_button page-item active"><a href="#"
+                                                                                                aria-controls="dataTable"
+                                                                                                data-dt-idx="1"
+                                                                                                tabindex="0"
+                                                                                                class="page-link">1</a>
+                                                </li>
+                                                <li class="paginate_button page-item "><a href="#"
+                                                                                          aria-controls="dataTable"
+                                                                                          data-dt-idx="2" tabindex="0"
+                                                                                          class="page-link">2</a></li>
+                                                <li class="paginate_button page-item "><a href="#"
+                                                                                          aria-controls="dataTable"
+                                                                                          data-dt-idx="3" tabindex="0"
+                                                                                          class="page-link">3</a></li>
+                                                <li class="paginate_button page-item "><a href="#"
+                                                                                          aria-controls="dataTable"
+                                                                                          data-dt-idx="4" tabindex="0"
+                                                                                          class="page-link">4</a></li>
+                                                <li class="paginate_button page-item "><a href="#"
+                                                                                          aria-controls="dataTable"
+                                                                                          data-dt-idx="5" tabindex="0"
+                                                                                          class="page-link">5</a></li>
+                                                <li class="paginate_button page-item "><a href="#"
+                                                                                          aria-controls="dataTable"
+                                                                                          data-dt-idx="6" tabindex="0"
+                                                                                          class="page-link">6</a></li>
+                                                <li class="paginate_button page-item next" id="dataTable_nextAction"><a
+                                                        href="#" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
+                                                        class="page-link">Next</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
-            <!-- /.container-fluid -->
 
         </div>
-        <!-- End of Main Content -->
 
         <!-- Footer -->
         <div th:insert="components/footer::footer"></div>
@@ -301,6 +524,7 @@
 
 <!-- Bootstrap core JavaScript-->
 <script src="/static/js/uppg.js" th:src="@{/js/uppg.js}"></script>
+<script src="/static/js/uppgAction.js.js" th:src="@{/js/uppgAction.js}"></script>
 <script>
     getAllMiningSystems()
     getAllUppgs();

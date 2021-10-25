@@ -90,6 +90,8 @@ public class UppgService {
         }
     }
 
+
+
     public ResponseEntity<?> findAll() {
         try {
             List<Uppg> all = uppgRepository.findAll();

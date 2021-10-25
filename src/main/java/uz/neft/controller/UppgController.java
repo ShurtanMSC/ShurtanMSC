@@ -19,10 +19,12 @@ public class UppgController {
     private UppgActionService uppgActionService;
     @Autowired
     private UppgService uppgService;
+
     /**
      * Manually
      **/
-    @PostMapping("manually/add/action")
+
+    @PostMapping("add/action")
     public HttpEntity<?> addAction(@CurrentUser User user,
                                    @RequestBody UppgActionDto dto) {
         return uppgActionService.addManually(user, dto);
@@ -39,9 +41,19 @@ public class UppgController {
         return uppgService.edit(dto);
     }
 
+    @PutMapping("edit/action")
+    public HttpEntity<?> editUppgAction(@RequestBody UppgActionDto dto) {
+        return uppgActionService.editAction(dto);
+    }
+
     @DeleteMapping("delete/{id}")
     public HttpEntity<?> deleteUppg(@PathVariable Integer id) {
         return uppgService.delete(id);
+    }
+
+    @DeleteMapping("delete/action/{id}")
+    public HttpEntity<?> deleteUppgAction(@PathVariable Long id) {
+        return uppgActionService.deleteUppgAction(id);
     }
 
     @GetMapping("all")
@@ -52,6 +64,11 @@ public class UppgController {
     @GetMapping("all/mining_system/{id}")
     public HttpEntity<?> uppgsByMiningSystem(@PathVariable Integer id) {
         return uppgActionService.getByMiningSystem(id);
+    }
+
+    @GetMapping("actions/{uppgId}")
+    public HttpEntity<?> uppgActionsByUppgId(@PathVariable Integer uppgId) {
+        return uppgActionService.getUppgActionsByUppgId(uppgId);
     }
 
     @GetMapping("{id}")

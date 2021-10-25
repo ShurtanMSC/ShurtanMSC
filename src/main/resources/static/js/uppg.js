@@ -15,7 +15,8 @@ function getAllMiningSystems() {
             getAllUppgs()
         })
         .catch(function (error) {
-            console.log(error)
+            console.log("error.response")
+            console.log(error.response)
         })
 }
 
@@ -120,6 +121,7 @@ function createViewTable(uppgs) {
             "    <td>" + uppg.name + "</td>\n" +
             "     <td hidden value='" + uppg.miningsiystemId + "'>" + uppg.miningsiystemId + "</td>\n" +
             "     <td><button data-target=\"#exampleModalCenter\" data-toggle=\"modal\" class='btn btn-success mt-1' id='btn-edit-uppg' value='" + uppg.id + "' onclick='editUppg(this.value)'>Редактировать</button>\n" +
+            "<button  class='btn btn-info ml-2' id='btn-action-mining' value='" + uppg.id + "' onclick='clickActionBtn(this.value)'>Действие</button>" +
             "      <button class='btn btn-danger ml-2 mt-1' id='btn-edit-uppg' value='" + uppg.id + "' onclick='deleteUppg(this.value)'>Удалить</button></td>\n" +
             "   </tr>"
     })
