@@ -9,4 +9,5 @@ import java.util.List;
 public interface MiningSystemRepository extends JpaRepository<MiningSystem,Integer> {
     boolean existsById(Integer id);
     List<MiningSystem> findAllByOrderById();
+    List<MiningSystem> findAllByOrderByIdDesc();
 }

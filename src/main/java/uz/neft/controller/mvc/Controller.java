@@ -37,6 +37,11 @@ public class Controller {
         return "mining/mining_system";
     }
 
+//    @GetMapping("mining_system/action")
+//    public String miningSystemAction() {
+//        return "mining/action/mining_system_action";
+//    }
+
     //    UPPG CRUD
     @GetMapping("uppg")
     public String uppg() {

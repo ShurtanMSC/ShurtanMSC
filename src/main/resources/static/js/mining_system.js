@@ -26,6 +26,7 @@ function resetAndCloseForm() {
     document.getElementById('addOrEditMiningSystemForm').reset();
 }
 
+
 function addOrEditMiningSystem(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -83,16 +84,17 @@ function deleteMiningSystem(id) {
 function createViewTable(miningSystems) {
     let out = "";
     miningSystems.map(mining => {
-        // console.log(mining)
+        console.log(mining)
         out += "<tr class=\"user_table_row\">\n" +
-            "                                    <td class=\"sorting_1\">" + mining.objectDto.id + "</td>\n" +
-            "                                    <td>" + mining.objectDto.name + "</td>\n" +
-            "                                    <td>" + (mining.objectActionDto ? mining.objectActionDto.expend : "") + "</td>\n" +
-            "                                    <td><button data-target=\"#exampleModalCenter\" data-toggle=\"modal\" class='btn btn-success' id='btn-edit-user' value='" + mining.objectDto.id + "' onclick='editMiningSystem(this.value)'>Редактировать</button>" +
-            "<a class='btn btn-info ml-2' id='btn-edit-user'>Действие</a>" +
-            "<button class='btn btn-danger ml-2' id='btn-edit-user' value='" + mining.objectDto.id + "' onclick='deleteMiningSystem(this.value)'>Удалить</button>" +
+            " <td class=\"sorting_1\">" + mining.objectDto.id + "</td>\n" +
+            "<td>" + mining.objectDto.name + "</td>\n" +
+            "<td>" + (mining.objectActionDto ? mining.objectActionDto.expend : "") + "</td>\n" +
+            "<td><button data-target=\"#exampleModalCenter\" data-toggle=\"modal\" class='btn btn-success' id='btn-edit-user' value='" + mining.objectDto.id + "' onclick='editMiningSystem(this.value)'>Редактировать</button>" +
+            "<button  class='btn btn-info ml-2' id='btn-action-mining' value='" + mining.objectDto.id + "' onclick='clickActionBtn(this.value)'>Действие</button>" +
+            "<button class='btn btn-danger ml-2' id='btn-delete-mining' value='" + mining.objectDto.id + "' onclick='deleteMiningSystem(this.value)'>Удалить</button>" +
             "</td>\n" +
             "                                </tr>"
     })
     return out;
 }
+

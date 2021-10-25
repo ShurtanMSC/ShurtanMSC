@@ -4,6 +4,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.MiningSystemDto;
+import uz.neft.dto.action.MiningSystemActionDto;
 import uz.neft.dto.action.ObjectWithActionsDto;
 import uz.neft.entity.MiningSystem;
 import uz.neft.entity.action.MiningSystemAction;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class MiningSystemActionService {
@@ -46,28 +48,41 @@ public class MiningSystemActionService {
     }
 
 
-
-
     public ResponseEntity<?> findByIdWithAction(Integer id) {
         try {
             if (id == null) return converter.apiError400("Mining system id is null!");
             Optional<MiningSystem> miningSystem = miningSystemRepository.findById(id);
-            if (!miningSystem.isPresent()) return converter.apiError404("No mining system was found with id "+id+"!");
-            Optional<MiningSystemAction> action = miningSystemActionRepository.findFirstByMiningSystem(miningSystem.get());
-            return converter.apiSuccess200(new ObjectWithActionsDto(miningSystem.get(),action));
-        }catch (Exception e) {
+            if (!miningSystem.isPresent())
+                return converter.apiError404("No mining system was found with id " + id + "!");
+            Optional<MiningSystemAction> action = miningSystemActionRepository.findFirstByMiningSystemOrderByCreatedAtDesc(miningSystem.get());
+            return converter.apiSuccess200(new ObjectWithActionsDto(miningSystem.get(), action));
+        } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError409();
         }
     }
 
-    public ResponseEntity<?> allWithActions(){
+    public ResponseEntity<?> allWithActions() {
         try {
             List<MiningSystem> miningSystemList = miningSystemRepository.findAll();
             List<ObjectWithActionsDto> list = new ArrayList<>();
-            miningSystemList.forEach(m->list.add(new ObjectWithActionsDto(m,miningSystemActionRepository.findFirstByMiningSystem(m))));
+            miningSystemList.forEach(m -> list.add(new ObjectWithActionsDto(m, miningSystemActionRepository.findFirstByMiningSystemOrderByCreatedAtDesc(m))));
             return converter.apiSuccess200(list);
-        }catch (Exception e) {
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409();
+        }
+    }
+
+    public ResponseEntity<?> allWithActionsByMiningSystem(Integer id) {
+        try {
+            Optional<MiningSystem> miningSystem = miningSystemRepository.findById(id);
+            List<MiningSystemAction> miningSystemActions =miningSystemActionRepository.findAllByMiningSystemOrderByCreatedAtDesc(miningSystem.get());
+
+            Stream<MiningSystemActionDto> miningSystemActionDtoStream = miningSystemActions.stream().map(converter::miningsystemActionToMiningSystemActionDto);
+
+            return converter.apiSuccess200(miningSystemActionDtoStream);
+        } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError409();
         }
@@ -91,11 +106,6 @@ public class MiningSystemActionService {
             return converter.apiError409("Error in fetching all wells");
         }
     }
-
-
-
-
-
 
 
     /** Auto **/

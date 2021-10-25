@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.neft.dto.MiningSystemDto;
+import uz.neft.dto.action.MiningSystemActionDto;
 import uz.neft.dto.action.WellActionDto;
 import uz.neft.entity.User;
 import uz.neft.secret.CurrentUser;
@@ -29,14 +30,29 @@ public class MiningSystemController {
         return miningSystemService.save(dto);
     }
 
+    @PostMapping("add/action")
+    public HttpEntity<?> addAction(@RequestBody MiningSystemActionDto dto) {
+        return miningSystemService.saveAction(dto);
+    }
+
     @PutMapping("edit")
     public HttpEntity<?> edit(@RequestBody MiningSystemDto dto) {
         return miningSystemService.edit(dto);
     }
 
+    @PutMapping("edit/action")
+    public HttpEntity<?> editAction(@RequestBody MiningSystemActionDto dto) {
+        return miningSystemService.editAction(dto);
+    }
+
     @DeleteMapping("delete/{id}")
     public HttpEntity<?> delete(@PathVariable Integer id) {
         return miningSystemService.delete(id);
+    }
+
+    @DeleteMapping("delete/action/{id}")
+    public HttpEntity<?> deleteAction(@PathVariable Long id) {
+        return miningSystemService.deleteAction(id);
     }
 
     @GetMapping("all")
@@ -48,8 +64,6 @@ public class MiningSystemController {
     public HttpEntity<?> one(@PathVariable Integer id) {
         return miningSystemService.findById(id);
     }
-
-
 
     @GetMapping("one/action/{id}")
     public HttpEntity<?> miningSystemWithAction(@PathVariable Integer id){

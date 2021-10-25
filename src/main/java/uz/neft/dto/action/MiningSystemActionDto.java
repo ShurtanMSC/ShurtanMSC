@@ -8,6 +8,7 @@ import uz.neft.entity.enums.WellStatus;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.util.Date;
 
 @Getter
 @AllArgsConstructor
@@ -15,8 +16,12 @@ import javax.persistence.Enumerated;
 @Builder
 public class MiningSystemActionDto {
 
+    private Long actionId;
+
     // Rasxod
-    private double cost;
+    private double expend;
+
+    private Date createdAt;
 
     private Integer miningSystemId;
 

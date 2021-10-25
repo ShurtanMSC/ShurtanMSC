@@ -7,11 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import uz.neft.dto.*;
 import uz.neft.dto.action.CollectionPointActionDto;
+import uz.neft.dto.action.MiningSystemActionDto;
 import uz.neft.dto.action.UppgActionDto;
 import uz.neft.dto.action.WellActionDto;
 import uz.neft.dto.constantValue.ConstantValueDto;
 import uz.neft.entity.*;
 import uz.neft.entity.action.CollectionPointAction;
+import uz.neft.entity.action.MiningSystemAction;
 import uz.neft.entity.action.UppgAction;
 import uz.neft.entity.action.WellAction;
 import uz.neft.entity.variables.Constant;
@@ -492,6 +494,23 @@ public class Converter {
                     .exitPressure(uppgAction.getExitPressure())
                     .uppgId(uppgAction.getUppg().getId())
                     .date(uppgAction.getCreatedAt())
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    public MiningSystemActionDto miningsystemActionToMiningSystemActionDto(MiningSystemAction miningSystemAction) {
+        try {
+            if (miningSystemAction==null) return null;
+            return MiningSystemActionDto
+                    .builder()
+                    .actionId(miningSystemAction.getId())
+                    .expend(miningSystemAction.getExpend())
+                    .createdAt(miningSystemAction.getCreatedAt())
+                    .miningSystemId(miningSystemAction.getMiningSystem().getId())
                     .build();
         } catch (Exception e) {
             e.printStackTrace();

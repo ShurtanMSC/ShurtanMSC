@@ -16,12 +16,16 @@ import java.util.Optional;
 public interface MiningSystemActionRepository extends JpaRepository<MiningSystemAction,Long> {
 
     Optional<MiningSystemAction> findFirstByMiningSystem(MiningSystem miningSystem);
+    Optional<MiningSystemAction> findFirstByMiningSystemOrderByCreatedAtDesc(MiningSystem miningSystem);
     List<MiningSystemAction> findAllByMiningSystem(MiningSystem miningSystem);
+    List<MiningSystemAction> findAllByMiningSystemOrderByCreatedAtDesc(MiningSystem miningSystem);
+    List<MiningSystemAction> findAllByMiningSystemOrderByCreatedAtAsc(MiningSystem miningSystem);
 
 
     List<MiningSystemAction> findAllByCreatedAtBetween(Timestamp from, Timestamp until);
 
-    List<MiningSystemAction> findAllByMiningSystemAndCreatedAtBetween(MiningSystem miningSystem, Timestamp from, Timestamp until);
+    List<MiningSystemAction> findAllByMiningSystemAndCreatedAtBetweenOrderByCreatedAtAsc(MiningSystem miningSystem, Timestamp from, Timestamp until);
+    List<MiningSystemAction> findAllByMiningSystemAndCreatedAtBetweenOrderByCreatedAtDesc(MiningSystem miningSystem, Timestamp from, Timestamp until);
 
 
 }

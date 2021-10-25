@@ -4,9 +4,9 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.neft.dto.*;
-import uz.neft.payload.ApiResponse;
 import uz.neft.repository.RoleRepository;
 import uz.neft.service.*;
+import uz.neft.service.action.MiningSystemActionService;
 
 @RestController
 @RequestMapping("api/admin")
@@ -15,14 +15,16 @@ public class SuperAdminController {
 
     private final UserService userService;
     private final MiningSystemService miningSystemService;
+    private final MiningSystemActionService miningSystemActionService;
     private final UppgService uppgService;
     private final CollectionPointService collectionPointService;
     private final WellService wellService;
     private final RoleRepository roleRepository;
 
-    public SuperAdminController(UserService userService, MiningSystemService miningSystemService, UppgService uppgService, CollectionPointService collectionPointService, WellService wellService, RoleRepository roleRepository) {
+    public SuperAdminController(UserService userService, MiningSystemService miningSystemService, MiningSystemActionService miningSystemActionService, UppgService uppgService, CollectionPointService collectionPointService, WellService wellService, RoleRepository roleRepository) {
         this.userService = userService;
         this.miningSystemService = miningSystemService;
+        this.miningSystemActionService = miningSystemActionService;
         this.uppgService = uppgService;
         this.collectionPointService = collectionPointService;
         this.wellService = wellService;
@@ -85,6 +87,11 @@ public class SuperAdminController {
     @GetMapping("/mining/all")
     public HttpEntity<?> allMinings() {
         return miningSystemService.findAll();
+    }
+
+    @GetMapping("/mining/allActions/{miningId}")
+    public HttpEntity<?> allWithActionsByMining(@PathVariable Integer miningId) {
+        return miningSystemActionService.allWithActionsByMiningSystem(miningId);
     }
 
     @GetMapping("/mining/{id}")
