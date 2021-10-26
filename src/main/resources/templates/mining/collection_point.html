@@ -49,7 +49,6 @@
     <div th:insert="components/sidebar::sidebar" style="background: #0088bc;"></div>
     <!-- End of Sidebar -->
 
-
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
 
@@ -65,19 +64,33 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">Сборный пункты</h1>
-                <p class="mb-2">Сборный пункты в системе</p>
+                <div class="col-12 d-flex p-0 mt-3">
+                    <div class="col-5 mb-4  p-0">
+                        <button onclick="goOutFromAction()" id="goOutActionsIcon" style="display: none;"
+                                type="button" class="btn btn-outline-info">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="28" style="color: #35B8CB;"
+                                 class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                      d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                            </svg>
+                            Назад
+                        </button>
+                    </div>
+                    <div class="col-6 p-0 ml-3">
+                        <h1 class="h3 mb-2 text-gray-800" id="collectionPointActionH1">Сборный пункты</h1>
+                    </div>
+                </div>
 
                 <!--// Add CollectionPoint button and modal-->
                 <div>
                     <section class="ftco-section pb-2">
                         <div class="row">
                             <div class="col-md-12 d-flex ">
-                                <div class="col-8 d-flex">
+                                <div class="col-7 p-0 d-flex">
                                     <div class="col-4 p-0 wrap mr-2 ">
                                         <button type="button" class="btn btn-primary py-2 px-3" data-toggle="modal"
                                                 data-target="#exampleModalCenter"
-                                                id="addCollectionPointBtn" >
+                                                id="addCollectionPointBtn">
                                             Добавить Сборный пункт
                                         </button>
                                     </div>
@@ -85,25 +98,35 @@
                                         <select name="miningSelect" class="custom-select form-control rounded-left mt-1"
                                                 id="miningSelect"
                                                 onchange="selectHandleMining()"
-                                                aria-label="Example select with button addon" >
+                                                aria-label="Example select with button addon">
                                             <option value="">Месторождений</option>
                                             <option value="">Loading. . .</option>
                                         </select>
                                     </div>
                                     <div class="col-3 p-0 form-group ">
-                                        <select name="uppgSelect" class="custom-select form-control rounded-left mt-1 ml-xl-5"
+                                        <select name="uppgSelect"
+                                                class="custom-select form-control rounded-left mt-1 ml-xl-5"
                                                 id="uppgSelect"
                                                 onchange="selectHandleUppg()"
-                                                aria-label="Example select with button addon" >
+                                                aria-label="Example select with button addon">
                                             <option value="">УППГ</option>
                                             <option value="">Loading. . .</option>
                                         </select>
                                     </div>
                                 </div>
+                                <div class="col-5 d-flex justify-content-end p-0">
+                                    <button type="button" class="btn btn-outline-info py-2 px-4"
+                                            data-toggle="modal" style="display: none;"
+                                            id="addCollectionPointActionBtn"
+                                            data-target="#exampleModalCenterAction">
+                                        Добавить действие УППГ
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </section>
 
+                    <!--colection point  form-->
                     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
                          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -129,12 +152,28 @@
                                             <input name="name" type="text" class="form-control rounded-left"
                                                    placeholder="Имя сборный пункт" required>
                                         </div>
+                                        <div class="form-group">
+                                            <input name="temperatureUnit" type="text" class="form-control rounded-left"
+                                                   placeholder="Единица измерения температуры" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input name="pressureUnit" type="text" class="form-control rounded-left"
+                                                   placeholder="Единица давления" required>
+                                        </div>
                                         <div class="form-group d-flex">
-                                            <input name="uppgId" value="" type="number"
+                                            <input name="uppg" value="" type="number"
                                                    class="form-control rounded-left"
                                                    hidden>
                                         </div>
-
+                                        <div class="form-group d-flex">
+                                            <select name="opcServerId" class="custom-select form-control rounded-left"
+                                                    id="inputGroupSelect03"
+                                                    onchange="handleOpcId()"
+                                                    aria-label="Example select with button addon" required>
+                                                <option value="">ОПС серверы</option>
+                                                <option value="">Loading...</option>
+                                            </select>
+                                        </div>
                                         <div class="form-group">
                                             <button type="submit"
                                                     id="addOrEditCollectionPointBtn"
@@ -148,11 +187,69 @@
                             </div>
                         </div>
                     </div>
+
+                    <!--colection point ACTION form-->
+                    <div class="modal fade" id="exampleModalCenterAction" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button"
+                                            class="close d-flex align-items-center justify-content-center h-25"
+                                            id="closeFormBtnAction"
+                                            data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true" class="ion-ios-close">x</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body  pb-md-5 pl-md-5 pr-md-5 pt-md-2">
+                                    <h3 class="text-center mb-4" id="addOrEditCollectionPointActionH3">Добавить действие
+                                        уппг</h3>
+                                    <form action="/" class="login-form" id="addOrEditCollectionPointActionForm"
+                                          onsubmit="addOrEditCollectionPointAction(event);">
+                                        <div class="form-group">
+                                            <input name="actionId" type="number" class="form-control rounded-left"
+                                                   hidden>
+                                        </div>
+                                        <div class="form-group d-flex">
+                                            <input name="expend" type="number" step=any
+                                                   class="form-control rounded-left"
+                                                   placeholder="Расходъ">
+                                        </div>
+
+                                        <div class="form-group d-flex">
+                                            <input name="pressure" type="number" step=any
+                                                   class="form-control rounded-left"
+                                                   placeholder="Давление">
+                                        </div>
+                                        <div class="form-group d-flex">
+                                            <input name="temperature" type="number" step=any
+                                                   class="form-control rounded-left"
+                                                   placeholder="Температура">
+                                        </div>
+
+                                        <div class="form-group d-flex">
+                                            <input name="collectionPointId" id="collectionPonitId" value=""
+                                                   type="number"
+                                                   class="form-control rounded-left"
+                                                   hidden>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit"
+                                                    id="addOrEditCollectionPointActionBtn"
+                                                    class="form-control btn btn-info rounded submit px-3">Добавить
+                                            </button>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
-                <!-- DataTales Example -->
-                <div class="card shadow mb-4">
-
+                <!-- CollectionPoint DataTales Example -->
+                <div id="cardTableCollectionPoint" class="card shadow mb-4">
                     <div class="card-body">
                         <div class="table-responsive">
                             <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
@@ -180,38 +277,59 @@
                                                style="width: 100%;">
                                             <thead>
                                             <tr role="row">
-                                                <th class="sorting sorting_asc collection_points-table-title" tabindex="0"
+                                                <th class="sorting sorting_asc collection_points-table-title"
+                                                    tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-sort="ascending"
-                                                    aria-label="Name: activate to sort column descending"
                                                     style="width: 64.001px;">ID
                                                 </th>
                                                 <th class="sorting collection_points-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    aria-label="Position: activate to sort column ascending"
                                                     style="width: 75.001px;">Имя Сборный пункт
                                                 </th>
                                                 <th class="sorting collection_points-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    aria-label="Office: activate to sort column ascending"
-                                                    style="width: 53.001px;" hidden>UppgId
+                                                    >Единица измерения температуры
+                                                </th>
+                                                <th class="sorting collection_points-table-title" tabindex="0"
+                                                    >Единица давления
                                                 </th>
                                                 <th class="sorting collection_points-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    aria-label="Salary: activate to sort column ascending"
-                                                    style="width: 67.001px;">Редактировать
+                                                     hidden>UppgId
+                                                </th>
+                                                <th class="sorting collection_points-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                     >Имя ОПС сервер
+                                                </th>
+                                                <th class="sorting collection_points-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                   >Редактировать
                                                 </th>
 
                                             </tr>
                                             </thead>
                                             <tfoot>
                                             <tr>
-                                                <th class="collection_points-table-title" rowspan="1" colspan="1">ID</th>
-                                                <th class="collection_points-table-title" rowspan="1" colspan="1">Имя Сборный пункт</th>
-                                                <th class="collection_points-table-title" rowspan="1" colspan="1" hidden>UppgId
-                                                    System
+                                                <th class="collection_points-table-title" rowspan="1" colspan="1">ID
                                                 </th>
-                                                <th class="collection_points-table-title" rowspan="1" colspan="1">Редактировать</th>
+                                                <th class="collection_points-table-title" rowspan="1" colspan="1">Имя
+                                                    Сборный пункт
+                                                </th>
+                                                <th class="collection_points-table-title" rowspan="1" colspan="1">
+                                                    Единица измерения температуры
+                                                </th>
+                                                <th class="collection_points-table-title" rowspan="1" colspan="1">
+                                                    Единица давления </th>
+                                                <th class="collection_points-table-title" rowspan="1" colspan="1"
+                                                    hidden>UppgId
+                                                </th>
+                                                <th class="collection_points-table-title" rowspan="1" colspan="1"
+                                                    >Имя ОПС сервер
+                                                </th>
+                                                <th class="collection_points-table-title" rowspan="1" colspan="1">
+                                                    Редактировать
+                                                </th>
                                             </tr>
                                             </tfoot>
                                             <tbody id="collectionPointTable">
@@ -277,6 +395,135 @@
                     </div>
                 </div>
 
+                <!-- CollectionPoint Action DataTales -->
+                <div id="cardTableCollectionPointAction" style="display: none" class="card shadow mb-4">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div id="dataTable_wrapperr" class="dataTables_wrapper dt-bootstrap4">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="dataTables_length" id="dataTable_lengthh"><label>Show <select
+                                                name="dataTable_length" aria-controls="dataTable"
+                                                class="custom-select custom-select-sm form-control form-control-sm">
+                                            <option value="10">10</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select> entries</label></div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div id="dataTable_filterr" class="dataTables_filter"><label>Search:<input
+                                                type="search" class="form-control form-control-sm" placeholder=""
+                                                aria-controls="dataTable"></label></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table class="table table-bordered dataTable" id="dataTableAction" width="100%"
+                                               cellspacing="0" role="grid" aria-describedby="dataTable_info"
+                                               style="width: 100%;">
+                                            <thead>
+                                            <tr role="row">
+                                                <th class="sorting sorting_asc users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-sort="ascending"
+                                                >ID
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                >Расходъ
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                >Давление
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                >Температура
+                                                </th>
+                                                <th class="sorting uppgs-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    hidden>collectionPointId
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                >Редактировать
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tfoot>
+                                            <tr>
+                                                <th class="users-table-title" rowspan="1" colspan="1">ID</th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Расходъ</th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Давление</th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Температура</th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Редактировать</th>
+                                            </tr>
+                                            </tfoot>
+                                            <tbody id="collectionPointActionsTable">
+                                            <tr class="odd">
+                                                <td class="sorting_1">Loading. . .</td>
+                                                <td>Loading. . .</td>
+                                                <td>Loading. . .</td>
+                                                <td>Loading. . .</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5">
+                                        <div class="dataTables_info" id="dataTable_infoAction" role="status"
+                                             aria-live="polite">Showing 1 to 10 of 57 entries
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7">
+                                        <div class="dataTables_paginate paging_simple_numbers"
+                                             id="dataTable_paginateAction">
+                                            <ul class="pagination">
+                                                <li class="paginate_button page-item previous disabled"
+                                                    id="dataTable_previousAction"><a href="#" aria-controls="dataTable"
+                                                                                     data-dt-idx="0" tabindex="0"
+                                                                                     class="page-link">Previous</a></li>
+                                                <li class="paginate_button page-item active"><a href="#"
+                                                                                                aria-controls="dataTable"
+                                                                                                data-dt-idx="1"
+                                                                                                tabindex="0"
+                                                                                                class="page-link">1</a>
+                                                </li>
+                                                <li class="paginate_button page-item "><a href="#"
+                                                                                          aria-controls="dataTable"
+                                                                                          data-dt-idx="2" tabindex="0"
+                                                                                          class="page-link">2</a></li>
+                                                <li class="paginate_button page-item "><a href="#"
+                                                                                          aria-controls="dataTable"
+                                                                                          data-dt-idx="3" tabindex="0"
+                                                                                          class="page-link">3</a></li>
+                                                <li class="paginate_button page-item "><a href="#"
+                                                                                          aria-controls="dataTable"
+                                                                                          data-dt-idx="4" tabindex="0"
+                                                                                          class="page-link">4</a></li>
+                                                <li class="paginate_button page-item "><a href="#"
+                                                                                          aria-controls="dataTable"
+                                                                                          data-dt-idx="5" tabindex="0"
+                                                                                          class="page-link">5</a></li>
+                                                <li class="paginate_button page-item "><a href="#"
+                                                                                          aria-controls="dataTable"
+                                                                                          data-dt-idx="6" tabindex="0"
+                                                                                          class="page-link">6</a></li>
+                                                <li class="paginate_button page-item next" id="dataTable_nextAction"><a
+                                                        href="#" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
+                                                        class="page-link">Next</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
             <!-- /.container-fluid -->
 
@@ -320,10 +567,13 @@
 
 <!-- Bootstrap core JavaScript-->
 <script src="/static/js/collection_point.js" th:src="@{/js/collection_point.js}"></script>
+<script src="/static/js/collectionPointAction.js.js" th:src="@{/js/collectionPointAction.js}"></script>
 <script>
     getAllMiningSystems();
     getAllUppgs();
     getAllCollectionPoints();
+    getAllOpcServers();
+
 </script>
 <script src="/static/vendor/jquery/jquery.min.js" th:src="@{/vendor/jquery/jquery.min.js}"></script>
 <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"

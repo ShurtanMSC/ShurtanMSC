@@ -37,6 +37,11 @@ public class CollectionPointController {
         return collectionPointService.delete(id);
     }
 
+    @DeleteMapping("delete/action/{id}")
+    public HttpEntity<?> deleteCollectionPointAction(@PathVariable Long id) {
+        return collectionPointActionService.deleteAction(id);
+    }
+
     @GetMapping("all")
     public HttpEntity<?> all() {
         return collectionPointService.findAll();
@@ -53,7 +58,6 @@ public class CollectionPointController {
     }
 
 
-
     /**
      * Manually
      **/
@@ -63,23 +67,24 @@ public class CollectionPointController {
         return collectionPointActionService.addManually(user, dto);
     }
 
-
     @PostMapping("manually/add/special")
     public HttpEntity<?> addSpecial(@CurrentUser User user,@RequestBody CollectionPointAndWells collectionPointAndWells){
         return collectionPointActionService.addSpecial(user,collectionPointAndWells);
     }
-
 
     @GetMapping("all/actions")
     public HttpEntity<?> allWithAction() {
         return collectionPointActionService.getCollectionPointsWithActions();
     }
 
-
-
     @GetMapping("all/mining_system/{id}")
     public HttpEntity<?> getAllByMiningSystem(@PathVariable Integer id) {
         return collectionPointActionService.getAllByMiningSystem(id);
+    }
+
+    @GetMapping("actions/{collectionPointId}")
+    public HttpEntity<?> getAllCtionsByCollectionPointId(@PathVariable Integer collectionPointId) {
+        return collectionPointActionService.getAllActionsByCollectionPoint(collectionPointId);
     }
 
     @GetMapping("all/action/mining_system/{id}")

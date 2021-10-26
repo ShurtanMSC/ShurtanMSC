@@ -65,4 +65,12 @@ public class Controller {
         return "mining/system_variables";
     }
 
+    //    OPC SERVER CRUD
+    @GetMapping("opc_server")
+    public String opcServers() {
+
+        return "mining/opc_server";
+    }
+
+
 }

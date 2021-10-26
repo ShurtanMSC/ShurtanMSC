@@ -2,6 +2,12 @@ let collectionPointsList = []
 let miningSystemId = 1;
 let uppgId = 1
 
+let opcId;
+
+function handleOpcId() {
+    opcId = document.getElementById('inputGroupSelect03').value
+}
+
 function getAllMiningSystems() {
     axios.get("/api/mining_system/all")
         .then(function (response) {
@@ -15,17 +21,17 @@ function getAllMiningSystems() {
 }
 
 function getAllUppgs() {
-        axios.get("/api/uppg/all/mining_system/" + miningSystemId)
-            .then(function (response) {
-                if (response.data.message === "OK") {
-                    document.getElementById("uppgSelect").innerHTML = createViewMiningOrUppgSelect(response.data.object)
-                    uppgId = document.getElementById('uppgSelect').value;
-                    getAllCollectionPoints()
-                }
-            })
-            .catch(function (error) {
-                console.log(error)
-            })
+    axios.get("/api/uppg/all/mining_system/" + miningSystemId)
+        .then(function (response) {
+            if (response.data.message === "OK") {
+                document.getElementById("uppgSelect").innerHTML = createViewMiningOrUppgSelect(response.data.object)
+                uppgId = document.getElementById('uppgSelect').value;
+                getAllCollectionPoints()
+            }
+        })
+        .catch(function (error) {
+            console.log(error)
+        })
 }
 
 function selectHandleMining() {
@@ -50,8 +56,9 @@ function getAllCollectionPoints() {
 
         alert("В этом месторождении нет УППГ и СП ")
     } else {
-        axios.get("/api/collection_point/all/uppg/" + uppgId)
+        axios.get("/api/admin/collection_point/all/" + uppgId)
             .then(function (response) {
+                // console.log(response.data)
                 if (response.data.message === "OK") {
                     collectionPointsList = response.data.object
                 }
@@ -61,6 +68,18 @@ function getAllCollectionPoints() {
                 console.log(error)
             })
     }
+}
+
+function getAllOpcServers() {
+    axios.get("/api/admin/opc_server/all")
+        .then(function (response) {
+            // console.log("response.data")
+            // console.log(response.data)
+            document.getElementById("inputGroupSelect03").innerHTML = addOptionOpcServers(response.data.object)
+        })
+        .catch(function (error) {
+            console.log(error)
+        })
 }
 
 document.getElementById('addCollectionPointBtn').addEventListener('click', addCollectionPointBtn);
@@ -82,7 +101,7 @@ function addOrEditCollectionPoint(event) {
     const formData = new FormData(event.target);
     const data = {}
     formData.forEach((value, key) => (data[key] = value));
-    console.log(data)
+    // console.log(data)
     let config = {
         method: '',
         url: '',
@@ -92,11 +111,11 @@ function addOrEditCollectionPoint(event) {
     if (data.id === "" || data.id == null) {
 
         config.method = 'post';
-        config.url = '/api/collection_point/add'
+        config.url = '/api/admin/collection_point/add/' + uppgId + '/' + opcId;
     } else {
 
         config.method = 'put';
-        config.url = '/api/collection_point/edit'
+        config.url = '/api/admin/collection_point/edit'
     }
 
     axios(config)
@@ -118,7 +137,9 @@ function editCollectionPoint(id) {
 
     formField['id'].value = editCollectionPoint.id;
     formField['name'].value = editCollectionPoint.name;
-    formField['uppgId'].value = editCollectionPoint.uppgId;
+    formField['temperatureUnit'].value = editCollectionPoint.temperatureUnit;
+    formField['pressureUnit'].value = editCollectionPoint.pressureUnit;
+    formField['opcServerId'].value = editCollectionPoint.opcServer.id;
 }
 
 function deleteCollectionPoint(id) {
@@ -136,12 +157,17 @@ function createViewTable(collectionPoints) {
     let out = "";
     collectionPoints.map(collectionPoint => {
         out += "<tr class=\"collectionPoint_table_row\">\n" +
-            "   <td class=\"sorting_1\">" + collectionPoint.id + "</td>\n" +
-            "    <td>" + collectionPoint.name + "</td>\n" +
-            "     <td hidden value='" + collectionPoint.uppgId + "'>" + collectionPoint.uppgId + "</td>\n" +
-            "     <td><button data-target=\"#exampleModalCenter\" data-toggle=\"modal\" class='btn btn-success mt-1' id='btn-edit-collectionPoint' value='" + collectionPoint.id + "' onclick='editCollectionPoint(this.value)'>Редактировать</button>\n" +
-            "      <button class='btn btn-danger ml-2 mt-1' id='btn-edit-collectionPoint' value='" + collectionPoint.id + "' onclick='deleteCollectionPoint(this.value)'>Удалить</button></td>\n" +
-            "   </tr>"
+            "<td class=\"sorting_1\">" + collectionPoint.id + "</td>\n" +
+            "<td>" + collectionPoint.name + "</td>\n" +
+            "<td>" + collectionPoint.temperatureUnit + "</td>\n" +
+            "<td>" + collectionPoint.pressureUnit + "</td>\n" +
+            // "<td hidden>" + collectionPoint.uppg.id + "</td>\n" +
+            "<td>" + collectionPoint.opcServer.name + "</td>\n" +
+            "<td hidden value='" + collectionPoint.uppgId + "'>" + collectionPoint.uppgId + "</td>\n" +
+            "<td><button data-target=\"#exampleModalCenter\" data-toggle=\"modal\" class='btn btn-success mt-1' id='btn-edit-collectionPoint' value='" + collectionPoint.id + "' onclick='editCollectionPoint(this.value)'>Редактировать</button>\n" +
+            "<button  class='btn btn-info ml-2 mt-1' id='btn-action-mining' value='" + collectionPoint.id + "' onclick='clickActionBtn(this.value)'>Действие</button>" +
+            "<button class='btn btn-danger ml-2 mt-1' id='btn-edit-collectionPoint' value='" + collectionPoint.id + "' onclick='deleteCollectionPoint(this.value)'>Удалить</button></td>\n" +
+            "</tr>"
     })
     return out;
 }
@@ -150,6 +176,14 @@ function createViewMiningOrUppgSelect(miningsOrUppgs) {
     let out = "";
     miningsOrUppgs.map(item => {
         out += "<option value='" + item.id + "'>" + item.name + "</option>"
+    })
+    return out;
+}
+
+function addOptionOpcServers(servers) {
+    let out = "<option value=''>ОПС серверы</option>";
+    servers.map(item => {
+        out += "<option value='"+item.id+"'>"+item.name+"</option>"
     })
     return out;
 }

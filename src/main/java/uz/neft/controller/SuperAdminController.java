@@ -1,12 +1,21 @@
 package uz.neft.controller;
 
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import uz.neft.dto.*;
+import uz.neft.entity.CollectionPoint;
+import uz.neft.entity.OpcServer;
 import uz.neft.repository.RoleRepository;
 import uz.neft.service.*;
 import uz.neft.service.action.MiningSystemActionService;
+
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/admin")
@@ -20,8 +29,9 @@ public class SuperAdminController {
     private final CollectionPointService collectionPointService;
     private final WellService wellService;
     private final RoleRepository roleRepository;
+    private final OpcServerService opcServerService;
 
-    public SuperAdminController(UserService userService, MiningSystemService miningSystemService, MiningSystemActionService miningSystemActionService, UppgService uppgService, CollectionPointService collectionPointService, WellService wellService, RoleRepository roleRepository) {
+    public SuperAdminController(UserService userService, MiningSystemService miningSystemService, MiningSystemActionService miningSystemActionService, UppgService uppgService, CollectionPointService collectionPointService, WellService wellService, RoleRepository roleRepository, OpcServerService opcServerService) {
         this.userService = userService;
         this.miningSystemService = miningSystemService;
         this.miningSystemActionService = miningSystemActionService;
@@ -29,6 +39,7 @@ public class SuperAdminController {
         this.collectionPointService = collectionPointService;
         this.wellService = wellService;
         this.roleRepository = roleRepository;
+        this.opcServerService = opcServerService;
     }
 
 
@@ -130,27 +141,35 @@ public class SuperAdminController {
 
     //   Collection Point CRUD
 
-    @PostMapping("/collection/add")
-    public HttpEntity<?> saveCollection(@RequestBody CollectionPointDto dto) {
-        return collectionPointService.save(dto);
+    @PostMapping("/collection/add/{uppgId}/{opcId}")
+    public HttpEntity<?> saveCollection(@PathVariable Integer uppgId,
+                                        @PathVariable Integer opcId,
+                                        @RequestBody CollectionPoint collectionPoint) {
+
+        return collectionPointService.saveCollectionPointAdmin(collectionPoint,uppgId,opcId);
     }
 
-    @PutMapping("/collection/edit")
+    @PutMapping("/collection_point/edit")
     public HttpEntity<?> editCollection(@RequestBody CollectionPointDto dto) {
         return collectionPointService.edit(dto);
     }
 
-    @DeleteMapping("/collection/delete/{id}")
+    @DeleteMapping("/collection_point/delete/{id}")
     public HttpEntity<?> deleteCollection(@PathVariable Integer id) {
         return collectionPointService.delete(id);
     }
 
-    @GetMapping("/collection/all")
+    @GetMapping("/collection_point/all")
     public HttpEntity<?> allCollections() {
         return collectionPointService.findAll();
     }
 
-    @GetMapping("/collection/{id}")
+    @GetMapping("/collection_point/all/{uppgId}")
+    public HttpEntity<?> allCollectionsByUppgId(@PathVariable Integer uppgId) {
+        return collectionPointService.findAllByUppgId(uppgId);
+    }
+
+    @GetMapping("/collection_point/{id}")
     public HttpEntity<?> collectionById(@PathVariable Integer id) {
         return collectionPointService.findById(id);
     }
@@ -181,6 +200,54 @@ public class SuperAdminController {
     @GetMapping("/well/{id}")
     public HttpEntity<?> wellById(@PathVariable Integer id) {
         return wellService.findById(id);
+    }
+
+
+
+    //   Opc Server CRUD
+
+    @PostMapping("/opc_server/add")
+    public HttpEntity<?> saveOpcServer(@Valid @RequestBody OpcServer opcServer, BindingResult result) {
+
+        if (result.hasErrors()) {
+            Map<String, String> errorMap = new HashMap<>();
+
+            for (FieldError error : result.getFieldErrors()) {
+                errorMap.put(error.getField(), error.getDefaultMessage());
+            }
+            return new ResponseEntity<>(errorMap, HttpStatus.BAD_REQUEST);
+        }
+
+        return opcServerService.save(opcServer);
+    }
+
+    @PutMapping("/opc_server/edit")
+    public HttpEntity<?> editOpcServer(@Valid @RequestBody OpcServer opcServer, BindingResult result) {
+        if (result.hasErrors()) {
+            Map<String, String> errorMap = new HashMap<>();
+
+            for (FieldError error : result.getFieldErrors()) {
+                errorMap.put(error.getField(), error.getDefaultMessage());
+            }
+            return new ResponseEntity<>(errorMap, HttpStatus.BAD_REQUEST);
+        }
+
+        return opcServerService.edit(opcServer);
+    }
+
+    @DeleteMapping("/opc_server/delete/{id}")
+    public HttpEntity<?> deleteOpcServer(@PathVariable Integer id) {
+        return opcServerService.delete(id);
+    }
+
+    @GetMapping("/opc_server/all")
+    public HttpEntity<?> allOpcServers() {
+        return opcServerService.findAll();
+    }
+
+    @GetMapping("/opc_server/{id}")
+    public HttpEntity<?> opcServerById(@PathVariable Integer id) {
+        return opcServerService.findById(id);
     }
 
 }

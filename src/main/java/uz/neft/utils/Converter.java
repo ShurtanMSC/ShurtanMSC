@@ -446,8 +446,9 @@ public class Converter {
         try {
             return CollectionPointActionDto
                     .builder()
+                    .actionId(collectionPointAction.getId())
                     .collectionPointId(collectionPointAction.getCollectionPoint().getId())
-                    .expand(collectionPointAction.getExpend()/1000)
+                    .expend(collectionPointAction.getExpend()/1000)
                     .pressure(collectionPointAction.getPressure())
                     .temperature(collectionPointAction.getTemperature())
                     .build();

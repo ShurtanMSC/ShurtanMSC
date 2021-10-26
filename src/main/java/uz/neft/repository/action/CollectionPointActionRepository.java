@@ -23,5 +23,7 @@ public interface CollectionPointActionRepository extends JpaRepository<Collectio
 
     List<CollectionPointAction> findAllByCollectionPointAndCreatedAtBetween(CollectionPoint collectionPoint,Timestamp from,Timestamp until);
 
+    List<CollectionPointAction> findAllByCollectionPointOrderByCreatedAtDesc(CollectionPoint collectionPoint);
+
 
 }

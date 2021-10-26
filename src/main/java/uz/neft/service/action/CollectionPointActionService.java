@@ -9,6 +9,7 @@ import uz.neft.dto.action.ObjectWithActionsDto;
 import uz.neft.dto.special.CollectionPointAndWells;
 import uz.neft.entity.*;
 import uz.neft.entity.action.CollectionPointAction;
+import uz.neft.entity.action.UppgAction;
 import uz.neft.entity.action.WellAction;
 import uz.neft.entity.enums.WellStatus;
 import uz.neft.repository.*;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class CollectionPointActionService {
@@ -160,6 +162,23 @@ public class CollectionPointActionService {
                                                     collectionPointActionRepository
                                                     .findFirstByCollectionPointOrderByCreatedAtDesc(c)))));
             return converter.apiSuccess200(list);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409();
+        }
+    }
+
+    public HttpEntity<?> getAllActionsByCollectionPoint(Integer id){
+        try{
+            if (id==null) return converter.apiError400("action id is null!");
+            Optional<CollectionPoint> collectionPoint = collectionPointRepository.findById(id);
+            if (!collectionPoint.isPresent()) return converter.apiError404("collection point not found");
+
+            List<CollectionPointAction> collectionPointActions = collectionPointActionRepository.findAllByCollectionPointOrderByCreatedAtDesc(collectionPoint.get());
+
+            Stream<CollectionPointActionDto> collectionPointActionDtoStream = collectionPointActions.stream().map(converter::collectionPointActionToCollectionPointActionDto);
+
+            return converter.apiSuccess200(collectionPointActionDtoStream);
         }catch (Exception e) {
             e.printStackTrace();
             return converter.apiError409();
@@ -310,4 +329,23 @@ public class CollectionPointActionService {
     }
 
 
+    public HttpEntity<?> deleteAction(Long id) {
+        try {
+            if (id != null) {
+                Optional<CollectionPointAction> action = collectionPointActionRepository.findById(id);
+
+                if (action.isPresent()) {
+                    collectionPointActionRepository.delete(action.get());
+                    return converter.apiSuccess200("Collection point action deleted");
+                } else {
+                    return converter.apiError404("Collection point Action found");
+                }
+            }
+            return converter.apiError400("Action Id null");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409("Error in deleting Collection point action", e);
+        }
+
+    }
 }

@@ -22,14 +22,16 @@ import java.time.LocalDateTime;
 @Builder
 public class CollectionPointActionDto {
 
+    Long actionId;
+
+    // Rasxod
+    private double expend;
+
     // Bosim
     private double pressure;
 
     // Tempratura
     private double temperature;
-
-    // Rasxod
-    private double expand;
 
     private Integer collectionPointId;
 

@@ -45,7 +45,6 @@ public class CollectionPointAction extends AbsEntityLong {
     @Value("${opc.service.address}")
     protected String address;
 
-
     public Double getTemperatureOpc(){
         try {
             Gson gson=new Gson();
@@ -78,8 +77,6 @@ public class CollectionPointAction extends AbsEntityLong {
             return 0.0;
         }
     }
-
-
 
     public Double getPressureOpc(){
         try {

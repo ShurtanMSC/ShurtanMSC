@@ -5,9 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.CollectionPointDto;
 import uz.neft.entity.CollectionPoint;
+import uz.neft.entity.OpcServer;
 import uz.neft.entity.Uppg;
-import uz.neft.payload.ApiResponse;
 import uz.neft.repository.CollectionPointRepository;
+import uz.neft.repository.OpcServerRepository;
 import uz.neft.repository.UppgRepository;
 import uz.neft.utils.Converter;
 
@@ -21,12 +22,14 @@ public class CollectionPointService {
     private final CollectionPointRepository collectionPointRepository;
     private final Converter converter;
     private final UppgRepository uppgRepository;
+    private final OpcServerRepository opcServerRepository;
 
     @Autowired
-    public CollectionPointService(CollectionPointRepository collectionPointRepository, Converter converter, UppgRepository uppgRepository) {
+    public CollectionPointService(CollectionPointRepository collectionPointRepository, Converter converter, UppgRepository uppgRepository, OpcServerRepository opcServerRepository) {
         this.collectionPointRepository = collectionPointRepository;
         this.converter = converter;
         this.uppgRepository = uppgRepository;
+        this.opcServerRepository = opcServerRepository;
     }
 
     public ResponseEntity<?> save(CollectionPointDto dto) {
@@ -44,6 +47,32 @@ public class CollectionPointService {
                 return converter.apiSuccess201("Collection point saved", collectionPointDto);
             }
             return converter.apiError404("Uppg not found");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409("Error creating collection point");
+        }
+    }
+
+    public ResponseEntity<?> saveCollectionPointAdmin(CollectionPoint cPoint,Integer uppgId,Integer opcId) {
+        try {
+            if (cPoint.getId() != null) return converter.apiError400("id shouldn't be sent");
+            if (uppgId == null) return converter.apiError400("Uppg id is null");
+            if (opcId == null) return converter.apiError400("Opc server id is null");
+
+            Optional<Uppg> uppg = uppgRepository.findById(uppgId);
+            Optional<OpcServer> opcServer = opcServerRepository.findById(opcId);
+
+            if (!uppg.isPresent()) return converter.apiError400("Uppg not found");
+            if (!opcServer.isPresent()) return converter.apiError400("opcServer not found");
+
+            CollectionPoint collectionPoint = new CollectionPoint();
+                collectionPoint.setName(cPoint.getName());
+                collectionPoint.setTemperatureUnit(cPoint.getTemperatureUnit());
+                collectionPoint.setPressureUnit(cPoint.getPressureUnit());
+                collectionPoint.setUppg(uppg.get());
+                collectionPoint.setOpcServer(opcServer.get());
+                CollectionPoint save = collectionPointRepository.save(collectionPoint);
+                return converter.apiSuccess201("Collection point saved",save);
         } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError409("Error creating collection point");
@@ -100,6 +129,20 @@ public class CollectionPointService {
         } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError409("Error in fetching all collection points", e);
+        }
+    }
+
+    public ResponseEntity<?> findAllByUppgId(Integer uppgId) {
+        try {
+            Optional<Uppg> byId = uppgRepository.findById(uppgId);
+            if (!byId.isPresent()) return converter.apiError404("uppg not found");
+
+            List<CollectionPoint> allByUppg = collectionPointRepository.findAllByUppg(byId.get());
+
+            return converter.apiSuccess200(allByUppg);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409("Error in fetching collection point by uppg ");
         }
     }
 

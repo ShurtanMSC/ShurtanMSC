@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Well - Dashboard</title>
+    <title>SB Admin 2 - Dashboard</title>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.23.0/axios.min.js"></script>
     <!-- Custom fonts for this template-->
@@ -25,12 +25,8 @@
           th:href="@{/css/sb-admin-2.min.css}"
           rel="stylesheet">
 
-    <link href="/static/css/wells.css"
-          th:href="@{/css/wells.css}"
-          rel="stylesheet">
-
-    <link href="/static/css/users.css"
-          th:href="@{/css/users.css}"
+    <link href="/static/css/opcServers.css"
+          th:href="@{/css/opcServers.css}"
           rel="stylesheet">
 
     <!-- Custom styles for this page -->
@@ -49,6 +45,7 @@
     <div th:insert="components/sidebar::sidebar" style="background: #0088bc;"></div>
     <!-- End of Sidebar -->
 
+
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
 
@@ -59,49 +56,27 @@
             <div th:insert="components/navbar::navbar"></div>
             <!-- End of Topbar -->
 
+
             <!-- Begin Page Content -->
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">Скважина</h1>
-                <p class="mb-2">Скважин в системе</p>
+                <h1 class="h3 mb-4 text-gray-800">ОПС серверы</h1>
 
-                <!--// Add Well button and modal-->
+                <!--// Add opc server button and modal-->
                 <div>
                     <section class="ftco-section pb-2">
                         <div class="row">
-                            <div class="col-md-12 d-flex ">
-                                <div class="wrap mr-5">
+                            <div class="col-md-6 d-flex ">
+                                <div class="wrap w-100">
                                     <button type="button" class="btn btn-primary py-2 px-4" data-toggle="modal"
                                             data-target="#exampleModalCenter"
-                                            id="addWellBtn"
+                                            id="addOpcServerBtn"
                                     >
-                                        Добавить Скважина
+                                        Добавить ОПС сервер
                                     </button>
-                                </div>
-                                <div class="form-group mr-5">
-                                    <select name="miningSelect" class="custom-select form-control rounded-left mt-1"
-                                            id="miningSelect"
-                                            onchange="selectHandleMining()"
-                                            aria-label="Example select with button addon" >
-                                        <option value="">Loading. . .</option>
-                                    </select>
-                                </div>
-                                <div class="form-group mr-5">
-                                    <select name="uppgSelect" class="custom-select form-control rounded-left mt-1"
-                                            id="uppgSelect"
-                                            onchange="selectHandleUppg()"
-                                            aria-label="Example select with button addon" >
-                                        <option value="">Loading. . .</option>
-                                    </select>
-                                </div>
-                                <div class="form-group mr-5">
-                                    <select name="collectionPointSelect" class="custom-select form-control rounded-left mt-1"
-                                            id="collectionPointSelect"
-                                            onchange="selectHandleSP()"
-                                            aria-label="Example select with button addon" >
-                                        <option value="">Loading. . .</option>
-                                    </select>
+
+                                    <!-- Modal -->
                                 </div>
                             </div>
                         </div>
@@ -120,68 +95,32 @@
                                     </button>
                                 </div>
                                 <div class="modal-body  pb-md-5 pl-md-5 pr-md-5 pt-md-2">
-                                    <h3 class="text-center mb-4 " id="addOrEditWellH3">Добавить Скважина</h3>
-                                    <form action="#" class="login-form" name="addOrEditWellForm" id="addOrEditWellForm"
-                                          onsubmit="addOrEditWell(event)">
+                                    <h3 class="text-center mb-4 " id="addOrEditOpcServerH3">Добавить ОПС серверы</h3>
+                                    <form action="#" class="login-form" name="addOrEditOpcServerForm" id="addOrEditOpcServerForm"
+                                          onsubmit="addOrEditOpcServer(event)">
                                         <div class="form-group">
                                             <input name="id" type="text" class="form-control rounded-left" hidden>
                                         </div>
                                         <div class="form-group">
-                                            <input name="number" type="number" class="form-control rounded-left"
-                                                   placeholder="номер cкважина" required>
+                                            <input name="name" type="text" class="form-control rounded-left"
+                                                   placeholder="Имя ОПС сервер" required>
                                         </div>
                                         <div class="form-group d-flex">
-                                            <input name="collectionPointId" value="" type="number"
-                                                   class="form-control rounded-left" required hidden>
+                                            <input name="description" type="text" class="form-control rounded-left"
+                                                   placeholder="Описание" required>
                                         </div>
                                         <div class="form-group d-flex">
-                                            <input name="commissioningDate"  type="date"
-                                                   class="form-control rounded-left"
-                                                   placeholder="Дата ввода в эксплуатацию">
+                                            <input name="address" type="text" class="form-control rounded-left"
+                                                   placeholder="Адрес" required>
                                         </div>
                                         <div class="form-group d-flex">
-                                            <input name="drillingStartDate"  type="date"
-                                                   class="form-control rounded-left" placeholder="Дата начала бурения">
-                                        </div>
-                                        <div class="form-group d-flex">
-                                            <input name="horizon"  type="text"
-                                                   class="form-control rounded-left" placeholder="горизонт" required>
-                                        </div>
-                                        <div class="form-group d-flex">
-                                            <input name="altitude"  type="number" step=any
-                                                   class="form-control rounded-left" placeholder="высота" required>
-                                        </div>
-                                        <div class="form-group d-flex">
-                                            <input name="depth"  type="number" step=any
-                                                   class="form-control rounded-left" placeholder="глубина" required>
-                                        </div>
-                                        <div class="form-group d-flex">
-                                            <input name="x"  type="number" step=any
-                                                   class="form-control rounded-left" placeholder="x" required>
-                                        </div>
-                                        <div class="form-group d-flex">
-                                            <input name="y"  type="number" step=any
-                                                   class="form-control rounded-left" placeholder="y" required>
-                                        </div>
-                                        <div class="form-group d-flex">
-                                            <input name="c"  type="number" step=any
-                                                   class="form-control rounded-left" placeholder="c" required>
+                                            <input name="url" type="tel" class="form-control rounded-left"
+                                                   placeholder="Веб адрес опс сервер (url)" required>
                                         </div>
 
-                                        <div class="form-group d-flex">
-                                            <select name="category" class="custom-select form-control rounded-left"
-                                                    id="inputGroupSelect03"
-                                                    aria-label="Example select with button addon" required>
-                                                <option value="">категория</option>
-                                                <option value="MINING">MINING</option>
-                                                <option value="DISCHARGE">DISCHARGE</option>
-                                                <option value="EXPLORATION">EXPLORATION</option>
-                                                <option value="PIEZOMETRIC">PIEZOMETRIC</option>
-                                            </select>
-                                        </div>
                                         <div class="form-group">
                                             <button type="submit"
-                                                    id="addOrEditWellBtn"
+                                                    id="addOrEditOpcServerBtn"
                                                     class="form-control btn btn-primary rounded submit px-3">Добавить
                                             </button>
                                         </div>
@@ -196,7 +135,6 @@
 
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
-
                     <div class="card-body">
                         <div class="table-responsive">
                             <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
@@ -222,111 +160,56 @@
                                         <table class="table table-bordered dataTable" id="dataTable" width="100%"
                                                cellspacing="0" role="grid" aria-describedby="dataTable_info"
                                                style="width: 100%;">
-                                            <thead>
+                                            <thead style="background-color: #FFE5D3">
                                             <tr role="row">
-                                                <th class="sorting sorting_asc wells-table-title" tabindex="0"
+                                                <th class="sorting sorting_asc opcServers-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-sort="ascending"
-                                                    style="width: 64.001px;">ID
+                                                >ID
                                                 </th>
-                                                <th class="sorting wells-table-title" tabindex="0"
+                                                <th class="sorting opcServers-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    aria-label="Position: activate to sort column ascending"
-                                                    style="width: 75.001px;">Номер cкважина
+                                                >Имя ОПС сервер
                                                 </th>
-                                                <th class="sorting wells-table-title" tabindex="0"
+                                                <th class="sorting opcServers-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    aria-label="Office: activate to sort column ascending"
-                                                     hidden>collectionPointId
+                                                >Описание
                                                 </th>
-                                                <th class="sorting wells-table-title" tabindex="0"
+                                                <th class="sorting opcServers-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    aria-label="Office: activate to sort column ascending"
-                                                    >Дата ввода в эксплуатацию
+                                                >Адрес
                                                 </th>
-                                                <th class="sorting wells-table-title" tabindex="0"
+                                                <th class="sorting opcServers-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    aria-label="Office: activate to sort column ascending"
-                                                    >Дата начала бурения
+                                                >Веб адрес опс сервер (url)
                                                 </th>
-                                                <th class="sorting wells-table-title" tabindex="0"
+                                                <th class="sorting opcServers-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    aria-label="Office: activate to sort column ascending"
-                                                    >Горизонт
+                                                >Редактировать
                                                 </th>
-                                                <th class="sorting wells-table-title" tabindex="0"
-                                                    aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    aria-label="Office: activate to sort column ascending"
-                                                    >Высота
-                                                </th>
-                                                <th class="sorting wells-table-title" tabindex="0"
-                                                    aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    aria-label="Office: activate to sort column ascending"
-                                                    >Глубина
-                                                </th>
-                                                <th class="sorting wells-table-title" tabindex="0"
-                                                    aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    aria-label="Office: activate to sort column ascending"
-                                                    >X
-                                                </th>
-                                                <th class="sorting wells-table-title" tabindex="0"
-                                                    aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    aria-label="Office: activate to sort column ascending"
-                                                    >Y
-                                                </th>
-                                                <th class="sorting wells-table-title" tabindex="0"
-                                                    aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    aria-label="Office: activate to sort column ascending"
-                                                    >C
-                                                </th>
-                                                <th class="sorting wells-table-title" tabindex="0"
-                                                    aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    aria-label="Office: activate to sort column ascending"
-                                                    >Категория
-                                                </th>
-                                                <th class="sorting wells-table-title" tabindex="0"
-                                                    aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    aria-label="Salary: activate to sort column ascending"
-                                                   >Редактировать
-                                                </th>
+
                                             </tr>
                                             </thead>
-                                            <tfoot>
+                                            <tfoot style="background-color: #FFE5D3">
                                             <tr>
-                                                <th class="wells-table-title" rowspan="1" colspan="1">ID</th>
-                                                <th class="wells-table-title" rowspan="1" colspan="1">Номер cкважина
+                                                <th class="opcServers-table-title" rowspan="1" colspan="1">ID</th>
+                                                <th class="opcServers-table-title" rowspan="1" colspan="1">Имя ОПС сервер</th>
+                                                <th class="opcServers-table-title" rowspan="1" colspan="1">Описание
                                                 </th>
-                                                <th class="wells-table-title" rowspan="1" colspan="1">Дата ввода в
-                                                    эксплуатацию
-                                                </th>
-                                                <th class="wells-table-title" rowspan="1" colspan="1">Дата начала
-                                                    бурения
-                                                </th>
-                                                <th class="wells-table-title" rowspan="1" colspan="1">Горизонт</th>
-                                                <th class="wells-table-title" rowspan="1" colspan="1">Высота</th>
-                                                <th class="wells-table-title" rowspan="1" colspan="1">Глубина</th>
-                                                <th class="wells-table-title" rowspan="1" colspan="1">X</th>
-                                                <th class="wells-table-title" rowspan="1" colspan="1">Y</th>
-                                                <th class="wells-table-title" rowspan="1" colspan="1">C</th>
-                                                <th class="wells-table-title" rowspan="1" colspan="1">Категория</th>
-                                                <th class="wells-table-title" rowspan="1" colspan="1">Редактировать</th>
+                                                <th class="opcServers-table-title" rowspan="1" colspan="1">Адрес</th>
+                                                <th class="opcServers-table-title" rowspan="1" colspan="1">Веб адрес опс сервер (url)</th>
+                                                <th class="opcServers-table-title" rowspan="1" colspan="1">Редактировать</th>
                                             </tr>
                                             </tfoot>
-                                            <tbody id="wellTable">
+                                            <tbody id="opcServerTable">
                                             <tr class="odd">
                                                 <td class="sorting_1">Loading. . .</td>
                                                 <td>Loading. . .</td>
                                                 <td>Loading. . .</td>
                                                 <td>Loading. . .</td>
                                                 <td>Loading. . .</td>
-                                                <td>Loading. . .</td>
-                                                <td>Loading. . .</td>
-                                                <td>Loading. . .</td>
-                                                <td>Loading. . .</td>
-                                                <td>Loading. . .</td>
-                                                <td>Loading. . .</td>
-                                                <td>Loading. . .</td>
                                             </tr>
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -424,12 +307,9 @@
 </div>
 
 <!-- Bootstrap core JavaScript-->
-<script src="/static/js/well.js" th:src="@{/js/well.js}"></script>
+<script src="/static/js/opcServer.js" th:src="@{/js/opcServer.js}"></script>
 <script>
-    getAllMiningSystems();
-    getAllUppgs();
-    getAllCollectionPoints();
-    getAllWells();
+    getAllOpcServers()
 </script>
 <script src="/static/vendor/jquery/jquery.min.js" th:src="@{/vendor/jquery/jquery.min.js}"></script>
 <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"
@@ -444,7 +324,7 @@
 
 <!-- Page level plugins -->
 <script src="/static/vendor/chart.js/Chart.min.js" th:src="@{/vendor/chart.js/Chart.min.js}"></script>
-
+<script src="/static/js/sidebar.js" th:src="@{/js/sidebar.js}"></script>
 <!-- Page level custom scripts -->
 <script src="/static/js/demo/chart-area-demo.js" th:src="@{/js/demo/chart-area-demo.js}"></script>
 <script src="/static/js/demo/chart-pie-demo.js" th:src="@{/js/demo/chart-pie-demo.js}"></script>
@@ -453,13 +333,10 @@
 <script>
     $(document).ready(function () {
         $("#exampleModalCenter").on('hide.bs.modal', function () {
-            document.getElementById('addOrEditWellForm').reset();
+            document.getElementById('addOrEditOpcServerForm').reset();
         });
     });
+
+
 </script>
 </html>
-
-
-
-
-
