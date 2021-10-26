@@ -6,9 +6,11 @@ function goOutFromAction() {
     document.getElementById('actionUppgH1').innerText = "УППГ";
     document.getElementById('addUppgBtn').style.display = 'block';
     document.getElementById('cardTableUppg').style.display = 'block';
+    document.getElementById('miningSelect').style.display = 'block';
     document.getElementById('cardTableUppgAction').style.display = 'none';
-    document.getElementById('addActionUppgBtn').style.display = 'none';
+    document.getElementById('addUppgActionBtn').style.display = 'none';
     document.getElementById('goOutActionsIcon').style.display = 'none';
+
 }
 
 function clickActionBtn(id) {
@@ -17,9 +19,10 @@ function clickActionBtn(id) {
 
     document.getElementById('actionUppgH1').innerText = actionUppg.name;
     document.getElementById('addUppgBtn').style.display = 'none';
+    document.getElementById('miningSelect').style.display = 'none';
     document.getElementById('cardTableUppg').style.display = 'none';
     document.getElementById('cardTableUppgAction').style.display = 'block';
-    document.getElementById('addActionUppgBtn').style.display = 'block';
+    document.getElementById('addUppgActionBtn').style.display = 'block';
     document.getElementById('goOutActionsIcon').style.display = 'block';
 
     getActionsByUppg()
@@ -31,7 +34,7 @@ function getActionsByUppg() {
 
     axios.get("/api/uppg/actions/" + uppgID)
         .then(function (response) {
-            // console.log(response.data.object)
+            console.log(response.data.object)
             if (response.data.message === "OK") {
                 uppgActionsList = response.data.object
             }
@@ -40,7 +43,6 @@ function getActionsByUppg() {
         .catch(function (error) {
             console.log(error)
         })
-
 }
 
 function resetAndCloseFormAction() {
@@ -59,6 +61,8 @@ function addOrEditUppgAction(event) {
         url: '',
         data
     };
+
+    console.log(data)
 
     if (data.actionId === "" || data.actionId == null) {
         config.method = 'post';
@@ -95,6 +99,14 @@ function editUppgAction(id) {
 
     formField['actionId'].value = editUppgAction.actionId;
     formField['expend'].value = editUppgAction.expend;
+    formField['designedPerformance'].value = editUppgAction.designedPerformance;
+    formField['actualPerformance'].value = editUppgAction.actualPerformance;
+    formField['condensate'].value = editUppgAction.condensate;
+    formField['onWater'].value = editUppgAction.onWater;
+    formField['incomeTemperature'].value = editUppgAction.incomeTemperature;
+    formField['exitTemperature'].value = editUppgAction.exitTemperature;
+    formField['incomePressure'].value = editUppgAction.incomePressure;
+    formField['exitPressure'].value = editUppgAction.exitPressure;
     formField['uppgId'].value = editUppgAction.uppgId;
 }
 
@@ -122,10 +134,19 @@ function createViewTableAction(actions) {
         out += "<tr class=\"action_table_row\">\n" +
             "   <td class=\"sorting_1\">" + action.actionId + "</td>\n" +
             "    <td>" + action.expend + "</td>\n" +
-            "     <td >" + createdAtDateString + "</td>\n" +
+            "    <td>" + action.designedPerformance + "</td>\n" +
+            "    <td>" + action.actualPerformance + "</td>\n" +
+            "    <td>" + action.condensate + "</td>\n" +
+            "    <td>" + action.onWater + "</td>\n" +
+            "    <td>" + action.incomeTemperature + "</td>\n" +
+            "    <td>" + action.exitTemperature + "</td>\n" +
+            "    <td>" + action.incomePressure + "</td>\n" +
+            "    <td>" + action.exitPressure + "</td>\n" +
+            "    <td hidden>" + action.uppgId + "</td>\n" +
+            "    <td>" + createdAtDateString + "</td>\n" +
             "     <td id=\"uppgIdTd\" hidden value='" + action.uppgId + "'>" + action.uppgId + "</td>\n" +
-            "     <td><button data-target=\"#exampleModalCenterAction\" data-toggle=\"modal\" class='btn btn-success mt-1' id='btn-edit-action' value='" + action.actionId + "' onclick='editUppgAction(this.value)'>Редактировать</button>\n" +
-            "      <button class='btn btn-danger ml-2 mt-1' id='btn-edit-action' value='" + action.actionId + "' onclick='deleteUppgAction(this.value)'>Удалить</button></td>\n" +
+            "     <td><button data-target=\"#exampleModalCenterAction\" data-toggle=\"modal\" class='btn btn-success ml-1 mt-1' id='btn-edit-action' value='" + action.actionId + "' onclick='editUppgAction(this.value)'>Редактировать</button>\n" +
+            "      <button class='btn btn-danger ml-1 mt-1' id='btn-edit-action' value='" + action.actionId + "' onclick='deleteUppgAction(this.value)'>Удалить</button></td>\n" +
             "   </tr>"
     })
     return out;

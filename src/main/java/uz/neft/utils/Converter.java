@@ -483,6 +483,7 @@ public class Converter {
             if (uppgAction==null) return null;
             return UppgActionDto
                     .builder()
+                    .actionId(uppgAction.getId())
                     .designedPerformance(uppgAction.getDesignedPerformance())
                     .actualPerformance(uppgAction.getActualPerformance())
                     .expend(uppgAction.getExpend())
@@ -493,7 +494,7 @@ public class Converter {
                     .incomePressure(uppgAction.getIncomePressure())
                     .exitPressure(uppgAction.getExitPressure())
                     .uppgId(uppgAction.getUppg().getId())
-                    .date(uppgAction.getCreatedAt())
+                    .createdAt(uppgAction.getCreatedAt())
                     .build();
         } catch (Exception e) {
             e.printStackTrace();

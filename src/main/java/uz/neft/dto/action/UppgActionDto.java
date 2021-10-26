@@ -48,7 +48,7 @@ public class UppgActionDto {
 
     private Integer uppgId;
 
-    private Date date;
+    private Date createdAt;
 
 
 //    @LastModifiedBy

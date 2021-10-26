@@ -73,30 +73,32 @@
                     <section class="ftco-section pb-2">
                         <div class="row">
                             <div class="col-md-12 d-flex ">
-                                <div class="wrap mr-5">
-                                    <button type="button" class="btn btn-primary py-2 px-4" data-toggle="modal"
-                                            data-target="#exampleModalCenter"
-                                            id="addCollectionPointBtn" >
-                                        Добавить Сборный пункт
-                                    </button>
-                                </div>
-                                <div class="form-group mr-5">
-                                    <select name="miningSelect" class="custom-select form-control rounded-left mt-1"
-                                            id="miningSelect"
-                                            onchange="selectHandleMining()"
-                                            aria-label="Example select with button addon" >
-                                        <option value="">Месторождений</option>
-                                        <option value="">Loading. . .</option>
-                                    </select>
-                                </div>
-                                <div class="form-group ">
-                                    <select name="uppgSelect" class="custom-select form-control rounded-left mt-1"
-                                            id="uppgSelect"
-                                            onchange="selectHandleUppg()"
-                                            aria-label="Example select with button addon" >
-                                        <option value="">УППГ</option>
-                                        <option value="">Loading. . .</option>
-                                    </select>
+                                <div class="col-8 d-flex">
+                                    <div class="col-4 p-0 wrap mr-2 ">
+                                        <button type="button" class="btn btn-primary py-2 px-3" data-toggle="modal"
+                                                data-target="#exampleModalCenter"
+                                                id="addCollectionPointBtn" >
+                                            Добавить Сборный пункт
+                                        </button>
+                                    </div>
+                                    <div class="col-3 p-0 form-group mr-2">
+                                        <select name="miningSelect" class="custom-select form-control rounded-left mt-1"
+                                                id="miningSelect"
+                                                onchange="selectHandleMining()"
+                                                aria-label="Example select with button addon" >
+                                            <option value="">Месторождений</option>
+                                            <option value="">Loading. . .</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-3 p-0 form-group ">
+                                        <select name="uppgSelect" class="custom-select form-control rounded-left mt-1 ml-xl-5"
+                                                id="uppgSelect"
+                                                onchange="selectHandleUppg()"
+                                                aria-label="Example select with button addon" >
+                                            <option value="">УППГ</option>
+                                            <option value="">Loading. . .</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
