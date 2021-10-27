@@ -10,11 +10,13 @@ import java.util.Optional;
 
 public interface MiningSystemGasCompositionRepository extends JpaRepository<MiningSystemGasComposition, Integer> {
 
+    List<MiningSystemGasComposition> findAllByMiningSystemOrderByGasCompositionId(MiningSystem miningSystem);
     List<MiningSystemGasComposition> findAllByMiningSystem(MiningSystem miningSystem);
 
     Optional<MiningSystemGasComposition> findByIdAndMiningSystemAndGasComposition(Integer id, MiningSystem miningSystem, GasComposition composition);
 
     Optional<MiningSystemGasComposition> findFirstByMiningSystemAndGasComposition(MiningSystem miningSystem, GasComposition composition);
+    Optional<MiningSystemGasComposition> findFirstByMiningSystemAndGasCompositionOrderByCreatedAt(MiningSystem miningSystem, GasComposition composition);
 
 
 }

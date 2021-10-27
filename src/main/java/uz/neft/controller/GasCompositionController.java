@@ -11,6 +11,8 @@ import uz.neft.entity.variables.GasComposition;
 import uz.neft.payload.ApiResponse;
 import uz.neft.service.GasCompositionService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/gas_composition")
 @CrossOrigin
@@ -75,4 +77,17 @@ public class GasCompositionController {
         return compositionService.findByIdMSGC(id);
     }
 
+
+
+    // Mining system compositions
+
+    @GetMapping("molar/all/mining_system/{id}")
+    public HttpEntity<?> allMolarByMiningSystem(@PathVariable Integer id){
+        return compositionService.findAllMSGCsByMiningSystem(id);
+    }
+
+//    @PostMapping("molar/add/all/mining_system")
+//    public HttpEntity<?> addMolarsByMiningSystem(@RequestBody List<MiningSystemGasCompositionDto> dtoList){
+//        return compositionService.saveAllMSGCByMiningSystem(dtoList);
+//    }
 }

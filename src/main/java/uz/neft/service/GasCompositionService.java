@@ -2,12 +2,14 @@ package uz.neft.service;
 //lord
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.CollectionPointDto;
 import uz.neft.dto.GasCompositionDto;
 import uz.neft.dto.MiningSystemGasCompositionDto;
 import uz.neft.dto.UppgDto;
+import uz.neft.dto.action.ObjectWithActionsDto;
 import uz.neft.entity.MiningSystem;
 import uz.neft.entity.Uppg;
 import uz.neft.entity.variables.GasComposition;
@@ -18,6 +20,7 @@ import uz.neft.repository.MiningSystemGasCompositionRepository;
 import uz.neft.repository.MiningSystemRepository;
 import uz.neft.utils.Converter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -226,6 +229,29 @@ public class GasCompositionService {
         }
     }
 
+
+    public ResponseEntity<?> findAllMSGCsByMiningSystem(Integer mining_system_id){
+        try {
+            if (mining_system_id==null) return converter.apiError400("Mining System id is null!");
+            Optional<MiningSystem> miningSystem = miningSystemRepository.findById(mining_system_id);
+            if (!miningSystem.isPresent()) return converter.apiError404("Mining system not found!");
+
+            List<GasComposition> gasCompositionsList=new ArrayList<>();
+            List<MiningSystemGasComposition> all = miningSystemGasCompositionRepository.findAllByMiningSystemOrderByGasCompositionId(miningSystem.get());
+            List<MiningSystemGasCompositionDto> collect = all.stream().map(converter::miningSystemGasCompositionToMiningSystemGasCompositionDto).collect(Collectors.toList());
+            List<ObjectWithActionsDto> objectWithActionsDtos=new ArrayList<>();
+            for (int i = 0; i <collect.size() ; i++) {
+                objectWithActionsDtos.add(new ObjectWithActionsDto(all.get(i).getGasComposition(),collect.get(i)));
+            }
+            return converter.apiSuccess200(objectWithActionsDtos);
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return converter.apiError409();
+        }
+    }
+
     public ResponseEntity<?> findByIdMSGC(Integer id) {
         try {
             if (id == null) return converter.apiError400("Id null");
@@ -241,4 +267,28 @@ public class GasCompositionService {
             return converter.apiError409("Error in finding Molar Fraction in MiningSystem_GasComposition table", e);
         }
     }
+
+//    public ResponseEntity<?> saveAllMSGCByMiningSystem(List<MiningSystemGasCompositionDto> dtoList) {
+//        try {
+//
+//            miningSystemGasCompositionRepository.findByIdAndMiningSystemAndGasComposition()
+//            List<MiningSystemGasComposition> compositionList=new ArrayList<>();
+//
+//            for (MiningSystemGasCompositionDto dto : dtoList) {
+//                if (dto.getMiningSystemId()==null) return converter.apiError400("Mining system id is null");
+//                if (dto.getGasCompositionId()==null) return converter.apiError400("Gas composition id is null");
+//                if (dto.getMolarFraction()==null) return converter.apiError400("Gas composition id is null");
+//                Optional<MiningSystem> miningSystem = miningSystemRepository.findById(dto.getMiningSystemId());
+//                Optional<GasComposition> gasComposition = gasCompositionRepository.findById(dto.getGasCompositionId());
+//                if (!miningSystem.isPresent()) return converter.apiError404("Mining System not found");
+//                if (!gasComposition.isPresent()) return converter.apiError404("Gas composition not found");
+//
+//
+//            }
+//
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            return converter.apiError409();
+//        }
+//    }
 }

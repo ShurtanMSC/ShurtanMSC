@@ -15,14 +15,17 @@ import javax.validation.constraints.NotNull;
 @Builder
 public class CollectionPoint extends AbsEntityInteger {
 
+
     @NotNull
     private String name;
+
+    @ManyToOne
+    private Uppg uppg;
 
     private String temperatureUnit;
     private String pressureUnit;
 
-    @ManyToOne
-    private Uppg uppg;
+
 
     @ManyToOne
     private OpcServer opcServer;

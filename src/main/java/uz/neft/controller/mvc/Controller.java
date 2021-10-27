@@ -1,9 +1,6 @@
 package uz.neft.controller.mvc;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import uz.neft.dto.UserDto;
 import uz.neft.service.UserService;
 
 @org.springframework.stereotype.Controller
