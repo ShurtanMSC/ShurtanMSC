@@ -186,6 +186,26 @@ public class DataLoader implements CommandLineRunner {
             MiningSystem shurtan = miningSystemRepository.save(new MiningSystem(InitialNames.SHURTAN));
             MiningSystem south_tandyrcha = miningSystemRepository.save(new MiningSystem(InitialNames.SOUTH_TANDYRCHA));
 
+            miningSystemRepository.save(new MiningSystem(InitialNames.BUZAKHUR));
+            miningSystemRepository.save(new MiningSystem(InitialNames.EAST_BUZAKHUR));
+            miningSystemRepository.save(new MiningSystem(InitialNames.FERUZA));
+            miningSystemRepository.save(new MiningSystem(InitialNames.ZAFAR));
+            miningSystemRepository.save(new MiningSystem(InitialNames.MEZON));
+            miningSystemRepository.save(new MiningSystem(InitialNames.GARMISTON));
+            miningSystemRepository.save(new MiningSystem(InitialNames.SOVLIGOR));
+            miningSystemRepository.save(new MiningSystem(InitialNames.SHIRKENT));
+            miningSystemRepository.save(new MiningSystem(InitialNames.KORATEPA));
+            miningSystemRepository.save(new MiningSystem(InitialNames.NEW_KORATEPA));
+            miningSystemRepository.save(new MiningSystem(InitialNames.NOMOZBOY));
+            miningSystemRepository.save(new MiningSystem(InitialNames.NORTHERN_SHURTAN));
+            miningSystemRepository.save(new MiningSystem(InitialNames.OYDIN));
+            miningSystemRepository.save(new MiningSystem(InitialNames.RUBOYI));
+            miningSystemRepository.save(new MiningSystem(InitialNames.TARNASOY));
+            miningSystemRepository.save(new MiningSystem(InitialNames.TOSHLI));
+            miningSystemRepository.save(new MiningSystem(InitialNames.TURTSARI));
+            miningSystemRepository.save(new MiningSystem(InitialNames.YAKKASARAY));
+            miningSystemRepository.save(new MiningSystem(InitialNames.YERMOK));
+
             MiningSystemAction miningSystemAction1=miningSystemActionRepository.save(MiningSystemAction
                     .builder()
                     .miningSystem(shurtan)
