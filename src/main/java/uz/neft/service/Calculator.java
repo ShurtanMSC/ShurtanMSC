@@ -201,6 +201,10 @@ public static double kgf_sm2_to_pascal(double kgfsm2){
         return kgfsm2*98066.5;
 }
 
+public static double mega_pascal_to_kgf_sm2(double megapascal){
+        return pascal_to_kgf_sm2(megapascal*1000000);
+}
+
 public static double c_to_k(double celsius){
         return celsius+273.15;
 }

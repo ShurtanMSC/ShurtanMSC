@@ -5,6 +5,7 @@ import uz.neft.entity.Well;
 import uz.neft.entity.action.WellAction;
 import uz.neft.entity.enums.WellStatus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -54,59 +55,65 @@ public class TechReportModel {
 
     private WellStatus status;
 
-    public void transform(List<Well> wells,List<WellAction> wellActions){
+    public List<TechReportModel> transform(List<Well> wells,List<WellAction> wellActions){
+        List<TechReportModel> models=new ArrayList<>();
+
         for (int i = 0; i <wellActions.size() ; i++) {
-           setNo(String.valueOf(i+1));
-           setNomer(String.valueOf(wellActions.get(i)!=null?wellActions.get(i).getWell().getNumber():wells.get(i).getNumber()));
-           setGorizont(wellActions.get(i)!=null?wellActions.get(i).getWell().getHorizon():wells.get(i).getHorizon());
+            TechReportModel model=new TechReportModel();
+            model.setNo(String.valueOf(i+1));
+            model.setNomer(String.valueOf(wellActions.get(i)!=null?wellActions.get(i).getWell().getNumber():wells.get(i).getNumber()));
+            model.setGorizont(wellActions.get(i)!=null?wellActions.get(i).getWell().getHorizon():wells.get(i).getHorizon());
 
             //D екс.кол
-           setD_eks_kol(String.valueOf(0));
+            model.setD_eks_kol(String.valueOf(0));
             //Искусственный забой
-           setIskus_zaboy(String.valueOf(0));
+            model.setIskus_zaboy(String.valueOf(0));
 
             if (wellActions.get(i)!=null){
-                setVerx(String.valueOf(wellActions.get(i).getPerforation_max()));
-                setNijn(String.valueOf(wellActions.get(i).getPerforation_min()));
-                setStatus(wellActions.get(i).getStatus());
+                model.setVerx(String.valueOf(wellActions.get(i).getPerforation_max()));
+                model.setNijn(String.valueOf(wellActions.get(i).getPerforation_min()));
+                model.setStatus(wellActions.get(i).getStatus());
             }else {
-               setVerx(String.valueOf(0));
-               setNijn(String.valueOf(0));
-               setStatus(WellStatus.IN_REPAIR);
+                model.setVerx(String.valueOf(0));
+                model.setNijn(String.valueOf(0));
+                model.setStatus(WellStatus.IN_REPAIR);
             }
 
-           setC(String.valueOf(wells.get(i).getC()));
-           setD(String.valueOf(0));
-           setL(String.valueOf(0));
+            model.setC(String.valueOf(wells.get(i).getC()));
+            model.setD(String.valueOf(0));
+            model.setL(String.valueOf(0));
 
 
 
-           setD_sht1(String.valueOf(0));
-           setR_tr1(String.valueOf(0));
-           setR_ztr1(String.valueOf(0));
-           setR_stat1(String.valueOf(0));
-           setR_zab1(String.valueOf(0));
-           setR_pl1(String.valueOf(wellActions.get(i)!=null?wellActions.get(i).getRpl():0));
-           setDelta_R1(String.valueOf(wellActions.get(i)!=null?wellActions.get(i).getPressure():0));
-           setDebit_gaz1(String.valueOf(wellActions.get(i)!=null?wellActions.get(i).getExpend()/1000:0));
-           setDebit_kondensat1(String.valueOf(0));
-           setUstevaya_skorost1(String.valueOf(0));
-           setZaboynaya_skorost1(String.valueOf(0));
+            model.setD_sht1(String.valueOf(0));
+            model.setR_tr1(String.valueOf(0));
+            model.setR_ztr1(String.valueOf(0));
+            model.setR_stat1(String.valueOf(0));
+            model.setR_zab1(String.valueOf(0));
+            model.setR_pl1(String.valueOf(wellActions.get(i)!=null?wellActions.get(i).getRpl():0));
+            model.setDelta_R1(String.valueOf(wellActions.get(i)!=null?wellActions.get(i).getPressure():0));
+            model.setDebit_gaz1(String.valueOf(wellActions.get(i)!=null?wellActions.get(i).getExpend()/1000:0));
+            model.setDebit_kondensat1(String.valueOf(0));
+            model.setUstevaya_skorost1(String.valueOf(0));
+            model.setZaboynaya_skorost1(String.valueOf(0));
 
 
 
-            setD_sht2(String.valueOf(0));
-            setR_tr2(String.valueOf(0));
-            setR_ztr2(String.valueOf(0));
-            setR_stat2(String.valueOf(0));
-            setR_zab2(String.valueOf(0));
-            setR_pl2(String.valueOf(wellActions.get(i)!=null?wellActions.get(i).getRpl():0));
-            setDelta_R2(String.valueOf(wellActions.get(i)!=null?wellActions.get(i).getPressure():0));
-            setDebit_gaz2(String.valueOf(wellActions.get(i)!=null?wellActions.get(i).getExpend()/1000:0));
-            setDebit_kondensat2(String.valueOf(0));
-            setUstevaya_skorost2(String.valueOf(0));
-            setZaboynaya_skorost2(String.valueOf(0));
+            model.setD_sht2(String.valueOf(0));
+            model.setR_tr2(String.valueOf(0));
+            model.setR_ztr2(String.valueOf(0));
+            model.setR_stat2(String.valueOf(0));
+            model.setR_zab2(String.valueOf(0));
+            model.setR_pl2(String.valueOf(wellActions.get(i)!=null?wellActions.get(i).getRpl():0));
+            model.setDelta_R2(String.valueOf(wellActions.get(i)!=null?wellActions.get(i).getPressure():0));
+            model.setDebit_gaz2(String.valueOf(wellActions.get(i)!=null?wellActions.get(i).getExpend()/1000:0));
+            model.setDebit_kondensat2(String.valueOf(0));
+            model.setUstevaya_skorost2(String.valueOf(0));
+            model.setZaboynaya_skorost2(String.valueOf(0));
+
+            models.add(model);
         }
+        return models;
     }
 
 
