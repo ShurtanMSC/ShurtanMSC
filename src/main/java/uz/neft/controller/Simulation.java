@@ -33,7 +33,7 @@ public class Simulation {
     @PostMapping("collection_point/pressure")
     public String[] testP(@RequestBody Simulate simulate){
         String[] a=new String[3];
-        a[0]= String.valueOf(new SecureRandom().nextFloat()*(26.0-22.0)+22.0);
+        a[0]= String.valueOf(new SecureRandom().nextFloat()*(16.0-13.0)+13.0);
         a[1]="Good";
         a[2]= String.valueOf(new Date());
         return a;
