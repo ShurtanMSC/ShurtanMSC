@@ -219,10 +219,19 @@ public class GasCompositionService {
 
     public ResponseEntity<?> findAllMSGCs() {
         try {
-            List<MiningSystemGasComposition> all = miningSystemGasCompositionRepository.findAll();
-            List<MiningSystemGasCompositionDto> collect = all.stream().map(converter::miningSystemGasCompositionToMiningSystemGasCompositionDto).collect(Collectors.toList());
+            List<MiningSystem> miningSystems = miningSystemRepository.findAll();
+            List<ObjectWithActionsDto> dtoList=new ArrayList<>();
 
-            return converter.apiSuccess200(collect);
+            for (MiningSystem miningSystem : miningSystems) {
+                List<MiningSystemGasComposition> allByMiningSystem = miningSystemGasCompositionRepository.findAllByMiningSystem(miningSystem);
+                List<MiningSystemGasCompositionDto> collect = allByMiningSystem.stream().map(converter::miningSystemGasCompositionToMiningSystemGasCompositionDto).collect(Collectors.toList());
+                dtoList.add(new ObjectWithActionsDto(converter.miningSysToMiningSysDto(miningSystem), collect));
+            }
+//            miningSystemGasCompositionRepository.findAllByMiningSystem();
+//            List<MiningSystemGasComposition> all = miningSystemGasCompositionRepository.findAll();
+//            List<MiningSystemGasCompositionDto> collect = all.stream().map(converter::miningSystemGasCompositionToMiningSystemGasCompositionDto).collect(Collectors.toList());
+
+            return converter.apiSuccess200(dtoList);
         } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError409("Error in fetching all Molar Fractions in MiningSystem_GasComposition table", e);
