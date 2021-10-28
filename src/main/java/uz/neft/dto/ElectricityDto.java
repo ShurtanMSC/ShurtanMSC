@@ -16,4 +16,5 @@ public class ElectricityDto {
     private double monthly;
     private double yearly;
     private Integer miningSystemId;
+    private String miningSystemName;
 }
