@@ -15,13 +15,14 @@ import javax.persistence.ManyToOne;
 @Builder
 public class MiningSystemGasCompositionDto {
 
-    private String miningSystemName;
+//    private String miningSystemName;
 
     private Integer id;
 
     private Integer miningSystemId;
 
     private Integer gasCompositionId;
+    private String gasCompositionName;
 
     private Double molarFraction;
 

@@ -407,10 +407,11 @@ public class Converter {
         try {
             return MiningSystemGasCompositionDto
                     .builder()
-                    .miningSystemName(miningSystemGasComposition.getMiningSystem().getName())
+//                    .miningSystemName(miningSystemGasComposition.getMiningSystem().getName())
                     .id(miningSystemGasComposition.getId())
                     .miningSystemId(miningSystemGasComposition.getMiningSystem().getId())
                     .gasCompositionId(miningSystemGasComposition.getGasComposition().getId())
+                    .gasCompositionName(miningSystemGasComposition.getGasComposition().getName())
                     .molarFraction(miningSystemGasComposition.getMolarFraction())
                     .build();
         } catch (Exception e) {
