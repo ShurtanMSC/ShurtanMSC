@@ -39,6 +39,7 @@ public class CollectionPointActionDto {
 //    private Double temperatureOpc;
 //    private Double pressureOpc;
 
+
     private Date createdAt;
 
 

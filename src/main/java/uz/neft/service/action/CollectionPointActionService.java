@@ -180,17 +180,17 @@ public class CollectionPointActionService {
             Optional<CollectionPoint> collectionPoint = collectionPointRepository.findById(collectionPointId);
             if (!collectionPoint.isPresent()) return converter.apiError404("collection point not found");
 
-            List<CollectionPointAction> collectionPointActions = collectionPointActionRepository.findAllByCollectionPointOrderByCreatedAtDesc(collectionPoint.get());
-//            Page<CollectionPointAction> collectionPointActions = collectionPointActionRepository.findAll(PageRequest.of(
-//                    page.orElse(0), pageSize.orElse(10),
-//                    Sort.Direction.DESC, sortBy.orElse("createdAt")
-//            ));
+//            List<CollectionPointAction> collectionPointActions = collectionPointActionRepository.findAllByCollectionPointOrderByCreatedAtDesc(collectionPoint.get());
+            Page<CollectionPointAction> collectionPointActions = collectionPointActionRepository.findAll(PageRequest.of(
+                    page.orElse(0), pageSize.orElse(10),
+                    Sort.Direction.DESC, sortBy.orElse("createdAt")
+            ));
             Stream<CollectionPointActionDto> collectionPointActionDtoStream = collectionPointActions.stream().map(converter::collectionPointActionToCollectionPointActionDto);
 
 
 
-//            return converter.apiSuccess200(collectionPointActionDtoStream,collectionPointActions.getTotalElements(), collectionPointActions.getTotalPages());
-            return converter.apiSuccess200(collectionPointActionDtoStream);
+            return converter.apiSuccess200(collectionPointActionDtoStream,collectionPointActions.getTotalElements(), collectionPointActions.getTotalPages());
+//            return converter.apiSuccess200(collectionPointActionDtoStream);
         } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError409();

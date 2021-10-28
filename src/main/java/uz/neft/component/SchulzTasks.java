@@ -24,12 +24,12 @@ public class SchulzTasks {
     private WellRepository wellRepository;
 
 
-//    @Scheduled(fixedRate = 10000)
-//    public void transform() throws InterruptedException {
-//        System.out.println("TASK");
-//        System.out.println();
-//        collectionPointActionService.setAll(1);
-//    }
+    @Scheduled(fixedRate = 10000)
+    public void transform() throws InterruptedException {
+        System.out.println("TASK");
+        System.out.println();
+        collectionPointActionService.setAll(1);
+    }
 
 
 
