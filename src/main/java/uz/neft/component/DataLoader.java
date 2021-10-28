@@ -22,6 +22,7 @@ import uz.neft.repository.action.UppgActionRepository;
 import uz.neft.repository.action.WellActionRepository;
 import uz.neft.repository.constants.ConstantRepository;
 import uz.neft.repository.constants.MiningSystemConstantRepository;
+import uz.neft.service.Calculator;
 import uz.neft.service.action.WellActionService;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -172,9 +173,9 @@ public class DataLoader implements CommandLineRunner {
             String localServer="http://localhost:8080/api/simulate/collection_point";
             String herokuServer= "https://shurtanback.herokuapp.com/api/simulate/collection_point";
 
-            OpcServer serverReal = opcServerRepository.save(new OpcServer("Ecograph", "Haqiqiy server", "EH_Wetzer.OPC_DA_Server.4",pythonServer));
+            OpcServer serverReal = opcServerRepository.save(new OpcServer("Ecograph", "Haqiqiy server", "EH_Wetzer.OPC_DA_Server.4",localServer));
             OpcServer serverRealSim = opcServerRepository.save(new OpcServer("Ecograph", "Haqiqiy server", "EH_Wetzer.OPC_DA_Server.4",localServer));
-            OpcServer serverSimulation = opcServerRepository.save(new OpcServer("Matrikon", "Simulyatsion server", "Matrikon.OPC.Simulation.1",herokuServer));
+            OpcServer serverSimulation = opcServerRepository.save(new OpcServer("Matrikon", "Simulyatsion server", "Matrikon.OPC.Simulation.1",localServer));
 
             String random="Random.Real";
             String temperature="Unit1.YYYYY.VT_R4";
@@ -340,33 +341,33 @@ public class DataLoader implements CommandLineRunner {
 
             //----------------------------------------------------
 
-            GasComposition CH4 = gasCompositionRepository.save(new GasComposition("CH4", 4.695, 190.55));
+            GasComposition CH4 = gasCompositionRepository.save(new GasComposition("CH4", Calculator.mega_pascal_to_kgf_sm2(4.695), 190.55));
 
-            GasComposition C2H6 = gasCompositionRepository.save(new GasComposition("C2H6", 4.976, 306.43));
+            GasComposition C2H6 = gasCompositionRepository.save(new GasComposition("C2H6", Calculator.mega_pascal_to_kgf_sm2(4.976), 306.43));
 
-            GasComposition C3H8 = gasCompositionRepository.save(new GasComposition("C3H8", 4.333, 369.82));
+            GasComposition C3H8 = gasCompositionRepository.save(new GasComposition("C3H8", Calculator.mega_pascal_to_kgf_sm2(4.333), 369.82));
 
-            GasComposition Izo_C4H10 = gasCompositionRepository.save(new GasComposition("Изо_С4Н10", 3.719, 408.13));
+            GasComposition Izo_C4H10 = gasCompositionRepository.save(new GasComposition("Изо_С4Н10", Calculator.mega_pascal_to_kgf_sm2(3.719), 408.13));
 
-            GasComposition H_C4H10 = gasCompositionRepository.save(new GasComposition("H_C4H10", 3.871, 425.16));
+            GasComposition H_C4H10 = gasCompositionRepository.save(new GasComposition("H_C4H10", Calculator.mega_pascal_to_kgf_sm2(3.871), 425.16));
 
-            GasComposition Izo_C5H12 = gasCompositionRepository.save(new GasComposition("Изо_С5Н12", 3.4448, 460.39));
+            GasComposition Izo_C5H12 = gasCompositionRepository.save(new GasComposition("Изо_С5Н12", Calculator.mega_pascal_to_kgf_sm2(3.4448), 460.39));
 
-            GasComposition H_C5H12 = gasCompositionRepository.save(new GasComposition("Н_С5Н12", 3.435, 469.65));
+            GasComposition H_C5H12 = gasCompositionRepository.save(new GasComposition("Н_С5Н12", Calculator.mega_pascal_to_kgf_sm2(3.435), 469.65));
 
-            GasComposition C6H14 = gasCompositionRepository.save(new GasComposition("С6Н14", 3.072, 507.35));
+            GasComposition C6H14 = gasCompositionRepository.save(new GasComposition("С6Н14", Calculator.mega_pascal_to_kgf_sm2(3.072), 507.35));
 
-            GasComposition C7H16 = gasCompositionRepository.save(new GasComposition("С7Н16", 2.790, 540.15));
+            GasComposition C7H16 = gasCompositionRepository.save(new GasComposition("С7Н16", Calculator.mega_pascal_to_kgf_sm2(2.790), 540.15));
 
-            GasComposition C8H18v = gasCompositionRepository.save(new GasComposition("С8Н18в", 2.535, 568.76));
+            GasComposition C8H18v = gasCompositionRepository.save(new GasComposition("С8Н18в", Calculator.mega_pascal_to_kgf_sm2(2.535), 568.76));
 
-            GasComposition CO2 = gasCompositionRepository.save(new GasComposition("СО2", 7.527, 304.20));
+            GasComposition CO2 = gasCompositionRepository.save(new GasComposition("СО2", Calculator.mega_pascal_to_kgf_sm2(7.527), 304.20));
 
-            GasComposition N2 = gasCompositionRepository.save(new GasComposition("N2", 3.465, 126.26));
+            GasComposition N2 = gasCompositionRepository.save(new GasComposition("N2", Calculator.mega_pascal_to_kgf_sm2(3.465), 126.26));
 
-            GasComposition H2S = gasCompositionRepository.save(new GasComposition("H2S", 9.185, 373.60));
+            GasComposition H2S = gasCompositionRepository.save(new GasComposition("H2S", Calculator.mega_pascal_to_kgf_sm2(9.185), 373.60));
 
-            GasComposition H20 = gasCompositionRepository.save(new GasComposition("Н2О", 22.555, 647.40));
+            GasComposition H20 = gasCompositionRepository.save(new GasComposition("Н2О", Calculator.mega_pascal_to_kgf_sm2(22.555), 647.40));
 
             //----------------------------------------------------
 
@@ -531,7 +532,7 @@ public class DataLoader implements CommandLineRunner {
         try {
             WellActionDto wellActionDto= WellActionDto
                     .builder()
-                    .pressure(1.9)
+                    .pressure(Calculator.mega_pascal_to_kgf_sm2(1.9))
                     .rpl(37.22)
                     .wellId(well.getId())
                     .perforation_min(500)

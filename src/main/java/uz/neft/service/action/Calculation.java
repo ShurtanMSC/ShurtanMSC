@@ -1,6 +1,8 @@
 package uz.neft.service.action;
 
 import org.springframework.stereotype.Service;
+import uz.neft.entity.MiningSystem;
+import uz.neft.entity.Uppg;
 import uz.neft.repository.*;
 import uz.neft.repository.action.CollectionPointActionRepository;
 import uz.neft.repository.action.MiningSystemActionRepository;
@@ -10,13 +12,16 @@ import uz.neft.repository.constants.ForecastCondensateRepository;
 import uz.neft.repository.constants.ForecastGasRepository;
 import uz.neft.utils.Converter;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class Calculation {
 
     private final MiningSystemRepository miningSystemRepository;
     private final MiningSystemActionRepository miningSystemActionRepository;
 
-    private final UppgRepository uppgRepositoryu;
+    private final UppgRepository uppgRepository;
     private final UppgActionRepository uppgActionRepository;
 
     private final CollectionPointRepository collectionPointRepository;
@@ -34,10 +39,10 @@ public class Calculation {
     private final ForecastCondensateRepository forecastCondensateRepository;
 
 
-    public Calculation(MiningSystemRepository miningSystemRepository, MiningSystemActionRepository miningSystemActionRepository, UppgRepository uppgRepositoryu, UppgActionRepository uppgActionRepository, CollectionPointRepository collectionPointRepository, CollectionPointActionRepository collectionPointActionRepository, WellRepository wellRepository, WellActionRepository wellActionRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemGasCompositionRepository, Converter converter, ForecastGasRepository forecastGasRepository, ForecastCondensateRepository forecastCondensateRepository) {
+    public Calculation(MiningSystemRepository miningSystemRepository, MiningSystemActionRepository miningSystemActionRepository, UppgRepository uppgRepository, UppgActionRepository uppgActionRepository, CollectionPointRepository collectionPointRepository, CollectionPointActionRepository collectionPointActionRepository, WellRepository wellRepository, WellActionRepository wellActionRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemGasCompositionRepository, Converter converter, ForecastGasRepository forecastGasRepository, ForecastCondensateRepository forecastCondensateRepository) {
         this.miningSystemRepository = miningSystemRepository;
         this.miningSystemActionRepository = miningSystemActionRepository;
-        this.uppgRepositoryu = uppgRepositoryu;
+        this.uppgRepository = uppgRepository;
         this.uppgActionRepository = uppgActionRepository;
         this.collectionPointRepository = collectionPointRepository;
         this.collectionPointActionRepository = collectionPointActionRepository;
@@ -50,16 +55,31 @@ public class Calculation {
         this.forecastCondensateRepository = forecastCondensateRepository;
     }
 
-//
-//    private void debitAllWells(){
-//
-//    }
-//
-//
-//
-//    private double P_pkr(){
-//
-//    }
+
+    private void debitAllWells(Integer miningSystemId){
+
+        try {
+            Optional<MiningSystem> miningSystem = miningSystemRepository.findById(miningSystemId);
+
+            List<Uppg> uppgList = uppgRepository.findAllByMiningSystem(miningSystem.get());
+
+
+
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    private void  debitAllCollectionPoints(Integer miningSystemId){
+
+    }
+
+
+
+
 
 
 

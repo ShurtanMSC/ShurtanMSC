@@ -419,6 +419,7 @@ public class Converter {
                     .pressure(wellAction.getPressure())
                     .temperature(wellAction.getTemperature())
                     .expend(wellAction.getExpend()/1000)
+                    .average_expend(wellAction.getAverage_expend())
                     .rpl(wellAction.getRpl())
                     .status(wellAction.getStatus())
                     .date(wellAction.getCreatedAt().toString())

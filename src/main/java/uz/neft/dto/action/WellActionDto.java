@@ -23,7 +23,10 @@ public class WellActionDto {
     // Tempratura
     private double temperature;
 
-    // Rasxod
+    //Sredniy rasxod D_skv
+    private double average_expend;
+
+    // Rasxod Q
     private double expend;
 
     // Rpl

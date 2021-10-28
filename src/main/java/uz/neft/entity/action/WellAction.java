@@ -85,6 +85,8 @@ public class WellAction extends AbsEntityLong {
     private double ro_air;
 
 
+
+
     @Enumerated(EnumType.STRING)
     private WellStatus status;
 

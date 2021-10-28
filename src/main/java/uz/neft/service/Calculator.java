@@ -170,8 +170,8 @@ public class Calculator {
 public static double rplWell(double P_u, double S, double a, double b, double teta, double Q_well){
         double rpl=0;
 
-        //Agar bosin mpa bo'lsa
-        P_u=(double) pascal_to_kgf_sm2(P_u*1000000);
+        //Agar bosim mpa bo'lsa
+//        P_u=(double) pascal_to_kgf_sm2(P_u*1000000);
 
         //Agar debit mln metr kub bo'lsa
         Q_well=(double) Q_well/1000;
