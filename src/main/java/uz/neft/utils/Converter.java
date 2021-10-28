@@ -407,7 +407,8 @@ public class Converter {
         try {
             return MiningSystemGasCompositionDto
                     .builder()
-                    .Id(miningSystemGasComposition.getId())
+                    .miningSystemName(miningSystemGasComposition.getMiningSystem().getName())
+                    .id(miningSystemGasComposition.getId())
                     .miningSystemId(miningSystemGasComposition.getMiningSystem().getId())
                     .gasCompositionId(miningSystemGasComposition.getGasComposition().getId())
                     .molarFraction(miningSystemGasComposition.getMolarFraction())
@@ -426,6 +427,7 @@ public class Converter {
                     .pressure(wellAction.getPressure())
                     .temperature(wellAction.getTemperature())
                     .expend(wellAction.getExpend()/1000)
+                    .average_expend(wellAction.getAverage_expend())
                     .rpl(wellAction.getRpl())
                     .status(wellAction.getStatus())
                     .date(wellAction.getCreatedAt().toString())

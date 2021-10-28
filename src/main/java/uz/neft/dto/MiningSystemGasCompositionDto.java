@@ -14,7 +14,10 @@ import javax.persistence.ManyToOne;
 @NoArgsConstructor
 @Builder
 public class MiningSystemGasCompositionDto {
-    private Integer Id;
+
+    private String miningSystemName;
+
+    private Integer id;
 
     private Integer miningSystemId;
 

@@ -5,13 +5,12 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellUtil;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.dhatim.fastexcel.Worksheet;
+import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 import uz.neft.entity.CollectionPoint;
 import uz.neft.entity.MiningSystem;
@@ -24,15 +23,13 @@ import uz.neft.repository.UppgRepository;
 import uz.neft.repository.WellRepository;
 import uz.neft.repository.action.WellActionRepository;
 import uz.neft.service.document.fastexcel.ExcelTemplate;
+import uz.neft.service.document.model.TechReportModel;
 import uz.neft.service.document.report.Excel;
 import uz.neft.service.document.report.Helper;
+import uz.neft.utils.Converter;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
+import java.util.*;
 
 @Service
 public class ReportService{
@@ -42,15 +39,35 @@ public class ReportService{
     private final CollectionPointRepository collectionPointRepository;
     private final WellRepository wellRepository;
     private final WellActionRepository wellActionRepository;
+    private final Converter converter;
 
-    public ReportService(MiningSystemRepository miningSystemRepository, UppgRepository uppgRepository, CollectionPointRepository collectionPointRepository, WellRepository wellRepository, WellActionRepository wellActionRepository) {
+    public ReportService(MiningSystemRepository miningSystemRepository, UppgRepository uppgRepository, CollectionPointRepository collectionPointRepository, WellRepository wellRepository, WellActionRepository wellActionRepository, Converter converter) {
         this.miningSystemRepository = miningSystemRepository;
         this.uppgRepository = uppgRepository;
         this.collectionPointRepository = collectionPointRepository;
         this.wellRepository = wellRepository;
         this.wellActionRepository = wellActionRepository;
+        this.converter = converter;
     }
 
+    public HttpEntity<?> all(Integer mining_system_id, Date start,Date end){
+        try {
+            if (mining_system_id==null) return converter.apiError400("Id is null");
+            Optional<MiningSystem> byId = miningSystemRepository.findById(mining_system_id);
+            if (!byId.isPresent()) return converter.apiError404("Mining system not founnd");
+            List<Well> wells=wellRepository.findAllByMiningSystemIdSorted(mining_system_id);
+            List<WellAction> wellActions=new ArrayList<>();
+            for (Well well : wells) {
+                Optional<WellAction> first = wellActionRepository.findFirstByWellOrderByCreatedAtDesc(well);
+                first.ifPresent(wellActions::add);
+            }
+            TechReportModel model=new TechReportModel();
+            return converter.apiSuccess200(model.transform(wells,wellActions));
+        }catch (Exception e){
+            e.printStackTrace();
+            return converter.apiError409();
+        }
+    }
 
 //    public void generate(Integer mining_system_id){
 //

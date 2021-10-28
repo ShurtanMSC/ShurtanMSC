@@ -2,6 +2,7 @@ package uz.neft.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileUrlResource;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import uz.neft.service.document.ReportService;
@@ -54,6 +55,11 @@ public class ReportController {
                 .contentLength(Files.size(Paths.get(filePath)))
                 .body(new FileUrlResource(filePath));
 
+    }
+
+    @GetMapping("/interval")
+    public HttpEntity<?> reportInterval(@RequestParam Integer mining_system_id, @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date start, @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date end){
+        return reportService.all(mining_system_id,start,end);
     }
 
 

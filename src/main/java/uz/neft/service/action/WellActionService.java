@@ -169,22 +169,22 @@ public class WellActionService {
         /**
          * List criticalPressure
          **/
-        List<Double> criticalPressure = miningSystemGasCompositions.stream().map(MiningSystemGasComposition::getGasComposition).map(GasComposition::getCriticalPressure).collect(Collectors.toList());
+        List<Double> criticalPressures = miningSystemGasCompositions.stream().map(MiningSystemGasComposition::getGasComposition).map(GasComposition::getCriticalPressure).collect(Collectors.toList());
 
         /**
          * List criticalTemperature
          **/
-        List<Double> criticalTemperature = miningSystemGasCompositions.stream().map(MiningSystemGasComposition::getGasComposition).map(GasComposition::getCriticalTemperature).collect(Collectors.toList());
+        List<Double> criticalTemperatures = miningSystemGasCompositions.stream().map(MiningSystemGasComposition::getGasComposition).map(GasComposition::getCriticalTemperature).collect(Collectors.toList());
 
         /**
          * Р_ПКР
          **/
-        double P_pkr = Calculator.pseudoCriticalPressureOrTemperature(molarFractions, criticalPressure);
+        double P_pkr = Calculator.pseudoCriticalPressureOrTemperature(molarFractions, criticalPressures);
 
         /**
          * T_ПКР
          **/
-        double T_pkr = Calculator.pseudoCriticalPressureOrTemperature(molarFractions, criticalTemperature);
+        double T_pkr = Calculator.pseudoCriticalPressureOrTemperature(molarFractions, criticalTemperatures);
 
         /**
          * Asosiy kiritiladigan bosim P_u

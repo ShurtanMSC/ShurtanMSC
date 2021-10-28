@@ -137,6 +137,7 @@ public class ElectricityService {
                     ElectricityDto dto = ElectricityDto
                             .builder()
                             .id(electricity.getId())
+                            .miningSystemName(electricity.getMiningSystem().getName())
                             .miningSystemId(electricity.getMiningSystem().getId())
                             .hourly(electricity.getHourly())
                             .daily(electricity.getHourly()*electricity.getHourPerDay())
