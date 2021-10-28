@@ -103,6 +103,40 @@ public class CollectionPointService {
         }
     }
 
+    public ResponseEntity<?> editCPAdmin(CollectionPoint cPoint, Integer opcId,Integer uppgId) {
+        try {
+            if (cPoint.getId() == null) return converter.apiError400("CollectionPoint Id is null");
+
+            if (uppgId == null) return converter.apiError400("Uppg id is null");
+            if (opcId == null) return converter.apiError400("Opc server id is null");
+
+            Optional<Uppg> uppg = uppgRepository.findById(uppgId);
+            Optional<OpcServer> opcServer = opcServerRepository.findById(opcId);
+
+            if (!uppg.isPresent()) return converter.apiError400("Uppg not found");
+            if (!opcServer.isPresent()) return converter.apiError400("opcServer not found");
+
+            CollectionPoint editCollectionPoint;
+            Optional<CollectionPoint> byId = collectionPointRepository.findById(cPoint.getId());
+            if (byId.isPresent()) {
+                    editCollectionPoint = byId.get();
+                    editCollectionPoint.setName(cPoint.getName());
+                    editCollectionPoint.setOpcServer(opcServer.get());
+                    editCollectionPoint.setTemperatureUnit(cPoint.getTemperatureUnit());
+                    editCollectionPoint.setPressureUnit(cPoint.getPressureUnit());
+                    editCollectionPoint.setUppg(uppg.get());
+
+                    CollectionPoint save = collectionPointRepository.save(editCollectionPoint);
+
+                    return converter.apiSuccess200("Collection point Edited", save);
+            }
+            return converter.apiError404("Collection not found!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409("Error edit collection point");
+        }
+    }
+
     public ResponseEntity<?> delete(Integer id) {
         try {
             if (id != null) {

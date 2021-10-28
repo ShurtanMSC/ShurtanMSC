@@ -15,6 +15,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @AllArgsConstructor
@@ -34,6 +35,12 @@ public class CollectionPointActionDto {
     private double temperature;
 
     private Integer collectionPointId;
+    private String address;
+//    private Double temperatureOpc;
+//    private Double pressureOpc;
+
+    private Date createdAt;
+
 
 
 //    @LastModifiedBy

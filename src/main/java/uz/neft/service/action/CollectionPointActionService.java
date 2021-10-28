@@ -1,6 +1,10 @@
 package uz.neft.service.action;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.CollectionPointDto;
@@ -12,6 +16,8 @@ import uz.neft.entity.action.CollectionPointAction;
 import uz.neft.entity.action.UppgAction;
 import uz.neft.entity.action.WellAction;
 import uz.neft.entity.enums.WellStatus;
+import uz.neft.payload.ApiResponseObject;
+import uz.neft.payload.ApiResponseObjectByPageable;
 import uz.neft.repository.*;
 import uz.neft.repository.action.CollectionPointActionRepository;
 import uz.neft.repository.action.WellActionRepository;
@@ -93,20 +99,20 @@ public class CollectionPointActionService {
     }
 
 
-    public HttpEntity<?> addSpecial(User user, CollectionPointAndWells collectionPointAndWells){
+    public HttpEntity<?> addSpecial(User user, CollectionPointAndWells collectionPointAndWells) {
         try {
             Optional<CollectionPoint> collectionPoint = collectionPointRepository.findById(collectionPointAndWells.getCollectionPointId());
             if (!collectionPoint.isPresent()) return converter.apiError404("Collection point not found");
             ResponseEntity<?> response = wellActionService.addSpecial(user, collectionPoint.get(), collectionPointAndWells.getWellList());
-            if (response.getStatusCode().value()!=200) return response;
-            CollectionPointActionDto dto= CollectionPointActionDto
+            if (response.getStatusCode().value() != 200) return response;
+            CollectionPointActionDto dto = CollectionPointActionDto
                     .builder()
                     .collectionPointId(collectionPoint.get().getId())
-                    .pressure(collectionPointAndWells.getPressure()>0?collectionPointAndWells.getPressure():0)
-                    .temperature(collectionPointAndWells.getTemperature()>0?collectionPointAndWells.getTemperature():0)
+                    .pressure(collectionPointAndWells.getPressure() > 0 ? collectionPointAndWells.getPressure() : 0)
+                    .temperature(collectionPointAndWells.getTemperature() > 0 ? collectionPointAndWells.getTemperature() : 0)
                     .build();
             return addManually(user, dto);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError409();
         }
@@ -125,61 +131,67 @@ public class CollectionPointActionService {
         }
     }
 
-    public HttpEntity<?> getAllByMiningSystem(Integer id){
-        try{
-            if (id==null) return converter.apiError400("id is null!");
+    public HttpEntity<?> getAllByMiningSystem(Integer id) {
+        try {
+            if (id == null) return converter.apiError400("id is null!");
 //            Optional<MiningSystem> miningSystem = miningSystemRepository.findById(id);
 //            if (!miningSystem.isPresent()) return converter.apiError404("Mining system not found!");
 //            List<Uppg> uppgList = uppgRepository.findAllByMiningSystem(miningSystem.get());
 //            List<CollectionPoint> collectionPointList =new ArrayList<>();
-            List<CollectionPoint> collectionPointList =collectionPointRepository.findAllByMiningSystemId(id);
+            List<CollectionPoint> collectionPointList = collectionPointRepository.findAllByMiningSystemId(id);
 //            for (Uppg uppg : uppgList) {
 //                List<CollectionPoint> allByUppg = collectionPointRepository.findAllByUppg(uppg);
 //                collectionPointList.addAll(allByUppg);
 //            }
             return converter.apiSuccess200(collectionPointList.stream().map(converter::collectionPointToCollectionPointDto).collect(Collectors.toList()));
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError409();
         }
     }
 
-    public HttpEntity<?> getAllWithActionsByMiningSystem(Integer id){
-        try{
-            if (id==null) return converter.apiError400("id is null!");
-            List<CollectionPoint> collectionPointList =collectionPointRepository.findAllByMiningSystemId(id);
-            List<ObjectWithActionsDto> list=new ArrayList<>();
+    public HttpEntity<?> getAllWithActionsByMiningSystem(Integer id) {
+        try {
+            if (id == null) return converter.apiError400("id is null!");
+            List<CollectionPoint> collectionPointList = collectionPointRepository.findAllByMiningSystemId(id);
+            List<ObjectWithActionsDto> list = new ArrayList<>();
 
 //            collectionPointList.forEach(c->System.out.println(collectionPointActionRepository.findFirstByCollectionPointOrderByCreatedAtDesc(c)));
 
             collectionPointList
                     .forEach(
-                            c->
-                            list
-                                    .add(new ObjectWithActionsDto(
-                                            converter.collectionPointToCollectionPointDto(c),
-                                            converter.collectionPointActionToCollectionPointActionDto(
-                                                    collectionPointActionRepository
-                                                    .findFirstByCollectionPointOrderByCreatedAtDesc(c)))));
+                            c ->
+                                    list
+                                            .add(new ObjectWithActionsDto(
+                                                    converter.collectionPointToCollectionPointDto(c),
+                                                    converter.collectionPointActionToCollectionPointActionDto(
+                                                            collectionPointActionRepository
+                                                                    .findFirstByCollectionPointOrderByCreatedAtDesc(c)))));
             return converter.apiSuccess200(list);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError409();
         }
     }
 
-    public HttpEntity<?> getAllActionsByCollectionPoint(Integer id){
-        try{
-            if (id==null) return converter.apiError400("action id is null!");
-            Optional<CollectionPoint> collectionPoint = collectionPointRepository.findById(id);
+    public HttpEntity<?> getAllActionsByCollectionPoint(Integer collectionPointId, Optional<Integer> page, Optional<Integer> pageSize, Optional<String> sortBy) {
+        try {
+            if (collectionPointId == null) return converter.apiError400("action id is null!");
+            Optional<CollectionPoint> collectionPoint = collectionPointRepository.findById(collectionPointId);
             if (!collectionPoint.isPresent()) return converter.apiError404("collection point not found");
 
             List<CollectionPointAction> collectionPointActions = collectionPointActionRepository.findAllByCollectionPointOrderByCreatedAtDesc(collectionPoint.get());
-
+//            Page<CollectionPointAction> collectionPointActions = collectionPointActionRepository.findAll(PageRequest.of(
+//                    page.orElse(0), pageSize.orElse(10),
+//                    Sort.Direction.DESC, sortBy.orElse("createdAt")
+//            ));
             Stream<CollectionPointActionDto> collectionPointActionDtoStream = collectionPointActions.stream().map(converter::collectionPointActionToCollectionPointActionDto);
 
+
+
+//            return converter.apiSuccess200(collectionPointActionDtoStream,collectionPointActions.getTotalElements(), collectionPointActions.getTotalPages());
             return converter.apiSuccess200(collectionPointActionDtoStream);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError409();
         }
@@ -264,12 +276,13 @@ public class CollectionPointActionService {
     }
 
 
-    /** Auto **/
+    /**
+     * Auto
+     **/
 
     //..... from MODBUS
     //... coming soon
-
-    public void setAll(int id){
+    public void setAll(int id) {
         try {
 
             List<CollectionPoint> all = collectionPointRepository.findAllByMiningSystemId(id);
@@ -285,9 +298,9 @@ public class CollectionPointActionService {
 
                 Thread.sleep(500);
 //                System.out.println(action.toString());
-                if (action.getPressure()==0){
+                if (action.getPressure() == 0) {
                     action.setExpend(0);
-                }else {
+                } else {
                     double expendCp = checkWells(collectionPoint, action);
                     action.setExpend(expendCp);
                 }
@@ -295,34 +308,33 @@ public class CollectionPointActionService {
                 collectionPointActionRepository.save(action);
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public double checkWells(CollectionPoint cp,CollectionPointAction cpAction){
-        double expendCp=0;
-        try{
+    public double checkWells(CollectionPoint cp, CollectionPointAction cpAction) {
+        double expendCp = 0;
+        try {
             List<Well> wellList = wellRepository.findAllByCollectionPointOrderByIdAsc(cp);
             for (Well well : wellList) {
                 Optional<WellAction> action = wellActionRepository.findFirstByWellOrderByCreatedAtDesc(well);
                 if (action.isPresent()) {
                     if (action.get().getPressure() < cpAction.getPressure()) {
                         action.get().setExpend(0);
-                        if (action.get().getStatus()==WellStatus.IN_WORK)
-                        action.get().setStatus(WellStatus.IN_IDLE);
-                    }
-                    else{
-                        if (action.get().getStatus()==WellStatus.IN_IDLE)
-                        action.get().setStatus(WellStatus.IN_WORK);
+                        if (action.get().getStatus() == WellStatus.IN_WORK)
+                            action.get().setStatus(WellStatus.IN_IDLE);
+                    } else {
+                        if (action.get().getStatus() == WellStatus.IN_IDLE)
+                            action.get().setStatus(WellStatus.IN_WORK);
                         double expend = wellActionService.expend(action.get().getTemperature(), action.get().getPressure(), cp.getUppg().getMiningSystem());
                         action.get().setExpend(expend);
-                        expendCp+=expend;
+                        expendCp += expend;
                     }
                     wellActionRepository.save(action.get());
                 }
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return expendCp;

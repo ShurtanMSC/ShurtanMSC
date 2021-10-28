@@ -43,13 +43,17 @@ public class SuperAdminController {
     }
 
 
-    /** Roles **/
+    /**
+     * Roles
+     **/
     @GetMapping("/role/all")
-    public HttpEntity<?> getRoles(){
+    public HttpEntity<?> getRoles() {
         return ResponseEntity.ok(roleRepository.findAll());
     }
 
-    /** User qo'shish  **/
+    /**
+     * User qo'shish
+     **/
 
     @PostMapping("/user/add")
     public HttpEntity<?> save(@RequestBody UserDto dto) {
@@ -141,17 +145,18 @@ public class SuperAdminController {
 
     //   Collection Point CRUD
 
-    @PostMapping("/collection/add/{uppgId}/{opcId}")
+    @PostMapping("/collection_point/add/{uppgId}/{opcId}")
     public HttpEntity<?> saveCollection(@PathVariable Integer uppgId,
                                         @PathVariable Integer opcId,
                                         @RequestBody CollectionPoint collectionPoint) {
-
-        return collectionPointService.saveCollectionPointAdmin(collectionPoint,uppgId,opcId);
+        return collectionPointService.saveCollectionPointAdmin(collectionPoint, uppgId, opcId);
     }
 
-    @PutMapping("/collection_point/edit")
-    public HttpEntity<?> editCollection(@RequestBody CollectionPointDto dto) {
-        return collectionPointService.edit(dto);
+    @PutMapping("/collection_point/edit/{uppgId}/{opcId}")
+    public HttpEntity<?> editCollection(@PathVariable Integer uppgId,
+                                        @PathVariable Integer opcId,
+                                        @RequestBody CollectionPoint collectionPoint) {
+        return collectionPointService.editCPAdmin(collectionPoint,opcId,uppgId);
     }
 
     @DeleteMapping("/collection_point/delete/{id}")
@@ -201,7 +206,6 @@ public class SuperAdminController {
     public HttpEntity<?> wellById(@PathVariable Integer id) {
         return wellService.findById(id);
     }
-
 
 
     //   Opc Server CRUD

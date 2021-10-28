@@ -33,18 +33,22 @@ function clickActionBtn(id) {
 function getActionsByCollectionPoint() {
     let formField = document.getElementById('addOrEditCollectionPointActionForm');
     formField['collectionPointId'].value = collectionPointID;
+    console.log(" getActionsByCollectionPoint() 1")
 
-    axios.get("/api/collection_point/actions/" + collectionPointID)
+    // axios.get("/api/collection_point/actions/" + collectionPointID)
+    axios.get("/api/collection_point/actions/1")
         .then(function (response) {
-            console.log(response.data.object)
-            if (response.data.message === "OK") {
-                collectionPointActionsList = response.data.object
-            }
-            document.getElementById("collectionPointActionsTable").innerHTML = createViewTableAction(response.data.object)
+            console.log(response.data)
+            // if (response.data.message === "OK") {
+            //     collectionPointActionsList = response.data.object
+            // }
+            // document.getElementById("collectionPointActionsTable").innerHTML = createViewTableAction(response.data.object)
         })
         .catch(function (error) {
             console.log(error)
         })
+    console.log(" getActionsByCollectionPoint() 2" )
+
 }
 
 function resetAndCloseFormAction() {
@@ -127,11 +131,13 @@ function deleteCollectionPointAction(id) {
 function createViewTableAction(actions) {
     let out = "";
     actions.map(action => {
-        // const createdAtDate = new Date('' + action.createdAt + '');
-        // const createdAtDayOfMonth = createdAtDate.getDate();
-        // const createdAtMonth = createdAtDate.getMonth(); // Be careful! January is 0, not 1
-        // const createdAtYear = createdAtDate.getFullYear();
-        // const createdAtDateString = createdAtDayOfMonth + "-" + (createdAtMonth + 1) + "-" + createdAtYear;
+        const createdAtDate = new Date('' + action.createdAt + '');
+        const createdAtDayOfMonth = createdAtDate.getDate();
+        const createdAtMonth = createdAtDate.getMonth(); // Be careful! January is 0, not 1
+        const createdAtYear = createdAtDate.getFullYear();
+        const createdAtHours = createdAtDate.getHours();
+        const createdAtMins = createdAtDate.getMinutes()
+        const createdAtDateString = createdAtDayOfMonth + "-" + (createdAtMonth + 1) + "-" + createdAtYear+" " +createdAtHours+":"+createdAtMins;
 
         out += "<tr class=\"action_table_row\">\n" +
             "   <td class=\"sorting_1\">" + action.actionId + "</td>\n" +
@@ -139,6 +145,10 @@ function createViewTableAction(actions) {
             "    <td>" + action.pressure + "</td>\n" +
             "    <td>" + action.temperature + "</td>\n" +
             "     <td id=\"collectionPointIdTd\" hidden value='" + action.collectionPointId + "'>" + action.collectionPointId + "</td>\n" +
+            "    <td>" + action.address + "</td>\n" +
+            "    <td>" + action.temperatureOpc + "</td>\n" +
+            "    <td>" + action.pressureOpc + "</td>\n" +
+            "    <td>" + createdAtDateString + "</td>\n" +
             "     <td><button data-target=\"#exampleModalCenterAction\" data-toggle=\"modal\" class='btn btn-success ml-1 mt-1' id='btn-edit-action' value='" + action.actionId + "' onclick='editCollectionPointAction(this.value)'>Редактировать</button>\n" +
             "      <button class='btn btn-danger ml-1 mt-1' id='btn-edit-action' value='" + action.actionId + "' onclick='deleteCollectionPointAction(this.value)'>Удалить</button></td>\n" +
             "   </tr>"

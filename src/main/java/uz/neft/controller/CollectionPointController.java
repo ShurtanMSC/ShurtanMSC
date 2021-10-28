@@ -11,6 +11,8 @@ import uz.neft.secret.CurrentUser;
 import uz.neft.service.CollectionPointService;
 import uz.neft.service.action.CollectionPointActionService;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("api/collection_point")
 @CrossOrigin
@@ -83,8 +85,13 @@ public class CollectionPointController {
     }
 
     @GetMapping("actions/{collectionPointId}")
-    public HttpEntity<?> getAllCtionsByCollectionPointId(@PathVariable Integer collectionPointId) {
-        return collectionPointActionService.getAllActionsByCollectionPoint(collectionPointId);
+    public HttpEntity<?> getAllActionsByCollectionPointId(@PathVariable Integer collectionPointId,
+                                                         @RequestParam Optional<Integer> page,
+                                                         @RequestParam Optional<Integer> pageSaze,
+                                                         @RequestParam Optional<String> sortBy
+                                                         ) {
+
+        return collectionPointActionService.getAllActionsByCollectionPoint(collectionPointId, page, pageSaze, sortBy);
     }
 
     @GetMapping("all/action/mining_system/{id}")

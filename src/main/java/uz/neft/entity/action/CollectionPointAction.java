@@ -115,6 +115,7 @@ public class CollectionPointAction extends AbsEntityLong {
 
 
 
+
 //    @LastModifiedBy
 //    @Column(nullable = false)
 //    private String modifiedBy;
@@ -136,16 +137,4 @@ public class CollectionPointAction extends AbsEntityLong {
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        CollectionPointAction that = (CollectionPointAction) o;
-        return Objects.equals(getId(), that.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return 0;
-    }
 }

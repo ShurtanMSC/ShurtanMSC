@@ -1,4 +1,6 @@
-let collectionPointsList = []
+let collectionPointsList = [];
+let uppgsLists = [];
+let opcServersList = [];
 let miningSystemId = 1;
 let uppgId = 1
 
@@ -26,6 +28,7 @@ function getAllUppgs() {
             if (response.data.message === "OK") {
                 document.getElementById("uppgSelect").innerHTML = createViewMiningOrUppgSelect(response.data.object)
                 uppgId = document.getElementById('uppgSelect').value;
+                uppgsLists=response.data.object
                 getAllCollectionPoints()
             }
         })
@@ -76,6 +79,7 @@ function getAllOpcServers() {
             // console.log("response.data")
             // console.log(response.data)
             document.getElementById("inputGroupSelect03").innerHTML = addOptionOpcServers(response.data.object)
+            opcServersList=response.data.object
         })
         .catch(function (error) {
             console.log(error)
@@ -88,7 +92,7 @@ function addCollectionPointBtn() {
     document.getElementById('addOrEditCollectionPointH3').innerText = 'Добавить Сборный пункт'
     document.getElementById('addOrEditCollectionPointBtn').innerText = 'Добавить'
     let formField = document.getElementById('addOrEditCollectionPointForm')
-    formField['uppgId'].value = uppgId;
+    formField['uppg'].value = uppgId;
 }
 
 function resetAndCloseForm() {
@@ -101,7 +105,12 @@ function addOrEditCollectionPoint(event) {
     const formData = new FormData(event.target);
     const data = {}
     formData.forEach((value, key) => (data[key] = value));
-    // console.log(data)
+    data.uppg={};
+    data.opcServer={};
+
+    // console.log("data 1")
+    console.log(data)
+
     let config = {
         method: '',
         url: '',
@@ -115,7 +124,7 @@ function addOrEditCollectionPoint(event) {
     } else {
 
         config.method = 'put';
-        config.url = '/api/admin/collection_point/edit'
+        config.url = '/api/admin/collection_point/edit/' + uppgId + '/' + opcId;
     }
 
     axios(config)
@@ -139,7 +148,8 @@ function editCollectionPoint(id) {
     formField['name'].value = editCollectionPoint.name;
     formField['temperatureUnit'].value = editCollectionPoint.temperatureUnit;
     formField['pressureUnit'].value = editCollectionPoint.pressureUnit;
-    formField['opcServerId'].value = editCollectionPoint.opcServer.id;
+    formField['opcServer'].value = editCollectionPoint.opcServer.id;
+    opcId=editCollectionPoint.opcServer.id;
 }
 
 function deleteCollectionPoint(id) {
@@ -161,9 +171,8 @@ function createViewTable(collectionPoints) {
             "<td>" + collectionPoint.name + "</td>\n" +
             "<td>" + collectionPoint.temperatureUnit + "</td>\n" +
             "<td>" + collectionPoint.pressureUnit + "</td>\n" +
-            // "<td hidden>" + collectionPoint.uppg.id + "</td>\n" +
+            // "<td hidden value='" + collectionPoint.uppgId + "'>" + collectionPoint.uppgId + "</td>\n" +
             "<td>" + collectionPoint.opcServer.name + "</td>\n" +
-            "<td hidden value='" + collectionPoint.uppgId + "'>" + collectionPoint.uppgId + "</td>\n" +
             "<td><button data-target=\"#exampleModalCenter\" data-toggle=\"modal\" class='btn btn-success mt-1' id='btn-edit-collectionPoint' value='" + collectionPoint.id + "' onclick='editCollectionPoint(this.value)'>Редактировать</button>\n" +
             "<button  class='btn btn-info ml-2 mt-1' id='btn-action-mining' value='" + collectionPoint.id + "' onclick='clickActionBtn(this.value)'>Действие</button>" +
             "<button class='btn btn-danger ml-2 mt-1' id='btn-edit-collectionPoint' value='" + collectionPoint.id + "' onclick='deleteCollectionPoint(this.value)'>Удалить</button></td>\n" +
@@ -183,7 +192,7 @@ function createViewMiningOrUppgSelect(miningsOrUppgs) {
 function addOptionOpcServers(servers) {
     let out = "<option value=''>ОПС серверы</option>";
     servers.map(item => {
-        out += "<option value='"+item.id+"'>"+item.name+"</option>"
+        out += "<option value='" + item.id + "'>" + item.name + "</option>"
     })
     return out;
 }

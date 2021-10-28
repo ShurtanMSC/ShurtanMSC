@@ -134,6 +134,10 @@ public class Converter {
         return ResponseEntity.status(status).body(apiSuccess(message, object));
     }
 
+    protected ResponseEntity<?> helpSuccess(HttpStatus status,Object object, long totalElements, Integer totalPages) {
+        return ResponseEntity.status(status).body(apiSuccessObject(object,totalElements,totalPages));
+    }
+
     /**
      * Error
      **/
@@ -244,6 +248,9 @@ public class Converter {
 
     public ResponseEntity<?> apiSuccess200(String message, Object object) {
         return helpSuccess(HttpStatus.OK, message, object);
+    }
+    public ResponseEntity<?> apiSuccess200(Object object,long totalElements,Integer totalPages) {
+        return helpSuccess(HttpStatus.OK,object,totalElements,totalPages);
     }
 
     // Status 201
@@ -447,10 +454,14 @@ public class Converter {
             return CollectionPointActionDto
                     .builder()
                     .actionId(collectionPointAction.getId())
-                    .collectionPointId(collectionPointAction.getCollectionPoint().getId())
                     .expend(collectionPointAction.getExpend()/1000)
                     .pressure(collectionPointAction.getPressure())
                     .temperature(collectionPointAction.getTemperature())
+                    .collectionPointId(collectionPointAction.getCollectionPoint().getId())
+                    .address(collectionPointAction.getAddress())
+//                    .temperatureOpc(collectionPointAction.getTemperatureOpc())
+//                    .pressureOpc(collectionPointAction.getPressureOpc())
+                    .createdAt(collectionPointAction.getCreatedAt())
                     .build();
         } catch (Exception e) {
             e.printStackTrace();
