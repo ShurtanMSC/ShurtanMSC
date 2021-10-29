@@ -454,7 +454,7 @@ public class Converter {
     }
 
     public CollectionPointActionDto collectionPointActionToCollectionPointActionDto(CollectionPointAction collectionPointAction) {
-        if (collectionPointAction == null) return null;
+        if (collectionPointAction == null) return new CollectionPointActionDto();
         try {
             return CollectionPointActionDto
                     .builder()
@@ -467,7 +467,7 @@ public class Converter {
                     .build();
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return new CollectionPointActionDto();
         }
     }
 

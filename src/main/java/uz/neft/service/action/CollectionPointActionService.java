@@ -149,7 +149,7 @@ public class CollectionPointActionService {
     public HttpEntity<?> getAllWithActionsByMiningSystem(Integer id) {
         try {
             if (id == null) return converter.apiError400("id is null!");
-            List<CollectionPoint> collectionPointList = collectionPointRepository.findAllByMiningSystemId(id);
+            List<CollectionPoint> collectionPointList = collectionPointRepository.findAllByMiningSystemIdOrder(id);
             List<ObjectWithActionsDto> list = new ArrayList<>();
 
 //            collectionPointList.forEach(c->System.out.println(collectionPointActionRepository.findFirstByCollectionPointOrderByCreatedAtDesc(c)));

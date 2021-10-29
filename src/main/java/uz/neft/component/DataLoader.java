@@ -12,6 +12,7 @@ import uz.neft.entity.*;
 import uz.neft.entity.action.MiningSystemAction;
 import uz.neft.entity.action.UppgAction;
 import uz.neft.entity.action.WellAction;
+import uz.neft.entity.enums.OpcServerType;
 import uz.neft.entity.enums.WellCategory;
 import uz.neft.entity.enums.WellStatus;
 import uz.neft.entity.variables.*;
@@ -175,9 +176,9 @@ public class DataLoader implements CommandLineRunner {
             String localServer=simulate+"/api/simulate/collection_point";
             String herokuServer= "https://shurtanback.herokuapp.com/api/simulate/collection_point";
 
-            OpcServer serverReal = opcServerRepository.save(new OpcServer("Ecograph 1", "Haqiqiy server", "EH_Wetzer.OPC_DA_Server.4",localServer));
-            OpcServer serverRealSim = opcServerRepository.save(new OpcServer("Ecograph 2", "Haqiqiy server", "EH_Wetzer.OPC_DA_Server.4",localServer));
-            OpcServer serverSimulation = opcServerRepository.save(new OpcServer("Matrikon", "Simulyatsion server", "Matrikon.OPC.Simulation.1",localServer));
+            OpcServer serverReal = opcServerRepository.save(new OpcServer("Ecograph 1", "Haqiqiy server", "EH_Wetzer.OPC_DA_Server.4",localServer, OpcServerType.REAL));
+//            OpcServer serverRealSim = opcServerRepository.save(new OpcServer("Ecograph 2", "Haqiqiy server", "EH_Wetzer.OPC_DA_Server.4",localServer));
+            OpcServer serverSimulation = opcServerRepository.save(new OpcServer("Matrikon", "Simulyatsion server", "Matrikon.OPC.Simulation.1",localServer,OpcServerType.SIMULATE));
 
             String random="Random.Real";
             String temperature="Unit1.YYYYY.VT_R4";

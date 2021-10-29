@@ -16,4 +16,7 @@ public interface CollectionPointRepository extends JpaRepository<CollectionPoint
     @Query(value="select * from collection_point where uppg_id in (select id from uppg where mining_system_id = :mining_system_id)", nativeQuery = true)
     List<CollectionPoint> findAllByMiningSystemId(Integer mining_system_id);
 
+    @Query(value="select * from collection_point where uppg_id in (select id from uppg where mining_system_id = :mining_system_id) order by collection_point.id asc ", nativeQuery = true)
+    List<CollectionPoint> findAllByMiningSystemIdOrder(Integer mining_system_id);
+
 }
