@@ -307,6 +307,10 @@
 	</build>
 	<repositories>
 		<repository>
+			<id>my-local-repo</id>
+			<url>file://C:\JEasyOpc.jar</url>
+		</repository>
+		<repository>
 			<id>spring-releases</id>
 			<name>Spring Releases</name>
 			<url>https://repo.spring.io/release</url>
