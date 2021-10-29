@@ -307,7 +307,7 @@
 	</build>
 	<repositories>
 		<repository>
-			<id>my-local-repo</id>
+			<id>javafish.clients.opc</id>
 			<url>file://C:\JEasyOpc.jar</url>
 		</repository>
 		<repository>
