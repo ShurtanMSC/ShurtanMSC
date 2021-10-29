@@ -101,7 +101,6 @@ public class CollectionPointController {
                                                           @RequestParam Optional<Integer> pageSaze,
                                                           @RequestParam Optional<String> sortBy
     ) {
-
         return collectionPointActionService.getAllActionsByCollectionPoint(collectionPointId, page, pageSaze, sortBy);
     }
 

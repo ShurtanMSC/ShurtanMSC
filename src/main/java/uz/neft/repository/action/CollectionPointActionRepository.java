@@ -1,6 +1,7 @@
 package uz.neft.repository.action;
 
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import uz.neft.entity.CollectionPoint;
 import uz.neft.entity.Uppg;
@@ -24,6 +25,7 @@ public interface CollectionPointActionRepository extends JpaRepository<Collectio
     List<CollectionPointAction> findAllByCollectionPointAndCreatedAtBetween(CollectionPoint collectionPoint,Timestamp from,Timestamp until);
 
     List<CollectionPointAction> findAllByCollectionPointOrderByCreatedAtDesc(CollectionPoint collectionPoint);
+
 
 
 }

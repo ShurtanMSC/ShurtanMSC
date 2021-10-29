@@ -86,7 +86,7 @@ function getAllOpcServers() {
         })
 }
 
-document.getElementById('addCollectionPointBtn').addEventListener('click', addCollectionPointBtn);
+// document.getElementById('addCollectionPointBtn').addEventListener('click', addCollectionPointBtn);
 
 function addCollectionPointBtn() {
     document.getElementById('addOrEditCollectionPointH3').innerText = 'Добавить Сборный пункт'

@@ -107,7 +107,6 @@
         }
     </style>
 
-    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle/3.6.1/css/bootstrap4-toggle.min.css}">
 </head>
 
 <body onload="" id="page-top">
@@ -160,7 +159,9 @@
                                     <div class="col-4 p-0 wrap mr-2 ">
                                         <button type="button" class="btn btn-primary py-2 px-3" data-toggle="modal"
                                                 data-target="#exampleModalCenter"
-                                                id="addCollectionPointBtn">
+                                                id="addCollectionPointBtn"
+                                                onclick="addCollectionPointBtn()"
+                                        >
                                             Добавить Сборный пункт
                                         </button>
                                     </div>
@@ -188,6 +189,7 @@
                                     <button type="button" class="btn btn-outline-info py-2 px-4"
                                             data-toggle="modal" style="display: none;"
                                             id="addCollectionPointActionBtn"
+                                            onclick="addCollectionPointActionBtn()"
                                             data-target="#exampleModalCenterAction">
                                         Добавить действие УППГ
                                     </button>
@@ -673,7 +675,6 @@
 
 
 </body>
-<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js" th:src="@{https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle/3.6.1/js/bootstrap4-toggle.min.js}"></script>
 
 <script>
     $(document).ready(function () {

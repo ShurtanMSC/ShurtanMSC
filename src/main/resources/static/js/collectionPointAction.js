@@ -85,7 +85,7 @@ function addOrEditCollectionPointAction(event) {
         });
 }
 
-document.getElementById('addCollectionPointActionBtn').addEventListener('click', addCollectionPointActionBtn);
+// document.getElementById('addCollectionPointActionBtn').addEventListener('click', addCollectionPointActionBtn);
 
 function addCollectionPointActionBtn() {
     document.getElementById('addOrEditCollectionPointActionH3').innerText = 'Добавить действие'
