@@ -37,7 +37,7 @@
 		<artifactId>opc</artifactId>
 		<version>1.0</version>
 		<scope>system</scope>
-		<systemPath>${basedir}/lib/JEasyOpc.jar</systemPath>
+		<systemPath>${project.basedir}/lib/JEasyOpc.jar</systemPath>
 	</dependency>
 
 
