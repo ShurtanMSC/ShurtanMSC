@@ -28,7 +28,7 @@ function getAllUppgs() {
             if (response.data.message === "OK") {
                 document.getElementById("uppgSelect").innerHTML = createViewMiningOrUppgSelect(response.data.object)
                 uppgId = document.getElementById('uppgSelect').value;
-                uppgsLists=response.data.object
+                uppgsLists = response.data.object
                 getAllCollectionPoints()
             }
         })
@@ -61,14 +61,14 @@ function getAllCollectionPoints() {
     } else {
         axios.get("/api/admin/collection_point/all/" + uppgId)
             .then(function (response) {
-                // console.log(response.data)
+                console.log(response.data)
                 if (response.data.message === "OK") {
                     collectionPointsList = response.data.object
                 }
                 document.getElementById("collectionPointTable").innerHTML = createViewTable(response.data.object)
             })
             .catch(function (error) {
-                console.log(error)
+                console.log(error.response)
             })
     }
 }
@@ -79,7 +79,7 @@ function getAllOpcServers() {
             // console.log("response.data")
             // console.log(response.data)
             document.getElementById("inputGroupSelect03").innerHTML = addOptionOpcServers(response.data.object)
-            opcServersList=response.data.object
+            opcServersList = response.data.object
         })
         .catch(function (error) {
             console.log(error)
@@ -105,8 +105,8 @@ function addOrEditCollectionPoint(event) {
     const formData = new FormData(event.target);
     const data = {}
     formData.forEach((value, key) => (data[key] = value));
-    data.uppg={};
-    data.opcServer={};
+    data.uppg = {};
+    data.opcServer = {};
 
     // console.log("data 1")
     console.log(data)
@@ -149,7 +149,7 @@ function editCollectionPoint(id) {
     formField['temperatureUnit'].value = editCollectionPoint.temperatureUnit;
     formField['pressureUnit'].value = editCollectionPoint.pressureUnit;
     formField['opcServer'].value = editCollectionPoint.opcServer.id;
-    opcId=editCollectionPoint.opcServer.id;
+    opcId = editCollectionPoint.opcServer.id;
 }
 
 function deleteCollectionPoint(id) {
@@ -157,6 +157,21 @@ function deleteCollectionPoint(id) {
         .then(function (response) {
             // console.log(response.data)
             getAllCollectionPoints()
+        })
+        .catch(function (error) {
+            console.log(error.response.data)
+        })
+}
+
+function changeCollectionPointIsActive(checkboxElem) {
+    let isActive = checkboxElem.checked;
+    let id = checkboxElem.name;
+    console.log("isActive")
+    console.log(isActive)
+    axios.get("/api/collection_point/active/" + id + "/" + isActive)
+        .then(function (response) {
+            console.log(response.data)
+            // getAllCollectionPoints()
         })
         .catch(function (error) {
             console.log(error.response.data)
@@ -173,9 +188,15 @@ function createViewTable(collectionPoints) {
             "<td>" + collectionPoint.pressureUnit + "</td>\n" +
             // "<td hidden value='" + collectionPoint.uppgId + "'>" + collectionPoint.uppgId + "</td>\n" +
             "<td>" + collectionPoint.opcServer.name + "</td>\n" +
-            "<td><button data-target=\"#exampleModalCenter\" data-toggle=\"modal\" class='btn btn-success mt-1' id='btn-edit-collectionPoint' value='" + collectionPoint.id + "' onclick='editCollectionPoint(this.value)'>Редактировать</button>\n" +
+            "<td>" +
+            "<button data-target=\"#exampleModalCenter\" data-toggle=\"modal\" class='btn btn-success mt-1' id='btn-edit-collectionPoint' value='" + collectionPoint.id + "' onclick='editCollectionPoint(this.value)'>Редактировать</button>\n" +
             "<button  class='btn btn-info ml-2 mt-1' id='btn-action-mining' value='" + collectionPoint.id + "' onclick='clickActionBtn(this.value)'>Действие</button>" +
-            "<button class='btn btn-danger ml-2 mt-1' id='btn-edit-collectionPoint' value='" + collectionPoint.id + "' onclick='deleteCollectionPoint(this.value)'>Удалить</button></td>\n" +
+            "<button class='btn btn-danger ml-2 mt-1 mr-2' id='btn-edit-collectionPoint' value='" + collectionPoint.id + "' onclick='deleteCollectionPoint(this.value)'>Удалить</button>" +
+            "<div class='mt-2'>" +
+            "<input  onchange='changeCollectionPointIsActive(this)' name='" + collectionPoint.id + "' type=\"checkbox\" checked='" + collectionPoint.activeE + "'  data-toggle=\"toggle\" data-onstyle=\"warning\">" +
+            "</div>" +
+
+            "</td>\n" +
             "</tr>"
     })
     return out;

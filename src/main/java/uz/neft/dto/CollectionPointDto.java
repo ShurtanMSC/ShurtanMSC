@@ -20,4 +20,5 @@ public class CollectionPointDto {
     private Integer id;
     private String name;
     private Integer uppgId;
+    private boolean active;
 }

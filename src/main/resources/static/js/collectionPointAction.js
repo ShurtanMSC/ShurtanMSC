@@ -11,7 +11,6 @@ function goOutFromAction() {
     document.getElementById('cardTableCollectionPointAction').style.display = 'none';
     document.getElementById('addCollectionPointActionBtn').style.display = 'none';
     document.getElementById('goOutActionsIcon').style.display = 'none';
-
 }
 
 function clickActionBtn(id) {
@@ -33,21 +32,18 @@ function clickActionBtn(id) {
 function getActionsByCollectionPoint() {
     let formField = document.getElementById('addOrEditCollectionPointActionForm');
     formField['collectionPointId'].value = collectionPointID;
-    console.log(" getActionsByCollectionPoint() 1")
 
-    // axios.get("/api/collection_point/actions/" + collectionPointID)
-    axios.get("/api/collection_point/actions/1")
+    axios.get("/api/collection_point/actions/" + collectionPointID)
         .then(function (response) {
             console.log(response.data)
-            // if (response.data.message === "OK") {
-            //     collectionPointActionsList = response.data.object
-            // }
-            // document.getElementById("collectionPointActionsTable").innerHTML = createViewTableAction(response.data.object)
+            if (response.data.message === "OK") {
+                collectionPointActionsList = response.data.object
+            }
+            document.getElementById("collectionPointActionsTable").innerHTML = createViewTableAction(response.data.object)
         })
         .catch(function (error) {
             console.log(error)
         })
-    console.log(" getActionsByCollectionPoint() 2" )
 
 }
 
@@ -72,7 +68,7 @@ function addOrEditCollectionPointAction(event) {
 
     if (data.actionId === "" || data.actionId == null) {
         config.method = 'post';
-        config.url = '/api/collectionPoint/add/action'
+        config.url = '/api/collection_point/manually/add/action'
     } else {
         config.method = 'put';
         config.url = '/api/collectionPoint/edit/action'
@@ -105,15 +101,11 @@ function editCollectionPointAction(id) {
 
     formField['actionId'].value = editCollectionPointAction.actionId;
     formField['expend'].value = editCollectionPointAction.expend;
-    formField['designedPerformance'].value = editCollectionPointAction.designedPerformance;
-    formField['actualPerformance'].value = editCollectionPointAction.actualPerformance;
-    formField['condensate'].value = editCollectionPointAction.condensate;
-    formField['onWater'].value = editCollectionPointAction.onWater;
-    formField['incomeTemperature'].value = editCollectionPointAction.incomeTemperature;
-    formField['exitTemperature'].value = editCollectionPointAction.exitTemperature;
-    formField['incomePressure'].value = editCollectionPointAction.incomePressure;
-    formField['exitPressure'].value = editCollectionPointAction.exitPressure;
+    formField['pressure'].value = editCollectionPointAction.pressure;
+    formField['temperature'].value = editCollectionPointAction.temperature;
     formField['collectionPointId'].value = editCollectionPointAction.collectionPointId;
+    formField['createdAt'].value = editCollectionPointAction.createdAt;
+
 }
 
 function deleteCollectionPointAction(id) {
@@ -145,9 +137,6 @@ function createViewTableAction(actions) {
             "    <td>" + action.pressure + "</td>\n" +
             "    <td>" + action.temperature + "</td>\n" +
             "     <td id=\"collectionPointIdTd\" hidden value='" + action.collectionPointId + "'>" + action.collectionPointId + "</td>\n" +
-            "    <td>" + action.address + "</td>\n" +
-            "    <td>" + action.temperatureOpc + "</td>\n" +
-            "    <td>" + action.pressureOpc + "</td>\n" +
             "    <td>" + createdAtDateString + "</td>\n" +
             "     <td><button data-target=\"#exampleModalCenterAction\" data-toggle=\"modal\" class='btn btn-success ml-1 mt-1' id='btn-edit-action' value='" + action.actionId + "' onclick='editCollectionPointAction(this.value)'>Редактировать</button>\n" +
             "      <button class='btn btn-danger ml-1 mt-1' id='btn-edit-action' value='" + action.actionId + "' onclick='deleteCollectionPointAction(this.value)'>Удалить</button></td>\n" +

@@ -55,12 +55,10 @@ public class CollectionPointActionService {
         this.wellActionService = wellActionService;
     }
 
-
     /**
      * Manually
      **/
     public HttpEntity<?> addManually(User user, CollectionPointActionDto dto) {
-
 
         if (dto.getCollectionPointId() == null) return converter.apiError400("Collection Point id is null");
         Optional<CollectionPoint> collectionPoint = collectionPointRepository.findById(dto.getCollectionPointId());
@@ -97,7 +95,6 @@ public class CollectionPointActionService {
             return converter.apiError409();
         }
     }
-
 
     public HttpEntity<?> addSpecial(User user, CollectionPointAndWells collectionPointAndWells) {
         try {
@@ -202,7 +199,7 @@ public class CollectionPointActionService {
             Optional<Uppg> byId = uppgRepository.findById(id);
             if (!byId.isPresent()) return converter.apiError404("uppg not found");
 
-            List<CollectionPoint> allByUppg = collectionPointRepository.findAllByUppg(byId.get());
+            List<CollectionPoint> allByUppg = collectionPointRepository.findAllByUppgOrderByIdAsc(byId.get());
 
             List<CollectionPointDto> collect = allByUppg.stream().map(converter::collectionPointToCollectionPointDto).collect(Collectors.toList());
 

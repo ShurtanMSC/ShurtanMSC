@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface CollectionPointRepository extends JpaRepository<CollectionPoint,Integer> {
     List<CollectionPoint> findAllByUppg(Uppg uppg);
+    List<CollectionPoint> findAllByUppgOrderByIdAsc(Uppg uppg);
+
 
     @Query(value="select * from collection_point where uppg_id in (select id from uppg where mining_system_id = :mining_system_id)", nativeQuery = true)
     List<CollectionPoint> findAllByMiningSystemId(Integer mining_system_id);

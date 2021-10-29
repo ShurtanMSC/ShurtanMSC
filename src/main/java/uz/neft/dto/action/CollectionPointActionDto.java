@@ -4,17 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
-import uz.neft.entity.CollectionPoint;
-import uz.neft.entity.User;
-import uz.neft.entity.enums.WellStatus;
-
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.ManyToOne;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -34,11 +23,8 @@ public class CollectionPointActionDto {
     // Tempratura
     private double temperature;
 
-    private Integer collectionPointId;
-    private String address;
-//    private Double temperatureOpc;
-//    private Double pressureOpc;
 
+    private Integer collectionPointId;
 
     private Date createdAt;
 

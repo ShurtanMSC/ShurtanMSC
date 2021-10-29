@@ -25,7 +25,15 @@ public class CollectionPoint extends AbsEntityInteger {
     private String temperatureUnit;
     private String pressureUnit;
 
+    private Boolean activeE=false;
 
+    public CollectionPoint(String name, Uppg uppg, String temperatureUnit, String pressureUnit, OpcServer opcServer) {
+        this.name = name;
+        this.uppg = uppg;
+        this.temperatureUnit = temperatureUnit;
+        this.pressureUnit = pressureUnit;
+        this.opcServer = opcServer;
+    }
 
     @ManyToOne
     private OpcServer opcServer;

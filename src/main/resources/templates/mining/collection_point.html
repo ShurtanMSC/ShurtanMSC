@@ -2,7 +2,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -13,6 +12,10 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.23.0/axios.min.js"></script>
     <!-- Custom fonts for this template-->
+
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet"  th:href="@{https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css}">
+
+
     <link href="/static/vendor/fontawesome-free/css/all.min.css" th:href="@{/vendor/fontawesome-free/css/all.min.css}"
           rel="stylesheet" type="text/css">
     <link
@@ -38,6 +41,11 @@
           th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}"
           rel="stylesheet">
 
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+
+
+<!--    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle/3.6.1/css/bootstrap4-toggle.min.css}">-->
 </head>
 
 <body onload="" id="page-top">
@@ -233,6 +241,7 @@
                                                    class="form-control rounded-left"
                                                    hidden>
                                         </div>
+
                                         <div class="form-group">
                                             <button type="submit"
                                                     id="addOrEditCollectionPointActionBtn"
@@ -289,22 +298,22 @@
                                                 </th>
                                                 <th class="sorting collection_points-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    >Единица измерения температуры
+                                                >Единица измерения температуры
                                                 </th>
                                                 <th class="sorting collection_points-table-title" tabindex="0"
-                                                    >Единица давления
-                                                </th>
-                                                <th class="sorting collection_points-table-title" tabindex="0"
-                                                    aria-controls="dataTable" rowspan="1" colspan="1"
-                                                     hidden>UppgId
+                                                >Единица давления
                                                 </th>
                                                 <th class="sorting collection_points-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
-                                                     >Имя ОПС сервер
+                                                    hidden>UppgId
                                                 </th>
                                                 <th class="sorting collection_points-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
-                                                   >Редактировать
+                                                >Имя ОПС сервер
+                                                </th>
+                                                <th class="sorting collection_points-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                >Редактировать
                                                 </th>
 
                                             </tr>
@@ -320,12 +329,13 @@
                                                     Единица измерения температуры
                                                 </th>
                                                 <th class="collection_points-table-title" rowspan="1" colspan="1">
-                                                    Единица давления </th>
+                                                    Единица давления
+                                                </th>
                                                 <th class="collection_points-table-title" rowspan="1" colspan="1"
                                                     hidden>UppgId
                                                 </th>
                                                 <th class="collection_points-table-title" rowspan="1" colspan="1"
-                                                    >Имя ОПС сервер
+                                                >Имя ОПС сервер
                                                 </th>
                                                 <th class="collection_points-table-title" rowspan="1" colspan="1">
                                                     Редактировать
@@ -447,18 +457,6 @@
                                                 </th>
                                                 <th class="sorting users-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
-                                                >Адрес
-                                                </th>
-                                                <th class="sorting users-table-title" tabindex="0"
-                                                    aria-controls="dataTable" rowspan="1" colspan="1"
-                                                >Температура ОПС
-                                                </th>
-                                                <th class="sorting users-table-title" tabindex="0"
-                                                    aria-controls="dataTable" rowspan="1" colspan="1"
-                                                >Давление ОПС
-                                                </th>
-                                                <th class="sorting users-table-title" tabindex="0"
-                                                    aria-controls="dataTable" rowspan="1" colspan="1"
                                                 >Дата создания
                                                 </th>
                                                 <th class="sorting users-table-title" tabindex="0"
@@ -473,9 +471,6 @@
                                                 <th class="users-table-title" rowspan="1" colspan="1">Расходъ</th>
                                                 <th class="users-table-title" rowspan="1" colspan="1">Давление</th>
                                                 <th class="users-table-title" rowspan="1" colspan="1">Температура</th>
-                                                <th class="users-table-title" rowspan="1" colspan="1">Адрес</th>
-                                                <th class="users-table-title" rowspan="1" colspan="1">Температура ОПС</th>
-                                                <th class="users-table-title" rowspan="1" colspan="1">Давление ОПС</th>
                                                 <th class="users-table-title" rowspan="1" colspan="1">Дата создания</th>
                                                 <th class="users-table-title" rowspan="1" colspan="1">Редактировать</th>
                                             </tr>
@@ -584,7 +579,6 @@
         </div>
     </div>
 </div>
-
 <!-- Bootstrap core JavaScript-->
 <script src="/static/js/collection_point.js" th:src="@{/js/collection_point.js}"></script>
 <script src="/static/js/collectionPointAction.js.js" th:src="@{/js/collectionPointAction.js}"></script>
@@ -598,6 +592,9 @@
 <script src="/static/vendor/jquery/jquery.min.js" th:src="@{/vendor/jquery/jquery.min.js}"></script>
 <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"
         th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<!--switch-->
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js" th:src="@{https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js}"></script>
 
 <!-- Core plugin JavaScript-->
 <script src="/static/vendor/jquery-easing/jquery.easing.min.js"
@@ -613,7 +610,10 @@
 <script src="/static/js/demo/chart-area-demo.js" th:src="@{/js/demo/chart-area-demo.js}"></script>
 <script src="/static/js/demo/chart-pie-demo.js" th:src="@{/js/demo/chart-pie-demo.js}"></script>
 
+
 </body>
+<!--<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js" th:src="@{https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle/3.6.1/js/bootstrap4-toggle.min.js}"></script>-->
+
 <script>
     $(document).ready(function () {
         $("#exampleModalCenter").on('hide.bs.modal', function () {

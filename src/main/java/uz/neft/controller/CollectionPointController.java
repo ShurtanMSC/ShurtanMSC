@@ -10,6 +10,7 @@ import uz.neft.entity.User;
 import uz.neft.secret.CurrentUser;
 import uz.neft.service.CollectionPointService;
 import uz.neft.service.action.CollectionPointActionService;
+import uz.neft.utils.Converter;
 
 import java.util.Optional;
 
@@ -17,6 +18,8 @@ import java.util.Optional;
 @RequestMapping("api/collection_point")
 @CrossOrigin
 public class CollectionPointController {
+    @Autowired
+    private Converter converter;
 
     @Autowired
     private CollectionPointActionService collectionPointActionService;
@@ -32,6 +35,13 @@ public class CollectionPointController {
     @PutMapping("edit")
     public HttpEntity<?> edit(@RequestBody CollectionPointDto dto) {
         return collectionPointService.edit(dto);
+    }
+
+    @GetMapping ("active/{id}/{isActive}")
+    public HttpEntity<?> changeActive(@PathVariable Integer id, @PathVariable Boolean isActive) {
+        if (id == null) return converter.apiError400("CollectionPoint Id is null");
+        if (isActive == null) return converter.apiError400("checked info is null");
+        return collectionPointService.changeActive(id, isActive);
     }
 
     @DeleteMapping("delete/{id}")
@@ -63,15 +73,16 @@ public class CollectionPointController {
     /**
      * Manually
      **/
-//
+
+
     @PostMapping("manually/add/action")
     public HttpEntity<?> addAction(@CurrentUser User user, @RequestBody CollectionPointActionDto dto) {
         return collectionPointActionService.addManually(user, dto);
     }
 
     @PostMapping("manually/add/special")
-    public HttpEntity<?> addSpecial(@CurrentUser User user,@RequestBody CollectionPointAndWells collectionPointAndWells){
-        return collectionPointActionService.addSpecial(user,collectionPointAndWells);
+    public HttpEntity<?> addSpecial(@CurrentUser User user, @RequestBody CollectionPointAndWells collectionPointAndWells) {
+        return collectionPointActionService.addSpecial(user, collectionPointAndWells);
     }
 
     @GetMapping("all/actions")
@@ -86,10 +97,10 @@ public class CollectionPointController {
 
     @GetMapping("actions/{collectionPointId}")
     public HttpEntity<?> getAllActionsByCollectionPointId(@PathVariable Integer collectionPointId,
-                                                         @RequestParam Optional<Integer> page,
-                                                         @RequestParam Optional<Integer> pageSaze,
-                                                         @RequestParam Optional<String> sortBy
-                                                         ) {
+                                                          @RequestParam Optional<Integer> page,
+                                                          @RequestParam Optional<Integer> pageSaze,
+                                                          @RequestParam Optional<String> sortBy
+    ) {
 
         return collectionPointActionService.getAllActionsByCollectionPoint(collectionPointId, page, pageSaze, sortBy);
     }
@@ -101,6 +112,11 @@ public class CollectionPointController {
 
     @GetMapping("one/{id}")
     public HttpEntity<?> getOne(@PathVariable Integer id) {
+        return collectionPointActionService.getCollectionPoint(id);
+    }
+
+    @PutMapping("active/{id}/{checked}")
+    public HttpEntity<?> getOne(@PathVariable Integer id, @PathVariable String checked) {
         return collectionPointActionService.getCollectionPoint(id);
     }
 

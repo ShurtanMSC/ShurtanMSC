@@ -134,8 +134,8 @@ public class Converter {
         return ResponseEntity.status(status).body(apiSuccess(message, object));
     }
 
-    protected ResponseEntity<?> helpSuccess(HttpStatus status,Object object, long totalElements, Integer totalPages) {
-        return ResponseEntity.status(status).body(apiSuccessObject(object,totalElements,totalPages));
+    protected ResponseEntity<?> helpSuccess(HttpStatus status, Object object, long totalElements, Integer totalPages) {
+        return ResponseEntity.status(status).body(apiSuccessObject(object, totalElements, totalPages));
     }
 
     /**
@@ -249,8 +249,9 @@ public class Converter {
     public ResponseEntity<?> apiSuccess200(String message, Object object) {
         return helpSuccess(HttpStatus.OK, message, object);
     }
-    public ResponseEntity<?> apiSuccess200(Object object,long totalElements,Integer totalPages) {
-        return helpSuccess(HttpStatus.OK,object,totalElements,totalPages);
+
+    public ResponseEntity<?> apiSuccess200(Object object, long totalElements, Integer totalPages) {
+        return helpSuccess(HttpStatus.OK, object, totalElements, totalPages);
     }
 
     // Status 201
@@ -344,6 +345,7 @@ public class Converter {
                     .id(collectionPoint.getId())
                     .name(collectionPoint.getName())
                     .uppgId(collectionPoint.getUppg().getId())
+                    .active(collectionPoint.getActiveE())
                     .build();
         } catch (Exception e) {
             e.printStackTrace();
@@ -427,7 +429,7 @@ public class Converter {
                     .wellId(wellAction.getWell().getId())
                     .pressure(wellAction.getPressure())
                     .temperature(wellAction.getTemperature())
-                    .expend(wellAction.getExpend()/1000)
+                    .expend(wellAction.getExpend() / 1000)
                     .average_expend(wellAction.getAverage_expend())
                     .rpl(wellAction.getRpl())
                     .status(wellAction.getStatus())
@@ -452,18 +454,15 @@ public class Converter {
     }
 
     public CollectionPointActionDto collectionPointActionToCollectionPointActionDto(CollectionPointAction collectionPointAction) {
-        if (collectionPointAction==null) return null;
+        if (collectionPointAction == null) return null;
         try {
             return CollectionPointActionDto
                     .builder()
                     .actionId(collectionPointAction.getId())
-                    .expend(collectionPointAction.getExpend()/1000)
+                    .expend(collectionPointAction.getExpend() / 1000)
                     .pressure(collectionPointAction.getPressure())
                     .temperature(collectionPointAction.getTemperature())
                     .collectionPointId(collectionPointAction.getCollectionPoint().getId())
-                    .address(collectionPointAction.getAddress())
-//                    .temperatureOpc(collectionPointAction.getTemperatureOpc())
-//                    .pressureOpc(collectionPointAction.getPressureOpc())
                     .createdAt(collectionPointAction.getCreatedAt())
                     .build();
         } catch (Exception e) {
@@ -495,7 +494,7 @@ public class Converter {
 
     public UppgActionDto uppgActionToUppgActionDto(UppgAction uppgAction) {
         try {
-            if (uppgAction==null) return null;
+            if (uppgAction == null) return null;
             return UppgActionDto
                     .builder()
                     .actionId(uppgAction.getId())
@@ -520,7 +519,7 @@ public class Converter {
 
     public MiningSystemActionDto miningsystemActionToMiningSystemActionDto(MiningSystemAction miningSystemAction) {
         try {
-            if (miningSystemAction==null) return null;
+            if (miningSystemAction == null) return null;
             return MiningSystemActionDto
                     .builder()
                     .actionId(miningSystemAction.getId())

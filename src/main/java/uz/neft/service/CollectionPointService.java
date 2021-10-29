@@ -1,6 +1,7 @@
 package uz.neft.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.CollectionPointDto;
@@ -13,6 +14,7 @@ import uz.neft.repository.UppgRepository;
 import uz.neft.utils.Converter;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -53,7 +55,7 @@ public class CollectionPointService {
         }
     }
 
-    public ResponseEntity<?> saveCollectionPointAdmin(CollectionPoint cPoint,Integer uppgId,Integer opcId) {
+    public ResponseEntity<?> saveCollectionPointAdmin(CollectionPoint cPoint, Integer uppgId, Integer opcId) {
         try {
             if (cPoint.getId() != null) return converter.apiError400("id shouldn't be sent");
             if (uppgId == null) return converter.apiError400("Uppg id is null");
@@ -66,13 +68,13 @@ public class CollectionPointService {
             if (!opcServer.isPresent()) return converter.apiError400("opcServer not found");
 
             CollectionPoint collectionPoint = new CollectionPoint();
-                collectionPoint.setName(cPoint.getName());
-                collectionPoint.setTemperatureUnit(cPoint.getTemperatureUnit());
-                collectionPoint.setPressureUnit(cPoint.getPressureUnit());
-                collectionPoint.setUppg(uppg.get());
-                collectionPoint.setOpcServer(opcServer.get());
-                CollectionPoint save = collectionPointRepository.save(collectionPoint);
-                return converter.apiSuccess201("Collection point saved",save);
+            collectionPoint.setName(cPoint.getName());
+            collectionPoint.setTemperatureUnit(cPoint.getTemperatureUnit());
+            collectionPoint.setPressureUnit(cPoint.getPressureUnit());
+            collectionPoint.setUppg(uppg.get());
+            collectionPoint.setOpcServer(opcServer.get());
+            CollectionPoint save = collectionPointRepository.save(collectionPoint);
+            return converter.apiSuccess201("Collection point saved", save);
         } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError409("Error creating collection point");
@@ -103,7 +105,7 @@ public class CollectionPointService {
         }
     }
 
-    public ResponseEntity<?> editCPAdmin(CollectionPoint cPoint, Integer opcId,Integer uppgId) {
+    public ResponseEntity<?> editCPAdmin(CollectionPoint cPoint, Integer opcId, Integer uppgId) {
         try {
             if (cPoint.getId() == null) return converter.apiError400("CollectionPoint Id is null");
 
@@ -119,16 +121,16 @@ public class CollectionPointService {
             CollectionPoint editCollectionPoint;
             Optional<CollectionPoint> byId = collectionPointRepository.findById(cPoint.getId());
             if (byId.isPresent()) {
-                    editCollectionPoint = byId.get();
-                    editCollectionPoint.setName(cPoint.getName());
-                    editCollectionPoint.setOpcServer(opcServer.get());
-                    editCollectionPoint.setTemperatureUnit(cPoint.getTemperatureUnit());
-                    editCollectionPoint.setPressureUnit(cPoint.getPressureUnit());
-                    editCollectionPoint.setUppg(uppg.get());
+                editCollectionPoint = byId.get();
+                editCollectionPoint.setName(cPoint.getName());
+                editCollectionPoint.setOpcServer(opcServer.get());
+                editCollectionPoint.setTemperatureUnit(cPoint.getTemperatureUnit());
+                editCollectionPoint.setPressureUnit(cPoint.getPressureUnit());
+                editCollectionPoint.setUppg(uppg.get());
 
-                    CollectionPoint save = collectionPointRepository.save(editCollectionPoint);
+                CollectionPoint save = collectionPointRepository.save(editCollectionPoint);
 
-                    return converter.apiSuccess200("Collection point Edited", save);
+                return converter.apiSuccess200("Collection point Edited", save);
             }
             return converter.apiError404("Collection not found!");
         } catch (Exception e) {
@@ -199,4 +201,18 @@ public class CollectionPointService {
     }
 
 
+    public HttpEntity<?> changeActive(Integer id, Boolean isActive) {
+        System.out.println("isActive");
+        System.out.println(isActive);
+
+        CollectionPoint collectionPoint;
+        Optional<CollectionPoint> byId = collectionPointRepository.findById(id);
+        if (byId.isPresent()) {
+            collectionPoint = byId.get();
+            collectionPoint.setActiveE(isActive);
+            System.out.println(collectionPoint);
+            CollectionPoint save = collectionPointRepository.save(collectionPoint);
+            return converter.apiSuccess200("active field changed", save);
+        } else return converter.apiError400("collection point not found");
+    }
 }
