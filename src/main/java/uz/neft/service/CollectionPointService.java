@@ -173,7 +173,7 @@ public class CollectionPointService {
             Optional<Uppg> byId = uppgRepository.findById(uppgId);
             if (!byId.isPresent()) return converter.apiError404("uppg not found");
 
-            List<CollectionPoint> allByUppg = collectionPointRepository.findAllByUppg(byId.get());
+            List<CollectionPoint> allByUppg = collectionPointRepository.findAllByUppgOrderByIdAsc(byId.get());
 
             return converter.apiSuccess200(allByUppg);
         } catch (Exception e) {

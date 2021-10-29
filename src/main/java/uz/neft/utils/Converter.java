@@ -345,7 +345,7 @@ public class Converter {
                     .id(collectionPoint.getId())
                     .name(collectionPoint.getName())
                     .uppgId(collectionPoint.getUppg().getId())
-                    .active(collectionPoint.getActiveE())
+                    .active(collectionPoint.isActiveE())
                     .build();
         } catch (Exception e) {
             e.printStackTrace();

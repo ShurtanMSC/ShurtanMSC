@@ -4,20 +4,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import uz.neft.controller.opc.OpcService;
 import uz.neft.dto.CollectionPointDto;
 import uz.neft.dto.action.CollectionPointActionDto;
 import uz.neft.dto.action.ObjectWithActionsDto;
 import uz.neft.dto.special.CollectionPointAndWells;
 import uz.neft.entity.*;
 import uz.neft.entity.action.CollectionPointAction;
-import uz.neft.entity.action.UppgAction;
 import uz.neft.entity.action.WellAction;
 import uz.neft.entity.enums.WellStatus;
-import uz.neft.payload.ApiResponseObject;
-import uz.neft.payload.ApiResponseObjectByPageable;
 import uz.neft.repository.*;
 import uz.neft.repository.action.CollectionPointActionRepository;
 import uz.neft.repository.action.WellActionRepository;
@@ -41,9 +38,10 @@ public class CollectionPointActionService {
     private final UppgRepository uppgRepository;
     private final MiningSystemRepository miningSystemRepository;
     private final WellActionService wellActionService;
+    private final OpcService opcService;
 
 
-    public CollectionPointActionService(UserRepository userRepository, CollectionPointRepository collectionPointRepository, CollectionPointActionRepository collectionPointActionRepository, Converter converter, WellActionRepository wellActionRepository, WellRepository wellRepository, UppgRepository uppgRepository, MiningSystemRepository miningSystemRepository, WellActionService wellActionService) {
+    public CollectionPointActionService(UserRepository userRepository, CollectionPointRepository collectionPointRepository, CollectionPointActionRepository collectionPointActionRepository, Converter converter, WellActionRepository wellActionRepository, WellRepository wellRepository, UppgRepository uppgRepository, MiningSystemRepository miningSystemRepository, WellActionService wellActionService, OpcService opcService) {
         this.userRepository = userRepository;
         this.collectionPointRepository = collectionPointRepository;
         this.collectionPointActionRepository = collectionPointActionRepository;
@@ -53,6 +51,7 @@ public class CollectionPointActionService {
         this.uppgRepository = uppgRepository;
         this.miningSystemRepository = miningSystemRepository;
         this.wellActionService = wellActionService;
+        this.opcService = opcService;
     }
 
     /**
@@ -284,25 +283,30 @@ public class CollectionPointActionService {
 
             List<CollectionPoint> all = collectionPointRepository.findAllByMiningSystemId(id);
             for (CollectionPoint collectionPoint : all) {
-                CollectionPointAction action = CollectionPointAction
-                        .builder()
-                        .collectionPoint(collectionPoint)
-                        .build();
-                action.setPressure(action.getPressureOpc());
-//                Thread.sleep(1000);
-                action.setTemperature(action.getTemperatureOpc());
-                wellActionService.execute(collectionPoint.getUppg());
+                if (collectionPoint.isActiveE()){
+                    CollectionPointAction action = CollectionPointAction
+                            .builder()
+                            .collectionPoint(collectionPoint)
+                            .build();
 
-                Thread.sleep(500);
+                    action.setTemperature(opcService.getValue(action,action.getCollectionPoint().getTemperatureUnit()));
+                    action.setPressure(opcService.getValue(action,action.getCollectionPoint().getPressureUnit()));
+//                action.setPressure(action.getPressureOpc());
+//                action.setTemperature(action.getTemperatureOpc());
+                    wellActionService.execute(collectionPoint.getUppg());
+
+                    Thread.sleep(500);
 //                System.out.println(action.toString());
-                if (action.getPressure() == 0) {
-                    action.setExpend(0);
-                } else {
-                    double expendCp = checkWells(collectionPoint, action);
-                    action.setExpend(expendCp);
+                    if (action.getPressure() == 0) {
+                        action.setExpend(0);
+                    } else {
+                        double expendCp = checkWells(collectionPoint, action);
+                        action.setExpend(expendCp);
+                    }
+
+                    collectionPointActionRepository.save(action);
                 }
 
-                collectionPointActionRepository.save(action);
             }
 
         } catch (Exception e) {

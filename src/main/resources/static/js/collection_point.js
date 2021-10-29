@@ -179,8 +179,10 @@ function changeCollectionPointIsActive(checkboxElem) {
 }
 
 function createViewTable(collectionPoints) {
+    console.log(collectionPoints)
     let out = "";
     collectionPoints.map(collectionPoint => {
+        console.log(collectionPoint.activeE)
         out += "<tr class=\"collectionPoint_table_row\">\n" +
             "<td class=\"sorting_1\">" + collectionPoint.id + "</td>\n" +
             "<td>" + collectionPoint.name + "</td>\n" +
@@ -191,12 +193,27 @@ function createViewTable(collectionPoints) {
             "<td>" +
             "<button data-target=\"#exampleModalCenter\" data-toggle=\"modal\" class='btn btn-success mt-1' id='btn-edit-collectionPoint' value='" + collectionPoint.id + "' onclick='editCollectionPoint(this.value)'>Редактировать</button>\n" +
             "<button  class='btn btn-info ml-2 mt-1' id='btn-action-mining' value='" + collectionPoint.id + "' onclick='clickActionBtn(this.value)'>Действие</button>" +
-            "<button class='btn btn-danger ml-2 mt-1 mr-2' id='btn-edit-collectionPoint' value='" + collectionPoint.id + "' onclick='deleteCollectionPoint(this.value)'>Удалить</button>" +
+            "<button class='btn btn-danger ml-2 mt-1 mr-2' id='btn-edit-collectionPoint' value='" + collectionPoint.id + "' onclick='deleteCollectionPoint(this.value)'>Удалить</button>"
 
-            "<input  onchange='changeCollectionPointIsActive(this)' name='" + collectionPoint.id + "' type=\"checkbox\" checked='" + collectionPoint.activeE + "'  data-toggle=\"toggle\" data-onstyle=\"warning\">" +
+           if (collectionPoint.activeE){
+               out+= "<label class=\"switch\">\n" +
+                   "  <input name='" + collectionPoint.id + "' onchange='changeCollectionPointIsActive(this)' id="+collectionPoint.id+collectionPoint.activeE+" type=\"checkbox\" checked>\n" +
+                   "  <span class=\"slider round\"></span>\n" +
+                   "</label>"+
+                   // "<input id="+collectionPoint.id+collectionPoint.activeE+" onchange='changeCollectionPointIsActive(this)' name='" + collectionPoint.id + "' type=\"checkbox\" checked='" + collectionPoint.activeE + "'  data-toggle=\"toggle\" data-onstyle=\"warning\">" +
 
-            "</td>\n" +
-            "</tr>"
+                   "</td>\n" +
+                   "</tr>"
+           }else {
+               out+= "<label class=\"switch\">\n" +
+                   "  <input name='" + collectionPoint.id + "' onchange='changeCollectionPointIsActive(this)' id="+collectionPoint.id+collectionPoint.activeE+" type=\"checkbox\">\n" +
+                   "  <span class=\"slider round\"></span>\n" +
+                   "</label>"+
+                   // "<input id="+collectionPoint.id+collectionPoint.activeE+" onchange='changeCollectionPointIsActive(this)' name='" + collectionPoint.id + "' type=\"checkbox\" checked='" + collectionPoint.activeE + "'  data-toggle=\"toggle\" data-onstyle=\"warning\">" +
+
+                   "</td>\n" +
+                   "</tr>"
+           }
     })
     return out;
 }
