@@ -50,7 +50,7 @@ public class BrowserExample {
     
     try {
 //      String[] items = jbrowser.getOpcItems("Simulation Items.Random", true);
-      String[] items = jbrowser.getOpcItems("Unit1.YYYYY", true);
+      String[] items = jbrowser.getOpcItems("Server Information", true);
       if (items != null) {
 
 

@@ -32,13 +32,13 @@
 
 <dependencies>
 
-	<dependency>
-		<groupId>javafish.clients</groupId>
-		<artifactId>opc</artifactId>
-		<version>1.0</version>
-		<scope>system</scope>
-		<systemPath>${project.basedir}/lib/JEasyOpc.jar</systemPath>
-	</dependency>
+<!--	<dependency>-->
+<!--		<groupId>javafish.clients</groupId>-->
+<!--		<artifactId>opc</artifactId>-->
+<!--		<version>1.0</version>-->
+<!--		<scope>system</scope>-->
+<!--		<systemPath>${project.basedir}/lib/JEasyOpc.jar</systemPath>-->
+<!--	</dependency>-->
 
 
 	<dependency>
@@ -316,10 +316,10 @@
 <!--			<id>javafish.clients.opc</id>-->
 <!--			<url>file://C:\JEasyOpc.jar</url>-->
 <!--		</repository>-->
-		<repository>
-			<id>javafish.clients</id>
-			<url>file://${project.basedir}/lib/JEasyOpc.jar</url>
-		</repository>
+<!--		<repository>-->
+<!--			<id>javafish.clients.opc</id>-->
+<!--			<url>file://${project.basedir}/lib/JEasyOpc.jar</url>-->
+<!--		</repository>-->
 		<repository>
 			<id>spring-releases</id>
 			<name>Spring Releases</name>
