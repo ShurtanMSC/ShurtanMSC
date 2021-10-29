@@ -317,6 +317,10 @@
 <!--			<url>file://C:\JEasyOpc.jar</url>-->
 <!--		</repository>-->
 		<repository>
+			<id>javafish.clients</id>
+			<url>file://${project.basedir}/lib/JEasyOpc.jar</url>
+		</repository>
+		<repository>
 			<id>spring-releases</id>
 			<name>Spring Releases</name>
 			<url>https://repo.spring.io/release</url>
