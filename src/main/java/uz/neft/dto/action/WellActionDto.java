@@ -6,6 +6,7 @@ import uz.neft.entity.enums.WellStatus;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @Getter
 @AllArgsConstructor
@@ -14,8 +15,7 @@ import javax.validation.constraints.NotNull;
 @Builder
 public class WellActionDto {
 
-    // Quduq idsi
-    private Integer wellId;
+    private Long actionId;
 
     // Bosim
     private double pressure;
@@ -59,7 +59,7 @@ public class WellActionDto {
 
 
     //Шайбный коэффициент расхода, С
-    private double c;
+    private double C;
 
 
     //ρ_газа – плотность газа при стандартных условиях
@@ -73,8 +73,12 @@ public class WellActionDto {
     private WellStatus status;
 
     // Vaqt
-    private String date;
+    private Date createdAt;
+
 
     private int perforation_min;
     private int perforation_max;
+
+    // Quduq idsi
+    private Integer wellId;
 }

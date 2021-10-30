@@ -63,50 +63,73 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">Скважина</h1>
-                <p class="mb-2">Скважин в системе</p>
+                <div class="col-12 d-flex p-0 mt-3">
+                    <div class="col-5 mb-4  p-0">
+                        <button onclick="goOutFromAction()" id="goOutActionsIcon" style="display: none;"
+                                type="button" class="btn btn-outline-info">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="28" style="color: #35B8CB;"
+                                 class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                      d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                            </svg>
+                            Назад
+                        </button>
+                    </div>
+                    <div class="col-6 p-0 ml-3">
+                        <h1 class="h3 mb-2 text-gray-800" id="actionWellH1">Скважина</h1>
+                    </div>
+                </div>
 
                 <!--// Add Well button and modal-->
                 <div>
                     <section class="ftco-section pb-2">
                         <div class="row">
                             <div class="col-md-12 d-flex ">
-                                <div class="wrap mr-5">
+                                <div class="col-2 p-0">
                                     <button type="button" class="btn btn-primary py-2 px-4" data-toggle="modal"
                                             data-target="#exampleModalCenter"
-                                            id="addWellBtn"
-                                    >
+                                            id="addWellBtn">
                                         Добавить Скважина
                                     </button>
                                 </div>
-                                <div class="form-group mr-5">
+                                <div class="form-group col-2 p-0 mr-2 w-25">
                                     <select name="miningSelect" class="custom-select form-control rounded-left mt-1"
                                             id="miningSelect"
                                             onchange="selectHandleMining()"
-                                            aria-label="Example select with button addon" >
+                                            aria-label="Example select with button addon">
                                         <option value="">Loading. . .</option>
                                     </select>
                                 </div>
-                                <div class="form-group mr-5">
+                                <div class="form-group col-2 p-0 mr-2 w-25">
                                     <select name="uppgSelect" class="custom-select form-control rounded-left mt-1"
                                             id="uppgSelect"
                                             onchange="selectHandleUppg()"
-                                            aria-label="Example select with button addon" >
+                                            aria-label="Example select with button addon">
                                         <option value="">Loading. . .</option>
                                     </select>
                                 </div>
-                                <div class="form-group mr-5">
-                                    <select name="collectionPointSelect" class="custom-select form-control rounded-left mt-1"
+                                <div class="form-group col-2 p-0 mr-2 w-25">
+                                    <select name="collectionPointSelect"
+                                            class="custom-select form-control rounded-left mt-1"
                                             id="collectionPointSelect"
                                             onchange="selectHandleSP()"
-                                            aria-label="Example select with button addon" >
+                                            aria-label="Example select with button addon">
                                         <option value="">Loading. . .</option>
                                     </select>
+                                </div>
+                                <div class="col-4 d-flex justify-content-end p-0">
+                                    <button type="button" class="btn btn-outline-info py-2 px-4"
+                                            data-toggle="modal" style="display: none;"
+                                            id="addWellActionBtn"
+                                            data-target="#exampleModalCenterAction">
+                                        Добавить действие Скважина
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </section>
 
+                    <!--WELL  form-->
                     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
                          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -135,36 +158,36 @@
                                                    class="form-control rounded-left" required hidden>
                                         </div>
                                         <div class="form-group d-flex">
-                                            <input name="commissioningDate"  type="date"
+                                            <input name="commissioningDate" type="date"
                                                    class="form-control rounded-left"
                                                    placeholder="Дата ввода в эксплуатацию">
                                         </div>
                                         <div class="form-group d-flex">
-                                            <input name="drillingStartDate"  type="date"
+                                            <input name="drillingStartDate" type="date"
                                                    class="form-control rounded-left" placeholder="Дата начала бурения">
                                         </div>
                                         <div class="form-group d-flex">
-                                            <input name="horizon"  type="text"
+                                            <input name="horizon" type="text"
                                                    class="form-control rounded-left" placeholder="горизонт" required>
                                         </div>
                                         <div class="form-group d-flex">
-                                            <input name="altitude"  type="number" step=any
+                                            <input name="altitude" type="number" step=any
                                                    class="form-control rounded-left" placeholder="высота" required>
                                         </div>
                                         <div class="form-group d-flex">
-                                            <input name="depth"  type="number" step=any
+                                            <input name="depth" type="number" step=any
                                                    class="form-control rounded-left" placeholder="глубина" required>
                                         </div>
                                         <div class="form-group d-flex">
-                                            <input name="x"  type="number" step=any
+                                            <input name="x" type="number" step=any
                                                    class="form-control rounded-left" placeholder="x" required>
                                         </div>
                                         <div class="form-group d-flex">
-                                            <input name="y"  type="number" step=any
+                                            <input name="y" type="number" step=any
                                                    class="form-control rounded-left" placeholder="y" required>
                                         </div>
                                         <div class="form-group d-flex">
-                                            <input name="c"  type="number" step=any
+                                            <input name="c" type="number" step=any
                                                    class="form-control rounded-left" placeholder="c" required>
                                         </div>
 
@@ -192,10 +215,157 @@
                             </div>
                         </div>
                     </div>
+
+                    <!--WELL ACTION form-->
+                    <div class="modal fade" id="exampleModalCenterAction" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered well-action-form"
+
+                             role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button"
+                                            class="close d-flex align-items-center justify-content-center h-25"
+                                            id="closeFormBtnAction"
+                                            data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true" class="ion-ios-close">x</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body  pb-md-5 pl-md-5 pr-md-5 pt-md-2">
+                                    <h3 class="text-center mb-4" id="addOrEditWellActionH3">Добавить действие
+                                        уппг</h3>
+                                    <form action="/" class="login-form" id="addOrEditWellActionForm"
+                                          onsubmit="addOrEditWellAction(event);">
+                                                <div class="form-group">
+                                                    <input name="actionId" type="number"
+                                                           class="form-control rounded-left"
+                                                           hidden>
+                                                </div>
+                                        <div class="col-12 d-flex">
+                                            <div class="col-6 ">
+                                                <div class="form-group d-flex">
+                                                    <input name="pressure" type="number" step=any
+                                                           class="form-control rounded-left"
+                                                           placeholder="Давление">
+                                                </div>
+
+                                                <div class="form-group d-flex">
+                                                    <input name="temperature" type="number" step=any
+                                                           class="form-control rounded-left"
+                                                           placeholder="Температура">
+                                                </div>
+
+                                                <div class="form-group d-flex">
+                                                    <input name="average_expend" type="number" step=any
+                                                           class="form-control rounded-left"
+                                                           placeholder="Cредний расход">
+                                                </div>
+
+                                                <div class="form-group d-flex">
+                                                    <input name="expend" type="number" step=any
+                                                           class="form-control rounded-left"
+                                                           placeholder="Расход">
+                                                </div>
+
+                                                <div class="form-group d-flex">
+                                                    <input name="rpl" type="number" step=any
+                                                           class="form-control rounded-left"
+                                                           placeholder="Рпл">
+                                                </div>
+
+                                                <div class="form-group d-flex">
+                                                    <input name="P_pkr" type="number" step=any
+                                                           class="form-control rounded-left"
+                                                           placeholder="Р_ПКР">
+                                                </div>
+
+                                                <div class="form-group d-flex">
+                                                    <input name="T_pkr" type="number" step=any
+                                                           class="form-control rounded-left"
+                                                           placeholder="T_ПКР">
+                                                </div>
+
+                                                <div class="form-group d-flex">
+                                                    <input name="P_pr" type="number" step=any
+                                                           class="form-control rounded-left"
+                                                           placeholder="P_pr">
+                                                </div>
+                                                <div class="form-group d-flex">
+                                                    <input name="T_pr" type="number" step=any
+                                                           class="form-control rounded-left"
+                                                           placeholder="T_pr">
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-group d-flex">
+                                                    <input name="Ro_otn" type="number" step=any
+                                                           class="form-control rounded-left"
+                                                           placeholder="Относительная плотность газа ( ρ_отн )">
+                                                </div>
+                                                <div class="form-group d-flex">
+                                                    <input name="Z" type="number" step=any
+                                                           class="form-control rounded-left"
+                                                           placeholder="Z - Коэффициент сверхсжимаемости газа">
+                                                </div>
+                                                <div class="form-group d-flex">
+                                                    <input name="delta" type="number" step=any
+                                                           class="form-control rounded-left"
+                                                           placeholder="Поправочный коэффициент, зависящий от приведенных давления и температуры (δ)">
+                                                </div>
+                                                <div class="form-group d-flex">
+                                                    <input name="C" type="number" step=any
+                                                           class="form-control rounded-left"
+                                                           placeholder="Шайбный коэффициент расхода, С">
+                                                </div>
+                                                <div class="form-group d-flex">
+                                                    <input name="ro_gas" type="number" step=any
+                                                           class="form-control rounded-left"
+                                                           placeholder="Плотность газа при стандартных условиях">
+                                                </div>
+                                                <div class="form-group d-flex">
+                                                    <input name="ro_air" type="number" step=any
+                                                           class="form-control rounded-left"
+                                                           placeholder="Плотность воздуха при стандартных условиях">
+                                                </div>
+                                                <div class="form-group d-flex">
+                                                    <input name="status" type="number" step=any
+                                                           class="form-control rounded-left"
+                                                           placeholder="Cтатуса скважин">
+                                                </div>
+                                                <div class="form-group d-flex">
+                                                    <input name="perforation_min" type="number" step=any
+                                                           class="form-control rounded-left"
+                                                           placeholder="Перфорация мин">
+                                                </div>
+                                                <div class="form-group d-flex">
+                                                    <input name="perforation_max" type="number" step=any
+                                                           class="form-control rounded-left"
+                                                           placeholder="Перфорация макс">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group d-flex">
+                                            <input name="wellId" id="uppgId" value="" type="number"
+                                                   class="form-control rounded-left"
+                                                   hidden>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit"
+                                                    id="addOrEditWellActionBtn"
+                                                    class="form-control btn btn-info rounded submit px-3">Добавить
+                                            </button>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
                 <!-- DataTales Example -->
-                <div class="card shadow mb-4">
+                <div id="cardTableWell" class="card shadow mb-4">
 
                     <div class="card-body">
                         <div class="table-responsive">
@@ -237,57 +407,57 @@
                                                 <th class="sorting wells-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Office: activate to sort column ascending"
-                                                     hidden>collectionPointId
+                                                    hidden>collectionPointId
                                                 </th>
                                                 <th class="sorting wells-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Office: activate to sort column ascending"
-                                                    >Дата ввода в эксплуатацию
+                                                >Дата ввода в эксплуатацию
                                                 </th>
                                                 <th class="sorting wells-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Office: activate to sort column ascending"
-                                                    >Дата начала бурения
+                                                >Дата начала бурения
                                                 </th>
                                                 <th class="sorting wells-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Office: activate to sort column ascending"
-                                                    >Горизонт
+                                                >Горизонт
                                                 </th>
                                                 <th class="sorting wells-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Office: activate to sort column ascending"
-                                                    >Высота
+                                                >Высота
                                                 </th>
                                                 <th class="sorting wells-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Office: activate to sort column ascending"
-                                                    >Глубина
+                                                >Глубина
                                                 </th>
                                                 <th class="sorting wells-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Office: activate to sort column ascending"
-                                                    >X
+                                                >X
                                                 </th>
                                                 <th class="sorting wells-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Office: activate to sort column ascending"
-                                                    >Y
+                                                >Y
                                                 </th>
                                                 <th class="sorting wells-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Office: activate to sort column ascending"
-                                                    >C
+                                                >C
                                                 </th>
                                                 <th class="sorting wells-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Office: activate to sort column ascending"
-                                                    >Категория
+                                                >Категория
                                                 </th>
                                                 <th class="sorting wells-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Salary: activate to sort column ascending"
-                                                   >Редактировать
+                                                >Редактировать
                                                 </th>
                                             </tr>
                                             </thead>
@@ -382,6 +552,226 @@
                     </div>
                 </div>
 
+                <!-- WELL Action DataTales -->
+                <div id="cardTableWellAction" style="display: none" class="card shadow mb-4">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div id="dataTable_wrapperr" class="dataTables_wrapper dt-bootstrap4">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="dataTables_length" id="dataTable_lengthh"><label>Show <select
+                                                name="dataTable_length" aria-controls="dataTable"
+                                                class="custom-select custom-select-sm form-control form-control-sm">
+                                            <option value="10">10</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select> entries</label></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table class="table table-bordered dataTable" id="dataTableAction" width="100%"
+                                               cellspacing="0" role="grid" aria-describedby="dataTable_info"
+                                        >
+                                            <thead>
+                                            <tr role="row">
+                                                <th class="sorting sorting_asc users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-sort="ascending"
+                                                >ID
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                >Давление
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                >Температура
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                >Cредний расход
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                >Расход
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                >Рпл
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                > Р_ПКР
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                > T_ПКР
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                > P_pr
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                > T_pr
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                > Относительная плотность газа ( ρ_отн )
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                > Коэффициент сверхсжимаемости газа
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                > Поправочный коэффициент, зависящий от приведенных давления и
+                                                    температуры (δ)
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                > Шайбный коэффициент расхода, С
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                > Плотность газа при стандартных условиях
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                > Плотность воздуха при стандартных условиях
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                > Cтатуса скважин
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                > Перфорация мин
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                > Перфорация макс
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                >Дата создания
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                >Редактировать
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tfoot>
+                                            <tr>
+                                                <th class="users-table-title" rowspan="1" colspan="1">ID</th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Давление</th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Температура</th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Cредний расход
+                                                </th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Расход</th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Рпл</th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Р_ПКР</th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">T_ПКР</th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">P_pr</th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">T_pr</th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Относительная
+                                                    плотность газа ( ρ_отн )
+                                                </th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Коэффициент
+                                                    сверхсжимаемости газа
+                                                </th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Поправочный
+                                                    коэффициент, зависящий от приведенных давления и
+                                                    температуры (δ)
+                                                </th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Шайбный
+                                                    коэффициент расхода, С
+                                                </th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Плотность газа при
+                                                    стандартных условиях
+                                                </th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Плотность воздуха
+                                                    при стандартных условиях
+                                                </th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Cтатуса скважин
+                                                </th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Перфорация мин
+                                                </th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Перфорация макс
+                                                </th>
+
+                                                <th class="users-table-title" rowspan="1" colspan="1">Дата создания</th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Редактировать</th>
+                                            </tr>
+                                            </tfoot>
+                                            <tbody id="wellTableAction">
+                                            <tr class="odd">
+                                                <td class="sorting_1">Loading. . .</td>
+                                                <td>Loading. . .</td>
+                                                <td>Loading. . .</td>
+                                                <td>Loading. . .</td>
+                                            </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5">
+                                        <div class="dataTables_info" id="dataTable_infoAction" role="status"
+                                             aria-live="polite">Showing 1 to 10 of 57 entries
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7">
+                                        <div class="dataTables_paginate paging_simple_numbers"
+                                             id="dataTable_paginateAction">
+                                            <ul class="pagination">
+                                                <li class="paginate_button page-item previous disabled"
+                                                    id="dataTable_previousAction"><a href="#" aria-controls="dataTable"
+                                                                                     data-dt-idx="0" tabindex="0"
+                                                                                     class="page-link">Previous</a></li>
+                                                <li class="paginate_button page-item active"><a href="#"
+                                                                                                aria-controls="dataTable"
+                                                                                                data-dt-idx="1"
+                                                                                                tabindex="0"
+                                                                                                class="page-link">1</a>
+                                                </li>
+                                                <li class="paginate_button page-item "><a href="#"
+                                                                                          aria-controls="dataTable"
+                                                                                          data-dt-idx="2" tabindex="0"
+                                                                                          class="page-link">2</a></li>
+                                                <li class="paginate_button page-item "><a href="#"
+                                                                                          aria-controls="dataTable"
+                                                                                          data-dt-idx="3" tabindex="0"
+                                                                                          class="page-link">3</a></li>
+                                                <li class="paginate_button page-item "><a href="#"
+                                                                                          aria-controls="dataTable"
+                                                                                          data-dt-idx="4" tabindex="0"
+                                                                                          class="page-link">4</a></li>
+                                                <li class="paginate_button page-item "><a href="#"
+                                                                                          aria-controls="dataTable"
+                                                                                          data-dt-idx="5" tabindex="0"
+                                                                                          class="page-link">5</a></li>
+                                                <li class="paginate_button page-item "><a href="#"
+                                                                                          aria-controls="dataTable"
+                                                                                          data-dt-idx="6" tabindex="0"
+                                                                                          class="page-link">6</a></li>
+                                                <li class="paginate_button page-item next" id="dataTable_nextAction"><a
+                                                        href="#" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
+                                                        class="page-link">Next</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
             <!-- /.container-fluid -->
 
@@ -425,6 +815,7 @@
 
 <!-- Bootstrap core JavaScript-->
 <script src="/static/js/well.js" th:src="@{/js/well.js}"></script>
+<script src="/static/js/wellAction.js" th:src="@{/js/wellAction.js}"></script>
 <script>
     getAllMiningSystems();
     getAllUppgs();

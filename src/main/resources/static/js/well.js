@@ -117,7 +117,7 @@ function addOrEditWell(event) {
 
     const data = {}
     formData.forEach((value, key) => (data[key] = value));
-
+    console.log(data.commissioningDate)
     let config = {
         method: '',
         url: '',
@@ -154,8 +154,8 @@ function editWell(id) {
     formField['id'].value = editWell.id;
     formField['number'].value = editWell.number;
     formField['collectionPointId'].value = editWell.collectionPointId;
-    formField['commissioningDate'].value = editWell.commissioningDate;
-    formField['drillingStartDate'].value = editWell.drillingStartDate;
+    formField['commissioningDate'].value = editWell.commissioningDate.slice(0,10);
+    formField['drillingStartDate'].value = editWell.drillingStartDate.slice(0,10);
     formField['horizon'].value = editWell.horizon;
     formField['altitude'].value = editWell.altitude;
     formField['depth'].value = editWell.depth;
@@ -206,8 +206,9 @@ function createViewTable(wells) {
             "     <td >" + well.y + "</td>\n" +
             "     <td >" + well.c + "</td>\n" +
             "     <td >" + well.category + "</td>\n" +
-            "     <td><button data-target=\"#exampleModalCenter\" data-toggle=\"modal\" class='btn btn-success mt-1' id='btn-edit-well' value='" + well.id + "' onclick='editWell(this.value)'>Редактировать</button>\n" +
-            "      <button class='btn btn-danger ml-2 mt-1' id='btn-edit-well' value='" + well.id + "' onclick='deleteWell(this.value)'>Удалить</button></td>\n" +
+            "<td><button data-target=\"#exampleModalCenter\" data-toggle=\"modal\" class='btn btn-success mt-1' id='btn-edit-well' value='" + well.id + "' onclick='editWell(this.value)'>Редактировать</button>\n" +
+            "<button  class='btn btn-info ml-2' id='btn-action-mining' value='" + well.id + "' onclick='clickWellActionBtn(this.value)'>Действие</button>" +
+            "<button class='btn btn-danger ml-2 mt-1' id='btn-edit-well' value='" + well.id + "' onclick='deleteWell(this.value)'>Удалить</button></td>\n" +
             "   </tr>"
     })
     return out;

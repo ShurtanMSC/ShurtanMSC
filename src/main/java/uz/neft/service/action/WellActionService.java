@@ -1,9 +1,14 @@
 package uz.neft.service.action;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.WellDto;
+import uz.neft.dto.action.CollectionPointActionDto;
 import uz.neft.dto.action.ObjectWithActionsDto;
 import uz.neft.dto.action.WellActionDto;
 import uz.neft.dto.special.WellActionLite;
@@ -22,6 +27,7 @@ import uz.neft.utils.Converter;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class WellActionService {
@@ -397,7 +403,6 @@ public class WellActionService {
         }
     }
 
-
     // helper method
     public HttpEntity<?> wellActionDtos(List<Well> wells) {
         if (wells.isEmpty()) return converter.apiSuccess200("Empty list");
@@ -422,7 +427,6 @@ public class WellActionService {
 
         return converter.apiSuccess200(collect);
     }
-
 
     public HttpEntity<?> getAllByUppg(Integer id) {
         try {
@@ -455,6 +459,27 @@ public class WellActionService {
             return converter.apiError409();
         }
     }
+
+
+    public HttpEntity<?> getAllActionsByWell(Integer wellId, Optional<Integer> page, Optional<Integer> pageSize, Optional<String> sortBy) {
+        try {
+            if (wellId == null) return converter.apiError400("action id is null!");
+            Optional<Well> well = wellRepository.findById(wellId);
+            if (!well.isPresent()) return converter.apiError404("well not found");
+
+            Pageable pg = PageRequest.of(page.orElse(0), pageSize.orElse(10), Sort.Direction.DESC, sortBy.orElse("createdAt"));
+
+            Page<WellAction> wellActions = wellActionRepository.findAllByWellOrderByCreatedAtDesc(well.get(), pg);
+
+            Stream<WellActionDto> wellActionDtoStream = wellActions.stream().map(converter::wellActionToWellActionDto);
+
+            return converter.apiSuccess200(wellActionDtoStream, wellActions.getTotalElements(), wellActions.getTotalPages());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409();
+        }
+    }
+
 
 
     public HttpEntity<?> getAllByMiningSystem(Integer id) {

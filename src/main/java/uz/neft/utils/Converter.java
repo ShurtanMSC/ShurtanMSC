@@ -426,6 +426,7 @@ public class Converter {
         try {
             return WellActionDto
                     .builder()
+                    .actionId(wellAction.getId())
                     .wellId(wellAction.getWell().getId())
                     .pressure(wellAction.getPressure())
                     .temperature(wellAction.getTemperature())
@@ -433,8 +434,8 @@ public class Converter {
                     .average_expend(wellAction.getAverage_expend())
                     .rpl(wellAction.getRpl())
                     .status(wellAction.getStatus())
-                    .date(wellAction.getCreatedAt().toString())
-                    .c(wellAction.getC())
+                    .createdAt(wellAction.getCreatedAt())
+                    .C(wellAction.getC())
                     .P_pkr(wellAction.getP_pkr())
                     .T_pkr(wellAction.getT_pkr())
                     .P_pr(wellAction.getP_pr())

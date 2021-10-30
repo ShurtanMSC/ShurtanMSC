@@ -10,6 +10,8 @@ import uz.neft.secret.CurrentUser;
 import uz.neft.service.WellService;
 import uz.neft.service.action.WellActionService;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("api/well")
 @CrossOrigin
@@ -87,6 +89,15 @@ public class WellController {
     @GetMapping("all/action/uppg/{id}")
     public HttpEntity<?> getAllActionByUppg(@PathVariable Integer id) {
         return wellActionService.getAllWithActionsByUppg(id);
+    }
+
+    @GetMapping("actions/{wellId}")
+    public HttpEntity<?> getAllActionsByCollectionPointId(@PathVariable Integer wellId,
+                                                          @RequestParam(value = "page", required = false, defaultValue = "0") Optional<Integer> page,
+                                                          @RequestParam(value = "pageSaze", required = false, defaultValue = "10") Optional<Integer> pageSaze,
+                                                          @RequestParam(value = "sortBy", required = false, defaultValue = "createdAt") Optional<String> sortBy
+    ) {
+        return wellActionService.getAllActionsByWell(wellId, page, pageSaze, sortBy);
     }
 
     @GetMapping("one/{id}")
