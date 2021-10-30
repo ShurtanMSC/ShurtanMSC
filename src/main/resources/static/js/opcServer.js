@@ -68,6 +68,7 @@ function editOpcServer(id) {
     formField['description'].value = editOpcServer.description;
     formField['address'].value = editOpcServer.address;
     formField['url'].value = editOpcServer.url;
+    formField['type'].value = editOpcServer.type;
 
 }
 
@@ -92,6 +93,7 @@ function createViewTable(opcServers) {
             "                                    <td>" + opcServer.description + "</td>\n" +
             "                                    <td>" + opcServer.address + "</td>\n" +
             "                                    <td>" + opcServer.url + "</td>\n" +
+            "                                    <td>" + opcServer.type + "</td>\n" +
             "                                    <td><button data-target=\"#exampleModalCenter\" data-toggle=\"modal\" class='btn btn-success mt-1' id='btn-edit-opcServer' value='" + opcServer.id + "' onclick='editOpcServer(this.value)'>Редактировать</button>\n" +
             "                                    <button class='btn btn-danger ml-2 mt-1' id='btn-edit-opcServer' value='" + opcServer.id + "' onclick='deleteOpcServer(this.value)'>Удалить</button></td>\n" +
             "                                </tr>"

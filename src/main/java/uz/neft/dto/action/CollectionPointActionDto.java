@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 import java.util.Date;
 
 @Getter
@@ -12,7 +13,7 @@ import java.util.Date;
 @Builder
 public class CollectionPointActionDto {
 
-    Long actionId;
+    private Long actionId;
 
     // Rasxod
     private double expend;
@@ -27,7 +28,6 @@ public class CollectionPointActionDto {
     private Integer collectionPointId;
 
     private Date createdAt;
-
 
 
 //    @LastModifiedBy

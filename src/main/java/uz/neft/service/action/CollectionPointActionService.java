@@ -2,6 +2,7 @@ package uz.neft.service.action;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -177,13 +178,13 @@ public class CollectionPointActionService {
             if (!collectionPoint.isPresent()) return converter.apiError404("collection point not found");
 
 //            List<CollectionPointAction> collectionPointActions = collectionPointActionRepository.findAllByCollectionPointOrderByCreatedAtDesc(collectionPoint.get());
-            Page<CollectionPointAction> collectionPointActions = collectionPointActionRepository.findAll(PageRequest.of(
-                    page.orElse(0), pageSize.orElse(10),
-                    Sort.Direction.DESC, sortBy.orElse("createdAt")
-            ));
+            Pageable pg = PageRequest.of(page.orElse(0), pageSize.orElse(10), Sort.Direction.DESC, sortBy.orElse("createdAt"));
+
+            Page<CollectionPointAction> collectionPointActions = collectionPointActionRepository.findAllByCollectionPointOrderByCreatedAtDesc(collectionPoint.get(), pg);
+
             Stream<CollectionPointActionDto> collectionPointActionDtoStream = collectionPointActions.stream().map(converter::collectionPointActionToCollectionPointActionDto);
 
-            return converter.apiSuccess200(collectionPointActionDtoStream,collectionPointActions.getTotalElements(), collectionPointActions.getTotalPages());
+            return converter.apiSuccess200(collectionPointActionDtoStream, collectionPointActions.getTotalElements(), collectionPointActions.getTotalPages());
 //            return converter.apiSuccess200(collectionPointActionDtoStream);
         } catch (Exception e) {
             e.printStackTrace();
@@ -269,6 +270,52 @@ public class CollectionPointActionService {
         }
     }
 
+    public HttpEntity<?> deleteAction(Long id) {
+        try {
+            if (id != null) {
+                Optional<CollectionPointAction> action = collectionPointActionRepository.findById(id);
+
+                if (action.isPresent()) {
+                    collectionPointActionRepository.delete(action.get());
+                    return converter.apiSuccess200("Collection point action deleted");
+                } else {
+                    return converter.apiError404("Collection point Action found");
+                }
+            }
+            return converter.apiError400("Action Id null");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409("Error in deleting Collection point action", e);
+        }
+
+    }
+
+    public HttpEntity<?> editAction(CollectionPointActionDto dto) {
+        try {
+            if (dto.getActionId() == null) return converter.apiError400("Action Id is null");
+            CollectionPointAction collectionPointAction;
+            Optional<CollectionPointAction> action = collectionPointActionRepository.findById(dto.getActionId());
+            if (action.isPresent()) {
+                Optional<CollectionPoint> collectionPoint = collectionPointRepository.findById(dto.getCollectionPointId());
+                if (collectionPoint.isPresent()) {
+                    collectionPointAction = action.get();
+                    collectionPointAction.setCollectionPoint(collectionPoint.get());
+                    collectionPointAction.setExpend(dto.getExpend());
+                    collectionPointAction.setPressure(dto.getPressure());
+                    collectionPointAction.setTemperature(dto.getTemperature());
+
+                    CollectionPointAction save = collectionPointActionRepository.save(collectionPointAction);
+                    CollectionPointActionDto collectionPointActionDto = converter.collectionPointActionToCollectionPointActionDto(save);
+                    return converter.apiSuccess200("Collection Point Action Edited", collectionPointActionDto);
+                }
+                return converter.apiError404("Collection Point not found");
+            }
+            return converter.apiError404("Collection Point Action not found!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409("Error edit collection point");
+        }
+    }
 
     /**
      * Auto
@@ -281,14 +328,14 @@ public class CollectionPointActionService {
 
             List<CollectionPoint> all = collectionPointRepository.findAllByMiningSystemId(id);
             for (CollectionPoint collectionPoint : all) {
-                if (collectionPoint.isActiveE()){
+                if (collectionPoint.isActiveE()) {
                     CollectionPointAction action = CollectionPointAction
                             .builder()
                             .collectionPoint(collectionPoint)
                             .build();
 
-                    action.setTemperature(opcService.getValue(action,action.getCollectionPoint().getTemperatureUnit()));
-                    action.setPressure(opcService.getValue(action,action.getCollectionPoint().getPressureUnit()));
+                    action.setTemperature(opcService.getValue(action, action.getCollectionPoint().getTemperatureUnit()));
+                    action.setPressure(opcService.getValue(action, action.getCollectionPoint().getPressureUnit()));
 //                action.setPressure(action.getPressureOpc());
 //                action.setTemperature(action.getTemperatureOpc());
                     wellActionService.execute(collectionPoint.getUppg());
@@ -340,23 +387,4 @@ public class CollectionPointActionService {
     }
 
 
-    public HttpEntity<?> deleteAction(Long id) {
-        try {
-            if (id != null) {
-                Optional<CollectionPointAction> action = collectionPointActionRepository.findById(id);
-
-                if (action.isPresent()) {
-                    collectionPointActionRepository.delete(action.get());
-                    return converter.apiSuccess200("Collection point action deleted");
-                } else {
-                    return converter.apiError404("Collection point Action found");
-                }
-            }
-            return converter.apiError400("Action Id null");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return converter.apiError409("Error in deleting Collection point action", e);
-        }
-
-    }
 }

@@ -36,13 +36,13 @@ function getActionsByCollectionPoint() {
     axios.get("/api/collection_point/actions/" + collectionPointID)
         .then(function (response) {
             console.log(response.data)
-            if (response.data.message === "OK") {
+            if (response.status === 200) {
                 collectionPointActionsList = response.data.object
             }
             document.getElementById("collectionPointActionsTable").innerHTML = createViewTableAction(response.data.object)
         })
         .catch(function (error) {
-            console.log(error)
+            console.log(error.response)
         })
 
 }
@@ -64,14 +64,14 @@ function addOrEditCollectionPointAction(event) {
         data
     };
 
-    console.log(data)
+    // console.log(data)
 
     if (data.actionId === "" || data.actionId == null) {
         config.method = 'post';
         config.url = '/api/collection_point/manually/add/action'
     } else {
         config.method = 'put';
-        config.url = '/api/collectionPoint/edit/action'
+        config.url = '/api/collection_point/action/edit'
     }
 
     axios(config)
@@ -96,7 +96,8 @@ function editCollectionPointAction(id) {
     document.getElementById('addOrEditCollectionPointActionH3').innerText = 'Редактировать действие'
     document.getElementById('addOrEditCollectionPointActionBtn').innerText = 'Редактировать'
 
-    let editCollectionPointAction = collectionPointActionsList.find(action => action.actionId == id)
+
+    let editCollectionPointAction = collectionPointActionsList.find(item => item.actionId == id)
     let formField = document.getElementById('addOrEditCollectionPointActionForm')
 
     formField['actionId'].value = editCollectionPointAction.actionId;
@@ -104,7 +105,6 @@ function editCollectionPointAction(id) {
     formField['pressure'].value = editCollectionPointAction.pressure;
     formField['temperature'].value = editCollectionPointAction.temperature;
     formField['collectionPointId'].value = editCollectionPointAction.collectionPointId;
-    formField['createdAt'].value = editCollectionPointAction.createdAt;
 
 }
 
@@ -129,7 +129,7 @@ function createViewTableAction(actions) {
         const createdAtYear = createdAtDate.getFullYear();
         const createdAtHours = createdAtDate.getHours();
         const createdAtMins = createdAtDate.getMinutes()
-        const createdAtDateString = createdAtDayOfMonth + "-" + (createdAtMonth + 1) + "-" + createdAtYear+" " +createdAtHours+":"+createdAtMins;
+        const createdAtDateString = createdAtDayOfMonth + "-" + (createdAtMonth + 1) + "-" + createdAtYear + " " + createdAtHours + ":" + createdAtMins;
 
         out += "<tr class=\"action_table_row\">\n" +
             "   <td class=\"sorting_1\">" + action.actionId + "</td>\n" +

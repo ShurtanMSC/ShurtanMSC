@@ -50,6 +50,7 @@ public class OpcServerService {
                 editOpcServer.setDescription(opcServer.getDescription());
                 editOpcServer.setAddress(opcServer.getAddress());
                 editOpcServer.setUrl(opcServer.getUrl());
+                editOpcServer.setType(opcServer.getType());
 
                 editOpcServer = opcServerRepository.save(editOpcServer);
 

@@ -94,7 +94,7 @@ public class CollectionPointService {
                     editCollectionPoint.setUppg(byIdUppg.get());
                     CollectionPoint save = collectionPointRepository.save(editCollectionPoint);
                     CollectionPointDto collectionPointDto = converter.collectionPointToCollectionPointDto(save);
-                    return converter.apiSuccess200("Edited Mining System", collectionPointDto);
+                    return converter.apiSuccess200("Collection Point Edited", collectionPointDto);
                 }
                 return converter.apiError404("Uppg not found");
             }

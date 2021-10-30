@@ -97,11 +97,16 @@ public class CollectionPointController {
 
     @GetMapping("actions/{collectionPointId}")
     public HttpEntity<?> getAllActionsByCollectionPointId(@PathVariable Integer collectionPointId,
-                                                          @RequestParam Optional<Integer> page,
-                                                          @RequestParam Optional<Integer> pageSaze,
-                                                          @RequestParam Optional<String> sortBy
+                                                          @RequestParam(value = "page", required = false, defaultValue = "0") Optional<Integer> page,
+                                                          @RequestParam(value = "pageSaze", required = false, defaultValue = "10") Optional<Integer> pageSaze,
+                                                          @RequestParam(value = "sortBy", required = false, defaultValue = "createdAt") Optional<String> sortBy
     ) {
         return collectionPointActionService.getAllActionsByCollectionPoint(collectionPointId, page, pageSaze, sortBy);
+    }
+
+    @PutMapping("action/edit")
+    public HttpEntity<?> editAction(@RequestBody CollectionPointActionDto dto) {
+        return collectionPointActionService.editAction(dto);
     }
 
     @GetMapping("all/action/mining_system/{id}")
