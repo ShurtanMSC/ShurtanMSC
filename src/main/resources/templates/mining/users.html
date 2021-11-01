@@ -87,12 +87,16 @@
                          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
-                                <div class="modal-header">
+                                <div class="modal-header p-2">
                                     <button type="button"
                                             class="close d-flex align-items-center justify-content-center h-25 "
                                             id="closeFormBtn"
                                             data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true" class="ion-ios-close">x</span>
+<!--                                        <span aria-hidden="true" class="ion-ios-close">x</span>-->
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#0088BC"
+                                             class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                                        </svg>
                                     </button>
                                 </div>
                                 <div class="modal-body  pb-md-5 pl-md-5 pr-md-5 pt-md-2">
@@ -102,31 +106,37 @@
                                         <div class="form-group">
                                             <input name="id" type="text" class="form-control rounded-left" hidden>
                                         </div>
-                                        <div class="form-group">
-                                            <input name="username" type="text" class="form-control rounded-left"
+                                        <div class="form-group flex-column">
+                                            <label for="username" class="mb-0 ">Имя пользователя</label>
+                                            <input name="username" id="username" type="text" class="form-control rounded-left"
                                                    placeholder="Имя пользователя" required>
                                         </div>
-                                        <div class="form-group d-flex">
-                                            <input name="email" type="email" class="form-control rounded-left"
+                                        <div class="form-group d-flex flex-column">
+                                            <label for="email" class="mb-0">Эл. адрес</label>
+                                            <input name="email" type="email" id="email" class="form-control rounded-left"
                                                    placeholder="Эл. адрес" required>
                                         </div>
-                                        <div class="form-group d-flex">
-                                            <input name="password" type="password" class="form-control rounded-left"
+                                        <div class="form-group d-flex flex-column">
+                                            <label for="password" class="mb-0">Пароль</label>
+                                            <input name="password" type="password" id="password" class="form-control rounded-left"
                                                    placeholder="Пароль" required>
                                         </div>
-                                        <div class="form-group d-flex">
-                                            <input name="phone" type="tel" class="form-control rounded-left"
+                                        <div class="form-group d-flex flex-column">
+                                            <label for="phone" class="mb-0">Номер телефона</label>
+                                            <input name="phone" type="tel" id="phone" class="form-control rounded-left"
                                                    placeholder="Номер телефона" required>
                                         </div>
-                                        <div class="form-group d-flex">
-                                            <input name="fio" type="text" class="form-control rounded-left"
+                                        <div class="form-group d-flex flex-column">
+                                            <label for="fio" class="mb-0">Полное имя</label>
+                                            <input name="fio" type="text" id="fio" class="form-control rounded-left"
                                                    placeholder="Полное имя" required>
                                         </div>
-                                        <div class="form-group d-flex">
+                                        <div class="form-group d-flex flex-column">
+                                            <label for="inputGroupSelect03" class="mb-0">Роли</label>
                                             <select name="roleId" class="custom-select form-control rounded-left"
                                                     id="inputGroupSelect03"
                                                     aria-label="Example select with button addon" required>
-                                                <option value="">Роли</option>
+                                                <option value="">Выбрать роль</option>
                                                 <option value="1">SUPER ADMIN</option>
                                                 <option value="2">OPERATOR</option>
                                                 <option value="3">EMPLOYEE</option>

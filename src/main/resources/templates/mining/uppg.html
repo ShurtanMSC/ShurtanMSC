@@ -2,7 +2,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -25,8 +24,8 @@
           th:href="@{/css/sb-admin-2.min.css}"
           rel="stylesheet">
 
-    <link href="/static/css/uppgs.css"
-          th:href="@{/css/uppgs.css}"
+    <link href="/static/css/uppg.css"
+          th:href="@{/css/uppg.css}"
           rel="stylesheet">
 
     <link href="/static/css/users.css"
@@ -97,7 +96,7 @@
                                     <select name="miningSelect" class="custom-select form-control rounded-left mt-1"
                                             id="miningSelect"
                                             onchange="selectHandle()"
-                                            aria-label="Example select with button addon" >
+                                            aria-label="Example select with button addon">
                                         <option value="">Loading. . .</option>
                                     </select>
                                 </div>
@@ -118,27 +117,33 @@
                          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
-                                <div class="modal-header">
+                                <div class="modal-header p-2">
                                     <button type="button"
                                             class="close d-flex align-items-center justify-content-center h-25 "
                                             id="closeFormBtn"
                                             data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true" class="ion-ios-close">x</span>
+<!--                                        <span aria-hidden="true" class="ion-ios-close">x</span>-->
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#0088BC"
+                                             class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                                        </svg>
                                     </button>
                                 </div>
-                                <div class="modal-body  pb-md-5 pl-md-5 pr-md-5 pt-md-2">
+                                <div class="modal-body  pb-md-3 pl-md-5 pr-md-5 pt-md-2">
                                     <h3 class="text-center mb-4 " id="addOrEditUppgH3">Добавить УППГ</h3>
                                     <form action="#" class="login-form" name="addOrEditUppgForm" id="addOrEditUppgForm"
                                           onsubmit="addOrEditUppg(event)">
                                         <div class="form-group">
                                             <input name="id" type="text" class="form-control rounded-left" hidden>
                                         </div>
-                                        <div class="form-group">
-                                            <input name="name" type="text" class="form-control rounded-left"
+                                        <div class="form-group d-flex flex-column">
+                                            <label for="name" class="mb-0">Имя уппг</label>
+                                            <input name="name" type="text" id="name" class="form-control rounded-left"
                                                    placeholder="Имя уппг" required>
                                         </div>
                                         <div class="form-group d-flex">
-                                            <input name="miningSystemId" value="" type="number" class="form-control rounded-left"
+                                            <input name="miningSystemId" value="" type="number"
+                                                   class="form-control rounded-left"
                                                    hidden>
                                         </div>
 
@@ -159,17 +164,21 @@
                     <!--uppg ACTION form-->
                     <div class="modal fade" id="exampleModalCenterAction" tabindex="-1" role="dialog"
                          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-dialog modal-dialog-centered uppg-action-form" role="document">
                             <div class="modal-content">
-                                <div class="modal-header">
+                                <div class="modal-header p-2">
                                     <button type="button"
-                                            class="close d-flex align-items-center justify-content-center h-25"
+                                            class="close d-flex align-items-center justify-content-center h-25 "
                                             id="closeFormBtnAction"
                                             data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true" class="ion-ios-close">x</span>
+                                        <!-- <span aria-hidden="true" class="ion-ios-close">x</span>-->
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#0088BC"
+                                             class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                                        </svg>
                                     </button>
                                 </div>
-                                <div class="modal-body  pb-md-5 pl-md-5 pr-md-5 pt-md-2">
+                                <div class="modal-body  pb-md-3 pl-md-5 pr-md-5 pt-md-2">
                                     <h3 class="text-center mb-4" id="addOrEditUppgActionH3">Добавить действие
                                         уппг</h3>
                                     <form action="/" class="login-form" id="addOrEditUppgActionForm"
@@ -178,58 +187,74 @@
                                             <input name="actionId" type="number" class="form-control rounded-left"
                                                    hidden>
                                         </div>
-                                        <div class="form-group d-flex">
-                                            <input name="expend" type="number" step=any
-                                                   class="form-control rounded-left"
-                                                   placeholder="Расходъ">
-                                        </div>
 
-                                        <div class="form-group d-flex">
-                                            <input name="designedPerformance" type="number" step=any
-                                                   class="form-control rounded-left"
-                                                   placeholder="Проектная производительность, м³/год">
-                                        </div>
+                                        <div class="col-12 d-flex">
+                                            <div class="col-6">
+                                                <div class="form-group d-flex flex-column">
+                                                <label for="expend" class="mb-0">Расходъ</label>
+                                                <input name="expend" id="expend" type="number" step=any
+                                                       class="form-control rounded-left"
+                                                       placeholder=""
+                                                >
+                                            </div>
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="designedPerformance" class="mb-0">Проектная производительность,
+                                                        м³/год</label>
+                                                    <input name="designedPerformance" id="designedPerformance" type="number"
+                                                           step=any
+                                                           class="form-control rounded-left"
+                                                           placeholder="">
+                                                </div>
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="actualPerformance" class="mb-0">Фактическая производителность,
+                                                        м³/год</label>
+                                                    <input name="actualPerformance" id="actualPerformance" type="number"
+                                                           step=any
+                                                           class="form-control rounded-left"
+                                                           placeholder="">
+                                                </div>
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="condensate" class="mb-0">По конденсату, тыс.т</label>
+                                                    <input name="condensate" id="condensate" type="number" step=any
+                                                           class="form-control rounded-left"
+                                                           placeholder="">
+                                                </div>
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="onWater" class="mb-0">По воде, тыс.т</label>
+                                                    <input name="onWater" id="onWater" type="number" step=any
+                                                           class="form-control rounded-left"
+                                                           placeholder="">
+                                                </div></div>
+                                            <div class="col-6">
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="incomeTemperature" class="mb-0">Входная температура (°C)</label>
+                                                    <input name="incomeTemperature" id="incomeTemperature" type="number"
+                                                           step=any
+                                                           class="form-control rounded-left"
+                                                           placeholder="">
+                                                </div>
 
-                                        <div class="form-group d-flex">
-                                            <input name="actualPerformance" type="number" step=any
-                                                   class="form-control rounded-left"
-                                                   placeholder="Фактическая производителность, м³/год">
-                                        </div>
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="exitTemperature" class="mb-0">Выходная температура (°C)</label>
+                                                    <input name="exitTemperature" id="exitTemperature" type="number" step=any
+                                                           class="form-control rounded-left"
+                                                           placeholder="">
+                                                </div>
 
-                                        <div class="form-group d-flex">
-                                            <input name="condensate" type="number" step=any
-                                                   class="form-control rounded-left"
-                                                   placeholder="По конденсату, тыс.т">
-                                        </div>
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="incomePressure" class="mb-0">Входное давление (кгс/см²)</label>
+                                                    <input name="incomePressure" id="incomePressure" type="number" step=any
+                                                           class="form-control rounded-left"
+                                                           placeholder="">
+                                                </div>
 
-                                        <div class="form-group d-flex">
-                                            <input name="onWater" type="number" step=any
-                                                   class="form-control rounded-left"
-                                                   placeholder="По воде, тыс.т">
-                                        </div>
-
-                                        <div class="form-group d-flex">
-                                            <input name="incomeTemperature" type="number" step=any
-                                                   class="form-control rounded-left"
-                                                   placeholder="(Входная температура, °C)">
-                                        </div>
-
-                                        <div class="form-group d-flex">
-                                            <input name="exitTemperature" type="number" step=any
-                                                   class="form-control rounded-left"
-                                                   placeholder="(Выходная температура, °C)">
-                                        </div>
-
-                                        <div class="form-group d-flex">
-                                            <input name="incomePressure" type="number" step=any
-                                                   class="form-control rounded-left"
-                                                   placeholder="(Входное давление, кгс/см²)">
-                                        </div>
-
-                                        <div class="form-group d-flex">
-                                            <input name="exitPressure" type="number" step=any
-                                                   class="form-control rounded-left"
-                                                   placeholder="(Выходное давление, кгс/см²)">
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="exitPressure" class="mb-0">Выходное давление (кгс/см²)</label>
+                                                    <input name="exitPressure" id="exitPressure" type="number" step=any
+                                                           class="form-control rounded-left"
+                                                           placeholder="">
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <div class="form-group d-flex">
@@ -308,7 +333,9 @@
                                             <tr>
                                                 <th class="uppgs-table-title" rowspan="1" colspan="1">ID</th>
                                                 <th class="uppgs-table-title" rowspan="1" colspan="1">Имя УППГ</th>
-                                                <th class="uppgs-table-title" rowspan="1" colspan="1" hidden>Mining System</th>
+                                                <th class="uppgs-table-title" rowspan="1" colspan="1" hidden>Mining
+                                                    System
+                                                </th>
 
                                                 <th class="uppgs-table-title" rowspan="1" colspan="1">Редактировать</th>
                                             </tr>
@@ -407,55 +434,55 @@
                                                 <th class="sorting sorting_asc users-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-sort="ascending"
-                                                    >ID
+                                                >ID
                                                 </th>
                                                 <th class="sorting users-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    >Расходъ
+                                                >Расходъ
                                                 </th>
                                                 <th class="sorting users-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    >Проектная производи тельность, м³/год
+                                                >Проектная производи тельность, м³/год
                                                 </th>
                                                 <th class="sorting users-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    >Фактическая производи телность, м³/год
+                                                >Фактическая производи телность, м³/год
                                                 </th>
                                                 <th class="sorting users-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    >По конденсату, тыс.т
+                                                >По конденсату, тыс.т
                                                 </th>
                                                 <th class="sorting users-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    >По воде, тыс.т
+                                                >По воде, тыс.т
                                                 </th>
                                                 <th class="sorting users-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    > Входная температура ( °C )
+                                                > Входная температура ( °C )
                                                 </th>
                                                 <th class="sorting users-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    > Выходная температура ( °C )
+                                                > Выходная температура ( °C )
                                                 </th>
                                                 <th class="sorting users-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    > Входное давление ( кгс/см² )
+                                                > Входное давление ( кгс/см² )
                                                 </th>
                                                 <th class="sorting users-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    > Выходное давление ( кгс/см²)
+                                                > Выходное давление ( кгс/см²)
                                                 </th>
                                                 <th class="sorting users-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    >Дата создания
+                                                >Дата создания
                                                 </th>
                                                 <th class="sorting uppgs-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
-                                                   hidden>Уппг
+                                                    hidden>Уппг
                                                 </th>
                                                 <th class="sorting users-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    >Редактировать
+                                                >Редактировать
                                                 </th>
                                             </tr>
                                             </thead>
@@ -463,14 +490,29 @@
                                             <tr>
                                                 <th class="users-table-title" rowspan="1" colspan="1">ID</th>
                                                 <th class="users-table-title" rowspan="1" colspan="1">Расходъ</th>
-                                                <th class="users-table-title" rowspan="1" colspan="1">Проектная производи тельность, м³/год</th>
-                                                <th class="users-table-title" rowspan="1" colspan="1">Фактическая производи телность, м³/год</th>
-                                                <th class="users-table-title" rowspan="1" colspan="1">По конденсату, тыс.т</th>
-                                                <th class="users-table-title" rowspan="1" colspan="1">По воде, тыс.т</th>
-                                                <th class="users-table-title" rowspan="1" colspan="1">Входная температура ( °C )</th>
-                                                <th class="users-table-title" rowspan="1" colspan="1">Выходная температура ( °C )</th>
-                                                <th class="users-table-title" rowspan="1" colspan="1">Входное давление ( кгс/см² )</th>
-                                                <th class="users-table-title" rowspan="1" colspan="1">Выходное давление ( кгс/см²)</th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Проектная
+                                                    производи тельность, м³/год
+                                                </th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Фактическая
+                                                    производи телность, м³/год
+                                                </th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">По конденсату,
+                                                    тыс.т
+                                                </th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">По воде, тыс.т
+                                                </th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Входная
+                                                    температура ( °C )
+                                                </th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Выходная
+                                                    температура ( °C )
+                                                </th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Входное давление (
+                                                    кгс/см² )
+                                                </th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Выходное давление
+                                                    ( кгс/см²)
+                                                </th>
                                                 <th class="users-table-title" rowspan="1" colspan="1">Дата создания</th>
                                                 <th class="users-table-title" rowspan="1" colspan="1">Редактировать</th>
                                             </tr>
@@ -610,6 +652,11 @@
     $(document).ready(function () {
         $("#exampleModalCenter").on('hide.bs.modal', function () {
             document.getElementById('addOrEditUppgForm').reset();
+        });
+    });
+    $(document).ready(function () {
+        $("#exampleModalCenterAction").on('hide.bs.modal', function () {
+            document.getElementById('addOrEditUppgActionForm').reset();
         });
     });
 </script>

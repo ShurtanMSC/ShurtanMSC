@@ -26,7 +26,6 @@ function resetAndCloseForm() {
     document.getElementById('addOrEditMiningSystemForm').reset();
 }
 
-
 function addOrEditMiningSystem(event) {
     event.preventDefault();
     const formData = new FormData(event.target);

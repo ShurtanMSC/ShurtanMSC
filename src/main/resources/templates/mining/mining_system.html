@@ -105,15 +105,19 @@
                          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
-                                <div class="modal-header">
+                                <div class="modal-header p-2">
                                     <button type="button"
                                             class="close d-flex align-items-center justify-content-center h-25"
                                             id="closeFormBtn"
                                             data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true" class="ion-ios-close">x</span>
+<!--                                        <span aria-hidden="true" class="ion-ios-close">x</span>-->
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#0088BC"
+                                             class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                                        </svg>
                                     </button>
                                 </div>
-                                <div class="modal-body  pb-md-5 pl-md-5 pr-md-5 pt-md-2">
+                                <div class="modal-body  pb-md-3 pl-md-5 pr-md-5 pt-md-2">
                                     <h3 class="text-center mb-4" id="addOrEditMiningSystemH3">Добавить
                                         месторождения</h3>
                                     <form action="/" class="login-form" id="addOrEditMiningSystemForm"
@@ -122,9 +126,10 @@
                                             <input name="id" type="number" class="form-control rounded-left"
                                                    hidden>
                                         </div>
-                                        <div class="form-group d-flex">
-                                            <input name="name" type="text" class="form-control rounded-left"
-                                                   placeholder="Имя месторождения">
+                                        <div class="form-group d-flex flex-column">
+                                            <label for="name" class="mb-0">Имя месторождения</label>
+                                            <input name="name" type="text" id="name" class="form-control rounded-left"
+                                                                             placeholder="Имя месторождения">
                                         </div>
                                         <div class="form-group">
                                             <button type="submit"
@@ -144,15 +149,19 @@
                          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
-                                <div class="modal-header">
+                                <div class="modal-header p-2">
                                     <button type="button"
                                             class="close d-flex align-items-center justify-content-center h-25"
                                             id="closeFormBtnAction"
                                             data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true" class="ion-ios-close">x</span>
+<!--                                        <span aria-hidden="true" class="ion-ios-close">x</span>-->
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#0088BC"
+                                             class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                                        </svg>
                                     </button>
                                 </div>
-                                <div class="modal-body  pb-md-5 pl-md-5 pr-md-5 pt-md-2">
+                                <div class="modal-body  pb-md-3 pl-md-5 pr-md-5 pt-md-2">
                                     <h3 class="text-center mb-4" id="addOrEditMiningSystemActionH3">Добавить действие
                                         месторождения</h3>
                                     <form action="/" class="login-form" id="addOrEditMiningSystemActionForm"
@@ -161,8 +170,9 @@
                                             <input name="actionId" type="number" class="form-control rounded-left"
                                                    hidden>
                                         </div>
-                                        <div class="form-group d-flex">
-                                            <input name="expend" type="number" step=any
+                                        <div class="form-group d-flex flex-column">
+                                            <label for="expend" class="mb-0">Расходъ</label>
+                                            <input name="expend" id="expend" type="number" step=any
                                                    class="form-control rounded-left"
                                                    placeholder="Расходъ">
                                         </div>
@@ -505,6 +515,11 @@
     $(document).ready(function () {
         $("#exampleModalCenter").on('hide.bs.modal', function () {
             document.getElementById('addOrEditMiningSystemForm').reset();
+        });
+    });
+    $(document).ready(function () {
+        $("#exampleModalCenterAction").on('hide.bs.modal', function () {
+            document.getElementById('addOrEditMiningSystemActionForm').reset();
         });
     });
 </script>

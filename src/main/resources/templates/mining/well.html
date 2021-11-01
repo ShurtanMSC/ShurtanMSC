@@ -117,8 +117,8 @@
                                         <option value="">Loading. . .</option>
                                     </select>
                                 </div>
-                                <div class="col-4 d-flex justify-content-end p-0">
-                                    <button type="button" class="btn btn-outline-info py-2 px-4"
+                                <div class="col-4 d-flex justify-content-end pr-2">
+                                    <button type="button" class="btn btn-outline-info py-2 px-4 mr-3"
                                             data-toggle="modal" style="display: none;"
                                             id="addWellActionBtn"
                                             data-target="#exampleModalCenterAction">
@@ -132,75 +132,100 @@
                     <!--WELL  form-->
                     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
                          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-dialog modal-dialog-centered well-form-modal" role="document">
                             <div class="modal-content">
-                                <div class="modal-header">
+                                <div class="modal-header p-2">
                                     <button type="button"
                                             class="close d-flex align-items-center justify-content-center h-25 "
                                             id="closeFormBtn"
                                             data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true" class="ion-ios-close">x</span>
+<!--                                        <span aria-hidden="true" class="ion-ios-close">x</span>-->
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#0088BC"
+                                             class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                                        </svg>
                                     </button>
                                 </div>
-                                <div class="modal-body  pb-md-5 pl-md-5 pr-md-5 pt-md-2">
+                                <div class="modal-body  pb-md-3 pl-md-5 pr-md-5 pt-md-2">
                                     <h3 class="text-center mb-4 " id="addOrEditWellH3">Добавить Скважина</h3>
                                     <form action="#" class="login-form" name="addOrEditWellForm" id="addOrEditWellForm"
                                           onsubmit="addOrEditWell(event)">
                                         <div class="form-group">
                                             <input name="id" type="text" class="form-control rounded-left" hidden>
                                         </div>
-                                        <div class="form-group">
-                                            <input name="number" type="number" class="form-control rounded-left"
-                                                   placeholder="номер cкважина" required>
+
+                                        <div class="col-12 d-flex">
+                                            <div class="col-6">
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="number" class="mb-0">Номер cкважина</label>
+                                                    <input name="number" id="number" type="number" class="form-control rounded-left"
+                                                           placeholder="" required>
+                                                </div>
+
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="commissioningDate" class="mb-0">Дата ввода в эксплуатацию</label>
+                                                    <input name="commissioningDate" id="commissioningDate" type="date"
+                                                           class="form-control rounded-left"
+                                                           placeholder="">
+                                                </div>
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="drillingStartDate" class="mb-0">Дата начала бурения</label>
+                                                    <input name="drillingStartDate" id="drillingStartDate" type="date"
+                                                           class="form-control rounded-left" placeholder="">
+                                                </div>
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="horizon" class="mb-0">Горизонт</label>
+                                                    <input name="horizon" id="horizon" type="text"
+                                                           class="form-control rounded-left" placeholder="" required>
+                                                </div>
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="altitude" class="mb-0">Высота</label>
+                                                    <input name="altitude" id="altitude" type="number" step=any
+                                                           class="form-control rounded-left" placeholder="" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="depth" class="mb-0">Глубина</label>
+                                                    <input name="depth" id="depth" type="number" step=any
+                                                           class="form-control rounded-left" placeholder="" required>
+                                                </div>
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="x" class="mb-0">X</label>
+                                                    <input name="x" id="x" type="number" step=any
+                                                           class="form-control rounded-left" placeholder="" required>
+                                                </div>
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="y" class="mb-0">Y</label>
+                                                    <input name="y" id="y" type="number" step=any
+                                                           class="form-control rounded-left" placeholder="" required>
+                                                </div>
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="cc" class="mb-0">C</label>
+                                                    <input name="c" id="cc" type="number" step=any
+                                                           class="form-control rounded-left" placeholder="" required>
+                                                </div>
+
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="inputGroupSelect03" class="mb-0">Категория</label>
+                                                    <select name="category" class="custom-select form-control rounded-left"
+                                                            id="inputGroupSelect03"
+                                                            aria-label="Example select with button addon" required>
+                                                        <option value="">категория</option>
+                                                        <option value="MINING">MINING</option>
+                                                        <option value="DISCHARGE">DISCHARGE</option>
+                                                        <option value="EXPLORATION">EXPLORATION</option>
+                                                        <option value="PIEZOMETRIC">PIEZOMETRIC</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
+
+
+
                                         <div class="form-group d-flex">
                                             <input name="collectionPointId" value="" type="number"
                                                    class="form-control rounded-left" required hidden>
-                                        </div>
-                                        <div class="form-group d-flex">
-                                            <input name="commissioningDate" type="date"
-                                                   class="form-control rounded-left"
-                                                   placeholder="Дата ввода в эксплуатацию">
-                                        </div>
-                                        <div class="form-group d-flex">
-                                            <input name="drillingStartDate" type="date"
-                                                   class="form-control rounded-left" placeholder="Дата начала бурения">
-                                        </div>
-                                        <div class="form-group d-flex">
-                                            <input name="horizon" type="text"
-                                                   class="form-control rounded-left" placeholder="горизонт" required>
-                                        </div>
-                                        <div class="form-group d-flex">
-                                            <input name="altitude" type="number" step=any
-                                                   class="form-control rounded-left" placeholder="высота" required>
-                                        </div>
-                                        <div class="form-group d-flex">
-                                            <input name="depth" type="number" step=any
-                                                   class="form-control rounded-left" placeholder="глубина" required>
-                                        </div>
-                                        <div class="form-group d-flex">
-                                            <input name="x" type="number" step=any
-                                                   class="form-control rounded-left" placeholder="x" required>
-                                        </div>
-                                        <div class="form-group d-flex">
-                                            <input name="y" type="number" step=any
-                                                   class="form-control rounded-left" placeholder="y" required>
-                                        </div>
-                                        <div class="form-group d-flex">
-                                            <input name="c" type="number" step=any
-                                                   class="form-control rounded-left" placeholder="c" required>
-                                        </div>
-
-                                        <div class="form-group d-flex">
-                                            <select name="category" class="custom-select form-control rounded-left"
-                                                    id="inputGroupSelect03"
-                                                    aria-label="Example select with button addon" required>
-                                                <option value="">категория</option>
-                                                <option value="MINING">MINING</option>
-                                                <option value="DISCHARGE">DISCHARGE</option>
-                                                <option value="EXPLORATION">EXPLORATION</option>
-                                                <option value="PIEZOMETRIC">PIEZOMETRIC</option>
-                                            </select>
                                         </div>
                                         <div class="form-group">
                                             <button type="submit"
@@ -220,127 +245,155 @@
                     <div class="modal fade" id="exampleModalCenterAction" tabindex="-1" role="dialog"
                          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered well-action-form"
-
                              role="document">
                             <div class="modal-content">
-                                <div class="modal-header">
+                                <div class="modal-header p-2">
                                     <button type="button"
                                             class="close d-flex align-items-center justify-content-center h-25"
                                             id="closeFormBtnAction"
                                             data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true" class="ion-ios-close">x</span>
+<!--                                        <span aria-hidden="true" class="ion-ios-close">x</span>-->
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#0088BC"
+                                             class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                                        </svg>
                                     </button>
                                 </div>
-                                <div class="modal-body  pb-md-5 pl-md-5 pr-md-5 pt-md-2">
+                                <div class="modal-body  pb-md-3 pl-md-5 pr-md-5 pt-md-2">
                                     <h3 class="text-center mb-4" id="addOrEditWellActionH3">Добавить действие
                                         уппг</h3>
                                     <form action="/" class="login-form" id="addOrEditWellActionForm"
                                           onsubmit="addOrEditWellAction(event);">
-                                                <div class="form-group">
-                                                    <input name="actionId" type="number"
-                                                           class="form-control rounded-left"
-                                                           hidden>
-                                                </div>
+                                        <div class="form-group">
+                                            <input name="actionId" type="number"
+                                                   class="form-control rounded-left"
+                                                   hidden>
+                                        </div>
                                         <div class="col-12 d-flex">
                                             <div class="col-6 ">
-                                                <div class="form-group d-flex">
-                                                    <input name="pressure" type="number" step=any
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="pressure" class="mb-0">Давление</label>
+                                                    <input name="pressure" id="pressure" type="number" step=any
                                                            class="form-control rounded-left"
-                                                           placeholder="Давление">
+                                                           placeholder="">
                                                 </div>
 
-                                                <div class="form-group d-flex">
-                                                    <input name="temperature" type="number" step=any
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="pressure" class="mb-0">Температура</label>
+                                                    <input name="temperature" id="temperature" type="number" step=any
                                                            class="form-control rounded-left"
-                                                           placeholder="Температура">
+                                                           placeholder="">
                                                 </div>
 
-                                                <div class="form-group d-flex">
-                                                    <input name="average_expend" type="number" step=any
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="average_expend" class="mb-0">Cредний расход</label>
+                                                    <input name="average_expend" id="average_expend" type="number" step=any
                                                            class="form-control rounded-left"
-                                                           placeholder="Cредний расход">
+                                                           placeholder="">
                                                 </div>
 
-                                                <div class="form-group d-flex">
-                                                    <input name="expend" type="number" step=any
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="expend" class="mb-0">Расход</label>
+                                                    <input name="expend" id="expend" type="number" step=any
                                                            class="form-control rounded-left"
-                                                           placeholder="Расход">
+                                                           placeholder="">
                                                 </div>
 
-                                                <div class="form-group d-flex">
-                                                    <input name="rpl" type="number" step=any
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="rpl" class="mb-0">Рпл</label>
+                                                    <input name="rpl" id="rpl" type="number" step=any
                                                            class="form-control rounded-left"
-                                                           placeholder="Рпл">
+                                                           placeholder="">
                                                 </div>
 
-                                                <div class="form-group d-flex">
-                                                    <input name="P_pkr" type="number" step=any
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="p_pkr" class="mb-0">Р_ПКР</label>
+                                                    <input name="p_pkr" id="p_pkr" type="number" step=any
                                                            class="form-control rounded-left"
-                                                           placeholder="Р_ПКР">
+                                                           placeholder="">
                                                 </div>
 
-                                                <div class="form-group d-flex">
-                                                    <input name="T_pkr" type="number" step=any
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="t_pkr" class="mb-0">T_ПКР</label>
+                                                    <input name="t_pkr"  id="t_pkr" type="number" step=any
                                                            class="form-control rounded-left"
-                                                           placeholder="T_ПКР">
+                                                           placeholder="">
                                                 </div>
 
-                                                <div class="form-group d-flex">
-                                                    <input name="P_pr" type="number" step=any
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="p_pr" class="mb-0">P_pr</label>
+                                                    <input name="p_pr" id="p_pr" type="number" step=any
                                                            class="form-control rounded-left"
-                                                           placeholder="P_pr">
+                                                           placeholder="">
                                                 </div>
-                                                <div class="form-group d-flex">
-                                                    <input name="T_pr" type="number" step=any
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="t_pr" class="mb-0">T_pr</label>
+                                                    <input name="t_pr" id="t_pr" type="number" step=any
                                                            class="form-control rounded-left"
-                                                           placeholder="T_pr">
+                                                           placeholder="">
                                                 </div>
                                             </div>
                                             <div class="col-6">
-                                                <div class="form-group d-flex">
-                                                    <input name="Ro_otn" type="number" step=any
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="ro_otn" class="mb-0">Относительная плотность газа ( ρ_отн )</label>
+                                                    <input name="ro_otn" id="ro_otn" type="number" step=any
                                                            class="form-control rounded-left"
-                                                           placeholder="Относительная плотность газа ( ρ_отн )">
+                                                           placeholder="">
                                                 </div>
-                                                <div class="form-group d-flex">
-                                                    <input name="Z" type="number" step=any
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="z" class="mb-0">Z - Коэффициент сверхсжимаемости газа</label>
+                                                    <input name="z" id="z" type="number" step=any
                                                            class="form-control rounded-left"
-                                                           placeholder="Z - Коэффициент сверхсжимаемости газа">
+                                                           placeholder="">
                                                 </div>
-                                                <div class="form-group d-flex">
-                                                    <input name="delta" type="number" step=any
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="delta" class="mb-0">Поправочный коэффициент (δ)</label>
+                                                    <input name="delta" id="delta" type="number" step=any
                                                            class="form-control rounded-left"
-                                                           placeholder="Поправочный коэффициент, зависящий от приведенных давления и температуры (δ)">
+                                                           placeholder="">
                                                 </div>
-                                                <div class="form-group d-flex">
-                                                    <input name="C" type="number" step=any
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="c" class="mb-0">Шайбный коэффициент расхода, С</label>
+                                                    <input name="c" id="c" type="number" step=any
                                                            class="form-control rounded-left"
-                                                           placeholder="Шайбный коэффициент расхода, С">
+                                                           placeholder="">
                                                 </div>
-                                                <div class="form-group d-flex">
-                                                    <input name="ro_gas" type="number" step=any
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="ro_gas" class="mb-0">Плотность газа при стандартных условиях</label>
+                                                    <input name="ro_gas" id="ro_gas" type="number" step=any
                                                            class="form-control rounded-left"
-                                                           placeholder="Плотность газа при стандартных условиях">
+                                                           placeholder="">
                                                 </div>
-                                                <div class="form-group d-flex">
-                                                    <input name="ro_air" type="number" step=any
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="ro_air" class="mb-0">Плотность воздуха при стандартных условиях</label>
+                                                    <input name="ro_air" id="ro_air" type="number" step=any
                                                            class="form-control rounded-left"
-                                                           placeholder="Плотность воздуха при стандартных условиях">
+                                                           placeholder="">
                                                 </div>
-                                                <div class="form-group d-flex">
-                                                    <input name="status" type="number" step=any
-                                                           class="form-control rounded-left"
-                                                           placeholder="Cтатуса скважин">
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="status" class="mb-0">Статуса скважин</label>
+                                                    <select name="status" id="status"
+                                                            class="custom-select form-control rounded-left "
+                                                            aria-label="Example select with button addon">
+                                                        <option value="">Выберите статуса скважин</option>
+                                                        <option value="IN_WORK">в работе</option>
+                                                        <option value="IN_IDLE">в простое</option>
+                                                        <option value="IN_REPAIR">в ремонте</option>
+                                                        <option value="IN_CONSERVATION">в консервации</option>
+                                                        <option value="IN_LIQUIDATION">в ликвидации</option>
+                                                    </select>
                                                 </div>
-                                                <div class="form-group d-flex">
-                                                    <input name="perforation_min" type="number" step=any
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="perforation_min" class="mb-0">Перфорация мин</label>
+                                                    <input name="perforation_min" id="perforation_min" type="number" step=any
                                                            class="form-control rounded-left"
-                                                           placeholder="Перфорация мин">
+                                                           placeholder="">
                                                 </div>
-                                                <div class="form-group d-flex">
-                                                    <input name="perforation_max" type="number" step=any
+                                                <div class="form-group d-flex flex-column">
+                                                    <label for="perforation_max" class="mb-0">Перфорация макс</label>
+                                                    <input name="perforation_max" id="perforation_max" type="number" step=any
                                                            class="form-control rounded-left"
-                                                           placeholder="Перфорация макс">
+                                                           placeholder="">
                                                 </div>
                                             </div>
                                         </div>
@@ -627,8 +680,7 @@
                                                 </th>
                                                 <th class="sorting users-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
-                                                > Поправочный коэффициент, зависящий от приведенных давления и
-                                                    температуры (δ)
+                                                > Поправочный коэффициент (δ)
                                                 </th>
                                                 <th class="sorting users-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
@@ -683,9 +735,7 @@
                                                 <th class="users-table-title" rowspan="1" colspan="1">Коэффициент
                                                     сверхсжимаемости газа
                                                 </th>
-                                                <th class="users-table-title" rowspan="1" colspan="1">Поправочный
-                                                    коэффициент, зависящий от приведенных давления и
-                                                    температуры (δ)
+                                                <th class="users-table-title" rowspan="1" colspan="1">Поправочный коэффициент (δ)
                                                 </th>
                                                 <th class="users-table-title" rowspan="1" colspan="1">Шайбный
                                                     коэффициент расхода, С
@@ -845,6 +895,11 @@
     $(document).ready(function () {
         $("#exampleModalCenter").on('hide.bs.modal', function () {
             document.getElementById('addOrEditWellForm').reset();
+        });
+    });
+    $(document).ready(function () {
+        $("#exampleModalCenterAction").on('hide.bs.modal', function () {
+            document.getElementById('addOrEditWellActionForm').reset();
         });
     });
 </script>

@@ -1,5 +1,5 @@
 @media (min-width: 600px) {
-    .well-action-form, .well-form-modal {
+    .uppg-action-form {
     max-width: 900px !important;
     }
 }

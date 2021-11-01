@@ -115,7 +115,7 @@ function createViewTable(users) {
 }
 
 function addOptionRoles(roles) {
-    let out = "<option value=''>Месторождений</option>";
+    let out = "<option value=''>Выбрать роль</option>";
     roles.map(role => {
         out += "<option value='"+role.id+"'>"+role.roleName+"</option>"
     })

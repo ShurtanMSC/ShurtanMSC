@@ -12,14 +12,13 @@ function goOutFromAction() {
     document.getElementById('cardTableWellAction').style.display = 'none';
     document.getElementById('addWellActionBtn').style.display = 'none';
     document.getElementById('goOutActionsIcon').style.display = 'none';
-
 }
 
 function clickWellActionBtn(id) {
     wellID = id
     let actionWell = wellsList.find(well => well.id == id)
 
-    document.getElementById('actionWellH1').innerText = "Скважина - "+actionWell.number;
+    document.getElementById('actionWellH1').innerText = "Скважина - " + actionWell.number;
     document.getElementById('addWellBtn').style.display = 'none';
     document.getElementById('miningSelect').style.display = 'none';
     document.getElementById('uppgSelect').style.display = 'none';
@@ -66,18 +65,20 @@ function addOrEditWellAction(event) {
         data
     };
 
-    console.log(data)
+    // console.log(data)
 
     if (data.actionId === "" || data.actionId == null) {
         config.method = 'post';
-        config.url = '/api/well/add/action'
+        config.url = '/api/well/manually/add/action'
     } else {
         config.method = 'put';
         config.url = '/api/well/edit/action'
     }
 
     axios(config)
-        .then(function () {
+        .then(function (res) {
+            console.log("res")
+            console.log(res)
             resetAndCloseFormAction();
             getActionsByWell();
         })
@@ -101,23 +102,34 @@ function editWellAction(id) {
     let editWellAction = wellActionsList.find(action => action.actionId == id)
     let formField = document.getElementById('addOrEditWellActionForm')
 
+    console.log(editWellAction)
+
     formField['actionId'].value = editWellAction.actionId;
+    formField['pressure'].value = editWellAction.pressure;
+    formField['temperature'].value = editWellAction.temperature;
+    formField['average_expend'].value = editWellAction.average_expend;
     formField['expend'].value = editWellAction.expend;
-    formField['designedPerformance'].value = editWellAction.designedPerformance;
-    formField['actualPerformance'].value = editWellAction.actualPerformance;
-    formField['condensate'].value = editWellAction.condensate;
-    formField['onWater'].value = editWellAction.onWater;
-    formField['incomeTemperature'].value = editWellAction.incomeTemperature;
-    formField['exitTemperature'].value = editWellAction.exitTemperature;
-    formField['incomePressure'].value = editWellAction.incomePressure;
-    formField['exitPressure'].value = editWellAction.exitPressure;
+    formField['rpl'].value = editWellAction.rpl;
+    formField['p_pkr'].value = editWellAction.p_pkr;
+    formField['t_pkr'].value = editWellAction.t_pkr;
+    formField['p_pr'].value = editWellAction.p_pr;
+    formField['t_pr'].value = editWellAction.t_pr;
+    formField['ro_otn'].value = editWellAction.ro_otn;
+    formField['z'].value = editWellAction.z;
+    formField['delta'].value = editWellAction.delta;
+    formField['c'].value = editWellAction.c;
+    formField['ro_gas'].value = editWellAction.ro_gas;
+    formField['ro_air'].value = editWellAction.ro_air;
+    formField['status'].value = editWellAction.status;
+    formField['perforation_min'].value = editWellAction.perforation_min;
+    formField['perforation_max'].value = editWellAction.perforation_max;
     formField['wellId'].value = editWellAction.wellId;
 }
 
 function deleteWellAction(id) {
     axios.delete("/api/well/delete/action/" + id)
         .then(function (response) {
-            // console.log(response.data)
+            console.log(response)
             getActionsByWell()
         })
         .catch(function (error) {
@@ -138,18 +150,18 @@ function createViewTableAction(actions) {
 
         out += "<tr class=\"action_table_row\">\n" +
             "   <td class=\"sorting_1\">" + action.actionId + "</td>\n" +
-            "    <td>" + action.pressure + "</td>\n" +
+            "    <td>" + Math.round(action.pressure * 1000) / 1000 + "</td>\n" +
             "    <td>" + action.temperature + "</td>\n" +
-            "    <td>" + action.average_expend + "</td>\n" +
-            "    <td>" + action.expend + "</td>\n" +
-            "    <td>" + action.rpl + "</td>\n" +
-            "    <td>" + action.p_pkr + "</td>\n" +
-            "    <td>" + action.t_pkr + "</td>\n" +
-            "    <td>" + action.p_pr + "</td>\n" +
-            "    <td>" + action.t_pr + "</td>\n" +
-            "    <td>" + action.ro_otn + "</td>\n" +
-            "    <td>" + action.z + "</td>\n" +
-            "    <td>" + action.delta + "</td>\n" +
+            "    <td>" + Math.round(action.average_expend * 1000) / 1000 + "</td>\n" +
+            "    <td>" + Math.round(action.expend * 1000) / 1000 + "</td>\n" +
+            "    <td>" + Math.round(action.rpl * 1000) / 1000 + "</td>\n" +
+            "    <td>" + Math.round(action.p_pkr * 1000) / 1000 + "</td>\n" +
+            "    <td>" + Math.round(action.t_pkr * 1000) / 1000 + "</td>\n" +
+            "    <td>" + Math.round(action.p_pr * 1000) / 1000 + "</td>\n" +
+            "    <td>" + Math.round(action.t_pr * 1000) / 1000 + "</td>\n" +
+            "    <td>" + Math.round(action.ro_otn * 1000) / 1000 + "</td>\n" +
+            "    <td>" + Math.round(action.z * 1000) / 1000 + "</td>\n" +
+            "    <td>" + Math.round(action.delta * 1000) / 1000 + "</td>\n" +
             "    <td>" + action.c + "</td>\n" +
             "    <td>" + action.ro_gas + "</td>\n" +
             "    <td>" + action.ro_air + "</td>\n" +

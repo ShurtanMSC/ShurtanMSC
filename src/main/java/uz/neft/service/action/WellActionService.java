@@ -10,10 +10,12 @@ import org.springframework.stereotype.Service;
 import uz.neft.dto.WellDto;
 import uz.neft.dto.action.CollectionPointActionDto;
 import uz.neft.dto.action.ObjectWithActionsDto;
+import uz.neft.dto.action.UppgActionDto;
 import uz.neft.dto.action.WellActionDto;
 import uz.neft.dto.special.WellActionLite;
 import uz.neft.entity.*;
 import uz.neft.entity.action.CollectionPointAction;
+import uz.neft.entity.action.UppgAction;
 import uz.neft.entity.action.WellAction;
 import uz.neft.entity.enums.WellStatus;
 import uz.neft.entity.variables.*;
@@ -481,7 +483,6 @@ public class WellActionService {
     }
 
 
-
     public HttpEntity<?> getAllByMiningSystem(Integer id) {
         try {
             if (id == null) return converter.apiError400("id is null!");
@@ -639,6 +640,65 @@ public class WellActionService {
         }
     }
 
+    public HttpEntity<?> editAction(WellActionDto dto) {
+        try {
+            if (dto.getActionId()== null) return converter.apiError400("Action Id is null");
+
+            Optional<Well> well = wellRepository.findById(dto.getWellId());
+
+            WellAction wellAction;
+            Optional<WellAction> byId = wellActionRepository.findById(dto.getActionId());
+            if (byId.isPresent()) {
+                wellAction = byId.get();
+                wellAction.setPressure(dto.getPressure());
+                wellAction.setTemperature(dto.getTemperature());
+                wellAction.setAverage_expend(dto.getAverage_expend());
+                wellAction.setExpend(dto.getExpend());
+                wellAction.setRpl(dto.getRpl());
+                wellAction.setP_pkr(dto.getP_pkr());
+                wellAction.setT_pkr(dto.getT_pkr());
+                wellAction.setP_pr(dto.getP_pr());
+                wellAction.setT_pr(dto.getT_pr());
+                wellAction.setRo_otn(dto.getRo_otn());
+                wellAction.setZ(dto.getZ());
+                wellAction.setDelta(dto.getDelta());
+                wellAction.setC(dto.getC());
+                wellAction.setRo_gas(dto.getRo_gas());
+                wellAction.setRo_air(dto.getRo_air());
+                wellAction.setStatus(dto.getStatus());
+                wellAction.setPerforation_min(dto.getPerforation_min());
+                wellAction.setPerforation_max(dto.getPerforation_max());
+                wellAction.setWell(well.get());
+
+                WellAction save = wellActionRepository.save(wellAction);
+                WellActionDto wellActionDto = converter.wellActionToWellActionDto(save);
+                return converter.apiSuccess200("Uppg action edited", wellActionDto);
+            }
+            return converter.apiError404("Uppg action not found");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409("Error editing Uppg action");
+        }
+    }
+
+    public HttpEntity<?> deleteWellAction(Long id) {
+        try {
+            if (id != null) {
+                Optional<WellAction> byId = wellActionRepository.findById(id);
+                if (byId.isPresent()) {
+                    wellActionRepository.delete(byId.get());
+                    return converter.apiSuccess200("well action deleted");
+                } else {
+                    return converter.apiError404("well Action found");
+                }
+            }
+            return converter.apiError400("Id null");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return converter.apiError409("Error in deleting uppg action", e);
+        }
+
+    }
 
     /** Auto **/
 
@@ -710,6 +770,7 @@ public class WellActionService {
             return 0.0;
         }
     }
+
 
 
 }

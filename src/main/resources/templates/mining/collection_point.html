@@ -203,15 +203,19 @@
                          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
-                                <div class="modal-header">
+                                <div class="modal-header p-2">
                                     <button type="button"
                                             class="close d-flex align-items-center justify-content-center h-25 "
                                             id="closeFormBtn"
                                             data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true" class="ion-ios-close">x</span>
+<!--                                        <span aria-hidden="true" class="ion-ios-close">x</span>-->
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#0088BC"
+                                             class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                                        </svg>
                                     </button>
                                 </div>
-                                <div class="modal-body  pb-md-5 pl-md-5 pr-md-5 pt-md-2">
+                                <div class="modal-body  pb-md-3 pl-md-5 pr-md-5 pt-md-2">
                                     <h3 class="text-center mb-4 " id="addOrEditCollectionPointH3">Добавить Сборный
                                         пункт</h3>
                                     <form action="#" class="login-form" name="addOrEditCollectionPointForm"
@@ -220,24 +224,28 @@
                                         <div class="form-group">
                                             <input name="id" type="text" class="form-control rounded-left" hidden>
                                         </div>
-                                        <div class="form-group">
-                                            <input name="name" type="text" class="form-control rounded-left"
-                                                   placeholder="Имя сборный пункт" required>
+                                        <div class="form-group d-flex flex-column">
+                                            <label for="name1" class="mb-0">Имя сборный пункт</label>
+                                            <input name="name" id="name1" type="text" class="form-control rounded-left"
+                                                   placeholder="" required>
                                         </div>
-                                        <div class="form-group">
-                                            <input name="temperatureUnit" type="text" class="form-control rounded-left"
-                                                   placeholder="Единица измерения температуры" required>
+                                        <div class="form-group d-flex flex-column">
+                                            <label for="temperatureUnit" class="mb-0">Единица измерения температуры</label>
+                                            <input name="temperatureUnit" id="temperatureUnit" type="text" class="form-control rounded-left"
+                                                   placeholder="" required>
                                         </div>
-                                        <div class="form-group">
-                                            <input name="pressureUnit" type="text" class="form-control rounded-left"
-                                                   placeholder="Единица давления" required>
+                                        <div class="form-group d-flex flex-column">
+                                            <label for="pressureUnit" class="mb-0">Единица давления</label>
+                                            <input name="pressureUnit" id="pressureUnit" type="text" class="form-control rounded-left"
+                                                   placeholder="" required>
                                         </div>
                                         <div class="form-group d-flex">
                                             <input name="uppg" value="" type="number"
                                                    class="form-control rounded-left"
                                                    hidden>
                                         </div>
-                                        <div class="form-group d-flex">
+                                        <div class="form-group d-flex flex-column">
+                                            <label for="inputGroupSelect03" class="mb-0">ОПС серверы</label>
                                             <select name="opcServer" class="custom-select form-control rounded-left"
                                                     id="inputGroupSelect03"
                                                     onchange="handleOpcId()"
@@ -265,15 +273,19 @@
                          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
-                                <div class="modal-header">
+                                <div class="modal-header p-2">
                                     <button type="button"
                                             class="close d-flex align-items-center justify-content-center h-25"
                                             id="closeFormBtnAction"
                                             data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true" class="ion-ios-close">x</span>
+<!--                                        <span aria-hidden="true" class="ion-ios-close">x</span>-->
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#0088BC"
+                                             class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                                        </svg>
                                     </button>
                                 </div>
-                                <div class="modal-body  pb-md-5 pl-md-5 pr-md-5 pt-md-2">
+                                <div class="modal-body  pb-md-3 pl-md-5 pr-md-5 pt-md-2">
                                     <h3 class="text-center mb-4" id="addOrEditCollectionPointActionH3">Добавить действие
                                         уппг</h3>
                                     <form action="/" class="login-form" id="addOrEditCollectionPointActionForm"
@@ -282,21 +294,24 @@
                                             <input name="actionId" type="number" class="form-control rounded-left"
                                                    hidden>
                                         </div>
-                                        <div class="form-group d-flex">
-                                            <input name="expend" type="number" step=any
+                                        <div class="form-group d-flex flex-column">
+                                            <label for="expend" class="mb-0">Расходъ</label>
+                                            <input name="expend" id="expend" type="number" step=any
                                                    class="form-control rounded-left"
-                                                   placeholder="Расходъ">
+                                                   placeholder="">
                                         </div>
 
-                                        <div class="form-group d-flex">
-                                            <input name="pressure" type="number" step=any
+                                        <div class="form-group d-flex flex-column">
+                                            <label for="pressure" class="mb-0">Давление</label>
+                                            <input name="pressure" id="pressure" type="number" step=any
                                                    class="form-control rounded-left"
-                                                   placeholder="Давление">
+                                                   placeholder="">
                                         </div>
-                                        <div class="form-group d-flex">
-                                            <input name="temperature" type="number" step=any
+                                        <div class="form-group d-flex flex-column">
+                                            <label for="temperature" class="mb-0">Температура</label>
+                                            <input name="temperature" id="temperature" type="number" step=any
                                                    class="form-control rounded-left"
-                                                   placeholder="Температура">
+                                                   placeholder="">
                                         </div>
 
                                         <div class="form-group d-flex">
@@ -680,6 +695,11 @@
     $(document).ready(function () {
         $("#exampleModalCenter").on('hide.bs.modal', function () {
             document.getElementById('addOrEditCollectionPointForm').reset();
+        });
+    });
+    $(document).ready(function () {
+        $("#exampleModalCenterAction").on('hide.bs.modal', function () {
+            document.getElementById('addOrEditCollectionPointActionForm').reset();
         });
     });
 </script>
