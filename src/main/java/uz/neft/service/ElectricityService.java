@@ -36,6 +36,7 @@ public class ElectricityService {
                     .hourly(dto.getHourly())
                     .miningSystem(miningSystem.get())
                     .build();
+            electricityRepository.save(electricity);
             return converter.apiSuccess201("Saved",electricity);
         }catch (Exception e){
             e.printStackTrace();
