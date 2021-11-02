@@ -11,12 +11,21 @@ import uz.neft.repository.MiningSystemRepository;
 import uz.neft.repository.UppgRepository;
 import uz.neft.utils.Converter;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class UppgService {
+
+
+
 
     private final UppgRepository uppgRepository;
     private final Converter converter;
@@ -27,6 +36,50 @@ public class UppgService {
         this.uppgRepository = uppgRepository;
         this.converter = converter;
         this.miningSystemRepository = miningSystemRepository;
+    }
+
+    public static void main(String[] args) {
+        test();
+    }
+
+    public static void test(){
+        String temp="";
+        Connection connection=null;
+        Statement statement=null;
+        Statement statement2=null;
+        Statement statement3=null; ResultSet resultSet=null;
+        ResultSet resultSet2=null;
+        String url="jdbc:sqlserver://192.168.10.20:1433;database=UPPG";
+        String userDB="UPPGReader", pass="97F88FA06BB691C96D3B46CC3252452369F4ACEB5E076CFACF4B7BF4B5370A5A43B57702334D3C31";
+        Date date=new Date(); SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            connection= DriverManager.getConnection(url,userDB,pass);
+            statement=connection.createStatement();
+            resultSet=statement.executeQuery("SELECT [ID]" +
+                    "     ,[Name]" +
+                    "     ,[FullName]" +
+                    "     ,[Description]" +
+                    "     ,[Val]" +
+                    "     ,[Quality]" +
+                    "     ,[Time_Stamp]" +
+                    "     ,[ScaleMin]" +
+                    "     ,[ScaleMax]" +
+                    "FROM dbo.Data");
+
+            if (resultSet.next()){
+                System.out.println(resultSet.getString(1));
+                System.out.println(resultSet.getString(2));
+                System.out.println(resultSet.getString(3));
+                System.out.println(resultSet.getString(4));
+                System.out.println(resultSet.getString(5));
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     public ResponseEntity<?> save(UppgDto dto) {
