@@ -1,5 +1,8 @@
 let collectionPointActionsList;
 let collectionPointID;
+let PAGENUM = 1;
+let PAGESIZE = 10;
+
 
 function goOutFromAction() {
     getAllCollectionPoints()
@@ -29,22 +32,41 @@ function clickActionBtn(id) {
     getActionsByCollectionPoint()
 }
 
-function getActionsByCollectionPoint() {
+function getActionsByCollectionPoint(page, pageSize) {
     let formField = document.getElementById('addOrEditCollectionPointActionForm');
     formField['collectionPointId'].value = collectionPointID;
 
-    axios.get("/api/collection_point/actions/" + collectionPointID)
+    if (pageSize === undefined) {
+        pageSize = PAGESIZE;
+    }
+    if (page === undefined) {
+        page = PAGENUM;
+    }
+
+    let pageNum = page - 1;
+
+    let config = {
+        method: 'get',
+        url: ''
+    };
+
+    config.url = '/api/collection_point/actions/' + collectionPointID + '?page=' + pageNum + '&pageSize=' + pageSize + ''
+
+    axios(config)
         .then(function (response) {
             console.log(response.data)
             if (response.status === 200) {
                 collectionPointActionsList = response.data.object
             }
-            document.getElementById("collectionPointActionsTable").innerHTML = createViewTableAction(response.data.object)
+            PAGENUM = response.data.pageNumber + 1;
+            document.getElementById("collectionPointActionsTable").innerHTML = createViewTableAction(response.data);
+            document.getElementById("totalPages").innerHTML = createViewPaginationAction(response.data.totalPages, PAGENUM);
+            document.getElementById("dataTableLengthSelect").innerHTML = createViewDataTableLengthSelect(response.data.totalElements);
+
         })
         .catch(function (error) {
             console.log(error.response)
         })
-
 }
 
 function resetAndCloseFormAction() {
@@ -120,9 +142,9 @@ function deleteCollectionPointAction(id) {
         })
 }
 
-function createViewTableAction(actions) {
+function createViewTableAction(data) {
     let out = "";
-    actions.map(action => {
+    data.object.map(action => {
         const createdAtDate = new Date('' + action.createdAt + '');
         const createdAtDayOfMonth = createdAtDate.getDate();
         const createdAtMonth = createdAtDate.getMonth(); // Be careful! January is 0, not 1
@@ -142,6 +164,85 @@ function createViewTableAction(actions) {
             "      <button class='btn btn-danger ml-1 mt-1' id='btn-edit-action' value='" + action.actionId + "' onclick='deleteCollectionPointAction(this.value)'>Удалить</button></td>\n" +
             "   </tr>"
     })
+
     return out;
 }
 
+function createViewPaginationAction(totalPages, pageNumber) {
+    let li = "";
+    if (pageNumber === 1) {
+        li = "<li class=\"paginate_button page-item previous active \"\n" +
+            "    id=\"dataTable_previousAction\"><button disabled aria-controls=\"dataTable\"\n" +
+            "   data-dt-idx=\"0\" tabindex=\"0\"\n" +
+            "   class=\"page-link\">Previous</button>\n" +
+            "   </li>";
+    } else {
+        li = "<li class=\"paginate_button page-item previous \"\n" +
+            "    id=\"dataTable_previousAction\"><button value='\" + 0 + \"' onclick='getActionsByCollectionPoint(PAGENUM-1)' \" aria-controls=\"dataTable\"\n" +
+            "   data-dt-idx=\"0\" tabindex=\"0\"\n" +
+            "   class=\"page-link\">Previous</button>\n" +
+            "   </li>";
+    }
+
+    for (let i = 1; i <= totalPages; i++) {
+        if (i === pageNumber || i === 0) {
+            li += "<li class=\"paginate_button page-item active\"><button value='" + i + "' onclick='getActionsByCollectionPoint(this.value)' " +
+                " href=\"#\"\n" +
+                "  aria-controls=\"dataTable\"\n" +
+                "  data-dt-idx=" + i + "\n" +
+                " tabindex=\"0\"\n" +
+                "  class=\"page-link\">" + i + "</button>\n" +
+                "  </li>"
+        } else {
+            li += "<li class=\"paginate_button page-item\"><button value='" + i + "' onclick='getActionsByCollectionPoint(this.value)' " +
+                "  aria-controls=\"dataTable\"\n" +
+                "  data-dt-idx=" + i + "\n" +
+                " tabindex=\"0\"\n" +
+                "  class=\"page-link\">" + i + "</button>\n" +
+                "  </li>"
+        }
+    }
+
+    if (pageNumber === totalPages) {
+        li += "<li class=\"paginate_button page-item next active\" id=\"dataTable_nextAction\"><button disabled \n" +
+            "  href=\"#\" aria-controls=\"dataTable\" data-dt-idx=\"7\" tabindex=\"0\"\n" +
+            "  class=\"page-link\">Next</button>\n" +
+            " </li>"
+    }
+    if (pageNumber < totalPages) {
+        li += "<li class=\"paginate_button page-item next \" id=\"dataTable_nextAction\"><button value='" + 1 + "' onclick='getActionsByCollectionPoint(PAGENUM+1)' " +
+            "  href=\"#\" aria-controls=\"dataTable\" data-dt-idx=\"7\" tabindex=\"0\"\n" +
+            "  class=\"page-link\">Next</button>\n" +
+            " </li>"
+    }
+
+    return li;
+}
+
+function createViewDataTableLengthSelect(totalElements) {
+    let selectOption = "";
+    if (totalElements < 25) {
+        selectOption += "<option value=10>10</option>\n"
+    } else if (totalElements >= 25 && totalElements < 50) {
+        selectOption += "<option value=10>10</option>\n" +
+            " <option value=25>25</option>\n"
+    } else if (totalElements >= 50 && totalElements < 100) {
+        selectOption += "<option value=10>10</option>\n" +
+            " <option value=25>25</option>\n" +
+            " <option value=50>50</option>\n"
+    } else if (totalElements >= 100) {
+        selectOption += "<option value=10>10</option>\n" +
+            " <option value=25>25</option>\n" +
+            " <option value=50>50</option>\n" +
+            " <option value=100>100</option>"
+    }
+    document.getElementById('dataTableLengthSelect').getElementsByTagName('option')[PAGESIZE].selected = 'selected';
+
+    return selectOption;
+}
+
+function handleDataTableLengthSelect(pageSize) {
+    // console.log(pageSize)
+    PAGESIZE = parseInt(pageSize)
+    getActionsByCollectionPoint(1, PAGESIZE);
+}

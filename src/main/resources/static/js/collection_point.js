@@ -61,7 +61,7 @@ function getAllCollectionPoints() {
     } else {
         axios.get("/api/admin/collection_point/all/" + uppgId)
             .then(function (response) {
-                console.log(response.data)
+                // console.log(response.data)
                 if (response.data.message === "OK") {
                     collectionPointsList = response.data.object
                 }
@@ -177,10 +177,8 @@ function changeCollectionPointIsActive(checkboxElem) {
 }
 
 function createViewTable(collectionPoints) {
-    console.log(collectionPoints)
     let out = "";
     collectionPoints.map(collectionPoint => {
-        console.log(collectionPoint.activeE)
         out += "<tr class=\"collectionPoint_table_row\">\n" +
             "<td class=\"sorting_1\">" + collectionPoint.id + "</td>\n" +
             "<td>" + collectionPoint.name + "</td>\n" +

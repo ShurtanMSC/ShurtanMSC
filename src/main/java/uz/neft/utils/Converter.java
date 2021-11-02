@@ -2,6 +2,7 @@ package uz.neft.utils;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,9 @@ import uz.neft.payload.ApiResponseObjectByPageable;
 import uz.neft.repository.RoleRepository;
 import uz.neft.repository.UserRepository;
 
+import java.util.Optional;
+import java.util.stream.Stream;
+
 @Component
 public class Converter {
 
@@ -48,6 +52,9 @@ public class Converter {
 
     public ApiResponse api(String message, boolean success, Object object, long totalElements, Integer totalPages) {
         return new ApiResponseObjectByPageable(message, success, object, totalElements, totalPages);
+    }
+    public ApiResponse api(String message, boolean success, Object object, long totalElements, Integer totalPages, int pageNumber) {
+        return new ApiResponseObjectByPageable(message, success, object, totalElements, totalPages, pageNumber);
     }
 
     public ApiResponse apiError() {
@@ -97,6 +104,11 @@ public class Converter {
     public ApiResponse apiSuccessObject(Object object, long totalElements, Integer totalPages) {
         return api("Success", true, object, totalElements, totalPages);
     }
+    public ApiResponse apiSuccessObject(Object object, long totalElements, Integer totalPages, int number) {
+        return api("Success", true, object, totalElements, totalPages, number);
+    }
+
+
 
     /**
      * for response with status
@@ -136,6 +148,9 @@ public class Converter {
 
     protected ResponseEntity<?> helpSuccess(HttpStatus status, Object object, long totalElements, Integer totalPages) {
         return ResponseEntity.status(status).body(apiSuccessObject(object, totalElements, totalPages));
+    }
+    protected ResponseEntity<?> helpSuccess(HttpStatus status, Object object, long totalElements, Integer totalPages, int number) {
+        return ResponseEntity.status(status).body(apiSuccessObject(object, totalElements, totalPages,number));
     }
 
     /**
@@ -252,6 +267,9 @@ public class Converter {
 
     public ResponseEntity<?> apiSuccess200(Object object, long totalElements, Integer totalPages) {
         return helpSuccess(HttpStatus.OK, object, totalElements, totalPages);
+    }
+    public HttpEntity<?> apiSuccess200(Object object, long totalElements, int totalPages, int number) {
+        return helpSuccess(HttpStatus.OK, object, totalElements, totalPages,number);
     }
 
     // Status 201
@@ -533,6 +551,7 @@ public class Converter {
             return null;
         }
     }
+
 
 
 }
