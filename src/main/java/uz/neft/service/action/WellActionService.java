@@ -475,7 +475,7 @@ public class WellActionService {
 
             Stream<WellActionDto> wellActionDtoStream = wellActions.stream().map(converter::wellActionToWellActionDto);
 
-            return converter.apiSuccess200(wellActionDtoStream, wellActions.getTotalElements(), wellActions.getTotalPages());
+            return converter.apiSuccess200(wellActionDtoStream, wellActions.getTotalElements(), wellActions.getTotalPages(), wellActions.getNumber());
         } catch (Exception e) {
             e.printStackTrace();
             return converter.apiError409();
