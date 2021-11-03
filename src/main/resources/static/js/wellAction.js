@@ -1,5 +1,7 @@
 let wellActionsList;
 let wellID;
+let wellActionPageNum = 1;
+let wellActionPageSize = 10;
 
 function goOutFromAction() {
     getAllWells()
@@ -31,16 +33,37 @@ function clickWellActionBtn(id) {
     getActionsByWell()
 }
 
-function getActionsByWell() {
+function getActionsByWell(page, pageSize) {
     let formField = document.getElementById('addOrEditWellActionForm');
     formField['wellId'].value = wellID;
 
-    axios.get("/api/well/actions/" + wellID)
+    if (pageSize === undefined) {
+        pageSize = wellActionPageSize;
+    }
+    if (page === undefined) {
+        page = wellActionPageNum;
+    }
+
+    let pageNum = page - 1;
+
+    let config = {
+        method: 'get',
+        url: ''
+    };
+
+    config.url = '/api/well/actions/' + wellID + '?page=' + pageNum + '&pageSize=' + pageSize + ''
+
+    axios(config)
         .then(function (response) {
             // console.log(response)
             if (response.data.message === "OK" || response.status === 200) {
                 wellActionsList = response.data.object
+
+                wellActionPageNum = response.data.pageNumber + 1;
+
                 document.getElementById("wellTableAction").innerHTML = createViewTableAction(response.data.object)
+                document.getElementById("totalPages").innerHTML = createViewPaginationWellAction(response.data.totalPages, wellActionPageNum);
+                document.getElementById("dataTableLengthSelect").innerHTML = createViewDataTableLengthSelect(response.data.totalElements);
             }
         })
         .catch(function (error) {
@@ -178,3 +201,83 @@ function createViewTableAction(actions) {
     return out;
 }
 
+
+function createViewPaginationWellAction(totalPages, pageNumber) {
+    let li = "";
+    if (pageNumber === 1) {
+        li = "<li class=\"paginate_button page-item previous active \"\n" +
+            "    id=\"dataTable_previousAction\"><button disabled aria-controls=\"dataTable\"\n" +
+            "   data-dt-idx=\"0\" tabindex=\"0\"\n" +
+            "   class=\"page-link\">Previous</button>\n" +
+            "   </li>";
+    } else {
+        li = "<li class=\"paginate_button page-item previous \"\n" +
+            "    id=\"dataTable_previousAction\"><button value='\" + 0 + \"' onclick='getActionsByWell(wellActionPageNum-1)' " +
+            " aria-controls=\"dataTable\"\n" +
+            "   data-dt-idx=\"0\" tabindex=\"0\"\n" +
+            "   class=\"page-link\">Previous</button>\n" +
+            "   </li>";
+    }
+
+    for (let i = 1; i <= totalPages; i++) {
+        if (i === pageNumber || i === 0) {
+            li += "<li class=\"paginate_button page-item active\"><button value='" + i + "' onclick='getActionsByWell(this.value)' " +
+                " href=\"#\"\n" +
+                "  aria-controls=\"dataTable\"\n" +
+                "  data-dt-idx=" + i + "\n" +
+                " tabindex=\"0\"\n" +
+                "  class=\"page-link\">" + i + "</button>\n" +
+                "  </li>"
+        } else {
+            li += "<li class=\"paginate_button page-item\"><button value='" + i + "' onclick='getActionsByWell(this.value)' " +
+                "  aria-controls=\"dataTable\"\n" +
+                "  data-dt-idx=" + i + "\n" +
+                " tabindex=\"0\"\n" +
+                "  class=\"page-link\">" + i + "</button>\n" +
+                "  </li>"
+        }
+    }
+
+    if (pageNumber === totalPages) {
+        li += "<li class=\"paginate_button page-item next active\" id=\"dataTable_nextAction\"><button disabled \n" +
+            "  href=\"#\" aria-controls=\"dataTable\" data-dt-idx=\"7\" tabindex=\"0\"\n" +
+            "  class=\"page-link\">Next</button>\n" +
+            " </li>"
+    }
+    if (pageNumber < totalPages) {
+        li += "<li class=\"paginate_button page-item next \" id=\"dataTable_nextAction\"><button value='" + 1 + "' onclick='getActionsByWell(wellActionPageNum+1)' " +
+            "  href=\"#\" aria-controls=\"dataTable\" data-dt-idx=\"7\" tabindex=\"0\"\n" +
+            "  class=\"page-link\">Next</button>\n" +
+            " </li>"
+    }
+
+    return li;
+}
+
+function createViewDataTableLengthSelect(totalElements) {
+    let selectOption = "";
+    if (totalElements < 25) {
+        selectOption += "<option value=10>10</option>\n"
+    } else if (totalElements >= 25 && totalElements < 50) {
+        selectOption += "<option value=10>10</option>\n" +
+            " <option value=25>25</option>\n"
+    } else if (totalElements >= 50 && totalElements < 100) {
+        selectOption += "<option value=10>10</option>\n" +
+            " <option value=25>25</option>\n" +
+            " <option value=50>50</option>\n"
+    } else if (totalElements >= 100) {
+        selectOption += "<option value=10>10</option>\n" +
+            " <option value=25>25</option>\n" +
+            " <option value=50>50</option>\n" +
+            " <option value=100>100</option>"
+    }
+    document.getElementById('dataTableLengthSelect').getElementsByTagName('option')[wellActionPageSize].selected = 'selected';
+
+    return selectOption;
+}
+
+function handleDataTableLengthSelect(pageSize) {
+    // console.log(pageSize)
+    wellActionPageSize = parseInt(pageSize)
+    getActionsByWell(1, wellActionPageSize);
+}
