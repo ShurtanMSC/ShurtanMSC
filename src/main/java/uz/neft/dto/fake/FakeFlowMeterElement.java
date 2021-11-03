@@ -13,7 +13,7 @@ public class FakeFlowMeterElement {
     private String name;
     private String fullName;
     private String description;
-    private double val;
+    private double v;
     private int quality;
     private String timestamp;
     private int scaleMin;
