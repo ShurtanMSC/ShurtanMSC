@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>UPPG - Dashboard</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.23.0/axios.min.js"></script>
+    <!-- Custom fonts for this template-->
+    <link href="/static/vendor/fontawesome-free/css/all.min.css" th:href="@{/vendor/fontawesome-free/css/all.min.css}"
+          rel="stylesheet" type="text/css">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            th:href="@{'https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i'}"
+            rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="/static/css/sb-admin-2.min.css"
+          th:href="@{/css/sb-admin-2.min.css}"
+          rel="stylesheet">
+
+    <link href="/static/css/uppg.css"
+          th:href="@{/css/uppg.css}"
+          rel="stylesheet">
+
+    <link href="/static/css/users.css"
+          th:href="@{/css/users.css}"
+          rel="stylesheet">
+
+    <!-- Custom styles for this page -->
+    <link href="/static/vendor/datatables/dataTables.bootstrap4.min.css"
+          th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}"
+          rel="stylesheet">
+
+</head>
+
+<body onload="" id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <div th:insert="components/sidebar::sidebar" style="background: #0088bc;"></div>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <div th:insert="components/navbar::navbar"></div>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="col-12 d-flex p-0 mt-3">
+                    <div class="col-5 mb-4  p-0">
+                        <button onclick="goOutFromAction()" id="goOutActionsIcon" style="display: none;"
+                                type="button" class="btn btn-outline-info">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="28" style="color: #35B8CB;"
+                                 class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                      d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                            </svg>
+                            Назад
+                        </button>
+                    </div>
+                    <div class="col-6 p-0 ml-3">
+                        <h1 class="h3 mb-2 text-gray-800" id="actionUppgH1">УППГ</h1>
+                    </div>
+                </div>
+
+
+                <!--// Add Uppg button and modal-->
+                <div>
+                    <section class="ftco-section pb-2">
+                        <div class="row">
+                            <div class="col-md-12 d-flex ">
+                                <div class="col-2 p-0">
+                                    <button type="button" class="btn btn-primary py-2 px-4" data-toggle="modal"
+                                            data-target="#exampleModalCenter"
+                                            id="addUppgBtn">
+                                        Добавить УППГ
+                                    </button>
+                                </div>
+                                <div class="form-group col-2 p-0 w-50">
+                                    <select name="miningSelect" class="custom-select form-control rounded-left mt-1"
+                                            id="miningSelect"
+                                            onchange="selectHandle()"
+                                            aria-label="Example select with button addon">
+                                        <option value="">Loading. . .</option>
+                                    </select>
+                                </div>
+                                <div class="col-8 d-flex justify-content-end p-0">
+                                    <button type="button" class="btn btn-outline-info py-2 px-4"
+                                            data-toggle="modal" style="display: none;"
+                                            id="addUppgActionBtn"
+                                            data-target="#exampleModalCenterAction">
+                                        Добавить действие УППГ
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!--uppg  form-->
+<!--                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"-->
+<!--                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">-->
+<!--                        <div class="modal-dialog modal-dialog-centered" role="document">-->
+<!--                            <div class="modal-content">-->
+<!--                                <div class="modal-header p-2">-->
+<!--                                    <button type="button"-->
+<!--                                            class="close d-flex align-items-center justify-content-center h-25 "-->
+<!--                                            id="closeFormBtn"-->
+<!--                                            data-dismiss="modal" aria-label="Close">-->
+<!--                                        &lt;!&ndash;                                        <span aria-hidden="true" class="ion-ios-close">x</span>&ndash;&gt;-->
+<!--                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#0088BC"-->
+<!--                                             class="bi bi-x-circle-fill" viewBox="0 0 16 16">-->
+<!--                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>-->
+<!--                                        </svg>-->
+<!--                                    </button>-->
+<!--                                </div>-->
+<!--                                <div class="modal-body  pb-md-3 pl-md-5 pr-md-5 pt-md-2">-->
+<!--                                    <h3 class="text-center mb-4 " id="addOrEditUppgH3">Добавить УППГ</h3>-->
+<!--                                    <form action="#" class="login-form" name="addOrEditUppgForm" id="addOrEditUppgForm"-->
+<!--                                          onsubmit="addOrEditUppg(event)">-->
+<!--                                        <div class="form-group">-->
+<!--                                            <input name="id" type="text" class="form-control rounded-left" hidden>-->
+<!--                                        </div>-->
+<!--                                        <div class="form-group d-flex flex-column">-->
+<!--                                            <label for="name" class="mb-0">Имя уппг</label>-->
+<!--                                            <input name="name" type="text" id="name" class="form-control rounded-left"-->
+<!--                                                   placeholder="Имя уппг" required>-->
+<!--                                        </div>-->
+<!--                                        <div class="form-group d-flex">-->
+<!--                                            <input name="miningSystemId" value="" type="number"-->
+<!--                                                   class="form-control rounded-left"-->
+<!--                                                   hidden>-->
+<!--                                        </div>-->
+
+<!--                                        <div class="form-group">-->
+<!--                                            <button type="submit"-->
+<!--                                                    id="addOrEditUppgBtn"-->
+<!--                                                    class="form-control btn btn-primary rounded submit px-3">Добавить-->
+<!--                                            </button>-->
+<!--                                        </div>-->
+
+<!--                                    </form>-->
+<!--                                </div>-->
+
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+
+                </div>
+
+                <!-- uppg DataTales Example -->
+                <div id="cardTableUppg1" class="card shadow mb-4">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="dataTables_length" id="dataTable_length"><label>Show <select
+                                                name="dataTable_length" aria-controls="dataTable"
+                                                class="custom-select custom-select-sm form-control form-control-sm">
+                                            <option value="10">10</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select> entries</label></div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div id="dataTable_filter" class="dataTables_filter"><label>Search:<input
+                                                type="search" class="form-control form-control-sm" placeholder=""
+                                                aria-controls="dataTable"></label></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table class="table table-bordered dataTable" id="dataTable" width="100%"
+                                               cellspacing="0" role="grid" aria-describedby="dataTable_info"
+                                               style="width: 100%;">
+                                            <thead>
+                                            <tr role="row">
+
+                                                <th class="sorting sorting_asc uppgs-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-sort="ascending"
+                                                    aria-label="Name: activate to sort column descending"
+                                                    style="width: 64px;">No
+                                                </th>
+
+                                                <th class="sorting sorting_asc uppgs-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-sort="ascending"
+                                                    aria-label="Name: activate to sort column descending"
+                                                    style="width: 64px;">V
+                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->V
+                                                    Накопленный объем
+                                                </th>
+                                                <th class="sorting uppgs-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-label="Position: activate to sort column ascending"
+                                                    style="width: 75.001px;">V сегодня
+                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->V сегодня
+                                                    Накопленный объем с начала суток
+                                                </th>
+                                                <th class="sorting uppgs-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-label="Salary: activate to sort column ascending"
+                                                    style="width: 67.001px;">V вчера
+                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->V вчера
+                                                    Накопленный объем за вчера
+                                                </th>
+
+                                                <th class="sorting uppgs-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-label="Salary: activate to sort column ascending"
+                                                    style="width: 67.001px;">V мес
+                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->V мес
+                                                    Накопленный объем с начала месяца
+                                                </th>
+
+                                                <th class="sorting uppgs-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-label="Salary: activate to sort column ascending"
+                                                    style="width: 67.001px;">V пред.мес
+                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->V пред.мес
+                                                    Накопленный объем за предыдущий месяц
+                                                </th>
+                                                <th class="sorting uppgs-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-label="Salary: activate to sort column ascending"
+                                                    style="width: 67.001px;">dP
+                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->dP
+                                                    Перепад давления
+                                                </th>
+                                                <th class="sorting uppgs-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-label="Salary: activate to sort column ascending"
+                                                    style="width: 67.001px;">P
+                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->P
+                                                    Давление
+                                                </th>
+                                                <th class="sorting uppgs-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-label="Salary: activate to sort column ascending"
+                                                    style="width: 67.001px;">T
+                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->T
+                                                    Температура
+                                                </th>
+
+                                                <th class="sorting uppgs-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-label="Salary: activate to sort column ascending"
+                                                    style="width: 67.001px;">F
+                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->F
+                                                    Расход
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tfoot>
+                                            <tr>
+                                                <th class="uppgs-table-title" rowspan="1" colspan="1">Itogo</th>
+                                                <th class="uppgs-table-title" rowspan="1" colspan="1">0</th>
+                                                <th class="uppgs-table-title" rowspan="1" colspan="1">0</th>
+                                                <th class="uppgs-table-title" rowspan="1" colspan="1">0</th>
+                                                <th class="uppgs-table-title" rowspan="1" colspan="1">0</th>
+                                                <th class="uppgs-table-title" rowspan="1" colspan="1">0</th>
+                                                <th class="uppgs-table-title" rowspan="1" colspan="1">0</th>
+                                                <th class="uppgs-table-title" rowspan="1" colspan="1">0</th>
+                                                <th class="uppgs-table-title" rowspan="1" colspan="1">0</th>
+                                                <th class="uppgs-table-title" rowspan="1" colspan="1">0</th>
+
+                                                <th class="uppgs-table-title" rowspan="1" colspan="1">Редактировать</th>
+                                            </tr>
+                                            </tfoot>
+                                            <tbody id="uppgTable">
+                                            <tr class="odd">
+                                                <td class="sorting_1">Loading. . .</td>
+                                                <td>Loading. . .</td>
+                                                <td>Loading. . .</td>
+
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5">
+                                        <div class="dataTables_info" id="dataTable_info" role="status"
+                                             aria-live="polite">Showing 1 to 10 of 57 entries
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7">
+                                        <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
+                                            <ul class="pagination">
+                                                <li class="paginate_button page-item previous disabled"
+                                                    id="dataTable_previous"><a href="#" aria-controls="dataTable"
+                                                                               data-dt-idx="0" tabindex="0"
+                                                                               class="page-link">Previous</a></li>
+                                                <li class="paginate_button page-item active"><a href="#"
+                                                                                                aria-controls="dataTable"
+                                                                                                data-dt-idx="1"
+                                                                                                tabindex="0"
+                                                                                                class="page-link">1</a>
+                                                </li>
+                                                <li class="paginate_button page-item "><a href="#"
+                                                                                          aria-controls="dataTable"
+                                                                                          data-dt-idx="2" tabindex="0"
+                                                                                          class="page-link">2</a></li>
+                                                <li class="paginate_button page-item "><a href="#"
+                                                                                          aria-controls="dataTable"
+                                                                                          data-dt-idx="3" tabindex="0"
+                                                                                          class="page-link">3</a></li>
+                                                <li class="paginate_button page-item "><a href="#"
+                                                                                          aria-controls="dataTable"
+                                                                                          data-dt-idx="4" tabindex="0"
+                                                                                          class="page-link">4</a></li>
+                                                <li class="paginate_button page-item "><a href="#"
+                                                                                          aria-controls="dataTable"
+                                                                                          data-dt-idx="5" tabindex="0"
+                                                                                          class="page-link">5</a></li>
+                                                <li class="paginate_button page-item "><a href="#"
+                                                                                          aria-controls="dataTable"
+                                                                                          data-dt-idx="6" tabindex="0"
+                                                                                          class="page-link">6</a></li>
+                                                <li class="paginate_button page-item next" id="dataTable_next"><a
+                                                        href="#" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
+                                                        class="page-link">Next</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+                <div id="cardTableUppg2" class="card shadow mb-4">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div id="dataTable_wrapper2" class="dataTables_wrapper dt-bootstrap4">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="dataTables_length" id="dataTable_length2"><label>Show <select
+                                                name="dataTable_length" aria-controls="dataTable"
+                                                class="custom-select custom-select-sm form-control form-control-sm">
+                                            <option value="10">10</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select> entries</label></div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div id="dataTable_filter2" class="dataTables_filter"><label>Search:<input
+                                                type="search" class="form-control form-control-sm" placeholder=""
+                                                aria-controls="dataTable"></label></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table class="table table-bordered dataTable" id="dataTable2" width="100%"
+                                               cellspacing="0" role="grid" aria-describedby="dataTable_info"
+                                               style="width: 100%;">
+                                            <thead>
+                                            <tr role="row">
+                                                <th class="sorting sorting_asc uppgs-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-sort="ascending"
+                                                    aria-label="Name: activate to sort column descending"
+                                                    style="width: 64px;">No
+                                                </th>
+
+                                                <th class="sorting sorting_asc uppgs-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-sort="ascending"
+                                                    aria-label="Name: activate to sort column descending"
+                                                    style="width: 64px;">V
+                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->V
+                                                    Накопленный объем
+                                                </th>
+                                                <th class="sorting uppgs-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-label="Position: activate to sort column ascending"
+                                                    style="width: 75.001px;">V сегодня
+                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->V сегодня
+                                                    Накопленный объем с начала суток
+                                                </th>
+                                                <th class="sorting uppgs-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-label="Salary: activate to sort column ascending"
+                                                    style="width: 67.001px;">V вчера
+                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->V вчера
+                                                    Накопленный объем за вчера
+                                                </th>
+
+                                                <th class="sorting uppgs-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-label="Salary: activate to sort column ascending"
+                                                    style="width: 67.001px;">V мес
+                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->V мес
+                                                    Накопленный объем с начала месяца
+                                                </th>
+
+                                                <th class="sorting uppgs-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-label="Salary: activate to sort column ascending"
+                                                    style="width: 67.001px;">V пред.мес
+                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->V пред.мес
+                                                    Накопленный объем за предыдущий месяц
+                                                </th>
+                                                <th class="sorting uppgs-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-label="Salary: activate to sort column ascending"
+                                                    style="width: 67.001px;">dP
+                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->dP
+                                                    Перепад давления
+                                                </th>
+                                                <th class="sorting uppgs-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-label="Salary: activate to sort column ascending"
+                                                    style="width: 67.001px;">P
+                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->P
+                                                    Давление
+                                                </th>
+                                                <th class="sorting uppgs-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-label="Salary: activate to sort column ascending"
+                                                    style="width: 67.001px;">T
+                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->T
+                                                    Температура
+                                                </th>
+
+                                                <th class="sorting uppgs-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-label="Salary: activate to sort column ascending"
+                                                    style="width: 67.001px;">F
+                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->F
+                                                    Расход
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tfoot>
+                                            <tr>
+                                                <th class="uppgs-table-title" rowspan="1" colspan="1">Itogo</th>
+                                                <th class="uppgs-table-title" rowspan="1" colspan="1">0</th>
+                                                <th class="uppgs-table-title" rowspan="1" colspan="1">0</th>
+                                                <th class="uppgs-table-title" rowspan="1" colspan="1">0</th>
+                                                <th class="uppgs-table-title" rowspan="1" colspan="1">0</th>
+                                                <th class="uppgs-table-title" rowspan="1" colspan="1">0</th>
+                                                <th class="uppgs-table-title" rowspan="1" colspan="1">0</th>
+                                                <th class="uppgs-table-title" rowspan="1" colspan="1">0</th>
+                                                <th class="uppgs-table-title" rowspan="1" colspan="1">0</th>
+                                                <th class="uppgs-table-title" rowspan="1" colspan="1">0</th>
+
+
+                                                <th class="uppgs-table-title" rowspan="1" colspan="1">Редактировать</th>
+                                            </tr>
+                                            </tfoot>
+                                            <tbody id="uppgTable2">
+                                            <tr class="odd">
+                                                <td class="sorting_1">Loading. . .</td>
+                                                <td>Loading. . .</td>
+                                                <td>Loading. . .</td>
+
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5">
+                                        <div class="dataTables_info" id="dataTable_info2" role="status"
+                                             aria-live="polite">Showing 1 to 10 of 57 entries
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7">
+                                        <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
+                                            <ul class="pagination">
+                                                <li class="paginate_button page-item previous disabled"
+                                                    id="dataTable_previous"><a href="#" aria-controls="dataTable"
+                                                                               data-dt-idx="0" tabindex="0"
+                                                                               class="page-link">Previous</a></li>
+                                                <li class="paginate_button page-item active"><a href="#"
+                                                                                                aria-controls="dataTable"
+                                                                                                data-dt-idx="1"
+                                                                                                tabindex="0"
+                                                                                                class="page-link">1</a>
+                                                </li>
+                                                <li class="paginate_button page-item "><a href="#"
+                                                                                          aria-controls="dataTable"
+                                                                                          data-dt-idx="2" tabindex="0"
+                                                                                          class="page-link">2</a></li>
+                                                <li class="paginate_button page-item "><a href="#"
+                                                                                          aria-controls="dataTable"
+                                                                                          data-dt-idx="3" tabindex="0"
+                                                                                          class="page-link">3</a></li>
+                                                <li class="paginate_button page-item "><a href="#"
+                                                                                          aria-controls="dataTable"
+                                                                                          data-dt-idx="4" tabindex="0"
+                                                                                          class="page-link">4</a></li>
+                                                <li class="paginate_button page-item "><a href="#"
+                                                                                          aria-controls="dataTable"
+                                                                                          data-dt-idx="5" tabindex="0"
+                                                                                          class="page-link">5</a></li>
+                                                <li class="paginate_button page-item "><a href="#"
+                                                                                          aria-controls="dataTable"
+                                                                                          data-dt-idx="6" tabindex="0"
+                                                                                          class="page-link">6</a></li>
+                                                <li class="paginate_button page-item next" id="dataTable_next2"><a
+                                                        href="#" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
+                                                        class="page-link">Next</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- uppg Action DataTales -->
+
+
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div th:insert="components/footer::footer"></div>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="login.html">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript-->
+<script src="/static/js/fake_uppg.js" th:src="@{/js/fake_uppg.js}"></script>
+<script>
+    getAllMiningSystems()
+    getAllUppgs();
+</script>
+<script src="/static/vendor/jquery/jquery.min.js" th:src="@{/vendor/jquery/jquery.min.js}"></script>
+<script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"
+        th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="/static/vendor/jquery-easing/jquery.easing.min.js"
+        th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="/static/js/sb-admin-2.min.js" th:src="@{/js/sb-admin-2.min.js}"></script>
+
+<!-- Page level plugins -->
+<script src="/static/vendor/chart.js/Chart.min.js" th:src="@{/vendor/chart.js/Chart.min.js}"></script>
+
+<!-- Page level custom scripts -->
+<script src="/static/js/demo/chart-area-demo.js" th:src="@{/js/demo/chart-area-demo.js}"></script>
+<script src="/static/js/demo/chart-pie-demo.js" th:src="@{/js/demo/chart-pie-demo.js}"></script>
+
+</body>
+<script>
+    $(document).ready(function () {
+        $("#exampleModalCenter").on('hide.bs.modal', function () {
+            document.getElementById('addOrEditUppgForm').reset();
+        });
+    });
+    $(document).ready(function () {
+        $("#exampleModalCenterAction").on('hide.bs.modal', function () {
+            document.getElementById('addOrEditUppgActionForm').reset();
+        });
+    });
+</script>
+</html>
+
+
+
+
+
