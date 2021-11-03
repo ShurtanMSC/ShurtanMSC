@@ -72,11 +72,20 @@ public class UppgService {
                     "FROM dbo.Data");
 
             if (resultSet.next()){
+                System.out.println(resultSet.getRow());
+                System.out.println(resultSet);
                 System.out.println(resultSet.getString(1));
                 System.out.println(resultSet.getString(2));
                 System.out.println(resultSet.getString(3));
                 System.out.println(resultSet.getString(4));
                 System.out.println(resultSet.getString(5));
+            }
+            int count=0;
+            while (resultSet.next()){
+                count++;
+                if(count==101) break;
+                System.out.println(resultSet.getRow());
+//                System.out.println(resultSet.getString(2));
             }
 
         }catch (Exception e){

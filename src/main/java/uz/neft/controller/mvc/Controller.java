@@ -45,6 +45,12 @@ public class Controller {
         return "mining/uppg";
     }
 
+
+    @GetMapping("fake_uppg")
+    public String fake_uppg(){
+        return "mining/fake_uppg";
+    }
+
     //    COLLECTION POINT CRUD
     @GetMapping("collection_point")
     public String collection_point() {
