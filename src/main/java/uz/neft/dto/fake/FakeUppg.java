@@ -65,7 +65,6 @@ public class FakeUppg {
                 this.nakoplenniy_obyom_s_nachalo_mesyach +=flowMeter.fakeFlowMeterElements.get(8).getV();
                 this.nakoplenniy_obyom_za_pered_mesyach +=flowMeter.fakeFlowMeterElements.get(9).getV();
 
-
                 if (!(flowMeter.fakeFlowMeterElements.get(1).getV()<=0)){
                     amountPerepadPressure+=flowMeter.fakeFlowMeterElements.get(1).getV();
                     dp++;
