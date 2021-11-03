@@ -184,7 +184,7 @@ public class CollectionPointActionService {
 
             Stream<CollectionPointActionDto> collectionPointActionDtoStream = collectionPointActions.stream().map(converter::collectionPointActionToCollectionPointActionDto);
 
-            return converter.apiSuccess200(collectionPointActionDtoStream, collectionPointActions.getTotalElements(), collectionPointActions.getTotalPages());
+            return converter.apiSuccess200(collectionPointActionDtoStream, collectionPointActions.getTotalElements(), collectionPointActions.getTotalPages(),collectionPointActions.getNumber());
 //            return converter.apiSuccess200(collectionPointActionDtoStream);
         } catch (Exception e) {
             e.printStackTrace();

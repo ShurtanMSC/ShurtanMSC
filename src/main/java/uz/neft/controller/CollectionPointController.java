@@ -98,10 +98,10 @@ public class CollectionPointController {
     @GetMapping("actions/{collectionPointId}")
     public HttpEntity<?> getAllActionsByCollectionPointId(@PathVariable Integer collectionPointId,
                                                           @RequestParam(value = "page", required = false, defaultValue = "0") Optional<Integer> page,
-                                                          @RequestParam(value = "pageSaze", required = false, defaultValue = "10") Optional<Integer> pageSaze,
+                                                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") Optional<Integer> pageSize,
                                                           @RequestParam(value = "sortBy", required = false, defaultValue = "createdAt") Optional<String> sortBy
     ) {
-        return collectionPointActionService.getAllActionsByCollectionPoint(collectionPointId, page, pageSaze, sortBy);
+        return collectionPointActionService.getAllActionsByCollectionPoint(collectionPointId, page, pageSize, sortBy);
     }
 
     @PutMapping("action/edit")
