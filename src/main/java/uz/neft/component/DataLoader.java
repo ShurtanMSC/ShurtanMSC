@@ -213,11 +213,11 @@ public class DataLoader implements CommandLineRunner {
                     .expend(10000)
                     .build());
 
-            MiningSystemAction miningSystemAction2=miningSystemActionRepository.save(MiningSystemAction
-                    .builder()
-                    .miningSystem(south_tandyrcha)
-                    .expend(10000)
-                    .build());
+//            MiningSystemAction miningSystemAction2=miningSystemActionRepository.save(MiningSystemAction
+//                    .builder()
+//                    .miningSystem(south_tandyrcha)
+//                    .expend(10000)
+//                    .build());
 
             Uppg uppg = uppgRepository.save(new Uppg("УППГ-1",shurtan));
             Uppg uppg2 = uppgRepository.save(new Uppg("УППГ-2",shurtan));
@@ -254,8 +254,8 @@ public class DataLoader implements CommandLineRunner {
                     .build();
             uppgActionRepository.save(uppgAction2);
 
-            Uppg uppg3 = uppgRepository.save(new Uppg("uppgtandir",south_tandyrcha));
-            Uppg uppg4 = uppgRepository.save(new Uppg("uppgtandir2",south_tandyrcha));
+//            Uppg uppg3 = uppgRepository.save(new Uppg("uppgtandir",south_tandyrcha));
+//            Uppg uppg4 = uppgRepository.save(new Uppg("uppgtandir2",south_tandyrcha));
 
 
 
@@ -290,8 +290,8 @@ public class DataLoader implements CommandLineRunner {
             CollectionPoint cp20=collectionPointRepository.save(new CollectionPoint("БТ-30",uppg2,random,random,serverSimulation));
             CollectionPoint cp21=collectionPointRepository.save(new CollectionPoint("БТ-34",uppg2,random,random,serverSimulation));
 
-            CollectionPoint pointtandircha=collectionPointRepository.save(new CollectionPoint("sptandircha",uppg3,random,random,serverSimulation));
-            CollectionPoint pointtandircha2=collectionPointRepository.save(new CollectionPoint("sptandircha2",uppg4,random,random,serverSimulation));
+//            CollectionPoint pointtandircha=collectionPointRepository.save(new CollectionPoint("sptandircha",uppg3,random,random,serverSimulation));
+//            CollectionPoint pointtandircha2=collectionPointRepository.save(new CollectionPoint("sptandircha2",uppg4,random,random,serverSimulation));
 
             List<CollectionPoint> collectionPointList=new ArrayList<>();
             collectionPointList.add(cp1);

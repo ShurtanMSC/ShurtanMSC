@@ -16,16 +16,23 @@ import uz.neft.dto.fake.FakeUppg;
 import uz.neft.dto.special.CollectionPointAndWells;
 import uz.neft.entity.*;
 import uz.neft.entity.action.CollectionPointAction;
+import uz.neft.entity.action.MiningSystemAction;
 import uz.neft.entity.action.UppgAction;
 import uz.neft.entity.action.WellAction;
 import uz.neft.entity.enums.WellStatus;
 import uz.neft.repository.*;
 import uz.neft.repository.action.CollectionPointActionRepository;
+import uz.neft.repository.action.MiningSystemActionRepository;
+import uz.neft.repository.action.UppgActionRepository;
 import uz.neft.repository.action.WellActionRepository;
+import uz.neft.repository.constants.ForecastGasRepository;
 import uz.neft.service.Calculator;
+import uz.neft.service.ForecastGasService;
 import uz.neft.utils.Converter;
 
+import java.time.Month;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -41,13 +48,17 @@ public class CollectionPointActionService {
     private final WellActionRepository wellActionRepository;
     private final WellRepository wellRepository;
     private final UppgRepository uppgRepository;
+    private final UppgActionRepository uppgActionRepository;
     private final MiningSystemRepository miningSystemRepository;
+    private final MiningSystemActionRepository miningSystemActionRepository;
     private final WellActionService wellActionService;
     private final OpcService opcService;
     private final FakeService fakeService;
+    private final ForecastGasRepository forecastGasRepository;
+    private final ForecastGasService forecastGasService;
 
 
-    public CollectionPointActionService(UserRepository userRepository, CollectionPointRepository collectionPointRepository, CollectionPointActionRepository collectionPointActionRepository, Converter converter, WellActionRepository wellActionRepository, WellRepository wellRepository, UppgRepository uppgRepository, MiningSystemRepository miningSystemRepository, WellActionService wellActionService, OpcService opcService, FakeService fakeService) {
+    public CollectionPointActionService(UserRepository userRepository, CollectionPointRepository collectionPointRepository, CollectionPointActionRepository collectionPointActionRepository, Converter converter, WellActionRepository wellActionRepository, WellRepository wellRepository, UppgRepository uppgRepository, UppgActionRepository uppgActionRepository, MiningSystemRepository miningSystemRepository, MiningSystemActionRepository miningSystemActionRepository, WellActionService wellActionService, OpcService opcService, FakeService fakeService, ForecastGasRepository forecastGasRepository, ForecastGasService forecastGasService) {
         this.userRepository = userRepository;
         this.collectionPointRepository = collectionPointRepository;
         this.collectionPointActionRepository = collectionPointActionRepository;
@@ -55,10 +66,14 @@ public class CollectionPointActionService {
         this.wellActionRepository = wellActionRepository;
         this.wellRepository = wellRepository;
         this.uppgRepository = uppgRepository;
+        this.uppgActionRepository = uppgActionRepository;
         this.miningSystemRepository = miningSystemRepository;
+        this.miningSystemActionRepository = miningSystemActionRepository;
         this.wellActionService = wellActionService;
         this.opcService = opcService;
         this.fakeService = fakeService;
+        this.forecastGasRepository = forecastGasRepository;
+        this.forecastGasService = forecastGasService;
     }
 
     /**
@@ -342,10 +357,65 @@ public class CollectionPointActionService {
                 List<FakeUppg> fakeUppgList = fakeService.all();
 
                 if (fakeUppgList.size()==2&&uppgs.size()<=2){
-                    UppgAction uppgAction= UppgAction
+                    UppgAction uppgAction1= UppgAction
                             .builder()
-
+                            .uppg(uppgs.get(0))
+                            .expend(fakeUppgList.get(0).getRasxod())
+                            .incomePressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(0).getDavleniya()))
+                            .exitPressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(0).getDavleniya()))
+                            .condensate(0)
+                            .exitTemperature(fakeUppgList.get(0).getTemperatura())
+                            .incomeTemperature(fakeUppgList.get(0).getTemperatura())
+                            .onWater(15)
+                            .actualPerformance(0)
+                            .designedPerformance(0)
+                            .todayExpend(fakeUppgList.get(0).getNakoplenniy_obyom_s_nachalo_sutok())
+                            .yesterdayExpend(fakeUppgList.get(0).getNakoplenniy_obyom_za_vchera())
+                            .thisMonthExpend(fakeUppgList.get(0).getNakoplenniy_obyom_s_nachalo_mesyach())
+                            .thisMonthExpend(fakeUppgList.get(0).getNakoplenniy_obyom_za_pered_mesyach())
                             .build();
+                    uppgAction1=uppgActionRepository.save(uppgAction1);
+
+
+                    UppgAction uppgAction2= UppgAction
+                            .builder()
+                            .uppg(uppgs.get(1))
+                            .expend(fakeUppgList.get(1).getRasxod())
+                            .incomePressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(1).getDavleniya()))
+                            .exitPressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(1).getDavleniya()))
+                            .condensate(0)
+                            .exitTemperature(fakeUppgList.get(1).getTemperatura())
+                            .incomeTemperature(fakeUppgList.get(1).getTemperatura())
+                            .onWater(15)
+                            .actualPerformance(0)
+                            .designedPerformance(0)
+                            .todayExpend(fakeUppgList.get(1).getNakoplenniy_obyom_s_nachalo_sutok())
+                            .yesterdayExpend(fakeUppgList.get(1).getNakoplenniy_obyom_za_vchera())
+                            .thisMonthExpend(fakeUppgList.get(1).getNakoplenniy_obyom_s_nachalo_mesyach())
+                            .thisMonthExpend(fakeUppgList.get(1).getNakoplenniy_obyom_za_pered_mesyach())
+                            .build();
+                    uppgAction2=uppgActionRepository.save(uppgAction2);
+
+                    MiningSystemAction miningSystemAction= MiningSystemAction
+                            .builder()
+                            .expend(uppgAction1.getExpend()+uppgAction2.getExpend())
+                            .miningSystem(miningSystem.get())
+                            .todayExpend(uppgAction1.getTodayExpend()+uppgAction2.getTodayExpend())
+                            .yesterdayExpend(uppgAction1.getYesterdayExpend()+uppgAction2.getYesterdayExpend())
+                            .thisMonthExpend(uppgAction1.getThisMonthExpend()+uppgAction2.getThisMonthExpend())
+                            .lastMonthExpend(uppgAction1.getLastMonthExpend()+uppgAction2.getLastMonthExpend())
+                            .build();
+                    miningSystemAction=miningSystemActionRepository.save(miningSystemAction);
+
+
+                    Date date=new Date();
+
+                    Optional<ForecastGas> forecastGasNow = forecastGasRepository.findByMiningSystemAndYearAndMonth(miningSystem.get(), date.getYear(), Month.of(date.getMonth()));
+                    if (forecastGasNow.isPresent()){
+                        forecastGasNow.get().setAmount(miningSystemAction.getThisMonthExpend());
+                        forecastGasRepository.save(forecastGasNow.get());
+                    }
+
                 }
 
 

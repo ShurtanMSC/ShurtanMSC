@@ -48,6 +48,11 @@ public class UppgAction extends AbsEntityLong {
     // exit_pressure (Выходное давление, кгс/см²)
     private double exitPressure;
 
+
+    private double todayExpend;
+    private double yesterdayExpend;
+    private double thisMonthExpend;
+    private double lastMonthExpend;
     @ManyToOne
     private User user;
 
