@@ -30,7 +30,7 @@ function createViewTable(data) {
             "                                                <th class=\"uppgs-table-title\" rowspan=\"1\" colspan=\"1\">"+ Math.round(data[0].perepad_davleniya*100)/100+"</th>\n" +
             "                                                <th class=\"uppgs-table-title\" rowspan=\"1\" colspan=\"1\">"+ Math.round(data[0].davleniya*100)/100+"</th>\n" +
             "                                                <th class=\"uppgs-table-title\" rowspan=\"1\" colspan=\"1\">"+ Math.round(data[0].temperatura*100)/100+"</th>\n" +
-            "                                                <th class=\"uppgs-table-title\" rowspan=\"1\" colspan=\"1\">"+ 0 +"</th>\n" +
+            "                                                <th class=\"uppgs-table-title\" rowspan=\"1\" colspan=\"1\">"+ Math.round(data[0].rasxod*100)/100 +"</th>\n" +
             "\n" +
             "<!--                                                <th class=\"uppgs-table-title\" rowspan=\"1\" colspan=\"1\">Редактировать</th>-->\n" +
             "                                            </tr>";
@@ -45,6 +45,8 @@ function createViewTable(data) {
             "                                                <th class=\"uppgs-table-title\" rowspan=\"1\" colspan=\"1\">"+ Math.round(data[1].perepad_davleniya*100)/100+"</th>\n" +
             "                                                <th class=\"uppgs-table-title\" rowspan=\"1\" colspan=\"1\">"+ Math.round(data[1].davleniya*100)/100+"</th>\n" +
             "                                                <th class=\"uppgs-table-title\" rowspan=\"1\" colspan=\"1\">"+ Math.round(data[1].temperatura*100)/100+"</th>\n" +
+            "                                                <th class=\"uppgs-table-title\" rowspan=\"1\" colspan=\"1\">"+ Math.round(data[1].rasxod*100)/100 +"</th>\n" +
+
             "\n" +
             "<!--                                                <th class=\"uppgs-table-title\" rowspan=\"1\" colspan=\"1\">Редактировать</th>-->\n" +
             "                                            </tr>";
@@ -78,15 +80,15 @@ function createViewTable(data) {
             out2 += "<tr class=\"odd\">\n" +
                 "   <td class=\"\">"+arr[0].slice(25,arr[0].length)+ "</td>\n" +
                 "    <td>" + Math.round(data[1].flowMeters[i].fakeFlowMeterElements[0].v*100)/100 + "</td>\n" +
-                "    <td>" + Math.round(data[1].flowMeters[i].fakeFlowMeterElements[1].v*100)/100 + "</td>\n" +
                 // "    <td>" + Math.round(data[1].flowMeters[i].fakeFlowMeterElements[5].v*100)/100 + "</td>\n" +
-                // "    <td>" + Math.round(data[1].flowMeters[i].fakeFlowMeterElements[6].v*100)/100 + "</td>\n" +
+                "    <td>" + Math.round(data[1].flowMeters[i].fakeFlowMeterElements[6].v*100)/100 + "</td>\n" +
                 "    <td>" + Math.round(data[1].flowMeters[i].fakeFlowMeterElements[7].v*100)/100 + "</td>\n" +
                 "    <td>" + Math.round(data[1].flowMeters[i].fakeFlowMeterElements[8].v*100)/100 + "</td>\n" +
                 "    <td>" + Math.round(data[1].flowMeters[i].fakeFlowMeterElements[9].v*100)/100 + "</td>\n" +
+                "    <td>" + Math.round(data[1].flowMeters[i].fakeFlowMeterElements[1].v*100)/100 + "</td>\n" +
                 "    <td>" + Math.round(data[1].flowMeters[i].fakeFlowMeterElements[2].v*100)/100 + "</td>\n" +
                 "    <td>" + Math.round(data[1].flowMeters[i].fakeFlowMeterElements[3].v*100)/100 + "</td>\n" +
-                "    <td>" + Math.round(data[1].flowMeters[i].fakeFlowMeterElements[4].v*100)/100 + "</td>\n" +
+                "    <td>" + Math.round((data[1].flowMeters[i].fakeFlowMeterElements[4].v/(new Date().getMinutes()))*60*100)/100 + "</td>\n" +
 
                 "   </tr>"
         }

@@ -2,6 +2,7 @@ package uz.neft.dto.fake;
 
 import lombok.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -28,9 +29,11 @@ public class FakeUppg {
         int t=0;
         int p=0;
         int dp=0;
+        int r=0;
         int amountTemperature=0;
         int amountPressure=0;
         int amountPerepadPressure=0;
+        int amountRasxod=0;
         if (a){
 
             for (FakeFlowMeter flowMeter : flowMeters) {
@@ -53,6 +56,10 @@ public class FakeUppg {
                     amountPressure+=flowMeter.fakeFlowMeterElements.get(6).getV();
                     p++;
                 }
+                if (!(flowMeter.fakeFlowMeterElements.get(8).getV()<=0)){
+                    amountRasxod+=flowMeter.fakeFlowMeterElements.get(8).getV();
+                    r++;
+                }
             }
 
 
@@ -64,6 +71,7 @@ public class FakeUppg {
                 this.nakoplenniy_obyom_za_vchera +=flowMeter.fakeFlowMeterElements.get(7).getV();
                 this.nakoplenniy_obyom_s_nachalo_mesyach +=flowMeter.fakeFlowMeterElements.get(8).getV();
                 this.nakoplenniy_obyom_za_pered_mesyach +=flowMeter.fakeFlowMeterElements.get(9).getV();
+
 
                 if (!(flowMeter.fakeFlowMeterElements.get(1).getV()<=0)){
                     amountPerepadPressure+=flowMeter.fakeFlowMeterElements.get(1).getV();
@@ -78,6 +86,10 @@ public class FakeUppg {
                     p++;
                 }
 
+                if (!(flowMeter.fakeFlowMeterElements.get(4).getV()<=0)){
+                    amountRasxod+=(flowMeter.fakeFlowMeterElements.get(4).getV()/(new Date().getMinutes()))*60;
+                    r++;
+                }
 
             }
 
@@ -90,6 +102,9 @@ public class FakeUppg {
         }
         if (p!=0){
             this.davleniya=(double) amountPressure/p;
+        }
+        if (r!=0){
+            this.rasxod=amountRasxod;
         }
 
     }

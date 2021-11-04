@@ -7,15 +7,18 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class FakeService {
 
     public static void main(String[] args) {
-        String url="jdbc:sqlserver://192.168.10.20:1433;database=UPPG";
-        String userDB="UPPGReader", pass="97F88FA06BB691C96D3B46CC3252452369F4ACEB5E076CFACF4B7BF4B5370A5A43B57702334D3C31";
-        all(url,userDB,pass);
+        Date date=new Date();
+        System.out.println(date.getMinutes());
+//        String url="jdbc:sqlserver://192.168.10.20:1433;database=UPPG";
+//        String userDB="UPPGReader", pass="97F88FA06BB691C96D3B46CC3252452369F4ACEB5E076CFACF4B7BF4B5370A5A43B57702334D3C31";
+//        all(url,userDB,pass);
     }
 
     public List<FakeUppg> all(){
