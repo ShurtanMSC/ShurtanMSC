@@ -508,7 +508,7 @@ public class WellActionService {
                                                     converter.wellToWellDto(w),
                                                     converter.wellActionToWellActionDto(
                                                             wellActionRepository
-                                                                    .findFirstByWellOrderByCreatedAtDesc(w).get()))));
+                                                                    .findFirstByWellOrderByCreatedAtDesc(w).orElse(null)))));
             return converter.apiSuccess200(list);
         } catch (Exception e) {
             e.printStackTrace();
@@ -596,15 +596,16 @@ public class WellActionService {
                                     .temperature(wellLite.getTemperature()>0?wellLite.getTemperature():0)
                                     .status(wellLite.getStatus())
                                     .build();
-                            CollectionPointAction collectionPointAction = collectionPointActionRepository.findFirstByCollectionPointOrderByCreatedAtDesc(collectionPoint);
+                            Optional<CollectionPointAction> collectionPointAction = collectionPointActionRepository.findFirstByCollectionPointOrderByCreatedAtDesc(collectionPoint);
+
                             if (wellLite.getStatus()==WellStatus.IN_WORK){
-                                if (wellLite.getPressure()<collectionPointAction.getPressure()){
+                                if (collectionPointAction.isPresent()&&wellLite.getPressure()<collectionPointAction.get().getPressure()){
                                     dto.setStatus(WellStatus.IN_IDLE);
                                 }
                             }
 
                             if (wellLite.getStatus()==WellStatus.IN_IDLE){
-                                if (wellLite.getPressure()>=collectionPointAction.getPressure()){
+                                if (collectionPointAction.isPresent()&&wellLite.getPressure()>=collectionPointAction.get().getPressure()){
                                     dto.setStatus(WellStatus.IN_WORK);
                                 }
                             }
@@ -712,12 +713,12 @@ public class WellActionService {
         List<CollectionPoint> collectionPointList = collectionPointRepository.findAllByUppg(uppg);
         for (CollectionPoint collectionPoint : collectionPointList) {
             List<Well> wellList=wellRepository.findAllByCollectionPointOrderByIdAsc(collectionPoint);
-            CollectionPointAction pointAction = collectionPointActionRepository.findFirstByCollectionPointOrderByCreatedAtDesc(collectionPoint);
+            Optional<CollectionPointAction> pointAction = collectionPointActionRepository.findFirstByCollectionPointOrderByCreatedAtDesc(collectionPoint);
             for (Well well : wellList){
                 Optional<WellAction> action=wellActionRepository.findFirstByWellOrderByCreatedAtDesc(well);
                 if (action.isPresent()){
 
-                    if (pointAction!=null&&(action.get().getPressure()<pointAction.getPressure()||pointAction.getPressure()==0)){
+                    if (pointAction.isPresent()&&(action.get().getPressure()<pointAction.get().getPressure()||pointAction.get().getPressure()==0)){
                         action.get().setExpend(0);
                         action.get().setRpl(rpl(action.get()));
                     }

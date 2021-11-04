@@ -76,6 +76,7 @@ public class CollectionPointActionService {
         }
 
         try {
+
             CollectionPointAction collectionPointAction = CollectionPointAction
                     .builder()
                     .user(userRepository.findById(1).get())
@@ -84,6 +85,8 @@ public class CollectionPointActionService {
                     .expend(D_sp)
                     .collectionPoint(collectionPoint.get())
                     .build();
+
+            if (collectionPointAction.getTemperature()==0||collectionPointAction.getPressure()==0) collectionPointAction.setExpend(0);
 
             CollectionPointAction save = collectionPointActionRepository.save(collectionPointAction);
 
@@ -163,7 +166,7 @@ public class CollectionPointActionService {
                                                     converter.collectionPointToCollectionPointDto(c),
                                                     converter.collectionPointActionToCollectionPointActionDto(
                                                             collectionPointActionRepository
-                                                                    .findFirstByCollectionPointOrderByCreatedAtDesc(c)))));
+                                                                    .findFirstByCollectionPointOrderByCreatedAtDesc(c).orElse(null)))));
             return converter.apiSuccess200(list);
         } catch (Exception e) {
             e.printStackTrace();
@@ -228,10 +231,10 @@ public class CollectionPointActionService {
 
             List<ObjectWithActionsDto> collect = all.stream().map(item -> {
                 Optional<CollectionPoint> byId = collectionPointRepository.findById(item.getId());
-                CollectionPointAction collectionPointAction = collectionPointActionRepository.findFirstByCollectionPointOrderByCreatedAtDesc(byId.get());
+                Optional<CollectionPointAction> collectionPointAction = collectionPointActionRepository.findFirstByCollectionPointOrderByCreatedAtDesc(byId.get());
 
                 CollectionPointDto collectionPointDto = converter.collectionPointToCollectionPointDto(byId.get());
-                CollectionPointActionDto collectionPointActionDto = converter.collectionPointActionToCollectionPointActionDto(collectionPointAction);
+                CollectionPointActionDto collectionPointActionDto = converter.collectionPointActionToCollectionPointActionDto(collectionPointAction.get());
 
                 return ObjectWithActionsDto
                         .builder()
@@ -252,10 +255,10 @@ public class CollectionPointActionService {
             Optional<CollectionPoint> byId = collectionPointRepository.findById(id);
             if (!byId.isPresent()) return converter.apiError404("collection point not found");
 
-            CollectionPointAction collectionPointAction = collectionPointActionRepository.findFirstByCollectionPointOrderByCreatedAtDesc(byId.get());
+            Optional<CollectionPointAction> collectionPointAction = collectionPointActionRepository.findFirstByCollectionPointOrderByCreatedAtDesc(byId.get());
 
             CollectionPointDto collectionPointDto = converter.collectionPointToCollectionPointDto(byId.get());
-            CollectionPointActionDto collectionPointActionDto = converter.collectionPointActionToCollectionPointActionDto(collectionPointAction);
+            CollectionPointActionDto collectionPointActionDto = converter.collectionPointActionToCollectionPointActionDto(collectionPointAction.get());
 
             ObjectWithActionsDto dto = ObjectWithActionsDto
                     .builder()
@@ -342,7 +345,7 @@ public class CollectionPointActionService {
 
                     Thread.sleep(500);
 //                System.out.println(action.toString());
-                    if (action.getPressure() == 0) {
+                    if (action.getPressure() == 0||action.getTemperature()==0) {
                         action.setExpend(0);
                     } else {
                         double expendCp = checkWells(collectionPoint, action);
@@ -351,6 +354,8 @@ public class CollectionPointActionService {
 
                     collectionPointActionRepository.save(action);
                 }
+                else
+                wellActionService.execute(collectionPoint.getUppg());
 
             }
 
