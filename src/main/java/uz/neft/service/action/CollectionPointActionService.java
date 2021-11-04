@@ -11,14 +11,18 @@ import uz.neft.controller.opc.OpcService;
 import uz.neft.dto.CollectionPointDto;
 import uz.neft.dto.action.CollectionPointActionDto;
 import uz.neft.dto.action.ObjectWithActionsDto;
+import uz.neft.dto.fake.FakeService;
+import uz.neft.dto.fake.FakeUppg;
 import uz.neft.dto.special.CollectionPointAndWells;
 import uz.neft.entity.*;
 import uz.neft.entity.action.CollectionPointAction;
+import uz.neft.entity.action.UppgAction;
 import uz.neft.entity.action.WellAction;
 import uz.neft.entity.enums.WellStatus;
 import uz.neft.repository.*;
 import uz.neft.repository.action.CollectionPointActionRepository;
 import uz.neft.repository.action.WellActionRepository;
+import uz.neft.service.Calculator;
 import uz.neft.utils.Converter;
 
 import java.util.ArrayList;
@@ -40,9 +44,10 @@ public class CollectionPointActionService {
     private final MiningSystemRepository miningSystemRepository;
     private final WellActionService wellActionService;
     private final OpcService opcService;
+    private final FakeService fakeService;
 
 
-    public CollectionPointActionService(UserRepository userRepository, CollectionPointRepository collectionPointRepository, CollectionPointActionRepository collectionPointActionRepository, Converter converter, WellActionRepository wellActionRepository, WellRepository wellRepository, UppgRepository uppgRepository, MiningSystemRepository miningSystemRepository, WellActionService wellActionService, OpcService opcService) {
+    public CollectionPointActionService(UserRepository userRepository, CollectionPointRepository collectionPointRepository, CollectionPointActionRepository collectionPointActionRepository, Converter converter, WellActionRepository wellActionRepository, WellRepository wellRepository, UppgRepository uppgRepository, MiningSystemRepository miningSystemRepository, WellActionService wellActionService, OpcService opcService, FakeService fakeService) {
         this.userRepository = userRepository;
         this.collectionPointRepository = collectionPointRepository;
         this.collectionPointActionRepository = collectionPointActionRepository;
@@ -53,6 +58,7 @@ public class CollectionPointActionService {
         this.miningSystemRepository = miningSystemRepository;
         this.wellActionService = wellActionService;
         this.opcService = opcService;
+        this.fakeService = fakeService;
     }
 
     /**
@@ -329,35 +335,51 @@ public class CollectionPointActionService {
     public void setAll(int id) {
         try {
 
-            List<CollectionPoint> all = collectionPointRepository.findAllByMiningSystemId(id);
-            for (CollectionPoint collectionPoint : all) {
-                if (collectionPoint.isActiveE()) {
-                    CollectionPointAction action = CollectionPointAction
-                            .builder()
-                            .collectionPoint(collectionPoint)
-                            .build();
+            Optional<MiningSystem> miningSystem = miningSystemRepository.findById(1);
+            if (miningSystem.isPresent()){
+                List<Uppg> uppgs=uppgRepository.findAllByMiningSystem(miningSystem.get());
 
-                    action.setTemperature(opcService.getValue(action, action.getCollectionPoint().getTemperatureUnit()));
-                    action.setPressure(opcService.getValue(action, action.getCollectionPoint().getPressureUnit()));
+                List<FakeUppg> fakeUppgList = fakeService.all();
+
+                if (fakeUppgList.size()==2&&uppgs.size()<=2){
+                    UppgAction uppgAction= UppgAction
+                            .builder()
+
+                            .build();
+                }
+
+
+                List<CollectionPoint> all = collectionPointRepository.findAllByMiningSystemId(id);
+                for (CollectionPoint collectionPoint : all) {
+                    if (collectionPoint.isActiveE()) {
+                        CollectionPointAction action = CollectionPointAction
+                                .builder()
+                                .collectionPoint(collectionPoint)
+                                .build();
+
+                        action.setTemperature(opcService.getValue(action, action.getCollectionPoint().getTemperatureUnit()));
+                        action.setPressure(Calculator.mega_pascal_to_kgf_sm2(opcService.getValue(action, action.getCollectionPoint().getPressureUnit())));
 //                action.setPressure(action.getPressureOpc());
 //                action.setTemperature(action.getTemperatureOpc());
-                    wellActionService.execute(collectionPoint.getUppg());
+                        wellActionService.execute(collectionPoint.getUppg());
 
-                    Thread.sleep(500);
+                        Thread.sleep(500);
 //                System.out.println(action.toString());
-                    if (action.getPressure() == 0||action.getTemperature()==0) {
-                        action.setExpend(0);
-                    } else {
-                        double expendCp = checkWells(collectionPoint, action);
-                        action.setExpend(expendCp);
+                        if (action.getPressure() == 0||action.getTemperature()==0) {
+                            action.setExpend(0);
+                        } else {
+                            double expendCp = checkWells(collectionPoint, action);
+                            action.setExpend(expendCp);
+                        }
+
+                        collectionPointActionRepository.save(action);
                     }
+                    else
+                        wellActionService.execute(collectionPoint.getUppg());
 
-                    collectionPointActionRepository.save(action);
                 }
-                else
-                wellActionService.execute(collectionPoint.getUppg());
-
             }
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -379,8 +401,8 @@ public class CollectionPointActionService {
                         if (action.get().getStatus() == WellStatus.IN_IDLE)
                             action.get().setStatus(WellStatus.IN_WORK);
                         double expend = wellActionService.expend(action.get().getTemperature(), action.get().getPressure(), cp.getUppg().getMiningSystem());
-                        action.get().setExpend(expend);
-                        expendCp += expend;
+                        action.get().setAverage_expend(expend);
+                        expendCp += action.get().getExpend();
                     }
                     wellActionRepository.save(action.get());
                 }

@@ -54,6 +54,11 @@ public class UppgAction extends AbsEntityLong {
     @ManyToOne
     private Uppg uppg;
 
+    private double accumulatedVolumeYesterday;
+    private double accumulatedVolumeToday;
+    private double accumulatedVolumePreviousMonth;
+
+
 //    @LastModifiedBy
 //    @Column(nullable = false)
 //    private String modifiedBy;
