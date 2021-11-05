@@ -181,8 +181,8 @@ public class DataLoader implements CommandLineRunner {
             OpcServer serverSimulation = opcServerRepository.save(new OpcServer("Matrikon", "Simulyatsion server", "Matrikon.OPC.Simulation.1",localServer,OpcServerType.SIMULATE));
 
             String random="Random.Real";
-            String temperature="Unit1.YYYYY.VT_R4";
-            String pressure="Unit1.Channel_1.VT_R4";
+            String temperature="Unit_10.TT_10.VT_R8";
+            String pressure="Unit_10.PT_10.VT_R8";
 
             MiningSystem shurtan = miningSystemRepository.save(new MiningSystem(InitialNames.SHURTAN));
             MiningSystem south_tandyrcha = miningSystemRepository.save(new MiningSystem(InitialNames.SOUTH_TANDYRCHA));
@@ -213,11 +213,11 @@ public class DataLoader implements CommandLineRunner {
                     .expend(10000)
                     .build());
 
-            MiningSystemAction miningSystemAction2=miningSystemActionRepository.save(MiningSystemAction
-                    .builder()
-                    .miningSystem(south_tandyrcha)
-                    .expend(10000)
-                    .build());
+//            MiningSystemAction miningSystemAction2=miningSystemActionRepository.save(MiningSystemAction
+//                    .builder()
+//                    .miningSystem(south_tandyrcha)
+//                    .expend(10000)
+//                    .build());
 
             Uppg uppg = uppgRepository.save(new Uppg("УППГ-1",shurtan));
             Uppg uppg2 = uppgRepository.save(new Uppg("УППГ-2",shurtan));
@@ -254,8 +254,8 @@ public class DataLoader implements CommandLineRunner {
                     .build();
             uppgActionRepository.save(uppgAction2);
 
-            Uppg uppg3 = uppgRepository.save(new Uppg("uppgtandir",south_tandyrcha));
-            Uppg uppg4 = uppgRepository.save(new Uppg("uppgtandir2",south_tandyrcha));
+//            Uppg uppg3 = uppgRepository.save(new Uppg("uppgtandir",south_tandyrcha));
+//            Uppg uppg4 = uppgRepository.save(new Uppg("uppgtandir2",south_tandyrcha));
 
 
 
@@ -279,7 +279,7 @@ public class DataLoader implements CommandLineRunner {
             CollectionPoint cp9=collectionPointRepository.save(new CollectionPoint("СП-4",uppg2,random,random,serverSimulation));
             CollectionPoint cp10=collectionPointRepository.save(new CollectionPoint("СП-6",uppg2,random,random,serverSimulation));
             CollectionPoint cp11=collectionPointRepository.save(new CollectionPoint("СП-9",uppg2,random,random,serverSimulation));
-            CollectionPoint cp12=collectionPointRepository.save(new CollectionPoint("СП-10",uppg2,random,random,serverSimulation));
+            CollectionPoint cp12=collectionPointRepository.save(new CollectionPoint("СП-10",uppg2,temperature,pressure,serverReal));
             CollectionPoint cp13=collectionPointRepository.save(new CollectionPoint("СП-20",uppg2,random,random,serverSimulation));
             CollectionPoint cp14=collectionPointRepository.save(new CollectionPoint("СП-24",uppg2,random,random,serverSimulation));
             CollectionPoint cp15=collectionPointRepository.save(new CollectionPoint("БТ-5",uppg2,random,random,serverSimulation));
@@ -290,8 +290,8 @@ public class DataLoader implements CommandLineRunner {
             CollectionPoint cp20=collectionPointRepository.save(new CollectionPoint("БТ-30",uppg2,random,random,serverSimulation));
             CollectionPoint cp21=collectionPointRepository.save(new CollectionPoint("БТ-34",uppg2,random,random,serverSimulation));
 
-            CollectionPoint pointtandircha=collectionPointRepository.save(new CollectionPoint("sptandircha",uppg3,random,random,serverSimulation));
-            CollectionPoint pointtandircha2=collectionPointRepository.save(new CollectionPoint("sptandircha2",uppg4,random,random,serverSimulation));
+//            CollectionPoint pointtandircha=collectionPointRepository.save(new CollectionPoint("sptandircha",uppg3,random,random,serverSimulation));
+//            CollectionPoint pointtandircha2=collectionPointRepository.save(new CollectionPoint("sptandircha2",uppg4,random,random,serverSimulation));
 
             List<CollectionPoint> collectionPointList=new ArrayList<>();
             collectionPointList.add(cp1);

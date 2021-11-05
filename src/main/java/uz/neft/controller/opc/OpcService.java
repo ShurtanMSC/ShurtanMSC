@@ -55,10 +55,10 @@ public class OpcService {
                         System.out.println(items.length);
 //                    System.out.println(items);
                         for (String item : items) {
-                            if (item.startsWith(parts[0]+"-"+parts[2])){
+                            if (item.contains(parts[0])&&item.contains(parts[2])){
                                 String[] itemParts =item.split(";");
                                 System.out.println(Arrays.toString(itemParts));
-                                if (itemParts.length==4) return Double.parseDouble(itemParts[3]);
+                                if (itemParts.length==4) return Double.parseDouble(itemParts[3].replace(",","."));
                             }
 //                        System.out.println(item);
                         }

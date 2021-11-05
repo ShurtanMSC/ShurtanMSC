@@ -7,15 +7,24 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class FakeService {
 
     public static void main(String[] args) {
+        Date date=new Date();
+        System.out.println(date.getMinutes());
+//        String url="jdbc:sqlserver://192.168.10.20:1433;database=UPPG";
+//        String userDB="UPPGReader", pass="97F88FA06BB691C96D3B46CC3252452369F4ACEB5E076CFACF4B7BF4B5370A5A43B57702334D3C31";
+//        all(url,userDB,pass);
+    }
+
+    public List<FakeUppg> all(){
         String url="jdbc:sqlserver://192.168.10.20:1433;database=UPPG";
         String userDB="UPPGReader", pass="97F88FA06BB691C96D3B46CC3252452369F4ACEB5E076CFACF4B7BF4B5370A5A43B57702334D3C31";
-        all(url,userDB,pass);
+        return all(url,userDB,pass);
     }
 
     public static List<FakeUppg> all(String url,String username,String password){
@@ -58,7 +67,7 @@ public class FakeService {
                             .name(resultSet.getString(2))
                             .fullName(resultSet.getString(3))
                             .description(resultSet.getString(4))
-                            .val(resultSet.getDouble(5))
+                            .v(resultSet.getDouble(5))
                             .quality(resultSet.getInt(6))
                             .timestamp(resultSet.getString(7))
                             .scaleMin(resultSet.getInt(8))
@@ -85,7 +94,7 @@ public class FakeService {
                             .name(resultSet.getString(2))
                             .fullName(resultSet.getString(3))
                             .description(resultSet.getString(4))
-                            .val(resultSet.getDouble(5))
+                            .v(resultSet.getDouble(5))
                             .quality(resultSet.getInt(6))
                             .timestamp(resultSet.getString(7))
                             .scaleMin(resultSet.getInt(8))
@@ -96,7 +105,7 @@ public class FakeService {
                     if (counter==64||counter==74||counter==84||counter==94||counter==104||counter==114||counter==124||counter==134||counter==144){
                         flowMeters2.add(FakeFlowMeter
                                 .builder()
-                                .fakeFlowMeterElements(flowMeterElements1)
+                                .fakeFlowMeterElements(flowMeterElements2)
                                 .build());
                         flowMeterElements2=new ArrayList<>();
 //                        f1++;
@@ -110,21 +119,23 @@ public class FakeService {
             }
 //            System.out.println(flowMeters1.size());
 //            flowMeters1.forEach(f-> System.out.println(f.toString()));
-            System.out.println(flowMeters1.size());
-            System.out.println(flowMeters2.size());
-            for (FakeFlowMeter fakeFlowMeter : flowMeters1) {
-                for (int j = 0; j < fakeFlowMeter.getFakeFlowMeterElements().size(); j++) {
-                    System.out.println(fakeFlowMeter.getFakeFlowMeterElements().get(j).toString());
-                }
-            }
+//            System.out.println(flowMeters1.size());
+//            System.out.println(flowMeters2.size());
+//            for (FakeFlowMeter fakeFlowMeter : flowMeters1) {
+//                for (int j = 0; j < fakeFlowMeter.getFakeFlowMeterElements().size(); j++) {
+//                    System.out.println(fakeFlowMeter.getFakeFlowMeterElements().get(j).toString());
+//                }
+//            }
             FakeUppg fakeUppg1= FakeUppg
                     .builder()
                     .flowMeters(flowMeters1)
                     .build();
+            fakeUppg1.sum(true);
             FakeUppg fakeUppg2= FakeUppg
                     .builder()
                     .flowMeters(flowMeters2)
                     .build();
+            fakeUppg2.sum(false);
             connection.close();
             list.add(fakeUppg1);
             list.add(fakeUppg2);

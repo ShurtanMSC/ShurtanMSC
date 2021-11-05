@@ -442,6 +442,7 @@ public class Converter {
 
     public WellActionDto wellActionToWellActionDto(WellAction wellAction) {
         try {
+            if (wellAction==null) return null;
             return WellActionDto
                     .builder()
                     .actionId(wellAction.getId())

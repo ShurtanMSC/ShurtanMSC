@@ -38,7 +38,11 @@
           rel="stylesheet">
 
 </head>
+<script src="/static/js/fake_uppg.js" th:src="@{/js/fake_uppg.js}"></script>
 
+<script>
+    getAllFlowMeters()
+</script>
 <body onload="" id="page-top">
 
 <!-- Page Wrapper -->
@@ -74,9 +78,9 @@
                             Назад
                         </button>
                     </div>
-                    <div class="col-6 p-0 ml-3">
-                        <h1 class="h3 mb-2 text-gray-800" id="actionUppgH1">УППГ</h1>
-                    </div>
+<!--                    <div class="col-6 p-0 ml-3">-->
+<!--                        <h1 class="h3 mb-2 text-gray-800" id="actionUppgH1">УППГ</h1>-->
+<!--                    </div>-->
                 </div>
 
 
@@ -165,6 +169,12 @@
                 </div>
 
                 <!-- uppg DataTales Example -->
+
+                <!-- UPPG1 -->
+                <div class="col-6 p-0 ml-3">
+                    <h1 class="h3 mb-2 text-gray-800" id="actionUppgH1">УППГ1</h1>
+                </div>
+
                 <div id="cardTableUppg1" class="card shadow mb-4">
                     <div class="card-body">
                         <div class="table-responsive">
@@ -205,72 +215,72 @@
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-sort="ascending"
                                                     aria-label="Name: activate to sort column descending"
-                                                    style="width: 64px;">V
-                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->V
+                                                    style="width: 64px;">
+<!--                                                    V-->
                                                     Накопленный объем
                                                 </th>
                                                 <th class="sorting uppgs-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Position: activate to sort column ascending"
-                                                    style="width: 75.001px;">V сегодня
-                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->V сегодня
+                                                    style="width: 75.001px;">
+<!--                                                    V сегодня-->
                                                     Накопленный объем с начала суток
                                                 </th>
                                                 <th class="sorting uppgs-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Salary: activate to sort column ascending"
-                                                    style="width: 67.001px;">V вчера
-                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->V вчера
+                                                    style="width: 67.001px;">
+<!--                                                    V вчера-->
                                                     Накопленный объем за вчера
                                                 </th>
 
                                                 <th class="sorting uppgs-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Salary: activate to sort column ascending"
-                                                    style="width: 67.001px;">V мес
-                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->V мес
+                                                    style="width: 67.001px;">
+<!--                                                    V мес-->
                                                     Накопленный объем с начала месяца
                                                 </th>
 
                                                 <th class="sorting uppgs-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Salary: activate to sort column ascending"
-                                                    style="width: 67.001px;">V пред.мес
-                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->V пред.мес
+                                                    style="width: 67.001px;">
+<!--                                                    V пред.мес-->
                                                     Накопленный объем за предыдущий месяц
                                                 </th>
                                                 <th class="sorting uppgs-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Salary: activate to sort column ascending"
-                                                    style="width: 67.001px;">dP
-                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->dP
+                                                    style="width: 67.001px;">
+<!--                                                    dP-->
                                                     Перепад давления
                                                 </th>
                                                 <th class="sorting uppgs-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Salary: activate to sort column ascending"
-                                                    style="width: 67.001px;">P
-                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->P
+                                                    style="width: 67.001px;">
+<!--                                                    P-->
                                                     Давление
                                                 </th>
                                                 <th class="sorting uppgs-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Salary: activate to sort column ascending"
-                                                    style="width: 67.001px;">T
-                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->T
+                                                    style="width: 67.001px;">
+<!--                                                    T-->
                                                     Температура
                                                 </th>
 
                                                 <th class="sorting uppgs-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Salary: activate to sort column ascending"
-                                                    style="width: 67.001px;">F
-                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->F
+                                                    style="width: 67.001px;">
+<!--                                                    F-->
                                                     Расход
                                                 </th>
                                             </tr>
                                             </thead>
-                                            <tfoot>
+                                            <tfoot id="foot1">
                                             <tr>
                                                 <th class="uppgs-table-title" rowspan="1" colspan="1">Itogo</th>
                                                 <th class="uppgs-table-title" rowspan="1" colspan="1">0</th>
@@ -283,10 +293,10 @@
                                                 <th class="uppgs-table-title" rowspan="1" colspan="1">0</th>
                                                 <th class="uppgs-table-title" rowspan="1" colspan="1">0</th>
 
-                                                <th class="uppgs-table-title" rowspan="1" colspan="1">Редактировать</th>
+<!--                                                <th class="uppgs-table-title" rowspan="1" colspan="1">Редактировать</th>-->
                                             </tr>
                                             </tfoot>
-                                            <tbody id="uppgTable">
+                                            <tbody id="uppgTable1">
                                             <tr class="odd">
                                                 <td class="sorting_1">Loading. . .</td>
                                                 <td>Loading. . .</td>
@@ -354,6 +364,11 @@
 
 
 
+                <!-- UPPG2 -->
+
+                <div class="col-6 p-0 ml-3">
+                    <h1 class="h3 mb-2 text-gray-800" id="actionUppgH2">УППГ2</h1>
+                </div>
 
                 <div id="cardTableUppg2" class="card shadow mb-4">
                     <div class="card-body">
@@ -394,75 +409,108 @@
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-sort="ascending"
                                                     aria-label="Name: activate to sort column descending"
-                                                    style="width: 64px;">V
-                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->V
+                                                    style="width: 64px;">
+<!--                                                    V-->
                                                     Накопленный объем
                                                 </th>
-                                                <th class="sorting uppgs-table-title" tabindex="0"
-                                                    aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    aria-label="Position: activate to sort column ascending"
-                                                    style="width: 75.001px;">V сегодня
-                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->V сегодня
-                                                    Накопленный объем с начала суток
-                                                </th>
+
+
+<!--                                                <th class="sorting uppgs-table-title" tabindex="0"-->
+<!--                                                    aria-controls="dataTable" rowspan="1" colspan="1"-->
+<!--                                                    aria-label="Salary: activate to sort column ascending"-->
+<!--                                                    style="width: 67.001px;">-->
+<!--&lt;!&ndash;                                                    V час&ndash;&gt;-->
+<!--                                                    Накопленный объем с начала часа-->
+<!--                                                </th>-->
+
+
+
+<!--                                                <th class="sorting uppgs-table-title" tabindex="0"-->
+<!--                                                    aria-controls="dataTable" rowspan="1" colspan="1"-->
+<!--                                                    aria-label="Position: activate to sort column ascending"-->
+<!--                                                    style="width: 75.001px;">-->
+<!--&lt;!&ndash;                                                    V пр.час&ndash;&gt;-->
+<!--                                                    Накопленный объем за прошлый час-->
+<!--                                                </th>-->
+
+
+
                                                 <th class="sorting uppgs-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Salary: activate to sort column ascending"
-                                                    style="width: 67.001px;">V вчера
-                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->V вчера
+                                                    style="width: 67.001px;">
+<!--                                                    V сут-->
+                                                    Накопленный объем с начала суток
+                                                </th>
+
+
+
+                                                <th class="sorting uppgs-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-label="Salary: activate to sort column ascending"
+                                                    style="width: 67.001px;">
+<!--                                                    V вчера-->
                                                     Накопленный объем за вчера
                                                 </th>
 
                                                 <th class="sorting uppgs-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Salary: activate to sort column ascending"
-                                                    style="width: 67.001px;">V мес
-                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->V мес
+                                                    style="width: 67.001px;">
+<!--                                                    V мес-->
                                                     Накопленный объем с начала месяца
+                                                </th>
+
+
+
+                                                <th class="sorting uppgs-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-label="Salary: activate to sort column ascending"
+                                                    style="width: 67.001px;">
+<!--                                                    V пр.мес-->
+                                                    Накопленный объем за прошлый месяц
                                                 </th>
 
                                                 <th class="sorting uppgs-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Salary: activate to sort column ascending"
-                                                    style="width: 67.001px;">V пред.мес
-                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->V пред.мес
-                                                    Накопленный объем за предыдущий месяц
-                                                </th>
-                                                <th class="sorting uppgs-table-title" tabindex="0"
-                                                    aria-controls="dataTable" rowspan="1" colspan="1"
-                                                    aria-label="Salary: activate to sort column ascending"
-                                                    style="width: 67.001px;">dP
-                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->dP
+                                                    style="width: 67.001px;">
+<!--                                                    dP-->
                                                     Перепад давления
                                                 </th>
                                                 <th class="sorting uppgs-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Salary: activate to sort column ascending"
-                                                    style="width: 67.001px;">P
-                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->P
+                                                    style="width: 67px;">
+<!--                                                    P-->
                                                     Давление
                                                 </th>
+
                                                 <th class="sorting uppgs-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Salary: activate to sort column ascending"
-                                                    style="width: 67.001px;">T
-                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->T
+                                                    style="width: 67.001px;">
+<!--                                                    T-->
                                                     Температура
                                                 </th>
 
+
                                                 <th class="sorting uppgs-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                     aria-label="Salary: activate to sort column ascending"
-                                                    style="width: 67.001px;">F
-                                                    \УППГ\УППГ-1\Расходомеры\Н-1:Мгновенные->F
+                                                    style="width: 67.001px;">
+                                                    <!--                                                    F-->
                                                     Расход
                                                 </th>
+
                                             </tr>
                                             </thead>
-                                            <tfoot>
+                                            <tfoot id="foot2">
                                             <tr>
                                                 <th class="uppgs-table-title" rowspan="1" colspan="1">Itogo</th>
                                                 <th class="uppgs-table-title" rowspan="1" colspan="1">0</th>
+<!--                                                <th class="uppgs-table-title" rowspan="1" colspan="1">0</th>-->
+<!--                                                <th class="uppgs-table-title" rowspan="1" colspan="1">0</th>-->
                                                 <th class="uppgs-table-title" rowspan="1" colspan="1">0</th>
                                                 <th class="uppgs-table-title" rowspan="1" colspan="1">0</th>
                                                 <th class="uppgs-table-title" rowspan="1" colspan="1">0</th>
@@ -473,7 +521,7 @@
                                                 <th class="uppgs-table-title" rowspan="1" colspan="1">0</th>
 
 
-                                                <th class="uppgs-table-title" rowspan="1" colspan="1">Редактировать</th>
+<!--                                                <th class="uppgs-table-title" rowspan="1" colspan="1">Редактировать</th>-->
                                             </tr>
                                             </tfoot>
                                             <tbody id="uppgTable2">
@@ -582,11 +630,9 @@
 </div>
 
 <!-- Bootstrap core JavaScript-->
-<script src="/static/js/fake_uppg.js" th:src="@{/js/fake_uppg.js}"></script>
-<script>
-    getAllMiningSystems()
-    getAllUppgs();
-</script>
+<!--<script>-->
+<!--    getAllFlowMeters()-->
+<!--</script>-->
 <script src="/static/vendor/jquery/jquery.min.js" th:src="@{/vendor/jquery/jquery.min.js}"></script>
 <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"
         th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>

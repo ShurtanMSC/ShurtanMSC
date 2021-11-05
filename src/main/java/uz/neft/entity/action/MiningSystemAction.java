@@ -20,6 +20,10 @@ import java.time.LocalDateTime;
 public class MiningSystemAction extends AbsEntityLong {
 
     private double expend;
+    private double todayExpend;
+    private double yesterdayExpend;
+    private double thisMonthExpend;
+    private double lastMonthExpend;
 
     @ManyToOne
     private MiningSystem miningSystem;
