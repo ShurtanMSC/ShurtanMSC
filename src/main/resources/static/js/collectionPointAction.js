@@ -153,15 +153,15 @@ function createViewTableAction(data) {
         const createdAtMins = createdAtDate.getMinutes()
         const createdAtDateString = createdAtDayOfMonth + "-" + (createdAtMonth + 1) + "-" + createdAtYear + " " + createdAtHours + ":" + createdAtMins;
 
-        out += "<tr class=\"action_table_row\">\n" +
-            "   <td class=\"sorting_1\">" + action.actionId + "</td>\n" +
-            "    <td>" + action.expend + "</td>\n" +
-            "    <td>" + action.pressure + "</td>\n" +
-            "    <td>" + action.temperature + "</td>\n" +
-            "     <td id=\"collectionPointIdTd\" hidden value='" + action.collectionPointId + "'>" + action.collectionPointId + "</td>\n" +
-            "    <td>" + createdAtDateString + "</td>\n" +
-            "     <td><button data-target=\"#exampleModalCenterAction\" data-toggle=\"modal\" class='btn btn-success ml-1 mt-1' id='btn-edit-action' value='" + action.actionId + "' onclick='editCollectionPointAction(this.value)'>Редактировать</button>\n" +
-            "      <button class='btn btn-danger ml-1 mt-1' id='btn-edit-action' value='" + action.actionId + "' onclick='deleteCollectionPointAction(this.value)'>Удалить</button></td>\n" +
+        out += "<tr class=\"action_table_row\">" +
+            "   <td class=\"sorting_1\">" + action.actionId + "</td>" +
+            "    <td>" + action.expend + "</td>" +
+            "    <td>" + action.pressure + "</td>" +
+            "    <td>" + action.temperature + "</td>" +
+            "     <td id=\"collectionPointIdTd\" hidden value='" + action.collectionPointId + "'>" + action.collectionPointId + "</td>" +
+            "    <td>" + createdAtDateString + "</td>" +
+            "     <td><button data-target=\"#exampleModalCenterAction\" data-toggle=\"modal\" class='btn btn-success ml-1 mt-1' id='btn-edit-action' value='" + action.actionId + "' onclick='editCollectionPointAction(this.value)'>Редактировать</button>" +
+            "      <button class='btn btn-danger ml-1 mt-1' id='btn-edit-action' value='" + action.actionId + "' onclick='deleteCollectionPointAction(this.value)'>Удалить</button></td>" +
             "   </tr>"
     })
 
@@ -170,50 +170,71 @@ function createViewTableAction(data) {
 
 function createViewPaginationAction(totalPages, pageNumber) {
     let li = "";
-    if (pageNumber === 1) {
-        li = "<li class=\"paginate_button page-item previous active \"\n" +
-            "    id=\"dataTable_previousAction\"><button disabled aria-controls=\"dataTable\"\n" +
-            "   data-dt-idx=\"0\" tabindex=\"0\"\n" +
-            "   class=\"page-link\">Previous</button>\n" +
-            "   </li>";
-    } else {
-        li = "<li class=\"paginate_button page-item previous \"\n" +
-            "    id=\"dataTable_previousAction\"><button value='\" + 0 + \"' onclick='getActionsByCollectionPoint(PAGENUM-1)' \" aria-controls=\"dataTable\"\n" +
-            "   data-dt-idx=\"0\" tabindex=\"0\"\n" +
-            "   class=\"page-link\">Previous</button>\n" +
-            "   </li>";
+
+    let beforePage = pageNumber - 1;
+    let afterPage = pageNumber + 1;
+
+    let activeLi;
+
+    console.log(pageNumber)
+
+    if (pageNumber > 1) {
+        li += `<li class='paginate_button page-item previous'><button onclick='getActionsByCollectionPoint(${pageNumber - 1})' ` +
+            `   class=\"page-link\" >Previous</button> </li>`;
     }
 
-    for (let i = 1; i <= totalPages; i++) {
-        if (i === pageNumber || i === 0) {
-            li += "<li class=\"paginate_button page-item active\"><button value='" + i + "' onclick='getActionsByCollectionPoint(this.value)' " +
-                " href=\"#\"\n" +
-                "  aria-controls=\"dataTable\"\n" +
-                "  data-dt-idx=" + i + "\n" +
-                " tabindex=\"0\"\n" +
-                "  class=\"page-link\">" + i + "</button>\n" +
-                "  </li>"
-        } else {
-            li += "<li class=\"paginate_button page-item\"><button value='" + i + "' onclick='getActionsByCollectionPoint(this.value)' " +
-                "  aria-controls=\"dataTable\"\n" +
-                "  data-dt-idx=" + i + "\n" +
-                " tabindex=\"0\"\n" +
-                "  class=\"page-link\">" + i + "</button>\n" +
-                "  </li>"
+    if (pageNumber > 2) {
+        li += "<li class=\"paginate_button page-item previous \"" +
+            "><button onclick='getActionsByCollectionPoint(1)' " +
+            "   class=\"page-link\" >1</button> </li>";
+        if (pageNumber > 3) {
+            li += "<li class=\"paginate_button page-item previous \"><button " +
+                "   class=\"page-link\" >. . . .</button> </li>";
         }
     }
 
     if (pageNumber === totalPages) {
-        li += "<li class=\"paginate_button page-item next active\" id=\"dataTable_nextAction\"><button disabled \n" +
-            "  href=\"#\" aria-controls=\"dataTable\" data-dt-idx=\"7\" tabindex=\"0\"\n" +
-            "  class=\"page-link\">Next</button>\n" +
-            " </li>"
+        beforePage = beforePage - 2;
+    } else if (pageNumber === totalPages - 1) {
+        beforePage = beforePage - 1;
     }
+
+    if (pageNumber === 1) {
+        afterPage = afterPage + 2;
+    } else if (pageNumber === 2) {
+        afterPage  = afterPage + 1;
+    }
+
+    for (let i = beforePage; i <= afterPage; i++) {
+
+        if (i > totalPages) {
+            continue;
+        }
+        if (i === 0) {
+            i = i + 1;
+        }
+
+        if (i === pageNumber) {
+            activeLi = "active";
+        } else {
+            activeLi = "";
+        }
+        li += `<li class="paginate_button page-item ${activeLi}"><button value='` + i + `' onclick='getActionsByCollectionPoint(this.value)' ` +
+            `  class='page-link'>` + i + `</button> </li>`
+    }
+
+    if (pageNumber < totalPages - 1) {
+        if (pageNumber < totalPages - 2) {
+            li += "<li class=\"paginate_button page-item previous \"><button  " +
+                "   class=\"page-link\" >. . . .</button></li>";
+        }
+        li += `<li class='paginate_button page-item previous ' ` +
+            `   ><button  onclick='getActionsByCollectionPoint(${totalPages})' ` +
+            `   class='page-link'>${totalPages}</button></li>`;
+    }
+
     if (pageNumber < totalPages) {
-        li += "<li class=\"paginate_button page-item next \" id=\"dataTable_nextAction\"><button value='" + 1 + "' onclick='getActionsByCollectionPoint(PAGENUM+1)' " +
-            "  href=\"#\" aria-controls=\"dataTable\" data-dt-idx=\"7\" tabindex=\"0\"\n" +
-            "  class=\"page-link\">Next</button>\n" +
-            " </li>"
+        li += `<li class='paginate_button page-item next'><button onclick='getActionsByCollectionPoint(${pageNumber + 1})' class=\"page-link\">Next</button></li>`
     }
 
     return li;
@@ -222,18 +243,18 @@ function createViewPaginationAction(totalPages, pageNumber) {
 function createViewDataTableLengthSelect(totalElements) {
     let selectOption = "";
     if (totalElements < 25) {
-        selectOption += "<option value=10>10</option>\n"
+        selectOption += "<option value=10>10</option>"
     } else if (totalElements >= 25 && totalElements < 50) {
-        selectOption += "<option value=10>10</option>\n" +
-            " <option value=25>25</option>\n"
+        selectOption += "<option value=10>10</option>" +
+            " <option value=25>25</option>"
     } else if (totalElements >= 50 && totalElements < 100) {
-        selectOption += "<option value=10>10</option>\n" +
-            " <option value=25>25</option>\n" +
-            " <option value=50>50</option>\n"
+        selectOption += "<option value=10>10</option>" +
+            " <option value=25>25</option>" +
+            " <option value=50>50</option>"
     } else if (totalElements >= 100) {
-        selectOption += "<option value=10>10</option>\n" +
-            " <option value=25>25</option>\n" +
-            " <option value=50>50</option>\n" +
+        selectOption += "<option value=10>10</option>" +
+            " <option value=25>25</option>" +
+            " <option value=50>50</option>" +
             " <option value=100>100</option>"
     }
     document.getElementById('dataTableLengthSelect').getElementsByTagName('option')[PAGESIZE].selected = 'selected';
