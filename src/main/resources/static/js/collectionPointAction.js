@@ -171,6 +171,12 @@ function createViewTableAction(data) {
 function createViewPaginationAction(totalPages, pageNumber) {
     let li = "";
 
+    if (totalPages <= 1) {
+        return li=`<li class='paginate_button page-item active'><button ` +
+            `   class=\"page-link\" >1</button> </li>`;
+    }
+
+
     let beforePage = pageNumber - 1;
     let afterPage = pageNumber + 1;
 
@@ -202,12 +208,15 @@ function createViewPaginationAction(totalPages, pageNumber) {
     if (pageNumber === 1) {
         afterPage = afterPage + 2;
     } else if (pageNumber === 2) {
-        afterPage  = afterPage + 1;
+        afterPage = afterPage + 1;
     }
 
     for (let i = beforePage; i <= afterPage; i++) {
 
         if (i > totalPages) {
+            continue;
+        }
+        if (i === -1) {
             continue;
         }
         if (i === 0) {
