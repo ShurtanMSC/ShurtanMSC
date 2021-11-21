@@ -11,10 +11,10 @@ import uz.neft.entity.variables.ConstantNameEnums;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ConstantDto {
+public class ConstantDto2 {
 
     private Integer Id;
     private ConstantNameEnums name;
     private String description;
-    private ConstantValueDto constantValueDto;
+    private Double value;
 }

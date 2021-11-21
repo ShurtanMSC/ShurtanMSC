@@ -57,7 +57,6 @@ public class SuperAdminController {
 
     @PostMapping("/user/add")
     public HttpEntity<?> save(@RequestBody UserDto dto) {
-        System.out.println(dto);
         return userService.save(dto);
     }
 

@@ -14,6 +14,7 @@ function goOutFromAction() {
     document.getElementById('cardTableCollectionPointAction').style.display = 'none';
     document.getElementById('addCollectionPointActionBtn').style.display = 'none';
     document.getElementById('goOutActionsIcon').style.display = 'none';
+    document.getElementById('refreshAction').style.display = 'none';
 }
 
 function clickActionBtn(id) {
@@ -28,6 +29,7 @@ function clickActionBtn(id) {
     document.getElementById('cardTableCollectionPointAction').style.display = 'block';
     document.getElementById('addCollectionPointActionBtn').style.display = 'block';
     document.getElementById('goOutActionsIcon').style.display = 'block';
+    document.getElementById('refreshAction').style.display = 'block';
 
     getActionsByCollectionPoint()
 }
