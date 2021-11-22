@@ -155,6 +155,14 @@ function createViewTableAction(data) {
         const createdAtMins = createdAtDate.getMinutes()
         const createdAtDateString = createdAtDayOfMonth + "-" + (createdAtMonth + 1) + "-" + createdAtYear + " " + createdAtHours + ":" + createdAtMins;
 
+        const lastModified = new Date('' + action.modified + '');
+        const modifiedDayOfMonth = lastModified.getDate();
+        const modifiedMonth = lastModified.getMonth(); // Be careful! January is 0, not 1
+        const modifiedYear = lastModified.getFullYear();
+        const modifiedHours = lastModified.getHours();
+        const modifiedMins = lastModified.getMinutes()
+        const modifiedDateString = createdAtDayOfMonth + "-" + (modifiedMonth + 1) + "-" + modifiedYear + " " + modifiedHours + ":" + modifiedMins;
+
         out += "<tr class=\"action_table_row\">" +
             "   <td class=\"sorting_1\">" + action.actionId + "</td>" +
             "    <td>" + action.expend + "</td>" +
@@ -162,6 +170,7 @@ function createViewTableAction(data) {
             "    <td>" + action.temperature + "</td>" +
             "     <td id=\"collectionPointIdTd\" hidden value='" + action.collectionPointId + "'>" + action.collectionPointId + "</td>" +
             "    <td>" + createdAtDateString + "</td>" +
+            "    <td>" + modifiedDateString + "</td>" +
             "     <td><button data-target=\"#exampleModalCenterAction\" data-toggle=\"modal\" class='btn btn-success ml-1 mt-1' id='btn-edit-action' value='" + action.actionId + "' onclick='editCollectionPointAction(this.value)'>Редактировать</button>" +
             "      <button class='btn btn-danger ml-1 mt-1' id='btn-edit-action' value='" + action.actionId + "' onclick='deleteCollectionPointAction(this.value)'>Удалить</button></td>" +
             "   </tr>"

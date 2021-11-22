@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -36,7 +38,6 @@ public class CollectionPointActionDto {
 //
 //    @LastModifiedDate
 //    @Column(nullable = false)
-//    private LocalDateTime modified;
-
+    private Timestamp modified;
 
 }

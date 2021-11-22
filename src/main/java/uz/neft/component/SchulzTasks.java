@@ -26,6 +26,7 @@ public class SchulzTasks {
     private WellRepository wellRepository;
 
 
+
     @Scheduled(fixedRate = 5000)
     public void transform() throws InterruptedException {
         System.out.println("TASK");

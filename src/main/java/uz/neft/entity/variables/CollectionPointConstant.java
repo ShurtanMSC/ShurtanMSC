@@ -22,7 +22,7 @@ public class CollectionPointConstant extends AbsEntityInteger {
     @ManyToOne
     private CollectionPoint collectionPoint;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.DETACH)
     private Constant constant;
 
     private Double value;

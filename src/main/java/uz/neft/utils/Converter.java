@@ -484,6 +484,7 @@ public class Converter {
                     .temperature(collectionPointAction.getTemperature())
                     .collectionPointId(collectionPointAction.getCollectionPoint().getId())
                     .createdAt(collectionPointAction.getCreatedAt())
+                    .modified(collectionPointAction.getModified())
                     .build();
         } catch (Exception e) {
             e.printStackTrace();

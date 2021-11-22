@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import uz.neft.component.SchulzTasks;
 import uz.neft.controller.opc.OpcService;
 import uz.neft.dto.CollectionPointDto;
 import uz.neft.dto.action.CollectionPointActionDto;
@@ -30,6 +31,8 @@ import uz.neft.service.Calculator;
 import uz.neft.service.ForecastGasService;
 import uz.neft.utils.Converter;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Date;
@@ -107,7 +110,8 @@ public class CollectionPointActionService {
                     .collectionPoint(collectionPoint.get())
                     .build();
 
-            if (collectionPointAction.getTemperature()==0||collectionPointAction.getPressure()==0) collectionPointAction.setExpend(0);
+            if (collectionPointAction.getTemperature() == 0 || collectionPointAction.getPressure() == 0)
+                collectionPointAction.setExpend(0);
 
             CollectionPointAction save = collectionPointActionRepository.save(collectionPointAction);
 
@@ -208,7 +212,7 @@ public class CollectionPointActionService {
 
             Stream<CollectionPointActionDto> collectionPointActionDtoStream = collectionPointActions.stream().map(converter::collectionPointActionToCollectionPointActionDto);
 
-            return converter.apiSuccess200(collectionPointActionDtoStream, collectionPointActions.getTotalElements(), collectionPointActions.getTotalPages(),collectionPointActions.getNumber());
+            return converter.apiSuccess200(collectionPointActionDtoStream, collectionPointActions.getTotalElements(), collectionPointActions.getTotalPages(), collectionPointActions.getNumber());
 //            return converter.apiSuccess200(collectionPointActionDtoStream);
         } catch (Exception e) {
             e.printStackTrace();
@@ -316,6 +320,7 @@ public class CollectionPointActionService {
 
     public HttpEntity<?> editAction(CollectionPointActionDto dto) {
         try {
+            Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
             if (dto.getActionId() == null) return converter.apiError400("Action Id is null");
             CollectionPointAction collectionPointAction;
             Optional<CollectionPointAction> action = collectionPointActionRepository.findById(dto.getActionId());
@@ -327,6 +332,7 @@ public class CollectionPointActionService {
                     collectionPointAction.setExpend(dto.getExpend());
                     collectionPointAction.setPressure(dto.getPressure());
                     collectionPointAction.setTemperature(dto.getTemperature());
+                    collectionPointAction.setModified(modifiedDate);
 
                     CollectionPointAction save = collectionPointActionRepository.save(collectionPointAction);
                     CollectionPointActionDto collectionPointActionDto = converter.collectionPointActionToCollectionPointActionDto(save);
@@ -346,18 +352,18 @@ public class CollectionPointActionService {
      **/
 
     //..... from MODBUS
+
     //... coming soon
     public void setAll(int id) {
         try {
-
             Optional<MiningSystem> miningSystem = miningSystemRepository.findById(1);
-            if (miningSystem.isPresent()){
-                List<Uppg> uppgs=uppgRepository.findAllByMiningSystem(miningSystem.get());
+            if (miningSystem.isPresent()) {
+                List<Uppg> uppgs = uppgRepository.findAllByMiningSystem(miningSystem.get());
 
                 List<FakeUppg> fakeUppgList = fakeService.all();
 
-                if (fakeUppgList.size()==2&&uppgs.size()<=2){
-                    UppgAction uppgAction1= UppgAction
+                if (fakeUppgList.size() == 2 && uppgs.size() <= 2) {
+                    UppgAction uppgAction1 = UppgAction
                             .builder()
                             .uppg(uppgs.get(0))
                             .expend(fakeUppgList.get(0).getRasxod())
@@ -374,10 +380,9 @@ public class CollectionPointActionService {
                             .thisMonthExpend(fakeUppgList.get(0).getNakoplenniy_obyom_s_nachalo_mesyach())
                             .thisMonthExpend(fakeUppgList.get(0).getNakoplenniy_obyom_za_pered_mesyach())
                             .build();
-                    uppgAction1=uppgActionRepository.save(uppgAction1);
+                    uppgAction1 = uppgActionRepository.save(uppgAction1);
 
-
-                    UppgAction uppgAction2= UppgAction
+                    UppgAction uppgAction2 = UppgAction
                             .builder()
                             .uppg(uppgs.get(1))
                             .expend(fakeUppgList.get(1).getRasxod())
@@ -394,32 +399,33 @@ public class CollectionPointActionService {
                             .thisMonthExpend(fakeUppgList.get(1).getNakoplenniy_obyom_s_nachalo_mesyach())
                             .thisMonthExpend(fakeUppgList.get(1).getNakoplenniy_obyom_za_pered_mesyach())
                             .build();
-                    uppgAction2=uppgActionRepository.save(uppgAction2);
+                    uppgAction2 = uppgActionRepository.save(uppgAction2);
 
-                    MiningSystemAction miningSystemAction= MiningSystemAction
+                    MiningSystemAction miningSystemAction = MiningSystemAction
                             .builder()
-                            .expend(uppgAction1.getExpend()+uppgAction2.getExpend())
+                            .expend(uppgAction1.getExpend() + uppgAction2.getExpend())
                             .miningSystem(miningSystem.get())
-                            .todayExpend(uppgAction1.getTodayExpend()+uppgAction2.getTodayExpend())
-                            .yesterdayExpend(uppgAction1.getYesterdayExpend()+uppgAction2.getYesterdayExpend())
-                            .thisMonthExpend(uppgAction1.getThisMonthExpend()+uppgAction2.getThisMonthExpend())
-                            .lastMonthExpend(uppgAction1.getLastMonthExpend()+uppgAction2.getLastMonthExpend())
+                            .todayExpend(uppgAction1.getTodayExpend() + uppgAction2.getTodayExpend())
+                            .yesterdayExpend(uppgAction1.getYesterdayExpend() + uppgAction2.getYesterdayExpend())
+                            .thisMonthExpend(uppgAction1.getThisMonthExpend() + uppgAction2.getThisMonthExpend())
+                            .lastMonthExpend(uppgAction1.getLastMonthExpend() + uppgAction2.getLastMonthExpend())
                             .build();
-                    miningSystemAction=miningSystemActionRepository.save(miningSystemAction);
+                    miningSystemAction = miningSystemActionRepository.save(miningSystemAction);
 
 
-                    Date date=new Date();
+                    Date date = new Date();
 
                     Optional<ForecastGas> forecastGasNow = forecastGasRepository.findByMiningSystemAndYearAndMonth(miningSystem.get(), date.getYear(), Month.of(date.getMonth()));
-                    if (forecastGasNow.isPresent()){
+                    if (forecastGasNow.isPresent()) {
                         forecastGasNow.get().setAmount(miningSystemAction.getThisMonthExpend());
                         forecastGasRepository.save(forecastGasNow.get());
                     }
 
                 }
 
-
                 List<CollectionPoint> all = collectionPointRepository.findAllByMiningSystemId(id);
+
+
                 for (CollectionPoint collectionPoint : all) {
                     if (collectionPoint.isActiveE()) {
                         CollectionPointAction action = CollectionPointAction
@@ -427,15 +433,69 @@ public class CollectionPointActionService {
                                 .collectionPoint(collectionPoint)
                                 .build();
 
-                        action.setTemperature(opcService.getValue(action, action.getCollectionPoint().getTemperatureUnit()));
-                        action.setPressure(Calculator.mega_pascal_to_kgf_sm2(opcService.getValue(action, action.getCollectionPoint().getPressureUnit())));
+                        long lastActionId = -1;
+                        double oldValueTemperature = 0;
+                        double oldValuePressure = 0;
+                        Optional<CollectionPointAction> lastAction = collectionPointActionRepository.findFirstByCollectionPointOrderByCreatedAtDesc(collectionPoint);
+                        if (lastAction.isPresent()) {
+                            lastActionId = lastAction.get().getId();
+                            oldValuePressure = lastAction.get().getPressure();
+                            oldValueTemperature = lastAction.get().getTemperature();
+                        }
+
+
+                        double temperatureOpc = opcService.getValue(action, action.getCollectionPoint().getTemperatureUnit());
+                        double pressureOpc = Calculator.mega_pascal_to_kgf_sm2(opcService.getValue(action, action.getCollectionPoint().getPressureUnit()));
+                        System.out.println("lastActionId -> " + lastActionId);
+                        System.out.println("oldValueTemperature -> " + oldValueTemperature);
+                        System.out.println("oldValuePressure -> " + oldValuePressure);
+                        double deltaTemperature = temperatureOpc - oldValueTemperature;
+                        double deltaPressure = pressureOpc - oldValuePressure;
+                        System.out.println("deltaTemperature -> " + deltaTemperature);
+                        System.out.println("deltaPressure -> " + deltaPressure);
+
+                        boolean oldValueUpdate = false;
+                        if (deltaTemperature >= 2) {
+                            System.out.println("deltaTemperature >= 2");
+                            action.setTemperature(temperatureOpc);
+                            oldValueTemperature = temperatureOpc;
+                            System.out.println("oldValueTemperature -> " + oldValueTemperature);
+                        } else {
+                            oldValueUpdate = true;
+                        }
+                        if (deltaPressure >= 10) {
+                            if (oldValueUpdate) {
+                                action.setTemperature(temperatureOpc);
+                            }
+
+                            System.out.println("deltaPressure >= 10");
+                            action.setPressure(pressureOpc);
+                            oldValuePressure = pressureOpc;
+                            System.out.println("oldValuePressure -> " + oldValuePressure);
+                        } else {
+                            if (oldValueUpdate) {
+                                Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
+                                CollectionPointAction collectionPointAction;
+                                collectionPointAction = collectionPointActionRepository.findById(lastActionId).get();
+                                collectionPointAction.setCreatedAt(modifiedDate);
+                                CollectionPointAction save = collectionPointActionRepository.save(collectionPointAction);
+
+                                System.out.println("modifiedDate ---" + modifiedDate);
+                                System.out.println("oldValueUpdate -------------");
+                                System.out.println("Action id = " + lastActionId + ". Last Action Updated" + "modifiedDate  " + save.getCreatedAt());
+                                continue;
+                            } else {
+                                action.setPressure(pressureOpc);
+                            }
+                        }
+
 //                action.setPressure(action.getPressureOpc());
 //                action.setTemperature(action.getTemperatureOpc());
                         wellActionService.execute(collectionPoint.getUppg());
 
                         Thread.sleep(500);
 //                System.out.println(action.toString());
-                        if (action.getPressure() == 0||action.getTemperature()==0) {
+                        if (action.getPressure() == 0 || action.getTemperature() == 0) {
                             action.setExpend(0);
                         } else {
                             double expendCp = checkWells(collectionPoint, action);
@@ -443,14 +503,11 @@ public class CollectionPointActionService {
                         }
 
                         collectionPointActionRepository.save(action);
-                    }
-                    else
+                    } else
                         wellActionService.execute(collectionPoint.getUppg());
 
                 }
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
