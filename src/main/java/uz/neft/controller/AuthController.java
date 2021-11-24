@@ -12,7 +12,6 @@ import uz.neft.secret.CurrentUser;
 import uz.neft.service.AuthService;
 import uz.neft.utils.Converter;
 
-
 @RestController
 @Controller
 @RequestMapping("/api/auth")
@@ -28,7 +27,6 @@ public class AuthController {
         ResToken resToken=authService.signIn(signIn);
         return ResponseEntity.status(resToken!=null?200:401).body(resToken);
     }
-
 
     @GetMapping("/test")
     public HttpEntity<?> test(){

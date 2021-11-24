@@ -6,6 +6,7 @@ import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -51,17 +52,16 @@ public class CollectionPointAction extends AbsEntityLong {
     @Value("${opc.service.address}")
     protected String address;
 
-    public Double getTemperatureOpc(){
+    public Double getTemperatureOpc() {
         try {
-            Gson gson=new Gson();
+            Gson gson = new Gson();
             HttpResponse<JsonNode> response;
-            if (collectionPoint.getId()!=1){
-                response = Unirest.post(collectionPoint.getOpcServer().getUrl()+"/temperature")
+            if (collectionPoint.getId() != 1) {
+                response = Unirest.post(collectionPoint.getOpcServer().getUrl() + "/temperature")
                         .header("Content-Type", "application/json")
                         .body(collectionPoint.jsonRequestBodyTemperature())
                         .asJson();
-            }
-            else {
+            } else {
                 response = Unirest.post(collectionPoint.getOpcServer().getUrl())
                         .header("Content-Type", "application/json")
                         .body(collectionPoint.jsonRequestBodyTemperature())
@@ -69,33 +69,31 @@ public class CollectionPointAction extends AbsEntityLong {
             }
 //            System.out.println(response);
 //            System.out.println(response.getStatus());
-            if (response.getBody()!=null){
-                if (response.getBody().isArray()){
-                    String[] a= gson.fromJson(String.valueOf(response.getBody()), (Type) String[].class);
+            if (response.getBody() != null) {
+                if (response.getBody().isArray()) {
+                    String[] a = gson.fromJson(String.valueOf(response.getBody()), (Type) String[].class);
                     return Double.valueOf(a[0]);
                 }
                 return 0.0;
             }
             return 0.0;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return 0.0;
         }
     }
 
-    public Double getPressureOpc(){
+    public Double getPressureOpc() {
         try {
 
-            Gson gson=new Gson();
+            Gson gson = new Gson();
             HttpResponse<JsonNode> response;
-            if (collectionPoint.getId()!=1){
-                response = Unirest.post(collectionPoint.getOpcServer().getUrl()+"/pressure")
+            if (collectionPoint.getId() != 1) {
+                response = Unirest.post(collectionPoint.getOpcServer().getUrl() + "/pressure")
                         .header("Content-Type", "application/json")
                         .body(collectionPoint.jsonRequestBodyPressure())
                         .asJson();
-            }
-            else {
+            } else {
                 response = Unirest.post(collectionPoint.getOpcServer().getUrl())
                         .header("Content-Type", "application/json")
                         .body(collectionPoint.jsonRequestBodyPressure())
@@ -104,16 +102,15 @@ public class CollectionPointAction extends AbsEntityLong {
 
 //            System.out.println(response);
 //            System.out.println(response.getStatus());
-            if (response.getBody()!=null){
-                if (response.getBody().isArray()){
-                    String[] a= gson.fromJson(String.valueOf(response.getBody()), (Type) String[].class);
+            if (response.getBody() != null) {
+                if (response.getBody().isArray()) {
+                    String[] a = gson.fromJson(String.valueOf(response.getBody()), (Type) String[].class);
                     return Double.valueOf(a[0]);
                 }
                 return 0.0;
             }
             return 0.0;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return 0.0;
         }
@@ -124,8 +121,10 @@ public class CollectionPointAction extends AbsEntityLong {
 //    @Column(nullable = false)
 //    private String modifiedBy;
 
-//    @LastModifiedDate
+    //    @LastModifiedDate
 //    @Column(nullable = false)
+    @CreationTimestamp
+    @Column(nullable = false, updatable = true)
     private Timestamp modified;
 
     @Override

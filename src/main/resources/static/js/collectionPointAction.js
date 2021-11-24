@@ -156,12 +156,13 @@ function createViewTableAction(data) {
         const createdAtDateString = createdAtDayOfMonth + "-" + (createdAtMonth + 1) + "-" + createdAtYear + " " + createdAtHours + ":" + createdAtMins;
 
         const lastModified = new Date('' + action.modified + '');
+        console.log(action.modified)
         const modifiedDayOfMonth = lastModified.getDate();
         const modifiedMonth = lastModified.getMonth(); // Be careful! January is 0, not 1
         const modifiedYear = lastModified.getFullYear();
         const modifiedHours = lastModified.getHours();
         const modifiedMins = lastModified.getMinutes()
-        const modifiedDateString = createdAtDayOfMonth + "-" + (modifiedMonth + 1) + "-" + modifiedYear + " " + modifiedHours + ":" + modifiedMins;
+        const modifiedDateString = modifiedDayOfMonth + "-" + (modifiedMonth + 1) + "-" + modifiedYear + " " + modifiedHours + ":" + modifiedMins;
 
         out += "<tr class=\"action_table_row\">" +
             "   <td class=\"sorting_1\">" + action.actionId + "</td>" +

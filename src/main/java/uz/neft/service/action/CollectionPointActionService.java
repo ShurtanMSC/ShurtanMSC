@@ -425,7 +425,6 @@ public class CollectionPointActionService {
 
                 List<CollectionPoint> all = collectionPointRepository.findAllByMiningSystemId(id);
 
-
                 for (CollectionPoint collectionPoint : all) {
                     if (collectionPoint.isActiveE()) {
                         CollectionPointAction action = CollectionPointAction
@@ -447,15 +446,17 @@ public class CollectionPointActionService {
                         double temperatureOpc = opcService.getValue(action, action.getCollectionPoint().getTemperatureUnit());
                         double pressureOpc = Calculator.mega_pascal_to_kgf_sm2(opcService.getValue(action, action.getCollectionPoint().getPressureUnit()));
                         System.out.println("lastActionId -> " + lastActionId);
-                        System.out.println("oldValueTemperature -> " + oldValueTemperature);
-                        System.out.println("oldValuePressure -> " + oldValuePressure);
-                        double deltaTemperature = temperatureOpc - oldValueTemperature;
-                        double deltaPressure = pressureOpc - oldValuePressure;
+                        System.out.println("oldValue_Temperature -> " + oldValueTemperature);
+                        System.out.println("oldValue_Pressure -> " + oldValuePressure);
+                        System.out.println("newValue_Temperature -> " + temperatureOpc);
+                        System.out.println("newValue_Pressure -> " + pressureOpc);
+                        double deltaTemperature = Math.abs(temperatureOpc - oldValueTemperature);
+                        double deltaPressure = Math.abs(pressureOpc - oldValuePressure);
                         System.out.println("deltaTemperature -> " + deltaTemperature);
                         System.out.println("deltaPressure -> " + deltaPressure);
 
                         boolean oldValueUpdate = false;
-                        if (deltaTemperature >= 2) {
+                        if (deltaTemperature >= 1.5) {
                             System.out.println("deltaTemperature >= 2");
                             action.setTemperature(temperatureOpc);
                             oldValueTemperature = temperatureOpc;
@@ -477,12 +478,12 @@ public class CollectionPointActionService {
                                 Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
                                 CollectionPointAction collectionPointAction;
                                 collectionPointAction = collectionPointActionRepository.findById(lastActionId).get();
-                                collectionPointAction.setCreatedAt(modifiedDate);
+                                collectionPointAction.setModified(modifiedDate);
                                 CollectionPointAction save = collectionPointActionRepository.save(collectionPointAction);
 
                                 System.out.println("modifiedDate ---" + modifiedDate);
                                 System.out.println("oldValueUpdate -------------");
-                                System.out.println("Action id = " + lastActionId + ". Last Action Updated" + "modifiedDate  " + save.getCreatedAt());
+                                System.out.println("Action id = " + lastActionId + ". Last Action Updated" + "modifiedDate  " + save.getModified());
                                 continue;
                             } else {
                                 action.setPressure(pressureOpc);

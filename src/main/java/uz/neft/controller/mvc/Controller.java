@@ -14,13 +14,13 @@ public class Controller {
 
     @GetMapping("")
     public String main() {
+
         return "index";
     }
 
     /**
      * Mining
      **/
-
 
 //    USER CRUD
     @GetMapping("users")
@@ -45,7 +45,6 @@ public class Controller {
         return "mining/uppg";
     }
 
-
     @GetMapping("fake_uppg")
     public String fake_uppg(){
         return "mining/fake_uppg";
@@ -56,7 +55,6 @@ public class Controller {
     public String collection_point() {
         return "mining/collection_point";
     }
-
 
     @GetMapping("well")
     public String well() {
@@ -74,6 +72,4 @@ public class Controller {
 
         return "mining/opc_server";
     }
-
-
 }

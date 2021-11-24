@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import uz.neft.entity.CollectionPoint;
-import uz.neft.entity.Uppg;
 import uz.neft.entity.template.AbsEntityInteger;
 
 import javax.persistence.CascadeType;

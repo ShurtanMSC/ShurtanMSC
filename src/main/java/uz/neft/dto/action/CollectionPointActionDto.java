@@ -38,6 +38,6 @@ public class CollectionPointActionDto {
 //
 //    @LastModifiedDate
 //    @Column(nullable = false)
-    private Timestamp modified;
+    private Date modified;
 
 }

@@ -51,4 +51,6 @@ public class ForecastGasController {
     public HttpEntity<?> allByMiningSystemIdAndYearBetween(@PathVariable Integer id, @PathVariable int from, @PathVariable int to){
         return forecastGasService.allByObjectAndYearBetween(id,from,to);
     }
+
+
 }
