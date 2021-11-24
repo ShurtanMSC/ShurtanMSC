@@ -1,6 +1,8 @@
 package uz.neft.controller.mvc;
 
 import org.springframework.web.bind.annotation.*;
+import uz.neft.entity.User;
+import uz.neft.secret.CurrentUser;
 import uz.neft.service.UserService;
 
 @org.springframework.stereotype.Controller
@@ -13,7 +15,7 @@ public class Controller {
     }
 
     @GetMapping("")
-    public String main() {
+    public String main(@CurrentUser User user) {
 
         return "index";
     }
@@ -46,7 +48,7 @@ public class Controller {
     }
 
     @GetMapping("fake_uppg")
-    public String fake_uppg(){
+    public String fake_uppg() {
         return "mining/fake_uppg";
     }
 

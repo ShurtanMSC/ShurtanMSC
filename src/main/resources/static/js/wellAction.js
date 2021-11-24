@@ -100,8 +100,8 @@ function addOrEditWellAction(event) {
 
     axios(config)
         .then(function (res) {
-            console.log("res")
-            console.log(res)
+            // console.log("res")
+            // console.log(res)
             resetAndCloseFormAction();
             getActionsByWell();
         })
@@ -125,7 +125,7 @@ function editWellAction(id) {
     let editWellAction = wellActionsList.find(action => action.actionId == id)
     let formField = document.getElementById('addOrEditWellActionForm')
 
-    console.log(editWellAction)
+    // console.log(editWellAction)
 
     formField['actionId'].value = editWellAction.actionId;
     formField['pressure'].value = editWellAction.pressure;
@@ -162,7 +162,7 @@ function deleteWellAction(id) {
 }
 
 function createViewTableAction(actions) {
-    console.log(actions)
+    // console.log(actions)
     let out = "";
     actions.map(action => {
         const createdAtDate = new Date('' + action.createdAt + '');

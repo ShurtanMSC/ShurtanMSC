@@ -167,8 +167,8 @@ function createViewTableAction(data) {
         out += "<tr class=\"action_table_row\">" +
             "   <td class=\"sorting_1\">" + action.actionId + "</td>" +
             "    <td>" + action.expend + "</td>" +
-            "    <td>" + action.pressure + "</td>" +
-            "    <td>" + action.temperature + "</td>" +
+            "    <td>" + Math.round(action.pressure * 1000) / 1000 + "</td>\n" +
+            "    <td>" + Math.round(action.temperature * 1000) / 1000 + "</td>\n" +
             "     <td id=\"collectionPointIdTd\" hidden value='" + action.collectionPointId + "'>" + action.collectionPointId + "</td>" +
             "    <td>" + createdAtDateString + "</td>" +
             "    <td>" + modifiedDateString + "</td>" +

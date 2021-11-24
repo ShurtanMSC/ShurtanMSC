@@ -22,22 +22,23 @@ public class AuthController {
 
     @Autowired
     private Converter converter;
+
     @PostMapping("/login")
-    public HttpEntity<?> login(@RequestBody SignIn signIn){
-        ResToken resToken=authService.signIn(signIn);
-        return ResponseEntity.status(resToken!=null?200:401).body(resToken);
+    public HttpEntity<?> login(@RequestBody SignIn signIn) {
+        ResToken resToken = authService.signIn(signIn);
+        return ResponseEntity.status(resToken != null ? 200 : 401).body(resToken);
     }
 
     @GetMapping("/test")
-    public HttpEntity<?> test(){
+    public HttpEntity<?> test() {
         return ResponseEntity.ok(converter.apiSuccess());
     }
 
     @GetMapping("/me")
-    public HttpEntity<?> me(@CurrentUser User user){
-        if (user!=null){
+    public HttpEntity<?> me(@CurrentUser User user) {
+        if (user != null) {
             return converter.apiSuccess200(converter.userToUserDto(user));
-        }else return null;
+        } else return null;
     }
 
 }
