@@ -7,7 +7,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import uz.neft.component.SchulzTasks;
 import uz.neft.controller.opc.OpcService;
 import uz.neft.dto.CollectionPointDto;
 import uz.neft.dto.action.CollectionPointActionDto;
@@ -20,6 +19,7 @@ import uz.neft.entity.action.CollectionPointAction;
 import uz.neft.entity.action.MiningSystemAction;
 import uz.neft.entity.action.UppgAction;
 import uz.neft.entity.action.WellAction;
+import uz.neft.entity.enums.OpcServerType;
 import uz.neft.entity.enums.WellStatus;
 import uz.neft.repository.*;
 import uz.neft.repository.action.CollectionPointActionRepository;
@@ -27,12 +27,12 @@ import uz.neft.repository.action.MiningSystemActionRepository;
 import uz.neft.repository.action.UppgActionRepository;
 import uz.neft.repository.action.WellActionRepository;
 import uz.neft.repository.constants.ForecastGasRepository;
+import uz.neft.service.AkkaService;
 import uz.neft.service.Calculator;
 import uz.neft.service.ForecastGasService;
 import uz.neft.utils.Converter;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Date;
@@ -59,9 +59,10 @@ public class CollectionPointActionService {
     private final FakeService fakeService;
     private final ForecastGasRepository forecastGasRepository;
     private final ForecastGasService forecastGasService;
+    private final AkkaService akkaService;
 
 
-    public CollectionPointActionService(UserRepository userRepository, CollectionPointRepository collectionPointRepository, CollectionPointActionRepository collectionPointActionRepository, Converter converter, WellActionRepository wellActionRepository, WellRepository wellRepository, UppgRepository uppgRepository, UppgActionRepository uppgActionRepository, MiningSystemRepository miningSystemRepository, MiningSystemActionRepository miningSystemActionRepository, WellActionService wellActionService, OpcService opcService, FakeService fakeService, ForecastGasRepository forecastGasRepository, ForecastGasService forecastGasService) {
+    public CollectionPointActionService(UserRepository userRepository, CollectionPointRepository collectionPointRepository, CollectionPointActionRepository collectionPointActionRepository, Converter converter, WellActionRepository wellActionRepository, WellRepository wellRepository, UppgRepository uppgRepository, UppgActionRepository uppgActionRepository, MiningSystemRepository miningSystemRepository, MiningSystemActionRepository miningSystemActionRepository, WellActionService wellActionService, OpcService opcService, FakeService fakeService, ForecastGasRepository forecastGasRepository, ForecastGasService forecastGasService, AkkaService akkaService) {
         this.userRepository = userRepository;
         this.collectionPointRepository = collectionPointRepository;
         this.collectionPointActionRepository = collectionPointActionRepository;
@@ -77,6 +78,7 @@ public class CollectionPointActionService {
         this.fakeService = fakeService;
         this.forecastGasRepository = forecastGasRepository;
         this.forecastGasService = forecastGasService;
+        this.akkaService = akkaService;
     }
 
     /**
@@ -425,6 +427,8 @@ public class CollectionPointActionService {
 
                 List<CollectionPoint> all = collectionPointRepository.findAllByMiningSystemId(id);
 
+                List<CollectionPointAction> actionList=new ArrayList<>();
+
                 for (CollectionPoint collectionPoint : all) {
                     if (collectionPoint.isActiveE()) {
                         CollectionPointAction action = CollectionPointAction
@@ -444,7 +448,11 @@ public class CollectionPointActionService {
 
 
                         double temperatureOpc = opcService.getValue(action, action.getCollectionPoint().getTemperatureUnit());
-                        double pressureOpc = Calculator.mega_pascal_to_kgf_sm2(opcService.getValue(action, action.getCollectionPoint().getPressureUnit()));
+                        double pressureOpc=0;
+                        if (collectionPoint.getOpcServer().getType().equals(OpcServerType.SIMULATE))
+                            pressureOpc = opcService.getValue(action, action.getCollectionPoint().getPressureUnit());
+                        else
+                            pressureOpc = Calculator.mega_pascal_to_kgf_sm2(opcService.getValue(action, action.getCollectionPoint().getPressureUnit()));
                         System.out.println("lastActionId -> " + lastActionId);
                         System.out.println("oldValue_Temperature -> " + oldValueTemperature);
                         System.out.println("oldValue_Pressure -> " + oldValuePressure);
@@ -498,16 +506,20 @@ public class CollectionPointActionService {
 //                System.out.println(action.toString());
                         if (action.getPressure() == 0 || action.getTemperature() == 0) {
                             action.setExpend(0);
+                            collectionPointActionRepository.save(action);
                         } else {
-                            double expendCp = checkWells(collectionPoint, action);
-                            action.setExpend(expendCp);
+//                            double expendCp = checkWells(collectionPoint, action);
+//                            action.setExpend(expendCp);
+//                            akkaService.calculate(action);
+                            actionList.add(action);
                         }
 
-                        collectionPointActionRepository.save(action);
+//                        collectionPointActionRepository.save(action);
                     } else
                         wellActionService.execute(collectionPoint.getUppg());
 
                 }
+                actionList.forEach(akkaService::calculate);
             }
         } catch (Exception e) {
             e.printStackTrace();
