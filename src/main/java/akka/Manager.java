@@ -46,61 +46,6 @@ public class Manager extends AbstractBehavior<Command> {
     public Receive<Command> createReceive() {
 
         return newReceiveBuilder()
-//                .onMessage(CmdStart.class,command->{
-//
-//                    for (ActorRef<Command> worker:workers.keySet()) {
-//                        if (workers.get(worker).equals(ActorState.IDLE)){
-//                            return Behaviors.same();
-//                        }
-//                    }
-//
-//                    return Behaviors.same();
-//                })
-
-//                .onMessage(CmdUppg.class,command->{
-//
-//                    ActorRef<Command> worker = order();
-//                    if (worker!=null){
-//                        worker.tell(new CmdTaskUppg(getContext().getSelf(),springContext,command.getUppgs()));
-//                    }else {
-//                        return Behaviors.withTimers(timer->{
-//                            timer.startSingleTimer(new CmdUppg(command.getUppgs()), Duration.ofMillis(1000));
-//                            return Behaviors.same();
-//                        });
-//                    }
-//                    return Behaviors.same();
-//                })
-//
-//
-//
-//
-//
-//                .onMessage(CmdCpAll.class, command->{
-//                    for (int i = 0; i <command.getCollectionPointList().size() ; i++) {
-//                        ActorRef<Command> worker = order();
-//                        if (worker!=null){
-//                            CollectionPoint p = command.getCollectionPointList().get(i);
-////                            worker.tell(new CmdTaskCp(getContext().getSelf(),springContext,command.getCollectionPointList().get(i)));
-//                            CollectionPointAction action = getValues(springContext, command.getCollectionPointList().get(i));
-//                            worker.tell(
-//                                    new CmdTaskCp(getContext().getSelf(),
-//                                    springContext,
-//                                    command.getCollectionPointList().get(i),
-//                                    action.getTemperature(),
-//                                    action.getPressure()));
-//                        }
-//                        else {
-//                            int finalI = i;
-//                            return Behaviors.withTimers(timer->{
-//                                timer.startSingleTimer(new CmdCpAll(command.getCollectionPointList().subList(finalI,command.getCollectionPointList().size())), Duration.ofMillis(1000));
-//                                return Behaviors.same();
-//                            });
-//                        }
-//                    }
-//                    return Behaviors.same();
-//                })
-//
-
                 .onMessage(CmdCalculate.class,command->{
                     ActorRef<Command> worker = order();
                     if (worker!=null){
