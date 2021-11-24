@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -265,7 +264,7 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="/" onclick="">Logout</a>
+                    <button class="btn btn-primary"  onclick="logOutBtn()">Logout</button>
                 </div>
             </div>
         </div>
@@ -273,7 +272,7 @@
 
     <script src="/static/js/dash.js" th:src="@{/js/dash.js}"></script>
     <script>
-        getWellStats()
+        // getWellStats()
     </script>
     <!-- Bootstrap core JavaScript-->
     <script src="/static/vendor/jquery/jquery.min.js" th:src="@{vendor/jquery/jquery.min.js}"></script>

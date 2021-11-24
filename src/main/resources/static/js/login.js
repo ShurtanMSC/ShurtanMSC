@@ -1,14 +1,13 @@
-// window.localStorage
-//
-// localStorage.setItem("token", "value");
-//
-// let lastname = localStorage.getItem("token");
-//
-// localStorage.removeItem("token");
+let localStorageToken = localStorage.getItem("token");
 
+const pathname = window.location.pathname; // Returns path only (/path/example.html)
 
+if (pathname !== "/" && (localStorageToken === null || localStorageToken === "")) {
+    window.location.replace("/");
+}
 
-function logOutBtn(){
+function logOutBtn() {
+    window.location.replace("/");
     localStorage.removeItem("token");
 }
 

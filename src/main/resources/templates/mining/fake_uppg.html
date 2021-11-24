@@ -623,8 +623,7 @@
             <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="login.html">Logout</a>
-            </div>
+                <button class="btn btn-primary"  onclick="logOutBtn()">Logout</button>            </div>
         </div>
     </div>
 </div>
@@ -636,6 +635,7 @@
 <script src="/static/vendor/jquery/jquery.min.js" th:src="@{/vendor/jquery/jquery.min.js}"></script>
 <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"
         th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script src="/static/js/login.js" th:src="@{/js/login.js}"></script>
 
 <!-- Core plugin JavaScript-->
 <script src="/static/vendor/jquery-easing/jquery.easing.min.js"
