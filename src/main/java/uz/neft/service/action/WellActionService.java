@@ -708,7 +708,7 @@ public class WellActionService {
 
 
 
-    protected void execute(Uppg uppg){
+    public void execute(Uppg uppg){
         double q_well=sumAllExpendByUppg(uppg);
         List<CollectionPoint> collectionPointList = collectionPointRepository.findAllByUppg(uppg);
         for (CollectionPoint collectionPoint : collectionPointList) {

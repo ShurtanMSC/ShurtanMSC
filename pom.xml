@@ -19,7 +19,9 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<repackage.classifier/>
 		<spring-native.version>0.10.0</spring-native.version>
-		<sonar.projectKey>kalish</sonar.projectKey>
+<!--		<sonar.projectKey>kalish</sonar.projectKey>-->
+		<scala.binary.version>2.13</scala.binary.version>
+		<akka.version>2.6.17</akka.version>
 	</properties>
 
 
@@ -31,6 +33,12 @@
 <!--</repositories>-->
 
 <dependencies>
+
+	<dependency>
+		<groupId>com.typesafe.akka</groupId>
+		<artifactId>akka-actor-typed_2.13</artifactId>
+		<version>${akka.version}</version>
+	</dependency>
 
 <!--	<dependency>-->
 <!--		<groupId>javafish.clients</groupId>-->

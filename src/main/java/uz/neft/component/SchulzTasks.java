@@ -8,6 +8,7 @@ import uz.neft.repository.CollectionPointRepository;
 import uz.neft.repository.WellRepository;
 import uz.neft.repository.action.CollectionPointActionRepository;
 import uz.neft.repository.action.WellActionRepository;
+import uz.neft.service.AkkaService;
 import uz.neft.service.action.CollectionPointActionService;
 
 
@@ -24,6 +25,8 @@ public class SchulzTasks {
     private WellActionRepository wellActionRepository;
     @Autowired
     private WellRepository wellRepository;
+    @Autowired
+    private AkkaService akkaService;
 
 
 
