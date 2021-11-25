@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import uz.neft.dto.MiningSystemDto;
 import uz.neft.entity.template.AbsEntityInteger;
 
 import javax.persistence.Entity;
@@ -35,6 +36,14 @@ public class MiningSystem extends AbsEntityInteger {
     @PreRemove
     public void onPreRemove() {
         System.out.println("DELETE");
+    }
+
+    public MiningSystemDto toDto(){
+        return MiningSystemDto
+                .builder()
+                .Id(getId())
+                .name(name)
+                .build();
     }
 
 }
