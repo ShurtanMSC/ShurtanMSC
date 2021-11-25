@@ -124,4 +124,16 @@ public class Helper {
         return ws;
     }
 
+    public static Worksheet operatingStaff(Worksheet ws,int h,int w){
+        ws.range(0,0,h,w).style().wrapText(true).horizontalAlignment("center").verticalAlignment("center").set();
+//        for (int i = 1; i <= 32; i++) {
+//            ws.value(3,i-1,i);
+//        }
+        ws.value(0,0,"Наименование");
+        ws.value(0,1,"В работе");
+        ws.value(0,2,"В отпуске");
+        ws.value(0,3,"На больничном");
+        ws.value(0,4,"Б/С");
+        return ws;
+    }
 }

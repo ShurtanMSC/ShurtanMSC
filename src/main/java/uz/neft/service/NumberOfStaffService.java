@@ -55,21 +55,27 @@ public class NumberOfStaffService {
 
     public HttpEntity<?> all() {
         try {
-            List<MiningSystem> miningSystemList = miningSystemRepository.findAll();
-            List<ObjectWithActionsDto> dtoList=new ArrayList<>();
-            miningSystemList.forEach(m->{
-                Optional<NumberOfStaff> first = numberOfStaffRepository.findFirstByMiningSystemOrderByCreatedAtDesc(m);
-                if (first.isPresent()){
-                    dtoList.add(first.get().toWithActionsDto());
-                }else {
-                    dtoList.add(new ObjectWithActionsDto(m.toDto(),null));
-                }
-            });
+            List<ObjectWithActionsDto> dtoList = getAll();
             return converter.apiSuccess200(dtoList);
         }catch (Exception e){
             e.printStackTrace();
             return converter.apiError409();
         }
 
+    }
+
+
+    public List<ObjectWithActionsDto> getAll(){
+        List<MiningSystem> miningSystemList = miningSystemRepository.findAll();
+        List<ObjectWithActionsDto> dtoList=new ArrayList<>();
+        miningSystemList.forEach(m->{
+            Optional<NumberOfStaff> first = numberOfStaffRepository.findFirstByMiningSystemOrderByCreatedAtDesc(m);
+            if (first.isPresent()){
+                dtoList.add(first.get().toWithActionsDto());
+            }else {
+                dtoList.add(new ObjectWithActionsDto(m.toDto(),null));
+            }
+        });
+        return dtoList;
     }
 }

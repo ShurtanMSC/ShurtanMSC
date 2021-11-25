@@ -12,16 +12,17 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.dhatim.fastexcel.Worksheet;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
+import uz.neft.dto.MiningSystemDto;
+import uz.neft.dto.StaffDto;
+import uz.neft.dto.action.ObjectWithActionsDto;
 import uz.neft.entity.CollectionPoint;
 import uz.neft.entity.MiningSystem;
 import uz.neft.entity.Uppg;
 import uz.neft.entity.Well;
 import uz.neft.entity.action.WellAction;
-import uz.neft.repository.CollectionPointRepository;
-import uz.neft.repository.MiningSystemRepository;
-import uz.neft.repository.UppgRepository;
-import uz.neft.repository.WellRepository;
+import uz.neft.repository.*;
 import uz.neft.repository.action.WellActionRepository;
+import uz.neft.service.NumberOfStaffService;
 import uz.neft.service.document.fastexcel.ExcelTemplate;
 import uz.neft.service.document.model.TechReportModel;
 import uz.neft.service.document.report.Excel;
@@ -40,17 +41,32 @@ public class ReportService{
     private final WellRepository wellRepository;
     private final WellActionRepository wellActionRepository;
     private final Converter converter;
+    private final NumberOfStaffService numberOfStaffService;
+    private final NumberOfStaffRepository numberOfStaffRepository;
 
-    public ReportService(MiningSystemRepository miningSystemRepository, UppgRepository uppgRepository, CollectionPointRepository collectionPointRepository, WellRepository wellRepository, WellActionRepository wellActionRepository, Converter converter) {
+    public ReportService(MiningSystemRepository miningSystemRepository, UppgRepository uppgRepository, CollectionPointRepository collectionPointRepository, WellRepository wellRepository, WellActionRepository wellActionRepository, Converter converter, NumberOfStaffService numberOfStaffService, NumberOfStaffRepository numberOfStaffRepository) {
         this.miningSystemRepository = miningSystemRepository;
         this.uppgRepository = uppgRepository;
         this.collectionPointRepository = collectionPointRepository;
         this.wellRepository = wellRepository;
         this.wellActionRepository = wellActionRepository;
         this.converter = converter;
+        this.numberOfStaffService = numberOfStaffService;
+        this.numberOfStaffRepository = numberOfStaffRepository;
     }
 
-    public HttpEntity<?> all(Integer mining_system_id, Date start,Date end){
+
+    public HttpEntity<?> staffReport(Date start, Date end) {
+        try {
+            List<ObjectWithActionsDto> all = numberOfStaffService.getAll();
+            return converter.apiSuccess200(all);
+        }catch (Exception e){
+            e.printStackTrace();
+            return converter.apiError409();
+        }
+    }
+
+    public HttpEntity<?> techReport(Integer mining_system_id, Date start,Date end){
         try {
             if (mining_system_id==null) return converter.apiError400("Id is null");
             Optional<MiningSystem> byId = miningSystemRepository.findById(mining_system_id);
@@ -213,8 +229,34 @@ public class ReportService{
 
     }
 
+    public OutputStream generateStaffReport(String name,Date start, Date end) throws Exception {
+        List<ObjectWithActionsDto> all = numberOfStaffService.getAll();
+        Excel excel=new Excel(name,name);
+        Worksheet ws=excel.worksheet;
+        Helper.operatingStaff(ws, all.size() + 5, 5);
 
-    public OutputStream generateReport(Integer mining_system_id,String name) throws Exception {
+        for (int i = 0; i <all.size() ; i++) {
+            MiningSystemDto dtoMining= (MiningSystemDto) all.get(i).getObjectDto();
+            StaffDto dtoStaff= (StaffDto) all.get(i).getObjectActionDto();
+            ws.value(1+i,0,dtoMining.getName());
+            if (dtoStaff!=null){
+                ws.value(1+i,1,dtoStaff.getAtWork());
+                ws.value(1+i,2,dtoStaff.getOnVacation());
+                ws.value(1+i,3,dtoStaff.getOnSickLeave());
+                ws.value(1+i,4,dtoStaff.getWithoutContent());
+            }else {
+                ws.value(1+i,1,0);
+                ws.value(1+i,2,0);
+                ws.value(1+i,3,0);
+                ws.value(1+i,4,0);
+            }
+        }
+        OutputStream outputStream = excel.generate();
+        tpPdf(name+".xlsx");
+        return outputStream;
+    }
+
+    public OutputStream generateTechReport(Integer mining_system_id,String name) throws Exception {
 
 
         List<Well> wellList = wellRepository.findAllByMiningSystemIdSorted(mining_system_id);
@@ -233,7 +275,7 @@ public class ReportService{
         }
 
 
-        for (int i = 0; i <actionList.size() ; i++) {
+        for (int i = 0; i <actionList.size(); i++) {
             ws.value(4+i,0,i+1);
             ws.value(4+i,1,actionList.get(i)!=null?actionList.get(i).getWell().getNumber():wellList.get(i).getNumber());
             ws.value(4+i,2,actionList.get(i)!=null?actionList.get(i).getWell().getHorizon():wellList.get(i).getHorizon());
@@ -317,7 +359,7 @@ public class ReportService{
 
 
 
-        public static void tpPdf(String path) throws Exception{
+    public static void tpPdf(String path) throws Exception{
             //First we read the Excel file in binary format into FileInputStream
             FileInputStream input_document = new FileInputStream(new File(path));
             // Read workbook into HSSFWorkbook

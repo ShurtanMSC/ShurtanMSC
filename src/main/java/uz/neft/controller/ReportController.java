@@ -26,7 +26,7 @@ public class ReportController {
     public HttpEntity<?> report(HttpServletResponse response) throws Exception {
         Date date=new Date();
         String name=String.valueOf(date.getTime());
-        OutputStream outputStream = reportService.generateReport(1, name);
+        OutputStream outputStream = reportService.generateTechReport(1, name);
 
         String filePath = name+".xlsx";
         InputStream inputStream = new FileInputStream(new File(filePath));
@@ -44,7 +44,7 @@ public class ReportController {
     public HttpEntity<?> report(HttpServletResponse response, @PathVariable String name) throws Exception {
         Date date=new Date();
 //        String name=String.valueOf(date.getTime());
-        OutputStream outputStream = reportService.generateReport(1, name);
+        OutputStream outputStream = reportService.generateTechReport(1, name);
 
         String filePath = name+".xlsx";
         InputStream inputStream = new FileInputStream(new File(filePath));
@@ -59,9 +59,30 @@ public class ReportController {
 
     @GetMapping("/interval")
     public HttpEntity<?> reportInterval(@RequestParam Integer mining_system_id, @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date start, @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date end){
-        return reportService.all(mining_system_id,start,end);
+//        return reportService.all(mining_system_id,start,end);
+        return reportService.techReport(mining_system_id,start,end);
     }
 
 
+    @GetMapping("/staff/interval")
+    public HttpEntity<?> reportStaffInterval(@RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date start, @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date end){
+        return reportService.staffReport(start,end);
+    }
+
+    @GetMapping("/staff/excel/{name}")
+    public HttpEntity<?> reportStaffExcel(HttpServletResponse response, @PathVariable String name,@RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date start, @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date end) throws Exception {
+        Date date=new Date();
+//        String name=String.valueOf(date.getTime());
+        OutputStream outputStream = reportService.generateStaffReport("staff - "+name, start, end);
+
+        String filePath = "staff - "+name+".xlsx";
+        InputStream inputStream = new FileInputStream(new File(filePath));
+        String fileName = URLEncoder.encode(name, "UTF-8");
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline: filename\""+ fileName)
+                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                .contentLength(Files.size(Paths.get(filePath)))
+                .body(new FileUrlResource(filePath));
+    }
 
 }
