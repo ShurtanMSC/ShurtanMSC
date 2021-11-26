@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import uz.neft.entity.MiningSystem;
 
 @Data
 @AllArgsConstructor
@@ -17,4 +18,8 @@ public class ElectricityDto {
     private double yearly;
     private Integer miningSystemId;
     private String miningSystemName;
+
+    public ElectricityDto(MiningSystem miningSystem) {
+        this.miningSystemName=miningSystem.getName();
+    }
 }

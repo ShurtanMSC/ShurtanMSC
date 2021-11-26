@@ -136,4 +136,15 @@ public class Helper {
         ws.value(0,4,"Б/С");
         return ws;
     }
+
+    public static Worksheet operatingElectricity(Worksheet ws,int h,int w){
+        ws.range(0,0,h,w).style().wrapText(true).horizontalAlignment("center").verticalAlignment("center").set();
+
+        ws.value(0,0,"Наименование");
+        ws.value(0,1,"Часовая");
+        ws.value(0,2,"Сутки");
+        ws.value(0,3,"С начало месяца");
+        ws.value(0,4,"С начало года");
+        return ws;
+    }
 }

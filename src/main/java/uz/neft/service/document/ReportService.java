@@ -12,6 +12,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.dhatim.fastexcel.Worksheet;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
+import uz.neft.dto.ElectricityDto;
 import uz.neft.dto.MiningSystemDto;
 import uz.neft.dto.StaffDto;
 import uz.neft.dto.action.ObjectWithActionsDto;
@@ -22,6 +23,7 @@ import uz.neft.entity.Well;
 import uz.neft.entity.action.WellAction;
 import uz.neft.repository.*;
 import uz.neft.repository.action.WellActionRepository;
+import uz.neft.service.ElectricityService;
 import uz.neft.service.NumberOfStaffService;
 import uz.neft.service.document.fastexcel.ExcelTemplate;
 import uz.neft.service.document.model.TechReportModel;
@@ -43,8 +45,10 @@ public class ReportService{
     private final Converter converter;
     private final NumberOfStaffService numberOfStaffService;
     private final NumberOfStaffRepository numberOfStaffRepository;
+    private final ElectricityRepository electricityRepository;
+    private final ElectricityService electricityService;
 
-    public ReportService(MiningSystemRepository miningSystemRepository, UppgRepository uppgRepository, CollectionPointRepository collectionPointRepository, WellRepository wellRepository, WellActionRepository wellActionRepository, Converter converter, NumberOfStaffService numberOfStaffService, NumberOfStaffRepository numberOfStaffRepository) {
+    public ReportService(MiningSystemRepository miningSystemRepository, UppgRepository uppgRepository, CollectionPointRepository collectionPointRepository, WellRepository wellRepository, WellActionRepository wellActionRepository, Converter converter, NumberOfStaffService numberOfStaffService, NumberOfStaffRepository numberOfStaffRepository, ElectricityRepository electricityRepository, ElectricityService electricityService) {
         this.miningSystemRepository = miningSystemRepository;
         this.uppgRepository = uppgRepository;
         this.collectionPointRepository = collectionPointRepository;
@@ -53,8 +57,20 @@ public class ReportService{
         this.converter = converter;
         this.numberOfStaffService = numberOfStaffService;
         this.numberOfStaffRepository = numberOfStaffRepository;
+        this.electricityRepository = electricityRepository;
+        this.electricityService = electricityService;
     }
 
+
+    public HttpEntity<?> electricityReport(Date start, Date end) {
+        try {
+            List<ElectricityDto> all = electricityService.allFirstByHelper();
+            return converter.apiSuccess200(all);
+        }catch (Exception e){
+            e.printStackTrace();
+            return converter.apiError409();
+        }
+    }
 
     public HttpEntity<?> staffReport(Date start, Date end) {
         try {
@@ -70,7 +86,7 @@ public class ReportService{
         try {
             if (mining_system_id==null) return converter.apiError400("Id is null");
             Optional<MiningSystem> byId = miningSystemRepository.findById(mining_system_id);
-            if (!byId.isPresent()) return converter.apiError404("Mining system not founnd");
+            if (!byId.isPresent()) return converter.apiError404("Mining system not found");
             List<Well> wells=wellRepository.findAllByMiningSystemIdSorted(mining_system_id);
             List<WellAction> wellActions=new ArrayList<>();
             for (Well well : wells) {
@@ -227,6 +243,37 @@ public class ReportService{
 
         }
 
+    }
+
+
+
+    public OutputStream generateElectricityReport(String name,Date start, Date end) throws Exception {
+        List<ElectricityDto> dtoList = electricityService.allFirstByHelper();
+        System.out.println(dtoList.size());
+        System.out.println(dtoList);
+        Excel excel=new Excel(name,name);
+        Worksheet ws=excel.worksheet;
+        Helper.operatingElectricity(ws, dtoList.size() + 5, 5);
+
+
+        for (int i = 0; i <dtoList.size() ; i++) {
+
+            ws.value(1+i,0,dtoList.get(i).getMiningSystemName());
+            if (dtoList.get(i)!=null){
+                ws.value(1+i,1,dtoList.get(i).getHourly());
+                ws.value(1+i,2,dtoList.get(i).getDaily());
+                ws.value(1+i,3,dtoList.get(i).getMonthly());
+                ws.value(1+i,4,dtoList.get(i).getYearly());
+            }else {
+                ws.value(1+i,1,0);
+                ws.value(1+i,2,0);
+                ws.value(1+i,3,0);
+                ws.value(1+i,4,0);
+            }
+        }
+        OutputStream outputStream = excel.generate();
+        tpPdf(name+".xlsx");
+        return outputStream;
     }
 
     public OutputStream generateStaffReport(String name,Date start, Date end) throws Exception {

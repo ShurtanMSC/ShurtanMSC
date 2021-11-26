@@ -20,4 +20,5 @@ public class Electricity extends AbsEntityInteger {
     private int dayPerYear=365;
     @ManyToOne
     private MiningSystem miningSystem;
+
 }

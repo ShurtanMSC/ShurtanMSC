@@ -85,4 +85,28 @@ public class ReportController {
                 .body(new FileUrlResource(filePath));
     }
 
+
+    @GetMapping("/electricity/interval")
+    public HttpEntity<?> reportElectricityInterval(@RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date start, @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date end){
+        return reportService.electricityReport(start,end);
+    }
+
+    @GetMapping("/electricity/excel/{name}")
+    public HttpEntity<?> reportElectricityExcel(HttpServletResponse response, @PathVariable String name,@RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date start, @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date end) throws Exception {
+        Date date=new Date();
+//        String name=String.valueOf(date.getTime());
+        OutputStream outputStream = reportService.generateElectricityReport("electricity - "+name, start, end);
+
+        String filePath = "electricity - "+name+".xlsx";
+        InputStream inputStream = new FileInputStream(new File(filePath));
+        String fileName = URLEncoder.encode(name, "UTF-8");
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline: filename\""+ fileName)
+                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                .contentLength(Files.size(Paths.get(filePath)))
+                .body(new FileUrlResource(filePath));
+    }
+
+    //generateElectricityReport
+
 }

@@ -123,36 +123,44 @@ public class ElectricityService {
 
     public ResponseEntity<?> allFirstBy(){
         try {
-            List<MiningSystem> miningSystemList = miningSystemRepository.findAll();
-            List<Electricity> electricityList=new ArrayList<>();
-            for (MiningSystem miningSystem : miningSystemList) {
-                Optional<Electricity> electricity = electricityRepository.findFirstByMiningSystemOrderByCreatedAtDesc(miningSystem);
-                if (electricity.isPresent()) electricityList.add(electricity.get());
-                else electricityList.add(null);
-            }
-            List<ElectricityDto> dtoList=new ArrayList<>();
-            for (Electricity electricity : electricityList) {
-                if (electricity == null) {
-                    dtoList.add(null);
-                } else {
-                    ElectricityDto dto = ElectricityDto
-                            .builder()
-                            .id(electricity.getId())
-                            .miningSystemName(electricity.getMiningSystem().getName())
-                            .miningSystemId(electricity.getMiningSystem().getId())
-                            .hourly(electricity.getHourly())
-                            .daily(electricity.getHourly()*electricity.getHourPerDay())
-                            .monthly(electricity.getHourly()*electricity.getHourPerDay()*electricity.getDayPerMonth())
-                            .yearly(electricity.getHourly()*electricity.getHourPerDay()*electricity.getDayPerYear())
-                            .build();
-                    dtoList.add(dto);
-                }
-            }
+            List<ElectricityDto> dtoList = allFirstByHelper();
             return converter.apiSuccess200("all",dtoList);
         }catch (Exception e){
             e.printStackTrace();
             return converter.apiError409();
         }
+    }
+
+    public List<ElectricityDto> allFirstByHelper(){
+        List<MiningSystem> miningSystemList = miningSystemRepository.findAll();
+        List<Electricity> electricityList=new ArrayList<>();
+        for (MiningSystem miningSystem : miningSystemList) {
+            Optional<Electricity> electricity = electricityRepository.findFirstByMiningSystemOrderByCreatedAtDesc(miningSystem);
+            if (electricity.isPresent()) electricityList.add(electricity.get());
+            else electricityList.add(null);
+        }
+        List<ElectricityDto> dtoList=new ArrayList<>();
+        int c=0;
+        for (Electricity electricity : electricityList) {
+
+            if (electricity == null) {
+                dtoList.add(new ElectricityDto(miningSystemList.get(c)));
+            } else {
+                ElectricityDto dto = ElectricityDto
+                        .builder()
+                        .id(electricity.getId())
+                        .miningSystemName(electricity.getMiningSystem().getName())
+                        .miningSystemId(electricity.getMiningSystem().getId())
+                        .hourly(electricity.getHourly())
+                        .daily(electricity.getHourly()*electricity.getHourPerDay())
+                        .monthly(electricity.getHourly()*electricity.getHourPerDay()*electricity.getDayPerMonth())
+                        .yearly(electricity.getHourly()*electricity.getHourPerDay()*electricity.getDayPerYear())
+                        .build();
+                dtoList.add(dto);
+            }
+            c++;
+        }
+        return dtoList;
     }
 
     public ResponseEntity<?> delete(Integer id) {
