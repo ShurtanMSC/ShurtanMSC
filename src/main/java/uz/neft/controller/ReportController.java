@@ -58,19 +58,19 @@ public class ReportController {
     }
 
     @GetMapping("/interval")
-    public HttpEntity<?> reportInterval(@RequestParam Integer mining_system_id, @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date start, @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date end){
+    public HttpEntity<?> reportInterval(@RequestParam Integer mining_system_id, @RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date start, @RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date end){
 //        return reportService.all(mining_system_id,start,end);
         return reportService.techReport(mining_system_id,start,end);
     }
 
 
     @GetMapping("/staff/interval")
-    public HttpEntity<?> reportStaffInterval(@RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date start, @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date end){
+    public HttpEntity<?> reportStaffInterval(@RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date start, @RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date end){
         return reportService.staffReport(start,end);
     }
 
     @GetMapping("/staff/excel/{name}")
-    public HttpEntity<?> reportStaffExcel(HttpServletResponse response, @PathVariable String name,@RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date start, @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date end) throws Exception {
+    public HttpEntity<?> reportStaffExcel(HttpServletResponse response, @PathVariable String name,@RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date start, @RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date end) throws Exception {
         Date date=new Date();
 //        String name=String.valueOf(date.getTime());
         OutputStream outputStream = reportService.generateStaffReport("staff - "+name, start, end);
@@ -87,12 +87,12 @@ public class ReportController {
 
 
     @GetMapping("/electricity/interval")
-    public HttpEntity<?> reportElectricityInterval(@RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date start, @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date end){
+    public HttpEntity<?> reportElectricityInterval(@RequestParam(required=false) @DateTimeFormat(pattern="yyyy-MM-dd") Date start, @RequestParam(required=false) @DateTimeFormat(pattern="yyyy-MM-dd") Date end){
         return reportService.electricityReport(start,end);
     }
 
     @GetMapping("/electricity/excel/{name}")
-    public HttpEntity<?> reportElectricityExcel(HttpServletResponse response, @PathVariable String name,@RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date start, @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date end) throws Exception {
+    public HttpEntity<?> reportElectricityExcel(HttpServletResponse response, @PathVariable String name,@RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date start, @RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date end) throws Exception {
         Date date=new Date();
 //        String name=String.valueOf(date.getTime());
         OutputStream outputStream = reportService.generateElectricityReport("electricity - "+name, start, end);
