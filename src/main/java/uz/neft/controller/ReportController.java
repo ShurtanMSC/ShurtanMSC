@@ -64,6 +64,11 @@ public class ReportController {
     }
 
 
+    @GetMapping("/production/interval")
+    public HttpEntity<?> reportProductionInterval(@RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date start, @RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date end){
+        return reportService.productionReport(start,end);
+    }
+
     @GetMapping("/staff/interval")
     public HttpEntity<?> reportStaffInterval(@RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date start, @RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date end){
         return reportService.staffReport(start,end);
