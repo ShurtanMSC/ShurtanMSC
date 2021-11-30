@@ -1,5 +1,6 @@
 package uz.neft.service.action;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -60,6 +61,12 @@ public class CollectionPointActionService {
     private final ForecastGasRepository forecastGasRepository;
     private final ForecastGasService forecastGasService;
     private final AkkaService akkaService;
+
+    @Value("${delta.temperature.forCollectionPoint.Action}")
+    private Double deltaTemperatureAction ;
+
+    @Value("${delta.pressure.forCollectionPoint.Action}")
+    private Double deltaPressureAction ;
 
 
     public CollectionPointActionService(UserRepository userRepository, CollectionPointRepository collectionPointRepository, CollectionPointActionRepository collectionPointActionRepository, Converter converter, WellActionRepository wellActionRepository, WellRepository wellRepository, UppgRepository uppgRepository, UppgActionRepository uppgActionRepository, MiningSystemRepository miningSystemRepository, MiningSystemActionRepository miningSystemActionRepository, WellActionService wellActionService, OpcService opcService, FakeService fakeService, ForecastGasRepository forecastGasRepository, ForecastGasService forecastGasService, AkkaService akkaService) {
@@ -462,9 +469,9 @@ public class CollectionPointActionService {
                         double deltaPressure = Math.abs(pressureOpc - oldValuePressure);
                         System.out.println("deltaTemperature -> " + deltaTemperature);
                         System.out.println("deltaPressure -> " + deltaPressure);
-
+                        System.out.println("DELTA --> " + deltaTemperatureAction);
                         boolean oldValueUpdate = false;
-                        if (deltaTemperature >= 1.5) {
+                        if (deltaTemperature >= deltaTemperatureAction) {
                             System.out.println("deltaTemperature >= 2");
                             action.setTemperature(temperatureOpc);
                             oldValueTemperature = temperatureOpc;
@@ -472,7 +479,7 @@ public class CollectionPointActionService {
                         } else {
                             oldValueUpdate = true;
                         }
-                        if (deltaPressure >= 10) {
+                        if (deltaPressure >= deltaPressureAction) {
                             if (oldValueUpdate) {
                                 action.setTemperature(temperatureOpc);
                             }

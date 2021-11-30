@@ -1,13 +1,372 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Constant - Dashboard</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.23.0/axios.min.js"></script>
+    <!-- Custom fonts for this template-->
+    <link href="/static/vendor/fontawesome-free/css/all.min.css" th:href="@{/vendor/fontawesome-free/css/all.min.css}"
+          rel="stylesheet" type="text/css">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            th:href="@{'https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i'}"
+            rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="/static/css/sb-admin-2.min.css"
+          th:href="@{/css/sb-admin-2.min.css}"
+          rel="stylesheet">
+
+    <link href="/static/css/users.css"
+          th:href="@{/css/users.css}"
+          rel="stylesheet">
+
+    <!-- Custom styles for this page -->
+    <link href="/static/vendor/datatables/dataTables.bootstrap4.min.css"
+          th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}"
+          rel="stylesheet">
+
 </head>
-<body>
-<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#0088BC"
-     class="bi bi-x-circle-fill" viewBox="0 0 16 16">
-    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
-</svg>
+
+<body onload="" id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <div th:insert="components/sidebar::sidebar" style="background: #0088bc;"></div>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <div th:insert="components/navbar::navbar"></div>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="col-12 d-flex p-0 mt-3">
+                    <div class="col-6 p-0 ml-3">
+                        <h1 class="h3 mb-2 text-gray-800" id="actionWellH1">Константы</h1>
+                    </div>
+                </div>
+
+                <!--// Add button and modal-->
+
+                <div>
+
+                    <!--CONSTANT  form-->
+                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered " role="document">
+                            <div class="modal-content">
+                                <div class="modal-header p-2">
+                                    <button type="button"
+                                            class="close d-flex align-items-center justify-content-center h-25 "
+                                            id="closeFormBtn"
+                                            data-dismiss="modal" aria-label="Close">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#0088BC"
+                                             class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="modal-body  pb-md-3 pl-md-5 pr-md-5 pt-md-2">
+                                    <h3 class="text-center mb-4 " id="addOrEditConstantH3">Добавить Константы</h3>
+                                    <form action="#" class="login-form" name="addOrEditConstantForm"
+                                          id="addOrEditConstantForm"
+                                          onsubmit="addOrEditConstant(event)">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <input name="id" type="text" class="form-control rounded-left" hidden>
+                                            </div>
+                                            <div class="form-group ">
+                                                <label for="constantName" class="mb-0">Имя константы</label>
+                                                <select name="name"
+                                                        class="custom-select form-control rounded-left"
+                                                        id="constantName"
+                                                        aria-label="Example select with button addon" required>
+                                                    <option value="">Выберите имя константы</option>
+                                                    <option value="RO_GAS">RO_GAS</option>
+                                                    <option value="RO_AIR">RO_AIR</option>
+                                                    <option value="C">C</option>
+                                                    <option value="A">A</option>
+                                                    <option value="B">B</option>
+                                                    <option value="S">S</option>
+                                                    <option value="TETA">TETA</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group ">
+                                                <label for="value" class="mb-0">Ценить</label>
+                                                <input name="value" id="value" type="number" step=any
+                                                       class="form-control rounded-left" placeholder="" required>
+                                            </div>
+                                            <div class="form-group ">
+                                                <label for="description" class="mb-0">Описание</label>
+                                                <input name="description" id="description" type="text"
+                                                       class="form-control rounded-left" placeholder="">
+                                            </div>
+
+                                            <!--<div class="form-group ">
+                                                <label for="inputGroupSelect03" class="mb-0">Категория</label>
+                                                <select name="category"
+                                                        class="custom-select form-control rounded-left"
+                                                        id="inputGroupSelect03"
+                                                        aria-label="Example select with button addon" required>
+                                                    <option value="">категория</option>
+                                                    <option value="">Месторождений</option>
+                                                    <option value="">УППГ</option>
+                                                    <option value="">Сборный пункты</option>
+                                                    <option value="">Скважина</option>
+                                                </select>
+                                            </div>-->
+                                        </div>
+
+                                        <div class="form-group">
+                                            <button type="submit"
+                                                    id="addOrEditConstantBtn"
+                                                    class="form-control btn btn-primary rounded submit px-3">Добавить
+                                            </button>
+                                        </div>
+
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!--SELECT CONSTANT OF . . .-->
+                <div class="form-group col-2 p-0 mr-2 w-25">
+                    <select class="custom-select form-control rounded-left mt-1"
+                            aria-label="Example select with button addon"
+                            id="constantOf"
+                            onchange="selectHandleConstantOf()"
+                    >
+                        <option value="MINING_SYSTEM">Месторождений</option>
+                        <option value="UPPG">УППГ</option>
+                        <option value="COLLECTION_POINT">Сборный пункты</option>
+                        <option value="WELL">Скважина</option>
+                    </select>
+                </div>
+
+                <!-- DataTales Example -->
+                <div id="cardTableConstant" class="card shadow mb-4">
+
+                    <div class="card-body">
+
+                        <!--//ADD BTN-->
+                        <section class="ftco-section pb-2">
+                            <div class="row">
+                                <div class="col-md-12 d-flex ">
+                                    <div class="col-2 p-0">
+                                        <button type="button" class="btn btn-primary py-1 px-3" data-toggle="modal"
+                                                data-target="#exampleModalCenter"
+                                                id="addConstantBtn">
+                                            <h2 class="m-0">+</h2>
+                                        </button>
+                                    </div>
+                                    <div class="form-group col-2 p-0 mr-2 w-25">
+                                        <select name="miningSelect" class="custom-select form-control rounded-left mt-1"
+                                                id="miningSelect" style="display: block;"
+                                                onchange="selectHandleMining()"
+                                                aria-label="Example select with button addon">
+                                            <option value="">Loading. . .</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-2 p-0 mr-2 w-25">
+                                        <select name="uppgSelect" class="custom-select form-control rounded-left mt-1"
+                                                id="uppgSelect" style="display: none;"
+                                                onchange="selectHandleUppg()"
+                                                aria-label="Example select with button addon">
+                                            <option value="">Loading. . .</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-2 p-0 mr-2 w-25">
+                                        <select name="collectionPointSelect" style="display: none;"
+                                                class="custom-select form-control rounded-left mt-1"
+                                                id="collectionPointSelect"
+                                                onchange="selectHandleSP()"
+                                                aria-label="Example select with button addon">
+                                            <option value="">Loading. . .</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-2 p-0 mr-2 w-25">
+                                        <select name="wellSelect" style="display: none;"
+                                                class="custom-select form-control rounded-left mt-1"
+                                                id="wellSelect"
+                                                onchange="selectHandleWell()"
+                                                aria-label="Example select with button addon">
+                                            <option value="">Loading. . .</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <div class="table-responsive">
+                            <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table class="table table-bordered dataTable" id="dataTable" width="100%"
+                                               cellspacing="0" role="grid" aria-describedby="dataTable_info"
+                                               style="width: 100%;">
+                                            <thead>
+                                            <tr role="row">
+                                                <th class=" _asc constants-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-sort="ascending"
+                                                >ID
+                                                </th>
+                                                <th class=" constants-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-label="Position: activate to sort column ascending"
+                                                >Имя константы
+                                                </th>
+                                                <th class=" constants-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-label="Office: activate to sort column ascending"
+                                                >Ценить
+                                                </th>
+                                                <th class=" constants-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-label="Office: activate to sort column ascending"
+                                                >Описание
+                                                </th>
+                                                <th class=" constants-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-label="Salary: activate to sort column ascending"
+                                                >Редактировать
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tfoot>
+                                            <tr>
+                                                <th class="constants-table-title" rowspan="1" colspan="1">ID</th>
+                                                <th class="constants-table-title" rowspan="1" colspan="1">Имя константы
+                                                </th>
+                                                <th class="constants-table-title" rowspan="1" colspan="1">Ценить</th>
+                                                <th class="constants-table-title" rowspan="1" colspan="1">Описание
+                                                </th>
+                                                <th class="constants-table-title" rowspan="1" colspan="1">
+                                                    Редактировать
+                                                </th>
+                                            </tr>
+                                            </tfoot>
+                                            <tbody id="constantTable">
+                                            <tr class="odd">
+                                                <td class="_1">Loading. . .</td>
+                                                <td>Loading. . .</td>
+                                                <td>Loading. . .</td>
+                                                <td>Loading. . .</td>
+                                                <td>Loading. . .</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <div th:insert="components/footer::footer"></div>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary"  onclick="logOutBtn()">Logout</button>            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript-->
+<script src="/static/js/system_variables.js" th:src="@{/js/system_variables.js}"></script>
+<script>
+    getAllMiningSystemConstants();
+    getAllMiningSystems();
+    getAllUppgs();
+    getAllCollectionPoints();
+    getAllWells();
+</script>
+<script src="/static/vendor/jquery/jquery.min.js" th:src="@{/vendor/jquery/jquery.min.js}"></script>
+<script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"
+        th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script src="/static/js/login.js" th:src="@{/js/login.js}"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="/static/vendor/jquery-easing/jquery.easing.min.js"
+        th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="/static/js/sb-admin-2.min.js" th:src="@{/js/sb-admin-2.min.js}"></script>
+
+<!-- Page level plugins -->
+<script src="/static/vendor/chart.js/Chart.min.js" th:src="@{/vendor/chart.js/Chart.min.js}"></script>
+
+<!-- Page level custom scripts -->
+<script src="/static/js/demo/chart-area-demo.js" th:src="@{/js/demo/chart-area-demo.js}"></script>
+<script src="/static/js/demo/chart-pie-demo.js" th:src="@{/js/demo/chart-pie-demo.js}"></script>
+
 </body>
+<script>
+    $(document).ready(function () {
+        $("#exampleModalCenter").on('hide.bs.modal', function () {
+            document.getElementById('addOrEditConstantForm').reset();
+        });
+    });
+
+</script>
 </html>
+
+
+
+
+
