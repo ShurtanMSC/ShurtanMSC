@@ -546,6 +546,11 @@ public class Converter {
                     .actionId(miningSystemAction.getId())
                     .expend(miningSystemAction.getExpend())
                     .createdAt(miningSystemAction.getCreatedAt())
+                    .lastMonthExpend(miningSystemAction.getLastMonthExpend())
+                    .thisMonthExpend(miningSystemAction.getThisMonthExpend())
+                    .lastYearExpend(miningSystemAction.getLastYearExpend())
+                    .planThisMonth(miningSystemAction.getPlanThisMonth())
+                    .planThisYear(miningSystemAction.getPlanThisYear())
                     .miningSystemId(miningSystemAction.getMiningSystem().getId())
                     .build();
         } catch (Exception e) {

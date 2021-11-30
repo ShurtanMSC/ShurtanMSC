@@ -208,10 +208,17 @@ public class DataLoader implements CommandLineRunner {
             miningSystemRepository.save(new MiningSystem(InitialNames.YERMOK));
 
             MiningSystemAction miningSystemAction1=miningSystemActionRepository.save(MiningSystemAction
-                    .builder()
-                    .miningSystem(shurtan)
-                    .expend(10000)
-                    .build());
+                            .builder()
+                            .miningSystem(shurtan)
+                            .expend(10000)
+                            .planThisMonth(4000)
+                            .lastMonthExpend(6000)
+                            .todayExpend(100)
+                            .thisMonthExpend(2000)
+                            .yesterdayExpend(120)
+                            .lastYearExpend(11000)
+                            .planThisYear(12000)
+                            .build());
 
 //            MiningSystemAction miningSystemAction2=miningSystemActionRepository.save(MiningSystemAction
 //                    .builder()

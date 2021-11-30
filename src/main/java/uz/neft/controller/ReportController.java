@@ -64,6 +64,27 @@ public class ReportController {
     }
 
 
+    @GetMapping("/production/interval")
+    public HttpEntity<?> reportProductionInterval(@RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date start, @RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date end){
+        return reportService.productionReport(start,end);
+    }
+
+    @GetMapping("/production/excel/{name}")
+    public HttpEntity<?> reportProductionExcel(HttpServletResponse response, @PathVariable String name,@RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date start, @RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date end) throws Exception {
+        Date date=new Date();
+//        String name=String.valueOf(date.getTime());
+        OutputStream outputStream = reportService.generateProductionReport("production - "+name, start, end);
+
+        String filePath = "production - "+name+".xlsx";
+        InputStream inputStream = new FileInputStream(new File(filePath));
+        String fileName = URLEncoder.encode(name, "UTF-8");
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline: filename\""+ fileName)
+                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                .contentLength(Files.size(Paths.get(filePath)))
+                .body(new FileUrlResource(filePath));
+    }
+
     @GetMapping("/staff/interval")
     public HttpEntity<?> reportStaffInterval(@RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date start, @RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date end){
         return reportService.staffReport(start,end);
@@ -107,6 +128,5 @@ public class ReportController {
                 .body(new FileUrlResource(filePath));
     }
 
-    //generateElectricityReport
 
 }

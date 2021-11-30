@@ -89,7 +89,13 @@ public class MiningSystemService {
             Optional<MiningSystemAction> byId = miningSystemActionRepository.findById(dto.getActionId());
             if (byId.isPresent()) {
                 miningSystemAction = byId.get();
-                miningSystemAction.setExpend(dto.getExpend());
+                if (miningSystemAction.getExpend()!=dto.getExpend())
+                    miningSystemAction.setExpend(dto.getExpend());
+
+                if (miningSystemAction.getPlanThisMonth()!=dto.getPlanThisMonth()&&dto.getPlanThisMonth()!=0)
+                    miningSystemAction.setPlanThisMonth(dto.getPlanThisMonth());
+                if (miningSystemAction.getPlanThisYear()!=dto.getPlanThisYear()&&dto.getPlanThisYear()!=0)
+                    miningSystemAction.setPlanThisYear(dto.getPlanThisYear());
                 miningSystemAction.setMiningSystem(miningSystem.get());
                 MiningSystemAction save = miningSystemActionRepository.save(miningSystemAction);
                 MiningSystemActionDto miningSystemActionDto = converter.miningsystemActionToMiningSystemActionDto(save);

@@ -20,12 +20,16 @@ import uz.neft.entity.CollectionPoint;
 import uz.neft.entity.MiningSystem;
 import uz.neft.entity.Uppg;
 import uz.neft.entity.Well;
+import uz.neft.entity.action.MiningSystemAction;
 import uz.neft.entity.action.WellAction;
 import uz.neft.repository.*;
+import uz.neft.repository.action.MiningSystemActionRepository;
 import uz.neft.repository.action.WellActionRepository;
+import uz.neft.repository.constants.ForecastGasRepository;
 import uz.neft.service.ElectricityService;
 import uz.neft.service.NumberOfStaffService;
 import uz.neft.service.document.fastexcel.ExcelTemplate;
+import uz.neft.service.document.model.ProductionReportModel;
 import uz.neft.service.document.model.TechReportModel;
 import uz.neft.service.document.report.Excel;
 import uz.neft.service.document.report.Helper;
@@ -38,6 +42,7 @@ import java.util.*;
 public class ReportService{
 
     private final MiningSystemRepository miningSystemRepository;
+    private final MiningSystemActionRepository miningSystemActionRepository;
     private final UppgRepository uppgRepository;
     private final CollectionPointRepository collectionPointRepository;
     private final WellRepository wellRepository;
@@ -47,9 +52,11 @@ public class ReportService{
     private final NumberOfStaffRepository numberOfStaffRepository;
     private final ElectricityRepository electricityRepository;
     private final ElectricityService electricityService;
+    private final ForecastGasRepository forecastGasRepository;
 
-    public ReportService(MiningSystemRepository miningSystemRepository, UppgRepository uppgRepository, CollectionPointRepository collectionPointRepository, WellRepository wellRepository, WellActionRepository wellActionRepository, Converter converter, NumberOfStaffService numberOfStaffService, NumberOfStaffRepository numberOfStaffRepository, ElectricityRepository electricityRepository, ElectricityService electricityService) {
+    public ReportService(MiningSystemRepository miningSystemRepository, MiningSystemActionRepository miningSystemActionRepository, UppgRepository uppgRepository, CollectionPointRepository collectionPointRepository, WellRepository wellRepository, WellActionRepository wellActionRepository, Converter converter, NumberOfStaffService numberOfStaffService, NumberOfStaffRepository numberOfStaffRepository, ElectricityRepository electricityRepository, ElectricityService electricityService, ForecastGasRepository forecastGasRepository) {
         this.miningSystemRepository = miningSystemRepository;
+        this.miningSystemActionRepository = miningSystemActionRepository;
         this.uppgRepository = uppgRepository;
         this.collectionPointRepository = collectionPointRepository;
         this.wellRepository = wellRepository;
@@ -59,8 +66,33 @@ public class ReportService{
         this.numberOfStaffRepository = numberOfStaffRepository;
         this.electricityRepository = electricityRepository;
         this.electricityService = electricityService;
+        this.forecastGasRepository = forecastGasRepository;
     }
 
+
+//    public static void main(String[] args) {
+//        System.out.println(new Date().getYear());
+//    }
+
+    public HttpEntity<?> productionReport(Date start, Date end){
+        try {
+            List<MiningSystem> all = miningSystemRepository.findAll();
+            List<ProductionReportModel> reportModels=new ArrayList<>();
+            for (MiningSystem miningSystem : all) {
+                Optional<MiningSystemAction> action = miningSystemActionRepository.findFirstByMiningSystemOrderByCreatedAtDesc(miningSystem);
+                if (action.isPresent()) {
+                    reportModels.add(new ProductionReportModel(action.get()));
+                } else {
+                    reportModels.add(new ProductionReportModel(MiningSystemAction.nuller(miningSystem)));
+                }
+
+            }
+            return converter.apiSuccess200(reportModels);
+        }catch (Exception e){
+            e.printStackTrace();
+            return converter.apiError409();
+        }
+    }
 
     public HttpEntity<?> electricityReport(Date start, Date end) {
         try {
@@ -246,6 +278,82 @@ public class ReportService{
     }
 
 
+
+    public OutputStream generateProductionReport(String name,Date start, Date end) throws Exception {
+        List<ElectricityDto> dtoList = electricityService.allFirstByHelper();
+        System.out.println(dtoList.size());
+        System.out.println(dtoList);
+        Excel excel=new Excel(name,name);
+        Worksheet ws=excel.worksheet;
+        Helper.operatingProduction(ws, dtoList.size() + 5, 10);
+
+        List<MiningSystem> all = miningSystemRepository.findAll();
+        List<ProductionReportModel> reportModels=new ArrayList<>();
+        for (MiningSystem miningSystem : all) {
+            Optional<MiningSystemAction> action = miningSystemActionRepository.findFirstByMiningSystemOrderByCreatedAtDesc(miningSystem);
+            if (action.isPresent()) {
+                reportModels.add(new ProductionReportModel(action.get()));
+            } else {
+                reportModels.add(new ProductionReportModel(MiningSystemAction.nuller(miningSystem)));
+            }
+
+        }
+        for (int i = 0; i <reportModels.size() ; i++) {
+            ws.value(2+i,0,reportModels.get(i).getName());
+            ws.value(2+i,1,reportModels.get(i).getPlan_m());
+            ws.value(2+i,2,reportModels.get(i).getFakt_m());
+
+//            double a1=reportModels.get(i).getFakt_m();
+//            double a2=reportModels.get(i).getPlan_m();
+//            double a3=a1/a2;
+//            double a4=a3*100;
+//            System.out.println(a3);
+//            System.out.println(a4);
+
+            ws.value(2+i,3,reportModels.get(i).getPlan_m()==0?"0%":(int)(100*(reportModels.get(i).getFakt_m()/reportModels.get(i).getPlan_m()))+"%");
+
+            double a=reportModels.get(i).getPlan_m()-reportModels.get(i).getFakt_m();
+            if (a>0)
+                ws.value(2+i,4,"-"+(int)Math.abs(a));
+            else
+                ws.value(2+i,4,a==0?"0":"+"+(int)Math.abs(a));
+
+
+            ws.value(2+i,5,reportModels.get(i).getPlan_g());
+            ws.value(2+i,6,reportModels.get(i).getFakt_g());
+            ws.value(2+i,7,reportModels.get(i).getProshlom_god());
+
+//            int k=(int)(reportModels.get(i).getFakt_g()/reportModels.get(i).getPlan_g())*100;
+//            System.out.println(k);
+            ws.value(2+i,8,reportModels.get(i).getPlan_g()==0?"0%":(int)(100*(reportModels.get(i).getFakt_g()/reportModels.get(i).getPlan_g()))+"%");
+
+            double b=reportModels.get(i).getPlan_g()-reportModels.get(i).getFakt_g();
+            if (b>0)
+                ws.value(2+i,9,"-"+(int)Math.abs(b));
+            else
+                ws.value(2+i,9,b==0?"0":"+"+(int)Math.abs(b));
+        }
+//        return converter.apiSuccess200(reportModels);
+//
+//        for (int i = 0; i <dtoList.size() ; i++) {
+//
+//            ws.value(1+i,0,dtoList.get(i).getMiningSystemName());
+//            if (dtoList.get(i)!=null){
+//                ws.value(1+i,1,dtoList.get(i).getHourly());
+//                ws.value(1+i,2,dtoList.get(i).getDaily());
+//                ws.value(1+i,3,dtoList.get(i).getMonthly());
+//                ws.value(1+i,4,dtoList.get(i).getYearly());
+//            }else {
+//                ws.value(1+i,1,0);
+//                ws.value(1+i,2,0);
+//                ws.value(1+i,3,0);
+//                ws.value(1+i,4,0);
+//            }
+//        }
+        OutputStream outputStream = excel.generate();
+        tpPdf(name+".xlsx");
+        return outputStream;
+    }
 
     public OutputStream generateElectricityReport(String name,Date start, Date end) throws Exception {
         List<ElectricityDto> dtoList = electricityService.allFirstByHelper();
