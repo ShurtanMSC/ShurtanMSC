@@ -147,4 +147,35 @@ public class Helper {
         ws.value(0,4,"С начало года");
         return ws;
     }
+
+    public static Worksheet operatingProduction(Worksheet ws,int h,int w){
+        ws.range(0,0,h,w).style().wrapText(true).horizontalAlignment("center").verticalAlignment("center").set();
+
+
+        ws.value(0,0,"Наименование месторождений");
+        ws.range(0,0,1,0).merge();
+
+        ws.value(0,1,"За текущий месяц");
+        ws.range(0,1,0,4).merge();
+        ws.value(1,1,"План добычи тыс.м3");
+        ws.value(1,2,"Факт. добыча тыс.м3");
+        ws.value(1,3,"% выполнения");
+        ws.value(1,4,"Отставание/Перевыполнение");
+
+
+
+        ws.value(0,5,"С начала года");
+        ws.range(0,5,0,9).merge();
+        ws.value(1,5,"План добычи тыс.м3");
+        ws.value(1,6,"Факт. добыча тыс.м3");
+        ws.value(1,7,"За аналог. период прошлого года");
+        ws.value(1,8,"% выполнения");
+        ws.value(1,9,"Отставание/Перевыполнение");
+
+//        ws.value(0,1,"Часовая");
+//        ws.value(0,2,"Сутки");
+//        ws.value(0,3,"С начало месяца");
+//        ws.value(0,4,"С начало года");
+        return ws;
+    }
 }

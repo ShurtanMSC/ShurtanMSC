@@ -279,6 +279,82 @@ public class ReportService{
 
 
 
+    public OutputStream generateProductionReport(String name,Date start, Date end) throws Exception {
+        List<ElectricityDto> dtoList = electricityService.allFirstByHelper();
+        System.out.println(dtoList.size());
+        System.out.println(dtoList);
+        Excel excel=new Excel(name,name);
+        Worksheet ws=excel.worksheet;
+        Helper.operatingProduction(ws, dtoList.size() + 5, 10);
+
+        List<MiningSystem> all = miningSystemRepository.findAll();
+        List<ProductionReportModel> reportModels=new ArrayList<>();
+        for (MiningSystem miningSystem : all) {
+            Optional<MiningSystemAction> action = miningSystemActionRepository.findFirstByMiningSystemOrderByCreatedAtDesc(miningSystem);
+            if (action.isPresent()) {
+                reportModels.add(new ProductionReportModel(action.get()));
+            } else {
+                reportModels.add(new ProductionReportModel(MiningSystemAction.nuller(miningSystem)));
+            }
+
+        }
+        for (int i = 0; i <reportModels.size() ; i++) {
+            ws.value(2+i,0,reportModels.get(i).getName());
+            ws.value(2+i,1,reportModels.get(i).getPlan_m());
+            ws.value(2+i,2,reportModels.get(i).getFakt_m());
+
+//            double a1=reportModels.get(i).getFakt_m();
+//            double a2=reportModels.get(i).getPlan_m();
+//            double a3=a1/a2;
+//            double a4=a3*100;
+//            System.out.println(a3);
+//            System.out.println(a4);
+
+            ws.value(2+i,3,reportModels.get(i).getPlan_m()==0?"0%":(int)(100*(reportModels.get(i).getFakt_m()/reportModels.get(i).getPlan_m()))+"%");
+
+            double a=reportModels.get(i).getPlan_m()-reportModels.get(i).getFakt_m();
+            if (a>0)
+                ws.value(2+i,4,"-"+(int)Math.abs(a));
+            else
+                ws.value(2+i,4,a==0?"0":"+"+(int)Math.abs(a));
+
+
+            ws.value(2+i,5,reportModels.get(i).getPlan_g());
+            ws.value(2+i,6,reportModels.get(i).getFakt_g());
+            ws.value(2+i,7,reportModels.get(i).getProshlom_god());
+
+//            int k=(int)(reportModels.get(i).getFakt_g()/reportModels.get(i).getPlan_g())*100;
+//            System.out.println(k);
+            ws.value(2+i,8,reportModels.get(i).getPlan_g()==0?"0%":(int)(100*(reportModels.get(i).getFakt_g()/reportModels.get(i).getPlan_g()))+"%");
+
+            double b=reportModels.get(i).getPlan_g()-reportModels.get(i).getFakt_g();
+            if (b>0)
+                ws.value(2+i,9,"-"+(int)Math.abs(b));
+            else
+                ws.value(2+i,9,b==0?"0":"+"+(int)Math.abs(b));
+        }
+//        return converter.apiSuccess200(reportModels);
+//
+//        for (int i = 0; i <dtoList.size() ; i++) {
+//
+//            ws.value(1+i,0,dtoList.get(i).getMiningSystemName());
+//            if (dtoList.get(i)!=null){
+//                ws.value(1+i,1,dtoList.get(i).getHourly());
+//                ws.value(1+i,2,dtoList.get(i).getDaily());
+//                ws.value(1+i,3,dtoList.get(i).getMonthly());
+//                ws.value(1+i,4,dtoList.get(i).getYearly());
+//            }else {
+//                ws.value(1+i,1,0);
+//                ws.value(1+i,2,0);
+//                ws.value(1+i,3,0);
+//                ws.value(1+i,4,0);
+//            }
+//        }
+        OutputStream outputStream = excel.generate();
+        tpPdf(name+".xlsx");
+        return outputStream;
+    }
+
     public OutputStream generateElectricityReport(String name,Date start, Date end) throws Exception {
         List<ElectricityDto> dtoList = electricityService.allFirstByHelper();
         System.out.println(dtoList.size());
