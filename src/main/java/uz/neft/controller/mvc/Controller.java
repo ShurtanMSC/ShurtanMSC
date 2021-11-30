@@ -16,7 +16,6 @@ public class Controller {
 
     @GetMapping("")
     public String main(@CurrentUser User user) {
-
         return "index";
     }
 

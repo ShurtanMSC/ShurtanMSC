@@ -29,6 +29,7 @@ function loginForm(event) {
 
     axios(config)
         .then(function (response) {
+            console.log("response")
             console.log(response)
             if (response.status === 200) {
                 tokenType = response.data.type;
@@ -46,12 +47,12 @@ function loginForm(event) {
                         window.location.href = "/admin";
                     })
                     .catch(function (error) {
-                        console.log(error);
+                        console.log(error.response);
                     });
             }
         })
         .catch(function (error) {
-            console.log(error);
+            console.log(error.response);
         });
 }
 
