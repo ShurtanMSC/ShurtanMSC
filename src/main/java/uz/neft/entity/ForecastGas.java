@@ -22,9 +22,9 @@ public class ForecastGas extends AbsEntityInteger {
     private Month month;
     private double amount;
     private double real;
+    private double expected;
     @ManyToOne
     private MiningSystem miningSystem;
-
 
     public void trans(ForecastDto dto){
         if (year==0&&month==null&&miningSystem==null){

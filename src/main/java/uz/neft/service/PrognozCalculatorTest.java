@@ -12,11 +12,10 @@ public class PrognozCalculatorTest {
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // 1.	Из левой таблицы берется средное значение устьевого давления в конце месяца и по формуле (2)
     // считается пластовое давление в конце текущего месяца (текущий месяц – это месяц когда есть фактические замерные данные)
-    //Chapdagi jadvaldan oyning oxirida quduqning o'rtacha bosimi olinadi va (2) formula bo'yicha,
+    // Chapdagi jadvaldan oyning oxirida quduqning o'rtacha bosimi olinadi va (2) formula bo'yicha,
     // rezervuar bosimi joriy oyning oxirida hisoblanadi (joriy oy haqiqiy o'lchangan oy hisoblanadi) ma'lumotlar)
     public static double reservoirPressure(double P_u, double S,
                                            double a, double Q_sut, double b, double teta, int N) {
-
 
         //N – количество действующих скважин за i-ый месяц; N - i-oy uchun ishlaydigan quduqlar soni;
 
@@ -38,7 +37,8 @@ public class PrognozCalculatorTest {
 
         P_pl = Math.sqrt(P_u * P_u * Math.exp(2 * S) + a * Q_sr_sut + (b + teta) * Q_sr_sut * Q_sr_sut);
 
-        //Ру(i) – среднее устьевое давление в конце текущего месяца. Ru (i) - joriy oyning oxirida quduqning o'rtacha bosimi.
+        //Ру(i) – среднее устьевое давление в конце текущего месяца.
+        // Ru (i) - joriy oyning oxirida quduqning o'rtacha bosimi.
 
         // S - Сопротивление жидких компонентов по НКТ
         //Quvurlar bo'ylab suyuqlik tarkibiy qismlarining qarshiligi
@@ -91,7 +91,7 @@ public class PrognozCalculatorTest {
     // 4.	Определяется прогнозный отбор конденсата за (i+1)-ый месяц (полученное значение отражается на диаграмме за прогнозируемого месяца):
     // (i + 1) oy uchun prognoz kondensat olinishi aniqlanadi (natijadagi qiymat prognoz oy uchun diagrammada aks ettirilgan):
 
-    public static double forecastCondensateForNextMonth(double Q_otb_gaz, int P) {
+    public static double forecastCondensateForNextMonth(double Q_otb_gaz_next, double P) {
 
         // Q_(отб.конденсата месяц(i+1))=Q_(отб.газа месяц(i+1))*П_((i+1))
 
@@ -103,7 +103,7 @@ public class PrognozCalculatorTest {
         // Q_(отб.конденсата месяц(i+1))
         double Q_otb_condensate_next = 0;
 
-        Q_otb_condensate_next = Q_otb_gaz * P;
+        Q_otb_condensate_next = Q_otb_gaz_next * P;
 
         return Q_otb_condensate_next;
     }
@@ -143,7 +143,7 @@ public class PrognozCalculatorTest {
     //  7.	С помощю метода итерации определяется пластовое давление в конце (i+1) периода:
     //  Iteratsiya usulidan foydalanib, rezervuar bosimi (i + 1) davr oxirida aniqlanadi:
 
-    public static double coefficientOfGasCompressibilityForNextMonth(double P_n_pl, double Z_n, double Q_otb_next, double Q_n_z, double Z_next) {
+    public static double reservoirPressureForNextMonth(double P_n_pl, double Z_n, double Q_otb_next, double Q_n_z, double Z_next) {
 
         // P_(пл(i+1))=Р_(н.пл)/z_н  (1-Q_(отб(i+1))/Q_(н.з) ) z_((i+1))
 

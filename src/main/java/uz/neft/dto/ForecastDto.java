@@ -15,5 +15,7 @@ public class ForecastDto {
     private int year;
     private Month month;
     private double amount;
+    private double real;
+    private double expected;
     private Integer mining_system_id;
 }

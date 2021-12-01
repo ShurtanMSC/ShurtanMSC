@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.neft.dto.ForecastDto;
+import uz.neft.entity.ForecastGas;
 import uz.neft.service.ForecastGasService;
 import uz.neft.service.MiningSystemService;
+import uz.neft.service.TESTForecastGasService;
 
 import java.time.Month;
 import java.util.List;
@@ -34,6 +36,9 @@ public class ForecastGasController {
 
     @GetMapping("all")
     public HttpEntity<?> all(){
+        TESTForecastGasService testForecastGasService=new TESTForecastGasService();
+        ForecastGas forecastGas = testForecastGasService.addNewForecast(2);
+        System.out.println(forecastGas);
         return forecastGasService.all();
     }
 

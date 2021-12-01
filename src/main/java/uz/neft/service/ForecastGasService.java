@@ -23,7 +23,6 @@ public class ForecastGasService implements ForecastMethodInterface{
     private final MiningSystemRepository miningSystemRepository;
     private final Converter converter;
 
-
     public ForecastGasService(ForecastGasRepository forecastGasRepository, MiningSystemRepository miningSystemRepository, Converter converter) {
         this.forecastGasRepository = forecastGasRepository;
         this.miningSystemRepository = miningSystemRepository;
@@ -31,7 +30,6 @@ public class ForecastGasService implements ForecastMethodInterface{
     }
 
     // Forecast - prognoz
-
 
     @Override
     public ApiResponse add(ForecastDto dto) {
@@ -104,20 +102,6 @@ public class ForecastGasService implements ForecastMethodInterface{
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @Override
     public HttpEntity<?> add(Integer id, int year, Month month, double amount){
         try {
@@ -148,7 +132,6 @@ public class ForecastGasService implements ForecastMethodInterface{
             return converter.apiError409();
         }
     }
-
 
     @Override
     public HttpEntity<?> allByObjectId(Integer id){
