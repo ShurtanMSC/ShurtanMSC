@@ -11,6 +11,8 @@ import uz.neft.repository.constants.ForecastGasRepository;
 import java.time.Month;
 import java.time.Year;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,6 +20,11 @@ public class TESTForecastGasService {
 
     private ForecastGasRepository forecastGasRepository;
     private MiningSystemRepository miningSystemRepository;
+
+    public TESTForecastGasService(ForecastGasRepository forecastGasRepository, MiningSystemRepository miningSystemRepository) {
+        this.forecastGasRepository = forecastGasRepository;
+        this.miningSystemRepository = miningSystemRepository;
+    }
 
     //Ру(i) – среднее устьевое давление в конце текущего месяца.
     // Ru (i) - oyning oxirida quduqning o'rtacha bosimi
@@ -63,13 +70,12 @@ public class TESTForecastGasService {
     // Dastlabki gaz zahiralari
     double Q_n_z = 77;
 
-
     /**
      * Forecast - prognoz
      * Yangi oy uchun hisoblash va saqlash
      * metodi
      **/
-    public ForecastGas addNewForecast(Integer miningId) {
+    public List<ForecastGas> addNewForecast(Integer miningId) {
 
         //N – количество действующих скважин за i-ый месяц;
         // N - i-oy uchun ishlaydigan quduqlar soni;
@@ -119,35 +125,53 @@ public class TESTForecastGasService {
         //Ishlanish boshidan gaz qazib olish, shu jumladan (i + 1) - oy uchun prognoz qilingan gaz ishlab chiqarish aniqlanadi:
         double Q_otb_next = PrognozCalculatorTest.forecastForNextMonth(Q_otb, Q_otb_gaz_next);
 
-
         // 6.	Определяется коэффициент сверсжимаемости газа для (i+1) периода:
         // Gazning siqilish koeffitsienti (i + 1) davr uchun aniqlanadi:
         double Z_next = PrognozCalculatorTest.coefficientOfGasCompressibilityForNextMonth(T_pl, T_kr, P_pl, P_kr);
 
-
         double P_pl_next = PrognozCalculatorTest.reservoirPressureForNextMonth(P_n_pl, Z_n, Q_otb_next, Q_n_z, Z_next);
-
 
         //----------------------------------------------
         // SAVE process
         //----------------------------------------------
+//        HashMap<Integer,Month> monthName = new HashMap<>();
+//        monthName.put(1,Month.JANUARY);
+//        monthName.put(2,Month.FEBRUARY);
+//        monthName.put(3,Month.MARCH);
+//        monthName.put(4,Month.APRIL);
+//        monthName.put(5,Month.MAY);
+//        monthName.put(6,Month.JUNE);
+//        monthName.put(7,Month.JULY);
+//        monthName.put(8,Month.AUGUST);
+//        monthName.put(9,Month.SEPTEMBER);
+//        monthName.put(10,Month.OCTOBER);
+//        monthName.put(11,Month.NOVEMBER);
+//        monthName.put(12,Month.DECEMBER);
 
-        Date currentYear = new Date();
-        Month month = Month.JANUARY;
+        ForecastGas forecastGas;
+
+        Date currentDate = new Date(System.currentTimeMillis());
+        int currentYear = currentDate.getYear();
+        int currentMonth = currentDate.getMonth()+1;
 
         Optional<MiningSystem> miningSystem = miningSystemRepository.findById(miningId);
-        System.out.println(miningSystem.get());
-        ForecastGas forecastGas = new ForecastGas();
 
-        forecastGas.setYear(currentYear.getYear());
-        forecastGas.setMonth(month);
-        forecastGas.setMiningSystem(miningSystem.get());
-        forecastGas.setExpected(Q_otb_gaz_next);
-        System.out.println("forecastGas");
-        System.out.println(forecastGas);
+        for (int i = currentMonth; i <= 12; i++) {
 
-        ForecastGas save = forecastGasRepository.save(forecastGas);
+            Optional<ForecastGas> byMiningSystemAndYearAndMonth = forecastGasRepository.findByMiningSystemAndYearAndMonth(miningSystem.get(), currentYear, Month.of(i));
+            forecastGas = byMiningSystemAndYearAndMonth.orElseGet(ForecastGas::new);
 
-        return save;
+            forecastGas.setYear(currentYear + 1900);
+            forecastGas.setMonth(Month.of(i));
+            forecastGas.setMiningSystem(miningSystem.get());
+            forecastGas.setExpected(Q_otb_gaz_next);
+//            System.out.println("forecastGas");
+//            System.out.println(forecastGas);
+
+            forecastGasRepository.save(forecastGas);
+        }
+
+        List<ForecastGas> allByYearAndMonth = forecastGasRepository.findAllByYearAndMonth(currentYear, Month.of(currentMonth));
+        return allByYearAndMonth;
     }
 }

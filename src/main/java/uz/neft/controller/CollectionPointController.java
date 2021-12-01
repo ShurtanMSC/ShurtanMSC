@@ -106,6 +106,8 @@ public class CollectionPointController {
 
     @PutMapping("action/edit")
     public HttpEntity<?> editAction(@RequestBody CollectionPointActionDto dto) {
+        System.out.println("dtooooooooooooo");
+        System.out.println(dto);
         return collectionPointActionService.editAction(dto);
     }
 

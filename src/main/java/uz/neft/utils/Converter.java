@@ -479,7 +479,7 @@ public class Converter {
             return CollectionPointActionDto
                     .builder()
                     .actionId(collectionPointAction.getId())
-                    .expend(collectionPointAction.getExpend() / 1000)
+                    .expend(collectionPointAction.getExpend())
                     .pressure(collectionPointAction.getPressure())
                     .temperature(collectionPointAction.getTemperature())
                     .collectionPointId(collectionPointAction.getCollectionPoint().getId())

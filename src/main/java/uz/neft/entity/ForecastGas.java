@@ -4,10 +4,7 @@ import lombok.*;
 import uz.neft.dto.ForecastDto;
 import uz.neft.entity.template.AbsEntityInteger;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 import java.time.Month;
 
 @EqualsAndHashCode(callSuper = true)
@@ -19,6 +16,8 @@ import java.time.Month;
 @Table(uniqueConstraints={@UniqueConstraint(columnNames = {"year", "month", "mining_system_id"})})
 public class ForecastGas extends AbsEntityInteger {
     private int year;
+
+    @Enumerated(EnumType.STRING)
     private Month month;
     private double amount;
     private double real;

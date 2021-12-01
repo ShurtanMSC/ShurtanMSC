@@ -734,11 +734,6 @@ public class WellActionService {
     }
 
 
-
-
-
-
-
     protected Double sumAllExpendByUppg(Uppg uppg){
         try {
             double sum=0;
