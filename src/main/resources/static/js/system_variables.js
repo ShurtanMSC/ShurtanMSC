@@ -119,6 +119,7 @@ function getAllMiningSystems() {
         .then(function (response) {
             if (response.data.message === "OK") {
                 document.getElementById("miningSelect").innerHTML = createViewMiningOrUppgOrSPSelect(response.data.object)
+                document.getElementById("miningSelectForMolar").innerHTML = createViewMiningOrUppgOrSPSelect(response.data.object)
                 miningSystemId = document.getElementById('miningSelect').value;
                 getAllUppgs()
             }

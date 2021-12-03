@@ -59,8 +59,30 @@
 
                 <!-- Page Heading -->
                 <div class="col-12 d-flex p-0 mt-3">
-                    <div class="col-6 p-0 ml-3">
-                        <h1 class="h3 mb-2 text-gray-800" id="actionWellH1">Константы</h1>
+                    <div class="col-4 mb-4  p-0">
+                        <button onclick="goOutFromComposition()" id="goOutCompositionBtn" style="display: none;"
+                                type="button" class="btn btn-outline-info">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="28" style="color: #35B8CB;"
+                                 class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                      d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                            </svg>
+                            Назад
+                        </button>
+                    </div>
+                    <div class="col-4 p-0 ml-3">
+                        <h1 class="h3 mb-2 text-gray-800 text-center" id="compositionConstantH1">Константы</h1>
+                    </div>
+                    <div class="col-4 d-flex justify-content-end p-0">
+                        <button type="button" class="btn btn-outline-info py-2 px-4"
+                                data-toggle="tooltip"
+                                id="gasCompositionBtn"
+                                data-placement="bottom"
+                                title="Компонентный состав добываемого газа месторождения и критические параметры "
+                                onclick="gasCompositionBtn()"
+                        >
+                            Компонентный состав
+                        </button>
                     </div>
                 </div>
 
@@ -149,10 +171,141 @@
                         </div>
                     </div>
 
+                    <!--GAS COMPOSITION form-->
+                    <div class="modal fade" id="modalGasComposition" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header p-2">
+                                    <button type="button"
+                                            class="close d-flex align-items-center justify-content-center h-25"
+                                            id="closeGasCompositionFormBtn"
+                                            data-dismiss="modal" aria-label="Close">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#0088BC"
+                                             class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="modal-body  pb-md-3 pl-md-5 pr-md-5 pt-md-2">
+                                    <h3 class="text-center mb-4" id="addOrEditGasCompositionFormH3">Добавить Газовый
+                                        состав
+                                    </h3>
+                                    <form action="/" class="login-form" id="addOrEditGasCompositionForm"
+                                          onsubmit="addOrEditGasComposition(event);">
+                                        <div class="form-group">
+                                            <input name="id" type="number" class="form-control rounded-left"
+                                                   hidden>
+                                        </div>
+                                        <div class="form-group d-flex flex-column">
+                                            <label for="name" class="mb-0"> Имя</label>
+                                            <input name="name" id="name" type="text"
+                                                   class="form-control rounded-left"
+                                                   placeholder="">
+                                        </div>
+
+                                        <div class="form-group d-flex flex-column">
+                                            <label for="criticalPressure" class="mb-0">Критическое давление</label>
+                                            <input name="criticalPressure" id="criticalPressure" type="number" step=any
+                                                   class="form-control rounded-left"
+                                                   placeholder="">
+                                        </div>
+                                        <div class="form-group d-flex flex-column">
+                                            <label for="criticalTemperature" class="mb-0">Критическая
+                                                температура</label>
+                                            <input name="criticalTemperature" id="criticalTemperature" type="number"
+                                                   step=any
+                                                   class="form-control rounded-left"
+                                                   placeholder="">
+                                        </div>
+
+                                        <!--                                        <div class="form-group d-flex">-->
+                                        <!--                                            <input name="collectionPointId" id="collectionPonitId" value=""-->
+                                        <!--                                                   type="number"-->
+                                        <!--                                                   class="form-control rounded-left"-->
+                                        <!--                                                   hidden>-->
+                                        <!--                                        </div>-->
+
+                                        <div class="form-group">
+                                            <button type="submit"
+                                                    id="addOrEditGasCompositionBtn"
+                                                    class="form-control btn btn-info rounded submit px-3">Добавить
+                                            </button>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MOLAR form-->
+                    <div class="modal fade" id="modalForAddOrEditMolar" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header p-2">
+                                    <button type="button"
+                                            class="close d-flex align-items-center justify-content-center h-25"
+                                            id="closeMolarFormBtn"
+                                            data-dismiss="modal" aria-label="Close">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#0088BC"
+                                             class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="modal-body  pb-md-3 pl-md-5 pr-md-5 pt-md-2">
+                                    <h3 class="text-center mb-4" id="addOrEditMolarFormH3">Добавить Молярная доля
+                                    </h3>
+                                    <form action="/" class="login-form" id="addOrEditMolarForm"
+                                          onsubmit="addOrEditMolar(event);">
+                                        <div class="form-group">
+                                            <input name="id" type="number" class="form-control rounded-left"
+                                                   hidden>
+                                        </div>
+                                        <div class="form-group d-flex flex-column">
+                                            <label for="gasCompositionNames" class="mb-0">Имя газового состава</label>
+                                            <select name="gasCompositionId" class="custom-select form-control rounded-left"
+                                                    id="gasCompositionNames"
+                                                    onchange="handleGasCompositionId()"
+                                                    aria-label="Example select with button addon" required>
+                                                <option value="">Выберите газового состава</option>
+                                                <option value="">Loading...</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group d-flex flex-column">
+                                            <label for="molarFraction" class="mb-0">Молярная доля </label>
+                                            <input name="molarFraction" id="molarFraction" type="number" step=any
+                                                   class="form-control rounded-left"
+                                                   placeholder="">
+                                        </div>
+                                        <div class="form-group">
+                                            <input name="miningSystemId" id="miningSystemIdForMolar" type="number" class="form-control rounded-left"
+                                                   hidden>
+                                        </div>
+                                        <!--                                        <div class="form-group d-flex">-->
+                                        <!--                                            <input name="collectionPointId" id="collectionPonitId" value=""-->
+                                        <!--                                                   type="number"-->
+                                        <!--                                                   class="form-control rounded-left"-->
+                                        <!--                                                   hidden>-->
+                                        <!--                                        </div>-->
+                                        <div class="form-group">
+                                            <button type="submit"
+                                                    id="addOrEditMolarBtn"
+                                                    class="form-control btn btn-info rounded submit px-3">Добавить
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!--SELECT CONSTANT OF . . .-->
-                <div class="form-group col-2 p-0 mr-2 w-25">
+                <div class="form-group col-2 p-0 mr-2 w-25" id="selectConstantOf">
                     <select class="custom-select form-control rounded-left mt-1"
                             aria-label="Example select with button addon"
                             id="constantOf"
@@ -165,11 +318,21 @@
                     </select>
                 </div>
 
-                <!-- DataTales Example -->
+                <div class="form-group col-2 p-0 mr-2 w-25" id="gasCompositionOrMolarSelectDiv" style="display: none;">
+                    <select class="custom-select form-control rounded-left mt-1"
+                            aria-label="Example select with button addon"
+                            id="gasCompositionOrMolar"
+                            onchange="selectHandleGasCompositionOrMolar()"
+                    >
+                        <option value="GAS_COMPOSITION">Газовый состав</option>
+                        <option value="MOLAR">Молярная доля</option>
+                    </select>
+                </div>
+
+                <!-- Constant DataTales -->
                 <div id="cardTableConstant" class="card shadow mb-4">
 
                     <div class="card-body">
-
                         <!--//ADD BTN-->
                         <section class="ftco-section pb-2">
                             <div class="row">
@@ -221,7 +384,6 @@
 
                         <div class="table-responsive">
                             <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
-
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <table class="table table-bordered dataTable" id="dataTable" width="100%"
@@ -287,6 +449,259 @@
                     </div>
                 </div>
 
+                <!-- GasComposition DataTales -->
+                <div id="cardTableGasComposition" style="display: none" class="card shadow mb-4">
+                    <div class="card-body">
+                        <!--//ADD BTN GasComposition-->
+                        <section class="ftco-section pb-2">
+                            <div class="row">
+                                <div class="col-md-12 d-flex ">
+                                    <div class="col-6 p-0">
+                                        <button type="button" class="btn btn-primary py-1 px-3" data-toggle="modal"
+                                                data-target="#modalGasComposition"
+                                                id="addGasCompositionBtn"
+                                                onclick="addGasCompositionBtn()"
+                                        >
+                                            Добавить газовый состав
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <div class="table-responsive">
+                            <div id="dataTable_wrapperr" class="dataTables_wrapper dt-bootstrap4">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table class="table table-bordered dataTable" id="dataTableGasComposition"
+                                               width="100%"
+                                               cellspacing="0" role="grid" aria-describedby="dataTable_info"
+                                               style="width: 100%;">
+                                            <thead>
+                                            <tr role="row">
+                                                <th class=" users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-sort="ascending"
+                                                >ID
+                                                </th>
+                                                <th class=" users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                >Имя
+                                                </th>
+                                                <th class=" users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                >Критическое давление
+                                                </th>
+                                                <th class=" users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                >Критическая температура
+                                                </th>
+
+                                                <!--                                                <th class=" users-table-title" tabindex="0"-->
+                                                <!--                                                    aria-controls="dataTable" rowspan="1" colspan="1"-->
+                                                <!--                                                >Дата создания-->
+                                                <!--                                                </th>-->
+                                                <th class=" users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                >Редактировать
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tfoot>
+                                            <tr>
+                                                <th class="users-table-title" rowspan="1" colspan="1">ID</th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Имя</th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Критическое
+                                                    давление
+                                                </th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Критическая
+                                                    температура
+                                                </th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Редактировать</th>
+                                            </tr>
+                                            </tfoot>
+                                            <tbody id="gasCompositionsTable">
+                                            <tr class="odd">
+                                                <td class="">Loading. . .</td>
+                                                <td>Loading. . .</td>
+                                                <td>Loading. . .</td>
+                                                <td>Loading. . .</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5">
+                                        <!--                                        <div class="dataTables_info" id="dataTable_infoAction" role="status"-->
+                                        <!--                                             aria-live="polite">Showing 1 to 10 of 57 entries-->
+                                        <!--                                        </div>-->
+                                    </div>
+                                    <div class="col-sm-12 col-md-7">
+                                        <div class="dataTables_paginate paging_simple_numbers"
+                                             id="dataTable_paginateAction">
+                                            <ul class="pagination" id="totalPages">
+
+                                                <li class="paginate_button page-item previous disabled"
+                                                    id="dataTable_previousAction">
+                                                    <button aria-controls="dataTable"
+                                                            data-dt-idx="0" tabindex="0"
+                                                            class="page-link">Previous
+                                                    </button>
+                                                </li>
+
+                                                <li class="paginate_button page-item active">
+                                                    <button
+                                                            aria-controls="dataTable"
+                                                            data-dt-idx="1"
+                                                            tabindex="0"
+                                                            class="page-link">1
+                                                    </button>
+                                                </li>
+
+                                                <li class="paginate_button page-item next" id="dataTable_nextAction">
+                                                    <button
+                                                            aria-controls="dataTable" data-dt-idx="7" tabindex="0"
+                                                            class="page-link">Next
+                                                    </button>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MOLAR FRACTION DataTales -->
+                <div id="cardTableMolar" style="display: none" class="card shadow mb-4">
+                    <div class="card-body">
+                        <!--//ADD BTN Molar-->
+                        <section class="ftco-section pb-2">
+                            <div class="row">
+                                <div class="col-md-12 d-flex ">
+                                    <div class="col-5 p-0">
+                                        <button type="button" class="btn btn-primary py-1 px-3" data-toggle="modal"
+                                                data-target="#modalForAddOrEditMolar"
+                                                id="addMolarBtn"
+                                                onclick=""
+                                        >
+                                            Добавить Молярная доля
+                                        </button>
+                                    </div>
+                                    <div class="form-group col-2 p-0 w-25">
+                                        <select name="miningSelectForMolar"
+                                                class="custom-select form-control rounded-left mt-1"
+                                                id="miningSelectForMolar"
+                                                onchange="selectHandleMiningForMolar()"
+                                                aria-label="Example select with button addon">
+                                            <option value="">Loading. . .</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <div class="table-responsive">
+                            <div id="dataTable_wrapper_molar" class="dataTables_wrapper dt-bootstrap4">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table class="table table-bordered dataTable" id="dataTableMolar"
+                                               width="100%"
+                                               cellspacing="0" role="grid" aria-describedby="dataTable_info"
+                                               style="width: 100%;">
+                                            <thead>
+                                            <tr role="row">
+                                                <th class=" users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                    aria-sort="ascending"
+                                                >ID
+                                                </th>
+                                                <th class=" users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                >Имя газового состава
+                                                </th>
+                                                <th class=" users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                >Молярная доля
+                                                </th>
+                                                <!--                                                <th class=" users-table-title" tabindex="0"-->
+                                                <!--                                                    aria-controls="dataTable" rowspan="1" colspan="1"-->
+                                                <!--                                                >Дата создания-->
+                                                <!--                                                </th>-->
+                                                <th class=" users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                >Редактировать
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tfoot>
+                                            <tr>
+                                                <th class="users-table-title" rowspan="1" colspan="1">ID</th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Имя газового
+                                                    состава
+                                                </th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Молярная доля</th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Редактировать</th>
+                                            </tr>
+                                            </tfoot>
+                                            <tbody id="molarTable">
+                                            <tr class="odd">
+                                                <td class="">Loading. . .</td>
+                                                <td>Loading. . .</td>
+                                                <td>Loading. . .</td>
+                                                <td>Loading. . .</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5">
+                                        <!--                                        <div class="dataTables_info" id="dataTable_infoAction" role="status"-->
+                                        <!--                                             aria-live="polite">Showing 1 to 10 of 57 entries-->
+                                        <!--                                        </div>-->
+                                    </div>
+                                    <div class="col-sm-12 col-md-7">
+                                        <div class="dataTables_paginate paging_simple_numbers"
+                                             id="dataTable_paginateAction_molar">
+                                            <ul class="pagination" id="totalPages_molar">
+
+                                                <li class="paginate_button page-item previous disabled"
+                                                    id="dataTable_previousAction_molar">
+                                                    <button aria-controls="dataTable"
+                                                            data-dt-idx="0" tabindex="0"
+                                                            class="page-link">Previous
+                                                    </button>
+                                                </li>
+
+                                                <li class="paginate_button page-item active">
+                                                    <button
+                                                            aria-controls="dataTable"
+                                                            data-dt-idx="1"
+                                                            tabindex="0"
+                                                            class="page-link">1
+                                                    </button>
+                                                </li>
+
+                                                <li class="paginate_button page-item next"
+                                                    id="dataTable_nextAction_molar">
+                                                    <button
+                                                            aria-controls="dataTable" data-dt-idx="7" tabindex="0"
+                                                            class="page-link">Next
+                                                    </button>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <!-- /.container-fluid -->
 
@@ -322,13 +737,15 @@
             <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <button class="btn btn-primary"  onclick="logOutBtn()">Logout</button>            </div>
+                <button class="btn btn-primary" onclick="logOutBtn()">Logout</button>
+            </div>
         </div>
     </div>
 </div>
 
 <!-- Bootstrap core JavaScript-->
 <script src="/static/js/system_variables.js" th:src="@{/js/system_variables.js}"></script>
+<script src="/static/js/gasComposition.js" th:src="@{/js/gasComposition.js}"></script>
 <script>
     getAllMiningSystemConstants();
     getAllMiningSystems();
@@ -362,7 +779,9 @@
             document.getElementById('addOrEditConstantForm').reset();
         });
     });
-
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 </script>
 </html>
 

@@ -398,7 +398,7 @@ public class Converter {
         try {
             return GasCompositionDto
                     .builder()
-                    .Id(composition.getId())
+                    .id(composition.getId())
                     .name(composition.getName())
                     .criticalPressure(composition.getCriticalPressure())
                     .criticalTemperature(composition.getCriticalTemperature())

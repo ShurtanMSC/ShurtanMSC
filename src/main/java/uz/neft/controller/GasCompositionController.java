@@ -2,16 +2,10 @@ package uz.neft.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.neft.dto.GasCompositionDto;
 import uz.neft.dto.MiningSystemGasCompositionDto;
-import uz.neft.entity.variables.GasComposition;
-import uz.neft.payload.ApiResponse;
 import uz.neft.service.GasCompositionService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("api/gas_composition")
@@ -76,8 +70,6 @@ public class GasCompositionController {
     public HttpEntity<?> oneMolar(@PathVariable Integer id) {
         return compositionService.findByIdMSGC(id);
     }
-
-
 
     // Mining system compositions
 
