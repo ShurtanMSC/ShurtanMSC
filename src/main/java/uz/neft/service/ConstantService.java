@@ -292,9 +292,11 @@ public class ConstantService {
             Constant constant = new Constant();
             constant.setName(dto.getName());
             constant.setDescription(dto.getDescription());
+            Constant constant1 = constantRepository.save(constant);
+
 
             MiningSystemConstant miningSystemConstant = new MiningSystemConstant();
-            miningSystemConstant.setConstant(constant);
+            miningSystemConstant.setConstant(constant1);
             miningSystemConstant.setMiningSystem(miningSystem.get());
             miningSystemConstant.setValue(dto.getValue());
             MiningSystemConstant save1 = miningSystemConstantRepository.save(miningSystemConstant);
