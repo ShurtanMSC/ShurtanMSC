@@ -20,7 +20,7 @@ public class MiningSystemConstant extends AbsEntityInteger {
     @ManyToOne
     private MiningSystem miningSystem;
 
-    @ManyToOne(cascade = CascadeType.DETACH)
+    @ManyToOne(cascade = CascadeType.ALL)
     private Constant constant;
 
     private Double value;

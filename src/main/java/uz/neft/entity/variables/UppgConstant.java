@@ -22,7 +22,7 @@ public class UppgConstant extends AbsEntityInteger {
     @ManyToOne
     private Uppg uppg;
 
-    @ManyToOne(cascade = CascadeType.DETACH)
+    @ManyToOne(cascade = CascadeType.ALL)
     private Constant constant;
 
     private Double value;
