@@ -14,7 +14,7 @@ import uz.neft.service.action.CollectionPointActionService;
 
 @Component
 @Service
-public class SchulzTasks {
+public class ScheduledTasks {
     @Autowired
     private CollectionPointRepository collectionPointRepository;
     @Autowired
