@@ -292,9 +292,11 @@ public class ConstantService {
             Constant constant = new Constant();
             constant.setName(dto.getName());
             constant.setDescription(dto.getDescription());
+            Constant constant1 = constantRepository.save(constant);
+
 
             MiningSystemConstant miningSystemConstant = new MiningSystemConstant();
-            miningSystemConstant.setConstant(constant);
+            miningSystemConstant.setConstant(constant1);
             miningSystemConstant.setMiningSystem(miningSystem.get());
             miningSystemConstant.setValue(dto.getValue());
             MiningSystemConstant save1 = miningSystemConstantRepository.save(miningSystemConstant);
@@ -398,9 +400,10 @@ public class ConstantService {
             Constant constant = new Constant();
             constant.setName(dto.getName());
             constant.setDescription(dto.getDescription());
+            Constant constant1 = constantRepository.save(constant);
 
             UppgConstant uppgConstant = new UppgConstant();
-            uppgConstant.setConstant(constant);
+            uppgConstant.setConstant(constant1);
             uppgConstant.setUppg(uppg.get());
             uppgConstant.setValue(dto.getValue());
             uppgConstantRepository.save(uppgConstant);
@@ -456,9 +459,10 @@ public class ConstantService {
             Constant constant = new Constant();
             constant.setName(dto.getName());
             constant.setDescription(dto.getDescription());
+            Constant constant1 = constantRepository.save(constant);
 
             CollectionPointConstant collectionPointConstant = new CollectionPointConstant();
-            collectionPointConstant.setConstant(constant);
+            collectionPointConstant.setConstant(constant1);
             collectionPointConstant.setCollectionPoint(collectionPoint.get());
             collectionPointConstant.setValue(dto.getValue());
             collectionPointConstantRepository.save(collectionPointConstant);
@@ -514,9 +518,10 @@ public class ConstantService {
             Constant constant = new Constant();
             constant.setName(dto.getName());
             constant.setDescription(dto.getDescription());
+            Constant constant1 = constantRepository.save(constant);
 
             WellConstant wellConstant = new WellConstant();
-            wellConstant.setConstant(constant);
+            wellConstant.setConstant(constant1);
             wellConstant.setWell(well.get());
             wellConstant.setValue(dto.getValue());
             wellConstantRepository.save(wellConstant);

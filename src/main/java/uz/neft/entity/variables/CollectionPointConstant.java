@@ -21,7 +21,9 @@ public class CollectionPointConstant extends AbsEntityInteger {
     @ManyToOne
     private CollectionPoint collectionPoint;
 
-    @ManyToOne(cascade = CascadeType.DETACH)
+//(cascade = {CascadeType.MERGE, CascadeType.})
+
+    @ManyToOne
     private Constant constant;
 
     private Double value;

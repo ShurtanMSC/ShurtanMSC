@@ -22,7 +22,7 @@ public class WellConstant extends AbsEntityInteger {
     @ManyToOne
     private Well well;
 
-    @ManyToOne(cascade = CascadeType.DETACH)
+    @ManyToOne
     private Constant constant;
 
     private Double value;
