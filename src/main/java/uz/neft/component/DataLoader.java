@@ -176,13 +176,13 @@ public class DataLoader implements CommandLineRunner {
             String localServer=simulate+"/api/simulate/collection_point";
             String herokuServer= "https://shurtanback.herokuapp.com/api/simulate/collection_point";
 
-            OpcServer serverReal = opcServerRepository.save(new OpcServer("Ecograph 1", "Haqiqiy server", "EH_Wetzer.OPC_DA_Server.4",localServer, OpcServerType.REAL));
+            OpcServer serverReal = opcServerRepository.save(new OpcServer("Ecograph 1", "Haqiqiy server", "EH_Wetzer.OPC_DA_Server.4","http://192.168.5.10/values.xml", OpcServerType.REAL));
 //            OpcServer serverRealSim = opcServerRepository.save(new OpcServer("Ecograph 2", "Haqiqiy server", "EH_Wetzer.OPC_DA_Server.4",localServer));
             OpcServer serverSimulation = opcServerRepository.save(new OpcServer("Matrikon", "Simulyatsion server", "Matrikon.OPC.Simulation.1",localServer,OpcServerType.SIMULATE));
 
             String random="Random.Real";
-            String temperature="Unit_10.TT_10.VT_R8";
-            String pressure="Unit_10.PT_10.VT_R8";
+            String temperature="Unit_10.TT-10.VT_R8";
+            String pressure="Unit_10.PT-10.VT_R8";
 
             MiningSystem shurtan = miningSystemRepository.save(new MiningSystem(InitialNames.SHURTAN));
             MiningSystem south_tandyrcha = miningSystemRepository.save(new MiningSystem(InitialNames.SOUTH_TANDYRCHA));

@@ -11,16 +11,15 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Device {
-    public double v1;
-    public String u1;
-    public String vtime;
     public int vstslvl;
-    public int vstslvl1;
-    public Object hlsts1;
     public Param param;
-    public List<String> tag;
-    public String man;
+    public String vtime;
     public String id;
+    public List<String> tag;
+    public double v1;
+    public int vstslvl1;
+    public String man;
     public String type;
-    public String text;
+    public String u1;
+    public String hlsts1;
 }

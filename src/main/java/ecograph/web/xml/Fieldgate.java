@@ -9,18 +9,17 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class FieldGate {
-    public double rev_xml;
-    public String time;
-    public int timezone;
+public class Fieldgate {
+    public int rev_xml;
+    public String ser;
     public String ff_version;
+    public int timezone;
     public String os_version;
-    public String conf;
     public String ip;
     public int httpport;
-    public List<Device> device;
-    public String ser;
+    public String conf;
     public String tag;
+    public String time;
     public String type;
-    public String text;
+    public List<Device> device;
 }

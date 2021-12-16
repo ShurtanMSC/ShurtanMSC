@@ -1,9 +1,16 @@
 package uz.neft.controller.opc;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import ecograph.web.xml.Root;
 import javafish.clients.opc.browser.JOpcBrowser;
 import javafish.clients.opc.exception.*;
+import org.json.JSONObject;
+import org.json.XML;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import uz.neft.entity.action.CollectionPointAction;
 import uz.neft.entity.enums.OpcServerType;
 
@@ -13,6 +20,38 @@ import java.util.Arrays;
 @Service
 public class OpcService {
 
+    enum ValueType{
+        PRESSURE,
+        TEMPERATURE
+    }
+
+    public double getValueWeb(CollectionPointAction collectionPointAction,String unit){
+        try {
+            if (collectionPointAction.getCollectionPoint().getOpcServer().getType().equals(OpcServerType.REAL)){
+                String[] strings = unit.split("\\.");
+                RestTemplate restTemplate=new RestTemplate();
+                String a=restTemplate.getForObject("http://192.168.5.10/values.xml", String.class);
+                XmlMapper xmlMapper = new XmlMapper();
+                JsonMapper jsonMapper=new JsonMapper();
+                xmlMapper.enable(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY);
+                JSONObject json = XML.toJSONObject(a);
+                System.out.println(json);
+                Root root=jsonMapper.readValue(json.toString(), Root.class);
+
+                for (int i = 0; i < root.getFieldgate().device.size(); i++) {
+                    if (root.getFieldgate().device.get(i).tag.get(0).equals(strings[1])) return root.getFieldgate().device.get(i).v1;
+                }
+
+                return 0.0;
+            }else {
+                return new SecureRandom().nextFloat()*(16.0-13.0)+13.0;
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0.0;
+        }
+    }
 
     public double getValue(CollectionPointAction collectionPointAction,String unit){
         try {

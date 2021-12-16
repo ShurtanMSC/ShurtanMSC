@@ -8,10 +8,10 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Param {
-    public double min;
-    public double max;
-    public Object hh;
-    public Object hi;
-    public Object lo;
-    public Object ll;
+    public String hh;
+    public String ll;
+    public String hi;
+    public int min;
+    public String lo;
+    public int max;
 }
