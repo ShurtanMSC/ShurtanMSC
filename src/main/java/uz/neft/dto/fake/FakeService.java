@@ -1,6 +1,7 @@
 package uz.neft.dto.fake;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,6 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 @Service
 public class FakeService {
@@ -27,7 +29,8 @@ public class FakeService {
         return all(url,userDB,pass);
     }
 
-    public static List<FakeUppg> all(String url,String username,String password){
+    @Transactional
+    public List<FakeUppg> all(String url,String username,String password){
         List<FakeUppg> list=new ArrayList<>();
 
         try {
@@ -36,6 +39,7 @@ public class FakeService {
             ResultSet resultSet=null;
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             connection= DriverManager.getConnection(url,username,password);
+//            connection.setNetworkTimeout(Executors.newFixedThreadPool(1),1000);
             statement=connection.createStatement();
             resultSet=statement.executeQuery("SELECT TOP 144" +
                     "     [ID]" +
