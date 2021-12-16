@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Device {
-    public Date v1;
+    public double v1;
     public String u1;
     public String vtime;
     public int vstslvl;
