@@ -1,8 +1,14 @@
 package ecograph.web.xml;
 
+import lombok.*;
+
 import java.util.Date;
 import java.util.List;
-
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class FieldGate {
     public double rev_xml;
     public String time;
