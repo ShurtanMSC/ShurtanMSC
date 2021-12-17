@@ -1,8 +1,7 @@
-package ecograph.web.xml;
+package uz.neft.ecograph.web.xml;
 
 import lombok.*;
 
-import java.util.Date;
 import java.util.List;
 @Getter
 @Setter

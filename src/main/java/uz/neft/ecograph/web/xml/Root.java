@@ -1,4 +1,4 @@
-package ecograph.web.xml;
+package uz.neft.ecograph.web.xml;
 
 import lombok.*;
 

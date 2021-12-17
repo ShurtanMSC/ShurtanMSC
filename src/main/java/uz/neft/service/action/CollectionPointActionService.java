@@ -410,10 +410,14 @@ public class CollectionPointActionService {
                             .build();
                     uppgAction2 = uppgActionRepository.save(uppgAction2);
 
+                    Optional<MiningSystemAction> lastAction = miningSystemActionRepository.findFirstByMiningSystemOrderByCreatedAtDesc(miningSystem.get());
+
                     MiningSystemAction miningSystemAction = MiningSystemAction
                             .builder()
                             .expend(uppgAction1.getExpend() + uppgAction2.getExpend())
                             .miningSystem(miningSystem.get())
+                            .planThisYear(lastAction.map(MiningSystemAction::getPlanThisYear).orElse(0.0))
+                            .planThisMonth(lastAction.map(MiningSystemAction::getPlanThisMonth).orElse(0.0))
                             .todayExpend(uppgAction1.getTodayExpend() + uppgAction2.getTodayExpend())
                             .yesterdayExpend(uppgAction1.getYesterdayExpend() + uppgAction2.getYesterdayExpend())
                             .thisMonthExpend(uppgAction1.getThisMonthExpend() + uppgAction2.getThisMonthExpend())
