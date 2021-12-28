@@ -31,6 +31,7 @@ import uz.neft.repository.constants.ForecastGasRepository;
 import uz.neft.service.AkkaService;
 import uz.neft.service.Calculator;
 import uz.neft.service.ForecastGasService;
+import uz.neft.service.TESTForecastGasService;
 import uz.neft.utils.Converter;
 
 import java.sql.Timestamp;
@@ -61,6 +62,7 @@ public class CollectionPointActionService {
     private final ForecastGasRepository forecastGasRepository;
     private final ForecastGasService forecastGasService;
     private final AkkaService akkaService;
+    private final TESTForecastGasService testForecastGasService;
 
     @Value("${delta.temperature.forCollectionPoint.Action}")
     private Double deltaTemperatureAction ;
@@ -69,7 +71,7 @@ public class CollectionPointActionService {
     private Double deltaPressureAction ;
 
 
-    public CollectionPointActionService(UserRepository userRepository, CollectionPointRepository collectionPointRepository, CollectionPointActionRepository collectionPointActionRepository, Converter converter, WellActionRepository wellActionRepository, WellRepository wellRepository, UppgRepository uppgRepository, UppgActionRepository uppgActionRepository, MiningSystemRepository miningSystemRepository, MiningSystemActionRepository miningSystemActionRepository, WellActionService wellActionService, OpcService opcService, FakeService fakeService, ForecastGasRepository forecastGasRepository, ForecastGasService forecastGasService, AkkaService akkaService) {
+    public CollectionPointActionService(UserRepository userRepository, CollectionPointRepository collectionPointRepository, CollectionPointActionRepository collectionPointActionRepository, Converter converter, WellActionRepository wellActionRepository, WellRepository wellRepository, UppgRepository uppgRepository, UppgActionRepository uppgActionRepository, MiningSystemRepository miningSystemRepository, MiningSystemActionRepository miningSystemActionRepository, WellActionService wellActionService, OpcService opcService, FakeService fakeService, ForecastGasRepository forecastGasRepository, ForecastGasService forecastGasService, AkkaService akkaService, TESTForecastGasService testForecastGasService) {
         this.userRepository = userRepository;
         this.collectionPointRepository = collectionPointRepository;
         this.collectionPointActionRepository = collectionPointActionRepository;
@@ -86,6 +88,7 @@ public class CollectionPointActionService {
         this.forecastGasRepository = forecastGasRepository;
         this.forecastGasService = forecastGasService;
         this.akkaService = akkaService;
+        this.testForecastGasService = testForecastGasService;
     }
 
     /**
@@ -542,6 +545,7 @@ public class CollectionPointActionService {
                 }
                 actionList.forEach(akkaService::calculate);
             }
+            testForecastGasService.addNewForecast(1);
         } catch (Exception e) {
             e.printStackTrace();
         }

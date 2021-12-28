@@ -5,13 +5,12 @@ import uz.neft.dto.ForecastDto;
 import uz.neft.entity.ForecastGas;
 import uz.neft.entity.MiningSystem;
 import uz.neft.payload.ApiResponse;
+import uz.neft.payload.ApiResponseObject;
 import uz.neft.repository.MiningSystemRepository;
 import uz.neft.repository.constants.ForecastGasRepository;
 
 import java.time.Month;
-import java.time.Year;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,10 +19,12 @@ public class TESTForecastGasService {
 
     private ForecastGasRepository forecastGasRepository;
     private MiningSystemRepository miningSystemRepository;
+    private final ForecastGasService forecastGasService;
 
-    public TESTForecastGasService(ForecastGasRepository forecastGasRepository, MiningSystemRepository miningSystemRepository) {
+    public TESTForecastGasService(ForecastGasRepository forecastGasRepository, MiningSystemRepository miningSystemRepository, ForecastGasService forecastGasService) {
         this.forecastGasRepository = forecastGasRepository;
         this.miningSystemRepository = miningSystemRepository;
+        this.forecastGasService = forecastGasService;
     }
 
     //Ру(i) – среднее устьевое давление в конце текущего месяца.
@@ -159,12 +160,37 @@ public class TESTForecastGasService {
         for (int i = currentMonth; i <= 12; i++) {
 
             Optional<ForecastGas> byMiningSystemAndYearAndMonth = forecastGasRepository.findByMiningSystemAndYearAndMonth(miningSystem.get(), currentYear, Month.of(i));
-            forecastGas = byMiningSystemAndYearAndMonth.orElseGet(ForecastGas::new);
 
-            forecastGas.setYear(currentYear + 1900);
-            forecastGas.setMonth(Month.of(i));
-            forecastGas.setMiningSystem(miningSystem.get());
-            forecastGas.setExpected(Q_otb_gaz_next);
+            ForecastDto forecastDto= ForecastDto
+                    .builder()
+                    .year(currentYear + 1900)
+                    .month(Month.of(i))
+                    .mining_system_id(miningId)
+                    .expected(Q_otb_gaz_next)
+                    .build();
+
+            ApiResponse apiResponse = forecastGasService.add(forecastDto);
+            ApiResponseObject apiResponseObject= (ApiResponseObject) apiResponse;
+            forecastGas = (ForecastGas) apiResponseObject.getObject();
+
+//            if (byMiningSystemAndYearAndMonth.isPresent()){
+//                forecastGas=byMiningSystemAndYearAndMonth.get();
+//                forecastGas.setExpected(Q_otb_gaz_next);
+//            }else {
+//                forecastGas= ForecastGas
+//                        .builder()
+//                        .year(currentYear + 1900)
+//                        .month(Month.of(i))
+//                        .miningSystem(miningSystem.get())
+//                        .expected(Q_otb_gaz_next)
+//                        .build();
+//            }
+//            forecastGas = byMiningSystemAndYearAndMonth.orElseGet(ForecastGas::new);
+//
+//            forecastGas.setYear(currentYear + 1900);
+//            forecastGas.setMonth(Month.of(i));
+//            forecastGas.setMiningSystem(miningSystem.get());
+//            forecastGas.setExpected(Q_otb_gaz_next);
 //            System.out.println("forecastGas");
 //            System.out.println(forecastGas);
 
