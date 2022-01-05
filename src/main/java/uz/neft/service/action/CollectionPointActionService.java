@@ -431,7 +431,7 @@ public class CollectionPointActionService {
 
                     Date date = new Date();
 
-                    Optional<ForecastGas> forecastGasNow = forecastGasRepository.findByMiningSystemAndYearAndMonth(miningSystem.get(), date.getYear(), Month.of(date.getMonth()));
+                    Optional<ForecastGas> forecastGasNow = forecastGasRepository.findByMiningSystemAndYearAndMonth(miningSystem.get(), date.getYear(), Month.of(date.getMonth()+1));
                     if (forecastGasNow.isPresent()) {
                         forecastGasNow.get().setAmount(miningSystemAction.getThisMonthExpend());
                         forecastGasRepository.save(forecastGasNow.get());
