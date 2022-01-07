@@ -33,7 +33,7 @@ public class UppgSimulatorEntity {
 
     private int quality;
 
-    private Date time_stamp;
+    private String time_stamp;
 
     private int scalemin;
 
