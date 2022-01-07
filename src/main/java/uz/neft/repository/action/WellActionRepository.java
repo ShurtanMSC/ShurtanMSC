@@ -25,7 +25,6 @@ public interface WellActionRepository extends JpaRepository<WellAction,Long> {
 
     Page<WellAction> findAllByWellOrderByCreatedAtDesc(Well well, Pageable pageable);
 
-
     List<WellAction> findAllByWell(Well well);
 
     List<WellAction> findAllByCreatedAtBetween(Timestamp from, Timestamp until);

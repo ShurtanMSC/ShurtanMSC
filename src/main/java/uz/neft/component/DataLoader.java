@@ -85,7 +85,15 @@ public class DataLoader implements CommandLineRunner {
         try {
 
 
-            UppgSimulatorEntity uppgSimulatorEntity = new UppgSimulatorEntity();
+
+            //Nodir
+
+            uppgSimulatorRepository.save(UppgSimulatorEntity
+                    .builder()
+                    .ID(12L)
+                    .Description("dsdasda")
+                    .build());
+
 
 
 
