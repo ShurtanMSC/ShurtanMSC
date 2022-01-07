@@ -31,7 +31,7 @@ public class FakeService {
 
     public List<FakeUppg> allSimulator(){
         String url="jdbc:postgresql://localhost:5432/neftgaz";
-        String userDB="postgres", pass="1";
+        String userDB="postgres", pass="postgres";
         return allSimulator(url,userDB,pass);
     }
 
@@ -170,7 +170,7 @@ public class FakeService {
             connection= DriverManager.getConnection(url,username,password);
 //            connection.setNetworkTimeout(Executors.newFixedThreadPool(1),1000);
             statement=connection.createStatement();
-            resultSet=statement.executeQuery("SELECT * from uppg_simulator_entity");
+            resultSet=statement.executeQuery("SELECT id,name,fullname,description,val,quality,time_stamp,scalemin,scalemax from uppg_simulator_entity");
 
             List<FakeFlowMeter> flowMeters1=new ArrayList<>();
             List<FakeFlowMeter> flowMeters2=new ArrayList<>();

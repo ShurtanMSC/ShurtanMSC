@@ -17,7 +17,7 @@ public class FakeController {
 
     @GetMapping("/all")
     public HttpEntity<?> all(){
-        return ResponseEntity.ok(fakeService.all());
+        return ResponseEntity.ok(fakeService.allSimulator());
     }
 
 }
