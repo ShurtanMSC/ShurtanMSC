@@ -43,6 +43,7 @@ public class DataLoader implements CommandLineRunner {
     ConstantRepository constantRepository;
     MiningSystemConstantRepository miningSystemConstantRepository;
     WellActionRepository wellActionRepository;
+    UppgSimulatorRepository uppgSimulatorRepository;
 
     @Autowired
     private MiningSystemActionRepository miningSystemActionRepository;
@@ -82,12 +83,22 @@ public class DataLoader implements CommandLineRunner {
     public void run(String... args) throws Exception {
 //        if (mode.equals("always")) {
         try {
+
+
+            UppgSimulatorEntity uppgSimulatorEntity = new UppgSimulatorEntity();
+
+
+
+
+
+
             Role director = roleRepository.save(new Role(RoleName.SUPER_ADMIN));
             Role operator = roleRepository.save(new Role(RoleName.OPERATOR));
             Role employee = roleRepository.save(new Role(RoleName.EMPLOYEE));
             Role energetic = roleRepository.save(new Role(RoleName.ENERGETIC));
             Role metrologist = roleRepository.save(new Role(RoleName.METROLOGIST));
             Role geologist = roleRepository.save(new Role(RoleName.GEOLOGIST));
+
             userRepository.save(
                     User
                             .builder()
