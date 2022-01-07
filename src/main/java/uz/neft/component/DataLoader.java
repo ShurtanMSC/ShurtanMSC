@@ -43,7 +43,9 @@ public class DataLoader implements CommandLineRunner {
     ConstantRepository constantRepository;
     MiningSystemConstantRepository miningSystemConstantRepository;
     WellActionRepository wellActionRepository;
-    UppgSimulatorRepository uppgSimulatorRepository;
+
+    @Autowired
+    private UppgSimulatorRepository uppgSimulatorRepository;
 
     @Autowired
     private MiningSystemActionRepository miningSystemActionRepository;
@@ -87,12 +89,7 @@ public class DataLoader implements CommandLineRunner {
 
 
             //Nodir
-
-            uppgSimulatorRepository.save(UppgSimulatorEntity
-                    .builder()
-                    .ID(12L)
-                    .Description("dsdasda")
-                    .build());
+            uppgSimulatorRepository.insert();
 
 
 

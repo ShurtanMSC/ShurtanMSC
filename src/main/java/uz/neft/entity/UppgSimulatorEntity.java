@@ -21,23 +21,23 @@ public class UppgSimulatorEntity {
 
     @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ID;
+    private Long id;
 
     private String Name;
 
-    private String FullName;
+    private String fullname;
 
-    private String Description;
+    private String description;
 
-    private BigDecimal Val;
+    private BigDecimal val;
 
-    private int Quality;
+    private int quality;
 
-    private Date Time_Stamp;
+    private Date time_stamp;
 
-    private int ScaleMin;
+    private int scalemin;
 
-    private int ScaleMax;
+    private int scalemax;
 
 
     @Override
