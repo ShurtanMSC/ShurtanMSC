@@ -9,8 +9,8 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>uz.neft</groupId>
-	<artifactId>demo</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>SHURTAN-MSC</artifactId>
+	<version>0.1</version>
 	<name>ShurtanMSC</name>
 	<description>For software development information and analytical system for operational analysis and control of the digitalization system of the Shurtan group of fields</description>
 	<properties>

@@ -159,19 +159,22 @@ public class TESTForecastGasService {
 
         for (int i = currentMonth; i <= 12; i++) {
 
-            Optional<ForecastGas> byMiningSystemAndYearAndMonth = forecastGasRepository.findByMiningSystemAndYearAndMonth(miningSystem.get(), currentYear, Month.of(i));
+            try {
+                if (miningSystem.isPresent()){
+                    Optional<ForecastGas> byMiningSystemAndYearAndMonth = forecastGasRepository.findByMiningSystemAndYearAndMonth(miningSystem.get(), currentYear, Month.of(i));
+                }
 
-            ForecastDto forecastDto= ForecastDto
-                    .builder()
-                    .year(currentYear + 1900)
-                    .month(Month.of(i))
-                    .mining_system_id(miningId)
-                    .expected(Q_otb_gaz_next)
-                    .build();
+                ForecastDto forecastDto= ForecastDto
+                        .builder()
+                        .year(currentYear + 1900)
+                        .month(Month.of(i))
+                        .mining_system_id(miningId)
+                        .expected(Q_otb_gaz_next)
+                        .build();
 
-            ApiResponse apiResponse = forecastGasService.add(forecastDto);
-            ApiResponseObject apiResponseObject= (ApiResponseObject) apiResponse;
-            forecastGas = (ForecastGas) apiResponseObject.getObject();
+                ApiResponse apiResponse = forecastGasService.add(forecastDto);
+                ApiResponseObject apiResponseObject= (ApiResponseObject) apiResponse;
+                forecastGas = (ForecastGas) apiResponseObject.getObject();
 
 //            if (byMiningSystemAndYearAndMonth.isPresent()){
 //                forecastGas=byMiningSystemAndYearAndMonth.get();
@@ -194,7 +197,11 @@ public class TESTForecastGasService {
 //            System.out.println("forecastGas");
 //            System.out.println(forecastGas);
 
-            forecastGasRepository.save(forecastGas);
+                forecastGasRepository.save(forecastGas);
+            }catch (Exception e){
+//                e.printStackTrace();
+            }
+
         }
 
         List<ForecastGas> allByYearAndMonth = forecastGasRepository.findAllByYearAndMonth(currentYear, Month.of(currentMonth));
