@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import uz.neft.entity.CollectionPoint;
 
-import javax.persistence.ManyToOne;
-import java.sql.Timestamp;
 import java.util.Date;
 
 @Getter

@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import uz.neft.dto.WellDto;
 import uz.neft.entity.CollectionPoint;
 import uz.neft.entity.Well;
-import uz.neft.payload.ApiResponse;
 import uz.neft.repository.CollectionPointRepository;
 import uz.neft.repository.WellRepository;
 import uz.neft.utils.Converter;

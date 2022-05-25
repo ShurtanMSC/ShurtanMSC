@@ -3,13 +3,15 @@ package uz.neft.controller.opc;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import uz.neft.ecograph.web.xml.Root;
 import javafish.clients.opc.browser.JOpcBrowser;
 import javafish.clients.opc.exception.*;
 import org.json.JSONObject;
 import org.json.XML;
+import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import uz.neft.ecograph.web.xml.Root;
 import uz.neft.entity.action.CollectionPointAction;
 import uz.neft.entity.enums.OpcServerType;
 
@@ -19,21 +21,26 @@ import java.util.Arrays;
 @Service
 public class OpcService {
 
+    @Autowired
+    RestTemplate restTemplate;
+    @Autowired
+    Logger logger;
     enum ValueType{
         PRESSURE,
         TEMPERATURE
     }
 
-    public double getValueWeb(CollectionPointAction collectionPointAction,String unit){
+    public double getValueWeb(CollectionPointAction collectionPointAction,String unit, String uri){
         try {
             if (collectionPointAction.getCollectionPoint().getOpcServer().getType().equals(OpcServerType.REAL)){
                 String[] strings = unit.split("\\.");
-                RestTemplate restTemplate=new RestTemplate();
-                String a=restTemplate.getForObject("http://192.168.5.10/values.xml", String.class);
+//                RestTemplate restTemplate=new RestTemplate();
+                String a=restTemplate.getForObject(uri, String.class);
                 XmlMapper xmlMapper = new XmlMapper();
                 JsonMapper jsonMapper=new JsonMapper();
                 xmlMapper.enable(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY);
                 JSONObject json = XML.toJSONObject(a);
+                logger.info(String.valueOf(json));
                 System.out.println(json);
                 Root root=jsonMapper.readValue(json.toString(), Root.class);
 
@@ -48,6 +55,7 @@ public class OpcService {
 
         }catch (Exception e){
             e.printStackTrace();
+            logger.error(e.toString());
             return 0.0;
         }
     }
@@ -81,6 +89,7 @@ public class OpcService {
                 }
                 catch (ConnectivityException | UnableBrowseBranchException | UnableIBrowseException e) {
                     e.printStackTrace();
+                    logger.error(e.toString());
                 }
 
                 try {
@@ -106,6 +115,7 @@ public class OpcService {
                 }
                 catch (UnableBrowseLeafException | UnableIBrowseException | UnableAddItemException | CoUninitializeException | UnableAddGroupException e) {
                     e.printStackTrace();
+                    logger.error(e.toString());
                 }
                 return 0.0;
             }else {
@@ -114,6 +124,7 @@ public class OpcService {
 
         }catch (Exception e){
             e.printStackTrace();
+            logger.error(e.toString());
             return 0.0;
         }
     }

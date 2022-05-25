@@ -1,12 +1,7 @@
 package uz.neft.service.document.model;
 
 import lombok.*;
-import uz.neft.entity.ForecastGas;
-import uz.neft.entity.MiningSystem;
 import uz.neft.entity.action.MiningSystemAction;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter

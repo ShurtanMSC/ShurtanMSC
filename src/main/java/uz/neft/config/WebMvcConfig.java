@@ -1,4 +1,4 @@
-//package uz.neft.config;
+package uz.neft.config;//package uz.neft.config;
 //
 //import org.springframework.context.annotation.ComponentScan;
 //import org.springframework.context.annotation.Configuration;

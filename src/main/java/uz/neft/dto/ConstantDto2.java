@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import uz.neft.dto.constantValue.ConstantValueDto;
 import uz.neft.entity.variables.ConstantNameEnums;
 
 @Data

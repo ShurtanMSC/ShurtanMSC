@@ -1,4 +1,4 @@
-//package uz.neft.entity;
+package uz.neft.entity;//package uz.neft.entity;
 //
 //import lombok.AllArgsConstructor;
 //import lombok.Getter;

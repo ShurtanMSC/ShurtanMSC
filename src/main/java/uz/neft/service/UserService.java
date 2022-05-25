@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import uz.neft.dto.UserDto;
 import uz.neft.entity.Role;
 import uz.neft.entity.User;
-import uz.neft.payload.ApiResponse;
 import uz.neft.repository.RoleRepository;
 import uz.neft.repository.UserRepository;
 import uz.neft.utils.Converter;

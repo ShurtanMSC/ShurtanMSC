@@ -4,12 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import uz.neft.entity.Role;
-
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
-import javax.validation.constraints.NotNull;
-import java.util.Set;
 
 @Data
 @AllArgsConstructor

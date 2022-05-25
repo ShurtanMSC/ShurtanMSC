@@ -5,7 +5,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import uz.neft.entity.MiningSystem;
 import uz.neft.entity.NumberOfStaff;
 
-import javax.persistence.Column;
 import java.util.Date;
 
 @AllArgsConstructor

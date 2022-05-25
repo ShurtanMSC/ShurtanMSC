@@ -1,5 +1,6 @@
 package uz.neft.component;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -10,6 +11,7 @@ import uz.neft.repository.action.CollectionPointActionRepository;
 import uz.neft.repository.action.WellActionRepository;
 import uz.neft.service.AkkaService;
 import uz.neft.service.action.CollectionPointActionService;
+
 
 
 @Component
@@ -28,11 +30,14 @@ public class ScheduledTasks {
     @Autowired
     private AkkaService akkaService;
 
+    @Autowired
+    Logger logger;
 
 
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 3000)
     public void transform() throws InterruptedException {
         System.out.println("TASK");
+        logger.info("TASK");
         System.out.println();
         collectionPointActionService.setAll(1);
     }

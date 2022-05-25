@@ -1,4 +1,4 @@
-//package uz.neft.service;
+package uz.neft.service;//package uz.neft.service;
 //
 //import de.re.easymodbus.modbusclient.ModbusClient;
 //import org.springframework.beans.factory.annotation.Autowired;

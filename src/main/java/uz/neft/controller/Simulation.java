@@ -5,7 +5,6 @@ import uz.neft.payload.Simulate;
 
 import java.security.SecureRandom;
 import java.util.Date;
-import java.util.Random;
 
 @RestController
 @RequestMapping("api/simulate")

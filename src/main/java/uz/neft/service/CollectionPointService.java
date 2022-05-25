@@ -1,5 +1,6 @@
 package uz.neft.service;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,6 @@ import uz.neft.repository.UppgRepository;
 import uz.neft.utils.Converter;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -25,13 +25,15 @@ public class CollectionPointService {
     private final Converter converter;
     private final UppgRepository uppgRepository;
     private final OpcServerRepository opcServerRepository;
+    private final Logger logger;
 
     @Autowired
-    public CollectionPointService(CollectionPointRepository collectionPointRepository, Converter converter, UppgRepository uppgRepository, OpcServerRepository opcServerRepository) {
+    public CollectionPointService(CollectionPointRepository collectionPointRepository, Converter converter, UppgRepository uppgRepository, OpcServerRepository opcServerRepository, Logger logger) {
         this.collectionPointRepository = collectionPointRepository;
         this.converter = converter;
         this.uppgRepository = uppgRepository;
         this.opcServerRepository = opcServerRepository;
+        this.logger = logger;
     }
 
     public ResponseEntity<?> save(CollectionPointDto dto) {
@@ -51,6 +53,7 @@ public class CollectionPointService {
             return converter.apiError404("Uppg not found");
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error creating collection point");
         }
     }
@@ -77,6 +80,7 @@ public class CollectionPointService {
             return converter.apiSuccess201("Collection point saved", save);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error creating collection point");
         }
     }
@@ -101,6 +105,7 @@ public class CollectionPointService {
             return converter.apiError404("Collection not found!");
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error edit collection point");
         }
     }
@@ -135,6 +140,7 @@ public class CollectionPointService {
             return converter.apiError404("Collection not found!");
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error edit collection point");
         }
     }
@@ -152,6 +158,7 @@ public class CollectionPointService {
             return converter.apiError400("Id null");
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in deleting collection point", e);
         }
     }
@@ -164,6 +171,7 @@ public class CollectionPointService {
             return converter.apiSuccess200(collect);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in fetching all collection points", e);
         }
     }
@@ -178,6 +186,7 @@ public class CollectionPointService {
             return converter.apiSuccess200(allByUppg);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in fetching collection point by uppg ");
         }
     }
@@ -195,6 +204,7 @@ public class CollectionPointService {
             return converter.apiError400("Id null");
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in finding collectionPoint", e);
         }
 

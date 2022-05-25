@@ -4,10 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import uz.neft.entity.MiningSystem;
-import uz.neft.entity.variables.GasComposition;
-
-import javax.persistence.ManyToOne;
 
 @Data
 @AllArgsConstructor

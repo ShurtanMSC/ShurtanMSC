@@ -5,7 +5,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.neft.dto.ForecastDto;
 import uz.neft.service.ForecastCondensateService;
-import uz.neft.service.ForecastGasService;
 import uz.neft.service.MiningSystemService;
 
 import java.time.Month;

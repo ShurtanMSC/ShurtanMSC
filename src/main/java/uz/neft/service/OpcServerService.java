@@ -3,7 +3,6 @@ package uz.neft.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import uz.neft.entity.CollectionPoint;
 import uz.neft.entity.OpcServer;
 import uz.neft.repository.CollectionPointRepository;
 import uz.neft.repository.OpcServerRepository;
@@ -11,7 +10,6 @@ import uz.neft.utils.Converter;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class OpcServerService {

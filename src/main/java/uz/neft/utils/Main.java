@@ -9,7 +9,6 @@ import uz.neft.entity.OpcServer;
 import uz.neft.entity.action.CollectionPointAction;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Main {

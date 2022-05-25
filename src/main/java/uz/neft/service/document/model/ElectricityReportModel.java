@@ -1,4 +1,4 @@
-//package uz.neft.service.document.model;
+package uz.neft.service.document.model;//package uz.neft.service.document.model;
 //
 //import lombok.*;
 //

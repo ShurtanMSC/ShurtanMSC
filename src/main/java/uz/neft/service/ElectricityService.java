@@ -1,11 +1,10 @@
 package uz.neft.service;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.ElectricityDto;
-import uz.neft.dto.action.ObjectWithActionsDto;
 import uz.neft.entity.Electricity;
 import uz.neft.entity.MiningSystem;
 import uz.neft.repository.ElectricityRepository;
@@ -24,7 +23,8 @@ public class ElectricityService {
     private Converter converter;
     @Autowired
     private MiningSystemRepository miningSystemRepository;
-
+    @Autowired
+    Logger logger;
     public ResponseEntity<?> save(ElectricityDto dto){
         try {
             if (dto.getId()!=null) return converter.apiError400("id shouldn't be sent");
@@ -40,6 +40,7 @@ public class ElectricityService {
             return converter.apiSuccess201("Saved",electricity);
         }catch (Exception e){
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -67,6 +68,7 @@ public class ElectricityService {
             return converter.apiSuccess201("Successfully created");
         }catch (Exception e){
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -84,6 +86,7 @@ public class ElectricityService {
 
         }catch (Exception e){
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -95,6 +98,7 @@ public class ElectricityService {
             return converter.apiSuccess200(electricity.get());
         }catch (Exception e){
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -108,6 +112,7 @@ public class ElectricityService {
             return converter.apiSuccess200(electricity.get());
         }catch (Exception e){
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -117,6 +122,7 @@ public class ElectricityService {
             return converter.apiSuccess200("all",electricityRepository.findAll());
         }catch (Exception e){
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -127,6 +133,7 @@ public class ElectricityService {
             return converter.apiSuccess200("all",dtoList);
         }catch (Exception e){
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -171,6 +178,7 @@ public class ElectricityService {
             return converter.apiSuccess200("Deleted");
         }catch (Exception e){
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }

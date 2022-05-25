@@ -1,5 +1,6 @@
 package uz.neft.service.action;
 
+import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 import uz.neft.entity.MiningSystem;
 import uz.neft.entity.Uppg;
@@ -37,9 +38,10 @@ public class Calculation {
 
     private final ForecastGasRepository forecastGasRepository;
     private final ForecastCondensateRepository forecastCondensateRepository;
+    private final Logger logger;
 
 
-    public Calculation(MiningSystemRepository miningSystemRepository, MiningSystemActionRepository miningSystemActionRepository, UppgRepository uppgRepository, UppgActionRepository uppgActionRepository, CollectionPointRepository collectionPointRepository, CollectionPointActionRepository collectionPointActionRepository, WellRepository wellRepository, WellActionRepository wellActionRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemGasCompositionRepository, Converter converter, ForecastGasRepository forecastGasRepository, ForecastCondensateRepository forecastCondensateRepository) {
+    public Calculation(MiningSystemRepository miningSystemRepository, MiningSystemActionRepository miningSystemActionRepository, UppgRepository uppgRepository, UppgActionRepository uppgActionRepository, CollectionPointRepository collectionPointRepository, CollectionPointActionRepository collectionPointActionRepository, WellRepository wellRepository, WellActionRepository wellActionRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemGasCompositionRepository, Converter converter, ForecastGasRepository forecastGasRepository, ForecastCondensateRepository forecastCondensateRepository, Logger logger) {
         this.miningSystemRepository = miningSystemRepository;
         this.miningSystemActionRepository = miningSystemActionRepository;
         this.uppgRepository = uppgRepository;
@@ -53,6 +55,7 @@ public class Calculation {
         this.converter = converter;
         this.forecastGasRepository = forecastGasRepository;
         this.forecastCondensateRepository = forecastCondensateRepository;
+        this.logger = logger;
     }
 
 
@@ -69,6 +72,7 @@ public class Calculation {
 
         }catch (Exception e){
             e.printStackTrace();
+            logger.error(e.toString());
         }
 
     }

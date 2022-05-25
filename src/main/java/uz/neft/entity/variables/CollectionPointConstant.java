@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import uz.neft.entity.CollectionPoint;
 import uz.neft.entity.template.AbsEntityInteger;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 

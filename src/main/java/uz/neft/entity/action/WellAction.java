@@ -1,28 +1,15 @@
 package uz.neft.entity.action;
 
 import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
 import uz.neft.entity.User;
 import uz.neft.entity.Well;
 import uz.neft.entity.enums.WellStatus;
 import uz.neft.entity.template.AbsEntityLong;
-import uz.neft.entity.variables.*;
-import uz.neft.repository.CollectionPointRepository;
-import uz.neft.repository.MiningSystemGasCompositionRepository;
-import uz.neft.repository.UserRepository;
-import uz.neft.repository.WellRepository;
-import uz.neft.repository.action.WellActionRepository;
-import uz.neft.repository.constants.ConstantRepository;
-import uz.neft.repository.constants.MiningSystemConstantRepository;
-import uz.neft.service.Calculator;
-import uz.neft.utils.Converter;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.ManyToOne;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -19,81 +19,81 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<repackage.classifier/>
 		<spring-native.version>0.10.0</spring-native.version>
-<!--		<sonar.projectKey>kalish</sonar.projectKey>-->
+		<!--		<sonar.projectKey>kalish</sonar.projectKey>-->
 		<scala.binary.version>2.13</scala.binary.version>
 		<akka.version>2.6.17</akka.version>
 	</properties>
 
 
-<!--	<repositories>-->
-<!--		<repository>-->
-<!--		<id>jitpack.io</id>-->
-<!--		<url>https://jitpack.io</url>-->
-<!--	</repository>-->
-<!--</repositories>-->
+	<!--	<repositories>-->
+	<!--		<repository>-->
+	<!--		<id>jitpack.io</id>-->
+	<!--		<url>https://jitpack.io</url>-->
+	<!--	</repository>-->
+	<!--</repositories>-->
 
-<dependencies>
-	<!-- https://mvnrepository.com/artifact/org.webjars/webjars-locator -->
-	<dependency>
-		<groupId>org.webjars</groupId>
-		<artifactId>webjars-locator</artifactId>
-		<version>0.42</version>
-	</dependency>
+	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.webjars/webjars-locator -->
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>webjars-locator</artifactId>
+			<version>0.42</version>
+		</dependency>
 
-	<!-- https://mvnrepository.com/artifact/org.webjars/sockjs-client -->
-	<dependency>
-		<groupId>org.webjars</groupId>
-		<artifactId>sockjs-client</artifactId>
-		<version>1.5.1</version>
-	</dependency>
-
-
-	<!-- https://mvnrepository.com/artifact/org.webjars/stomp-websocket -->
-	<dependency>
-		<groupId>org.webjars</groupId>
-		<artifactId>stomp-websocket</artifactId>
-		<version>2.3.4</version>
-	</dependency>
-
-	<dependency>
-		<groupId>com.typesafe.akka</groupId>
-		<artifactId>akka-actor-typed_2.13</artifactId>
-		<version>${akka.version}</version>
-	</dependency>
-
-<!--	<dependency>-->
-<!--		<groupId>javafish.clients</groupId>-->
-<!--		<artifactId>opc</artifactId>-->
-<!--		<version>1.0</version>-->
-<!--		<scope>system</scope>-->
-<!--		<systemPath>${project.basedir}/lib/JEasyOpc.jar</systemPath>-->
-<!--	</dependency>-->
-
-	<!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc -->
-	<dependency>
-		<groupId>com.microsoft.sqlserver</groupId>
-		<artifactId>mssql-jdbc</artifactId>
-		<version>9.4.0.jre8</version>
-	</dependency>
+		<!-- https://mvnrepository.com/artifact/org.webjars/sockjs-client -->
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>sockjs-client</artifactId>
+			<version>1.5.1</version>
+		</dependency>
 
 
+		<!-- https://mvnrepository.com/artifact/org.webjars/stomp-websocket -->
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>stomp-websocket</artifactId>
+			<version>2.3.4</version>
+		</dependency>
 
-	<dependency>
-		<groupId>org.dhatim</groupId>
-		<artifactId>fastexcel</artifactId>
-		<version>0.12.8</version>
-	</dependency>
+		<dependency>
+			<groupId>com.typesafe.akka</groupId>
+			<artifactId>akka-actor-typed_2.13</artifactId>
+			<version>${akka.version}</version>
+		</dependency>
 
+		<!--	<dependency>-->
+		<!--		<groupId>javafish.clients</groupId>-->
+		<!--		<artifactId>opc</artifactId>-->
+		<!--		<version>1.0</version>-->
+		<!--		<scope>system</scope>-->
+		<!--		<systemPath>${project.basedir}/lib/JEasyOpc.jar</systemPath>-->
+		<!--	</dependency>-->
 
-	<dependency>
-		<groupId>org.dhatim</groupId>
-		<artifactId>fastexcel-reader</artifactId>
-		<version>0.12.3</version>
-	</dependency>
+		<!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc -->
+		<dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>mssql-jdbc</artifactId>
+			<version>9.4.0.jre8</version>
+		</dependency>
 
 
 
-	<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+		<dependency>
+			<groupId>org.dhatim</groupId>
+			<artifactId>fastexcel</artifactId>
+			<version>0.12.8</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.dhatim</groupId>
+			<artifactId>fastexcel-reader</artifactId>
+			<version>0.12.3</version>
+		</dependency>
+
+
+
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
@@ -129,50 +129,50 @@
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui -->
-<!--		<dependency>-->
-<!--			<groupId>org.springdoc</groupId>-->
-<!--			<artifactId>springdoc-openapi-ui</artifactId>-->
-<!--			<version>1.5.10</version>-->
-<!--		</dependency>-->
+		<!--		<dependency>-->
+		<!--			<groupId>org.springdoc</groupId>-->
+		<!--			<artifactId>springdoc-openapi-ui</artifactId>-->
+		<!--			<version>1.5.10</version>-->
+		<!--		</dependency>-->
 
-<!--		&lt;!&ndash; https://mvnrepository.com/artifact/com.github.ludoviccarretti/postgresql-backup4j &ndash;&gt;-->
-<!--		<dependency>-->
-<!--			<groupId>com.github.ludoviccarretti</groupId>-->
-<!--			<artifactId>postgresql-backup4j</artifactId>-->
-<!--			<version>1.0.1</version>-->
-<!--		</dependency>-->
+		<!--		&lt;!&ndash; https://mvnrepository.com/artifact/com.github.ludoviccarretti/postgresql-backup4j &ndash;&gt;-->
+		<!--		<dependency>-->
+		<!--			<groupId>com.github.ludoviccarretti</groupId>-->
+		<!--			<artifactId>postgresql-backup4j</artifactId>-->
+		<!--			<version>1.0.1</version>-->
+		<!--		</dependency>-->
 
-	<!-- https://mvnrepository.com/artifact/org.awaitility/awaitility -->
-	<dependency>
-		<groupId>org.awaitility</groupId>
-		<artifactId>awaitility</artifactId>
-		<version>4.1.0</version>
-		<scope>test</scope>
-	</dependency>
+		<!-- https://mvnrepository.com/artifact/org.awaitility/awaitility -->
+		<dependency>
+			<groupId>org.awaitility</groupId>
+			<artifactId>awaitility</artifactId>
+			<version>4.1.0</version>
+			<scope>test</scope>
+		</dependency>
 
-	<!-- Pull in as a traditional dependency -->
-	<dependency>
-		<groupId>com.konghq</groupId>
-		<artifactId>unirest-java</artifactId>
-		<version>3.13.0</version>
-	</dependency>
+		<!-- Pull in as a traditional dependency -->
+		<dependency>
+			<groupId>com.konghq</groupId>
+			<artifactId>unirest-java</artifactId>
+			<version>3.13.0</version>
+		</dependency>
 
-	<!-- OR as a snazzy new standalone jar with shaded dependencies -->
-	<dependency>
-		<groupId>com.konghq</groupId>
-		<artifactId>unirest-java</artifactId>
-		<version>3.13.0</version>
-		<classifier>standalone</classifier>
-	</dependency>
+		<!-- OR as a snazzy new standalone jar with shaded dependencies -->
+		<dependency>
+			<groupId>com.konghq</groupId>
+			<artifactId>unirest-java</artifactId>
+			<version>3.13.0</version>
+			<classifier>standalone</classifier>
+		</dependency>
 
-	<!-- https://mvnrepository.com/artifact/com.konghq/unirest-objectmapper-jackson -->
-	<dependency>
-		<groupId>com.konghq</groupId>
-		<artifactId>unirest-objectmapper-jackson</artifactId>
-		<version>3.13.0</version>
-	</dependency>
+		<!-- https://mvnrepository.com/artifact/com.konghq/unirest-objectmapper-jackson -->
+		<dependency>
+			<groupId>com.konghq</groupId>
+			<artifactId>unirest-objectmapper-jackson</artifactId>
+			<version>3.13.0</version>
+		</dependency>
 
-	<dependency>
+		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
 			<version>2.6.1</version>
@@ -279,6 +279,11 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.5</version>
+		</dependency>
+		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
 			<version>5.0.0-M4</version>
@@ -286,11 +291,11 @@
 		</dependency>
 
 
-	<dependency>
-		<groupId>com.fasterxml.jackson.dataformat</groupId>
-		<artifactId>jackson-dataformat-xml</artifactId>
-		<version>2.9.8</version>
-	</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-xml</artifactId>
+			<version>2.9.8</version>
+		</dependency>
 
 	</dependencies>
 
@@ -315,25 +320,25 @@
 					</image>
 				</configuration>
 			</plugin>
-<!--			<plugin>-->
-<!--				<groupId>org.springframework.experimental</groupId>-->
-<!--				<artifactId>spring-aot-maven-plugin</artifactId>-->
-<!--				<version>${spring-native.version}</version>-->
-<!--				<executions>-->
-<!--					<execution>-->
-<!--						<id>test-generate</id>-->
-<!--						<goals>-->
-<!--							<goal>test-generate</goal>-->
-<!--						</goals>-->
-<!--					</execution>-->
-<!--					<execution>-->
-<!--						<id>generate</id>-->
-<!--						<goals>-->
-<!--							<goal>generate</goal>-->
-<!--						</goals>-->
-<!--					</execution>-->
-<!--				</executions>-->
-<!--			</plugin>-->
+			<!--			<plugin>-->
+			<!--				<groupId>org.springframework.experimental</groupId>-->
+			<!--				<artifactId>spring-aot-maven-plugin</artifactId>-->
+			<!--				<version>${spring-native.version}</version>-->
+			<!--				<executions>-->
+			<!--					<execution>-->
+			<!--						<id>test-generate</id>-->
+			<!--						<goals>-->
+			<!--							<goal>test-generate</goal>-->
+			<!--						</goals>-->
+			<!--					</execution>-->
+			<!--					<execution>-->
+			<!--						<id>generate</id>-->
+			<!--						<goals>-->
+			<!--							<goal>generate</goal>-->
+			<!--						</goals>-->
+			<!--					</execution>-->
+			<!--				</executions>-->
+			<!--			</plugin>-->
 			<plugin>
 				<groupId>org.hibernate.orm.tooling</groupId>
 				<artifactId>hibernate-enhance-maven-plugin</artifactId>
@@ -357,14 +362,14 @@
 		</plugins>
 	</build>
 	<repositories>
-<!--		<repository>-->
-<!--			<id>javafish.clients.opc</id>-->
-<!--			<url>file://C:\JEasyOpc.jar</url>-->
-<!--		</repository>-->
-<!--		<repository>-->
-<!--			<id>javafish.clients.opc</id>-->
-<!--			<url>file://${project.basedir}/lib/JEasyOpc.jar</url>-->
-<!--		</repository>-->
+		<!--		<repository>-->
+		<!--			<id>javafish.clients.opc</id>-->
+		<!--			<url>file://C:\JEasyOpc.jar</url>-->
+		<!--		</repository>-->
+		<!--		<repository>-->
+		<!--			<id>javafish.clients.opc</id>-->
+		<!--			<url>file://${project.basedir}/lib/JEasyOpc.jar</url>-->
+		<!--		</repository>-->
 		<repository>
 			<id>spring-releases</id>
 			<name>Spring Releases</name>
@@ -392,38 +397,38 @@
 				<repackage.classifier>exec</repackage.classifier>
 				<native-buildtools.version>0.9.0</native-buildtools.version>
 			</properties>
-<!--			<dependencies>-->
-<!--				<dependency>-->
-<!--					<groupId>org.graalvm.buildtools</groupId>-->
-<!--					<artifactId>junit-platform-native</artifactId>-->
-<!--					<version>${native-buildtools.version}</version>-->
-<!--					<scope>test</scope>-->
-<!--				</dependency>-->
-<!--			</dependencies>-->
+			<!--			<dependencies>-->
+			<!--				<dependency>-->
+			<!--					<groupId>org.graalvm.buildtools</groupId>-->
+			<!--					<artifactId>junit-platform-native</artifactId>-->
+			<!--					<version>${native-buildtools.version}</version>-->
+			<!--					<scope>test</scope>-->
+			<!--				</dependency>-->
+			<!--			</dependencies>-->
 			<build>
-<!--				<plugins>-->
-<!--					<plugin>-->
-<!--						<groupId>org.graalvm.buildtools</groupId>-->
-<!--						<artifactId>native-maven-plugin</artifactId>-->
-<!--						<version>${native-buildtools.version}</version>-->
-<!--						<executions>-->
-<!--							<execution>-->
-<!--								<id>test-native</id>-->
-<!--								<phase>test</phase>-->
-<!--								<goals>-->
-<!--									<goal>test</goal>-->
-<!--								</goals>-->
-<!--							</execution>-->
-<!--							<execution>-->
-<!--								<id>build-native</id>-->
-<!--								<phase>package</phase>-->
-<!--								<goals>-->
-<!--									<goal>build</goal>-->
-<!--								</goals>-->
-<!--							</execution>-->
-<!--						</executions>-->
-<!--					</plugin>-->
-<!--				</plugins>-->
+				<!--				<plugins>-->
+				<!--					<plugin>-->
+				<!--						<groupId>org.graalvm.buildtools</groupId>-->
+				<!--						<artifactId>native-maven-plugin</artifactId>-->
+				<!--						<version>${native-buildtools.version}</version>-->
+				<!--						<executions>-->
+				<!--							<execution>-->
+				<!--								<id>test-native</id>-->
+				<!--								<phase>test</phase>-->
+				<!--								<goals>-->
+				<!--									<goal>test</goal>-->
+				<!--								</goals>-->
+				<!--							</execution>-->
+				<!--							<execution>-->
+				<!--								<id>build-native</id>-->
+				<!--								<phase>package</phase>-->
+				<!--								<goals>-->
+				<!--									<goal>build</goal>-->
+				<!--								</goals>-->
+				<!--							</execution>-->
+				<!--						</executions>-->
+				<!--					</plugin>-->
+				<!--				</plugins>-->
 			</build>
 		</profile>
 	</profiles>

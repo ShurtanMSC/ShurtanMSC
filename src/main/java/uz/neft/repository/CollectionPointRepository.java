@@ -3,7 +3,6 @@ package uz.neft.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import uz.neft.entity.CollectionPoint;
-import uz.neft.entity.MiningSystem;
 import uz.neft.entity.Uppg;
 
 import java.util.List;

@@ -27,9 +27,6 @@ import uz.neft.payload.ApiResponseObjectByPageable;
 import uz.neft.repository.RoleRepository;
 import uz.neft.repository.UserRepository;
 
-import java.util.Optional;
-import java.util.stream.Stream;
-
 @Component
 public class Converter {
 

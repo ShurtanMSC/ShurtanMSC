@@ -1,16 +1,11 @@
 package uz.neft.entity.action;
 
 import lombok.*;
-import uz.neft.entity.CollectionPoint;
 import uz.neft.entity.Uppg;
 import uz.neft.entity.User;
-import uz.neft.entity.Well;
-import uz.neft.entity.enums.WellStatus;
 import uz.neft.entity.template.AbsEntityLong;
 
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 
 @EqualsAndHashCode(callSuper = true)

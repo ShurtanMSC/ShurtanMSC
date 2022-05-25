@@ -2,7 +2,6 @@ package uz.neft.config;
 
 import akka.Manager;
 import akka.actor.typed.ActorSystem;
-import akka.actor.typed.Behavior;
 import akka.actor.typed.javadsl.Behaviors;
 import akka.command.Command;
 import org.springframework.beans.factory.annotation.Autowired;

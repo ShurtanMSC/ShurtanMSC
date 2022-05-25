@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import uz.neft.dto.UppgDto;
 import uz.neft.entity.MiningSystem;
 import uz.neft.entity.Uppg;
-import uz.neft.payload.ApiResponse;
 import uz.neft.repository.MiningSystemRepository;
 import uz.neft.repository.UppgRepository;
 import uz.neft.utils.Converter;

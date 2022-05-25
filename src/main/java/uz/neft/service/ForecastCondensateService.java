@@ -1,16 +1,15 @@
 package uz.neft.service;
 
+import org.slf4j.Logger;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.ForecastDto;
 import uz.neft.entity.ForecastCondensate;
-import uz.neft.entity.ForecastGas;
 import uz.neft.entity.MiningSystem;
 import uz.neft.payload.ApiResponse;
 import uz.neft.payload.ApiResponseObject;
 import uz.neft.repository.MiningSystemRepository;
 import uz.neft.repository.constants.ForecastCondensateRepository;
-import uz.neft.repository.constants.ForecastGasRepository;
 import uz.neft.utils.Converter;
 
 import java.time.Month;
@@ -24,11 +23,12 @@ public class ForecastCondensateService implements ForecastMethodInterface{
     private final ForecastCondensateRepository forecastCondensateRepository;
     private final MiningSystemRepository miningSystemRepository;
     private final Converter converter;
-
-    public ForecastCondensateService(ForecastCondensateRepository forecastCondensateRepository, MiningSystemRepository miningSystemRepository, Converter converter) {
+    private final Logger logger;
+    public ForecastCondensateService(ForecastCondensateRepository forecastCondensateRepository, MiningSystemRepository miningSystemRepository, Converter converter, Logger logger) {
         this.forecastCondensateRepository = forecastCondensateRepository;
         this.miningSystemRepository = miningSystemRepository;
         this.converter = converter;
+        this.logger = logger;
     }
 
     @Override
@@ -51,6 +51,7 @@ public class ForecastCondensateService implements ForecastMethodInterface{
             return converter.apiSuccess(condensate);
         }catch (Exception e){
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError();
         }
     }
@@ -75,6 +76,7 @@ public class ForecastCondensateService implements ForecastMethodInterface{
             return converter.apiSuccess200(save);
         }catch (Exception e){
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -98,6 +100,7 @@ public class ForecastCondensateService implements ForecastMethodInterface{
 
         }catch (Exception e){
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -121,6 +124,7 @@ public class ForecastCondensateService implements ForecastMethodInterface{
             return converter.apiSuccess201("Forecast created",save);
         }catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -131,6 +135,7 @@ public class ForecastCondensateService implements ForecastMethodInterface{
             return converter.apiSuccess200(forecastCondensateRepository.findAll());
         }catch (Exception e){
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -144,6 +149,7 @@ public class ForecastCondensateService implements ForecastMethodInterface{
             return converter.apiSuccess200(forecastCondensateRepository.findAllByMiningSystem(miningSystem.get()));
         }catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -157,6 +163,7 @@ public class ForecastCondensateService implements ForecastMethodInterface{
             return converter.apiSuccess200(forecastCondensateRepository.findAllByMiningSystemAndYearBetweenOrderByCreatedAtAsc(miningSystem.get(),from,to));
         }catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -170,6 +177,7 @@ public class ForecastCondensateService implements ForecastMethodInterface{
             return converter.apiSuccess200(forecastCondensateRepository.findAllByMiningSystemAndYearBetween(miningSystem.get(),year,year));
         }catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }

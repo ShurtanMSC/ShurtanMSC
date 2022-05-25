@@ -2,7 +2,6 @@ package uz.neft.repository.constants;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import uz.neft.entity.ForecastCondensate;
-import uz.neft.entity.ForecastCondensate;
 import uz.neft.entity.MiningSystem;
 
 import java.time.Month;

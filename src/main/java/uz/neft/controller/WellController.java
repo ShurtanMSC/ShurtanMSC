@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.neft.dto.WellDto;
-import uz.neft.dto.action.UppgActionDto;
 import uz.neft.dto.action.WellActionDto;
 import uz.neft.entity.User;
 import uz.neft.secret.CurrentUser;

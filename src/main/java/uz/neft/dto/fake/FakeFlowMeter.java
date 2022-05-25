@@ -1,7 +1,6 @@
 package uz.neft.dto.fake;
 
 import lombok.*;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 

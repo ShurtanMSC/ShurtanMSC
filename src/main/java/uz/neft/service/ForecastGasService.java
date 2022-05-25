@@ -1,11 +1,11 @@
 package uz.neft.service;
 
+import org.slf4j.Logger;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.ForecastDto;
-import uz.neft.entity.ForecastCondensate;
-import uz.neft.entity.MiningSystem;
 import uz.neft.entity.ForecastGas;
+import uz.neft.entity.MiningSystem;
 import uz.neft.payload.ApiResponse;
 import uz.neft.payload.ApiResponseObject;
 import uz.neft.repository.MiningSystemRepository;
@@ -22,11 +22,13 @@ public class ForecastGasService implements ForecastMethodInterface{
     private final ForecastGasRepository forecastGasRepository;
     private final MiningSystemRepository miningSystemRepository;
     private final Converter converter;
+    private final Logger logger;
 
-    public ForecastGasService(ForecastGasRepository forecastGasRepository, MiningSystemRepository miningSystemRepository, Converter converter) {
+    public ForecastGasService(ForecastGasRepository forecastGasRepository, MiningSystemRepository miningSystemRepository, Converter converter, Logger logger) {
         this.forecastGasRepository = forecastGasRepository;
         this.miningSystemRepository = miningSystemRepository;
         this.converter = converter;
+        this.logger = logger;
     }
 
     // Forecast - prognoz
@@ -51,6 +53,7 @@ public class ForecastGasService implements ForecastMethodInterface{
             return converter.apiSuccess(gas);
         }catch (Exception e){
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError();
         }
     }
@@ -75,6 +78,7 @@ public class ForecastGasService implements ForecastMethodInterface{
             return converter.apiSuccess200(save);
         }catch (Exception e){
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -98,6 +102,7 @@ public class ForecastGasService implements ForecastMethodInterface{
 
         }catch (Exception e){
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -119,6 +124,7 @@ public class ForecastGasService implements ForecastMethodInterface{
             return converter.apiSuccess201("Forecast created",save);
         }catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -129,6 +135,7 @@ public class ForecastGasService implements ForecastMethodInterface{
             return converter.apiSuccess200(forecastGasRepository.findAll());
         }catch (Exception e){
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -142,6 +149,7 @@ public class ForecastGasService implements ForecastMethodInterface{
             return converter.apiSuccess200(forecastGasRepository.findAllByMiningSystemOrderByCreatedAtAsc(miningSystem.get()));
         }catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -155,6 +163,7 @@ public class ForecastGasService implements ForecastMethodInterface{
             return converter.apiSuccess200(forecastGasRepository.findAllByMiningSystemAndYearBetweenOrderByCreatedAtAsc(miningSystem.get(),from,to));
         }catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -168,6 +177,7 @@ public class ForecastGasService implements ForecastMethodInterface{
             return converter.apiSuccess200(forecastGasRepository.findAllByMiningSystemAndYearBetween(miningSystem.get(),year,year));
         }catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }

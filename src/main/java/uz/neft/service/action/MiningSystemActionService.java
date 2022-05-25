@@ -1,5 +1,6 @@
 package uz.neft.service.action;
 
+import org.slf4j.Logger;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -11,8 +12,8 @@ import uz.neft.entity.action.MiningSystemAction;
 import uz.neft.repository.*;
 import uz.neft.repository.action.MiningSystemActionRepository;
 import uz.neft.repository.constants.ConstantRepository;
-import uz.neft.repository.constants.MiningSystemConstantRepository;
 import uz.neft.repository.constants.ForecastGasRepository;
+import uz.neft.repository.constants.MiningSystemConstantRepository;
 import uz.neft.service.Calculator;
 import uz.neft.utils.Converter;
 
@@ -33,9 +34,10 @@ public class MiningSystemActionService {
     private final CollectionPointRepository collectionPointRepository;
     private final MiningSystemActionRepository miningSystemActionRepository;
     private final ForecastGasRepository forecastGasRepository;
+    private final Logger logger;
 
 
-    public MiningSystemActionService(MiningSystemActionRepository miningSystemActionRepository, MiningSystemConstantRepository miningSystemConstantRepository, Converter converter, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository, Calculator calculator, ConstantRepository constantRepository, UserRepository userRepository, CollectionPointRepository collectionPointRepository, MiningSystemActionRepository findAllByCollectionPoint, MiningSystemRepository miningSystemRepository1, ForecastGasRepository forecastGasRepository) {
+    public MiningSystemActionService(MiningSystemActionRepository miningSystemActionRepository, MiningSystemConstantRepository miningSystemConstantRepository, Converter converter, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository, Calculator calculator, ConstantRepository constantRepository, UserRepository userRepository, CollectionPointRepository collectionPointRepository, MiningSystemActionRepository findAllByCollectionPoint, MiningSystemRepository miningSystemRepository1, ForecastGasRepository forecastGasRepository, Logger logger) {
         this.miningSystemRepository = miningSystemRepository;
         this.converter = converter;
         this.miningSystemMiningSystemGasCompositionRepository = miningSystemMiningSystemGasCompositionRepository;
@@ -45,6 +47,7 @@ public class MiningSystemActionService {
         this.collectionPointRepository = collectionPointRepository;
         this.miningSystemActionRepository = miningSystemActionRepository;
         this.forecastGasRepository = forecastGasRepository;
+        this.logger = logger;
     }
 
 
@@ -58,6 +61,7 @@ public class MiningSystemActionService {
             return converter.apiSuccess200(new ObjectWithActionsDto(miningSystem.get(), action));
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -70,6 +74,7 @@ public class MiningSystemActionService {
             return converter.apiSuccess200(list);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -84,6 +89,7 @@ public class MiningSystemActionService {
             return converter.apiSuccess200(miningSystemActionDtoStream);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -103,6 +109,7 @@ public class MiningSystemActionService {
             return converter.apiSuccess200(wellDtos);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in fetching all wells");
         }
     }
@@ -126,6 +133,7 @@ public class MiningSystemActionService {
 //            return converter.apiError409();
 //        }catch (Exception e){
 //            e.printStackTrace();
+//    logger.error(e.toString());
 //            return converter.apiError409();
 //        }
 //

@@ -2,6 +2,7 @@ package uz.neft.entity;
 
 import lombok.*;
 import uz.neft.entity.template.AbsEntityInteger;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;

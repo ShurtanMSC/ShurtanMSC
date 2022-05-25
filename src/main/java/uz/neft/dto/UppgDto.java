@@ -1,10 +1,9 @@
 package uz.neft.dto;
 
-import lombok.*;
-import uz.neft.entity.MiningSystem;
-
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor

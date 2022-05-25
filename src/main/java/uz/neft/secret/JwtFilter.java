@@ -9,7 +9,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import uz.neft.repository.UserRepository;
 import uz.neft.service.AuthService;
 
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import java.util.UUID;
 
 
 public class JwtFilter extends OncePerRequestFilter {

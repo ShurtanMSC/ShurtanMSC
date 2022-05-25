@@ -1,18 +1,16 @@
 package uz.neft.service.action;
 
+import org.slf4j.Logger;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.UppgDto;
-import uz.neft.dto.WellDto;
-import uz.neft.dto.action.MiningSystemActionDto;
 import uz.neft.dto.action.ObjectWithActionsDto;
 import uz.neft.dto.action.UppgActionDto;
-import uz.neft.dto.action.WellActionDto;
-import uz.neft.entity.*;
-import uz.neft.entity.action.MiningSystemAction;
+import uz.neft.entity.MiningSystem;
+import uz.neft.entity.Uppg;
+import uz.neft.entity.User;
 import uz.neft.entity.action.UppgAction;
-import uz.neft.entity.action.WellAction;
 import uz.neft.repository.MiningSystemRepository;
 import uz.neft.repository.UppgRepository;
 import uz.neft.repository.UserRepository;
@@ -35,14 +33,15 @@ public class UppgActionService {
     private final UppgRepository uppgRepository;
     private final Converter converter;
     private final MiningSystemRepository miningSystemRepository;
+    private final Logger logger;
 
-
-    public UppgActionService(UserRepository userRepository, UppgActionRepository uppgActionRepository, UppgRepository uppgRepository, CollectionPointActionRepository collectionPointActionRepository, Converter converter, WellActionRepository wellActionRepository, WellRepository wellRepository, MiningSystemRepository miningSystemRepository) {
+    public UppgActionService(UserRepository userRepository, UppgActionRepository uppgActionRepository, UppgRepository uppgRepository, CollectionPointActionRepository collectionPointActionRepository, Converter converter, WellActionRepository wellActionRepository, WellRepository wellRepository, MiningSystemRepository miningSystemRepository, Logger logger) {
         this.userRepository = userRepository;
         this.uppgActionRepository = uppgActionRepository;
         this.uppgRepository = uppgRepository;
         this.converter = converter;
         this.miningSystemRepository = miningSystemRepository;
+        this.logger = logger;
     }
 
 
@@ -79,6 +78,7 @@ public class UppgActionService {
             return converter.apiSuccess201(uppgActionDto);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -97,6 +97,7 @@ public class UppgActionService {
             return converter.apiError400("Id null");
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in deleting uppg action", e);
         }
     }
@@ -110,6 +111,7 @@ public class UppgActionService {
             return converter.apiSuccess200(collect);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in fetching all uppgs");
         }
     }
@@ -121,6 +123,7 @@ public class UppgActionService {
             return uppgActionDtos(all);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in fetching uppgs with actions");
         }
     }
@@ -135,6 +138,7 @@ public class UppgActionService {
             return uppgActionDtos(uppgs);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in fetching uppgs with actions by mining system ");
         }
     }
@@ -150,6 +154,7 @@ public class UppgActionService {
             return converter.apiSuccess200(uppgActionDtoStream);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in fetching uppgs with actions by mining system ");
         }
     }
@@ -166,6 +171,7 @@ public class UppgActionService {
             return converter.apiSuccess200(collect);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in fetching uppgs by mining System ");
         }
     }
@@ -178,6 +184,7 @@ public class UppgActionService {
             return converter.apiSuccess200(dto);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in fetching uppg by id");
         }
     }
@@ -207,6 +214,7 @@ public class UppgActionService {
             return converter.apiSuccess200(dto);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in fetching uppg by id eith action");
         }
     }
@@ -268,6 +276,7 @@ public class UppgActionService {
             return converter.apiError404("Uppg action not found");
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error editing Uppg action");
         }
     }

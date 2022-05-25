@@ -2,9 +2,7 @@ package uz.neft.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import uz.neft.dto.special.CollectionPointAndWells;
 import uz.neft.entity.CollectionPoint;
-import uz.neft.entity.Uppg;
 import uz.neft.entity.Well;
 
 import java.util.List;

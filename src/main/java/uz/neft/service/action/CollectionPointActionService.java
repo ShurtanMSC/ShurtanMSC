@@ -1,5 +1,6 @@
 package uz.neft.service.action;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -63,6 +64,7 @@ public class CollectionPointActionService {
     private final ForecastGasService forecastGasService;
     private final AkkaService akkaService;
     private final TESTForecastGasService testForecastGasService;
+    private final Logger logger;
 
     @Value("${delta.temperature.forCollectionPoint.Action}")
     private Double deltaTemperatureAction ;
@@ -71,7 +73,7 @@ public class CollectionPointActionService {
     private Double deltaPressureAction ;
 
 
-    public CollectionPointActionService(UserRepository userRepository, CollectionPointRepository collectionPointRepository, CollectionPointActionRepository collectionPointActionRepository, Converter converter, WellActionRepository wellActionRepository, WellRepository wellRepository, UppgRepository uppgRepository, UppgActionRepository uppgActionRepository, MiningSystemRepository miningSystemRepository, MiningSystemActionRepository miningSystemActionRepository, WellActionService wellActionService, OpcService opcService, FakeService fakeService, ForecastGasRepository forecastGasRepository, ForecastGasService forecastGasService, AkkaService akkaService, TESTForecastGasService testForecastGasService) {
+    public CollectionPointActionService(UserRepository userRepository, CollectionPointRepository collectionPointRepository, CollectionPointActionRepository collectionPointActionRepository, Converter converter, WellActionRepository wellActionRepository, WellRepository wellRepository, UppgRepository uppgRepository, UppgActionRepository uppgActionRepository, MiningSystemRepository miningSystemRepository, MiningSystemActionRepository miningSystemActionRepository, WellActionService wellActionService, OpcService opcService, FakeService fakeService, ForecastGasRepository forecastGasRepository, ForecastGasService forecastGasService, AkkaService akkaService, TESTForecastGasService testForecastGasService, Logger logger) {
         this.userRepository = userRepository;
         this.collectionPointRepository = collectionPointRepository;
         this.collectionPointActionRepository = collectionPointActionRepository;
@@ -89,6 +91,7 @@ public class CollectionPointActionService {
         this.forecastGasService = forecastGasService;
         this.akkaService = akkaService;
         this.testForecastGasService = testForecastGasService;
+        this.logger = logger;
     }
 
     /**
@@ -132,6 +135,7 @@ public class CollectionPointActionService {
             return converter.apiSuccess201(collectionPointActionDto);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -151,6 +155,7 @@ public class CollectionPointActionService {
             return addManually(user, dto);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -164,6 +169,7 @@ public class CollectionPointActionService {
             return converter.apiSuccess200(collect);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in fetching all collection point names");
         }
     }
@@ -183,6 +189,7 @@ public class CollectionPointActionService {
             return converter.apiSuccess200(collectionPointList.stream().map(converter::collectionPointToCollectionPointDto).collect(Collectors.toList()));
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -207,6 +214,7 @@ public class CollectionPointActionService {
             return converter.apiSuccess200(list);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -228,6 +236,7 @@ public class CollectionPointActionService {
 //            return converter.apiSuccess200(collectionPointActionDtoStream);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -244,6 +253,7 @@ public class CollectionPointActionService {
             return converter.apiSuccess200(collect);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in fetching collection point by uppg ");
         }
     }
@@ -258,6 +268,7 @@ public class CollectionPointActionService {
             return converter.apiSuccess200(collectionPointDto);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in fetching collection point by id");
         }
     }
@@ -283,6 +294,7 @@ public class CollectionPointActionService {
             return converter.apiSuccess200(collect);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in fetching collection points with actions");
         }
     }
@@ -306,6 +318,7 @@ public class CollectionPointActionService {
             return converter.apiSuccess200(dto);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in fetching collection point by id");
         }
     }
@@ -325,6 +338,7 @@ public class CollectionPointActionService {
             return converter.apiError400("Action Id null");
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in deleting Collection point action", e);
         }
 
@@ -355,6 +369,7 @@ public class CollectionPointActionService {
             return converter.apiError404("Collection Point Action not found!");
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error edit collection point");
         }
     }
@@ -468,30 +483,44 @@ public class CollectionPointActionService {
 //                        else
 //                            pressureOpc = Calculator.mega_pascal_to_kgf_sm2(opcService.getValue(action, action.getCollectionPoint().getPressureUnit()));
 //
-                        double temperatureOpc = opcService.getValueWeb(action, action.getCollectionPoint().getTemperatureUnit());
+                        double temperatureOpc = opcService.getValueWeb(action, action.getCollectionPoint().getTemperatureUnit(),action.getCollectionPoint().getOpcServer().getUrl());
                         double pressureOpc=0;
                         if (collectionPoint.getOpcServer().getType().equals(OpcServerType.SIMULATE))
-                            pressureOpc = opcService.getValueWeb(action, action.getCollectionPoint().getPressureUnit());
+                            pressureOpc = opcService.getValueWeb(action, action.getCollectionPoint().getPressureUnit(),action.getCollectionPoint().getOpcServer().getUrl());
                         else
-                            pressureOpc = Calculator.mega_pascal_to_kgf_sm2(opcService.getValueWeb(action, action.getCollectionPoint().getPressureUnit()));
+                            pressureOpc = Calculator.mega_pascal_to_kgf_sm2(opcService.getValueWeb(action, action.getCollectionPoint().getPressureUnit(),action.getCollectionPoint().getOpcServer().getUrl()));
 
 
+                        logger.info("lastActionId -> " + lastActionId);
+                        logger.info("oldValue_Temperature -> " + oldValueTemperature);
+                        logger.info("oldValue_Pressure -> " + oldValuePressure);
+                        logger.info("newValue_Temperature -> " + temperatureOpc);
+                        logger.info("newValue_Pressure -> " + pressureOpc);
 
                         System.out.println("lastActionId -> " + lastActionId);
                         System.out.println("oldValue_Temperature -> " + oldValueTemperature);
                         System.out.println("oldValue_Pressure -> " + oldValuePressure);
                         System.out.println("newValue_Temperature -> " + temperatureOpc);
                         System.out.println("newValue_Pressure -> " + pressureOpc);
+
                         double deltaTemperature = Math.abs(temperatureOpc - oldValueTemperature);
                         double deltaPressure = Math.abs(pressureOpc - oldValuePressure);
+
+                        logger.info("deltaTemperature -> " + deltaTemperature);
+                        logger.info("deltaPressure -> " + deltaPressure);
+                        logger.info("DELTA --> " + deltaTemperatureAction);
+
                         System.out.println("deltaTemperature -> " + deltaTemperature);
                         System.out.println("deltaPressure -> " + deltaPressure);
                         System.out.println("DELTA --> " + deltaTemperatureAction);
+
                         boolean oldValueUpdate = false;
                         if (deltaTemperature >= deltaTemperatureAction) {
-                            System.out.println("deltaTemperature >= 2");
+                            logger.info("deltaTemperature >= "+deltaTemperature);
+                            System.out.println("deltaTemperature >= "+deltaTemperature);
                             action.setTemperature(temperatureOpc);
                             oldValueTemperature = temperatureOpc;
+                            logger.info("oldValueTemperature -> " + oldValueTemperature);
                             System.out.println("oldValueTemperature -> " + oldValueTemperature);
                         } else {
                             oldValueUpdate = true;
@@ -501,21 +530,32 @@ public class CollectionPointActionService {
                                 action.setTemperature(temperatureOpc);
                             }
 
-                            System.out.println("deltaPressure >= 10");
+                            logger.info("deltaPressure >= "+deltaPressure);
+                            System.out.println("deltaPressure >= "+deltaPressure);
                             action.setPressure(pressureOpc);
                             oldValuePressure = pressureOpc;
+                            logger.info("oldValuePressure -> " + oldValuePressure);
                             System.out.println("oldValuePressure -> " + oldValuePressure);
                         } else {
                             if (oldValueUpdate) {
                                 Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
                                 CollectionPointAction collectionPointAction;
-                                collectionPointAction = collectionPointActionRepository.findById(lastActionId).get();
-                                collectionPointAction.setModified(modifiedDate);
-                                CollectionPointAction save = collectionPointActionRepository.save(collectionPointAction);
+                                if (collectionPointActionRepository.findById(lastActionId).isPresent()){
+                                    collectionPointAction = collectionPointActionRepository.findById(lastActionId).get();
+                                    collectionPointAction.setModified(modifiedDate);
+                                    CollectionPointAction save = collectionPointActionRepository.save(collectionPointAction);
 
-                                System.out.println("modifiedDate ---" + modifiedDate);
-                                System.out.println("oldValueUpdate -------------");
-                                System.out.println("Action id = " + lastActionId + ". Last Action Updated" + "modifiedDate  " + save.getModified());
+                                    logger.info("modifiedDate ---" + modifiedDate);
+                                    logger.info("oldValueUpdate -------------");
+                                    logger.info("Action id = " + lastActionId + ". Last Action Updated" + "modifiedDate  " + save.getModified());
+
+                                    System.out.println("modifiedDate ---" + modifiedDate);
+                                    System.out.println("oldValueUpdate -------------");
+                                    System.out.println("Action id = " + lastActionId + ". Last Action Updated" + "modifiedDate  " + save.getModified());
+
+                                }
+
+
                                 continue;
                             } else {
                                 action.setPressure(pressureOpc);
@@ -548,6 +588,7 @@ public class CollectionPointActionService {
             testForecastGasService.addNewForecast(1);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
         }
     }
 
@@ -574,6 +615,7 @@ public class CollectionPointActionService {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
         }
         return expendCp;
     }

@@ -5,14 +5,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.neft.dto.MiningSystemDto;
 import uz.neft.dto.action.MiningSystemActionDto;
-import uz.neft.dto.action.WellActionDto;
-import uz.neft.entity.User;
-import uz.neft.secret.CurrentUser;
 import uz.neft.service.MiningSystemService;
 import uz.neft.service.action.MiningSystemActionService;
-import uz.neft.service.action.WellActionService;
-
-import java.time.Month;
 
 @RestController
 @RequestMapping("api/mining_system")

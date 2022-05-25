@@ -2,19 +2,14 @@ package uz.neft.service;
 //lord
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import uz.neft.dto.CollectionPointDto;
 import uz.neft.dto.GasCompositionDto;
 import uz.neft.dto.MiningSystemGasCompositionDto;
-import uz.neft.dto.UppgDto;
 import uz.neft.dto.action.ObjectWithActionsDto;
 import uz.neft.entity.MiningSystem;
-import uz.neft.entity.Uppg;
 import uz.neft.entity.variables.GasComposition;
 import uz.neft.entity.variables.MiningSystemGasComposition;
-import uz.neft.payload.ApiResponse;
 import uz.neft.repository.GasCompositionRepository;
 import uz.neft.repository.MiningSystemGasCompositionRepository;
 import uz.neft.repository.MiningSystemRepository;

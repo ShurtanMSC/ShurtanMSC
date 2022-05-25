@@ -1,5 +1,6 @@
 package uz.neft.service;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -40,9 +41,9 @@ public class ConstantService {
     private final CollectionPointRepository collectionPointRepository;
     private final WellRepository wellRepository;
     private final ConstantValuesRepository constantValuesRepository;
-
+    private final Logger logger;
     @Autowired
-    public ConstantService(ConstantRepository constantRepository, Converter converter, MiningSystemRepository miningSystemRepository, MiningSystemConstantRepository miningSystemConstantRepository, UppgConstantRepository uppgConstantRepository, CollectionPointConstantRepository collectionPointConstantRepository, WellConstantRepository wellConstantRepository, UppgRepository uppgRepository, CollectionPointRepository collectionPointRepository, WellRepository wellRepository, ConstantValuesRepository constantValuesRepository) {
+    public ConstantService(ConstantRepository constantRepository, Converter converter, MiningSystemRepository miningSystemRepository, MiningSystemConstantRepository miningSystemConstantRepository, UppgConstantRepository uppgConstantRepository, CollectionPointConstantRepository collectionPointConstantRepository, WellConstantRepository wellConstantRepository, UppgRepository uppgRepository, CollectionPointRepository collectionPointRepository, WellRepository wellRepository, ConstantValuesRepository constantValuesRepository, Logger logger) {
         this.constantRepository = constantRepository;
         this.converter = converter;
         this.miningSystemRepository = miningSystemRepository;
@@ -54,6 +55,7 @@ public class ConstantService {
         this.collectionPointRepository = collectionPointRepository;
         this.wellRepository = wellRepository;
         this.constantValuesRepository = constantValuesRepository;
+        this.logger = logger;
     }
 
     public ResponseEntity<?> save(ConstantDto dto) {
@@ -71,6 +73,7 @@ public class ConstantService {
             return converter.apiSuccess201("Constant added", constantDto);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error Creating Constant");
         }
     }
@@ -93,6 +96,7 @@ public class ConstantService {
             return converter.apiError404("Constant not found");
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error editing Constant");
         }
     }
@@ -110,6 +114,7 @@ public class ConstantService {
             return converter.apiError400("Id null");
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in deleting Constant", e);
         }
     }
@@ -121,6 +126,7 @@ public class ConstantService {
             return converter.apiSuccess200(collect);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in fetching Constants", e);
         }
     }
@@ -139,6 +145,7 @@ public class ConstantService {
             return converter.apiError400("Id null");
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in finding Constant", e);
         }
     }
@@ -159,6 +166,7 @@ public class ConstantService {
 
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error Creating ConstantValue");
         }
     }
@@ -177,6 +185,7 @@ public class ConstantService {
 
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error Creating ConstantValue");
         }
     }
@@ -193,6 +202,7 @@ public class ConstantService {
             return converter.apiSuccess200("ConstantValue deleted ");
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in deleting ConstantValue");
         }
     }
@@ -204,6 +214,7 @@ public class ConstantService {
             return converter.apiSuccess200(collect);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in fetching ConstantValues", e);
         }
     }
@@ -217,6 +228,7 @@ public class ConstantService {
             return converter.apiSuccess200(constantValueDto);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in finding Constant", e);
         }
     }
@@ -277,6 +289,7 @@ public class ConstantService {
             return converter.apiSuccess200(allByMiningSystem);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in fetching Constants", e);
         }
     }
@@ -304,6 +317,7 @@ public class ConstantService {
             return converter.apiSuccess201("MiningSystemConstant added");
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error Creating MiningSystemConstant");
         }
     }
@@ -347,6 +361,7 @@ public class ConstantService {
             return converter.apiError400("Id null");
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in deleting Constant", e);
         }
     }
@@ -372,6 +387,7 @@ public class ConstantService {
 
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error Editing ConstantValue");
         }
 
@@ -386,6 +402,7 @@ public class ConstantService {
             return converter.apiSuccess200(uppgConstants);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in fetching Constants", e);
         }
     }
@@ -411,6 +428,7 @@ public class ConstantService {
             return converter.apiSuccess201("Uppg Constant added");
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error Creating Uppg Constant");
         }
     }
@@ -433,6 +451,7 @@ public class ConstantService {
 
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error Editing ConstantValue");
         }
     }
@@ -445,6 +464,7 @@ public class ConstantService {
             return converter.apiSuccess200(collectionPointConstants);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in fetching Constants", e);
         }
     }
@@ -470,6 +490,7 @@ public class ConstantService {
             return converter.apiSuccess201("CollectionPoint Constant added");
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error Creating CollectionPoint Constant");
         }
     }
@@ -492,6 +513,7 @@ public class ConstantService {
 
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error Editing ConstantValue");
         }
     }
@@ -504,6 +526,7 @@ public class ConstantService {
             return converter.apiSuccess200(wellConstants);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in fetching Constants", e);
         }
     }
@@ -529,6 +552,7 @@ public class ConstantService {
             return converter.apiSuccess201("Well Constant added");
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error Creating well Constant");
         }
     }
@@ -551,6 +575,7 @@ public class ConstantService {
 
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error Editing ConstantValue");
         }
     }

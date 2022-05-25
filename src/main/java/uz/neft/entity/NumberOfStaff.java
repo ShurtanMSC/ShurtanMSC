@@ -5,7 +5,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import uz.neft.dto.StaffDto;
 import uz.neft.dto.action.ObjectWithActionsDto;
 import uz.neft.entity.template.AbsEntityInteger;
-import uz.neft.utils.Converter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

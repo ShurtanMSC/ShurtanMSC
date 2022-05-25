@@ -1,5 +1,6 @@
 package uz.neft.service.action;
 
+import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -8,14 +9,11 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.WellDto;
-import uz.neft.dto.action.CollectionPointActionDto;
 import uz.neft.dto.action.ObjectWithActionsDto;
-import uz.neft.dto.action.UppgActionDto;
 import uz.neft.dto.action.WellActionDto;
 import uz.neft.dto.special.WellActionLite;
 import uz.neft.entity.*;
 import uz.neft.entity.action.CollectionPointAction;
-import uz.neft.entity.action.UppgAction;
 import uz.neft.entity.action.WellAction;
 import uz.neft.entity.enums.WellStatus;
 import uz.neft.entity.variables.*;
@@ -44,9 +42,10 @@ public class WellActionService {
     private final MiningSystemRepository miningSystemRepository;
     private final UppgRepository uppgRepository;
     private final CollectionPointActionRepository collectionPointActionRepository;
+    private final Logger logger;
 
 
-    public WellActionService(WellActionRepository wellActionRepository, MiningSystemConstantRepository miningSystemConstantRepository, WellRepository wellRepository, Converter converter, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository, Calculator calculator, ConstantRepository constantRepository, UserRepository userRepository, CollectionPointRepository collectionPointRepository, UppgRepository uppgRepository, CollectionPointActionRepository collectionPointActionRepository) {
+    public WellActionService(WellActionRepository wellActionRepository, MiningSystemConstantRepository miningSystemConstantRepository, WellRepository wellRepository, Converter converter, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository, Calculator calculator, ConstantRepository constantRepository, UserRepository userRepository, CollectionPointRepository collectionPointRepository, UppgRepository uppgRepository, CollectionPointActionRepository collectionPointActionRepository, Logger logger) {
         this.wellActionRepository = wellActionRepository;
         this.wellRepository = wellRepository;
         this.converter = converter;
@@ -58,6 +57,7 @@ public class WellActionService {
         this.miningSystemRepository = miningSystemRepository;
         this.uppgRepository = uppgRepository;
         this.collectionPointActionRepository = collectionPointActionRepository;
+        this.logger = logger;
     }
 
 
@@ -286,6 +286,7 @@ public class WellActionService {
             return converter.apiSuccess201(wellActionDto);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError404();
         }
     }
@@ -321,6 +322,7 @@ public class WellActionService {
             return converter.apiSuccess200(wellDtos);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in fetching all wells");
         }
     }
@@ -332,6 +334,7 @@ public class WellActionService {
             return wellActionDtos(all);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in fetching collection points with actions");
         }
     }
@@ -346,6 +349,7 @@ public class WellActionService {
             return wellActionDtos(wells);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in fetching wells with actions by collection point ");
         }
     }
@@ -362,6 +366,7 @@ public class WellActionService {
             return converter.apiSuccess200(collect);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in fetching wells by collection point ");
         }
     }
@@ -374,6 +379,7 @@ public class WellActionService {
             return converter.apiSuccess200(dto);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in fetching well by id");
         }
     }
@@ -401,6 +407,7 @@ public class WellActionService {
             return converter.apiSuccess200(dto);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in fetching collection point by id");
         }
     }
@@ -437,6 +444,7 @@ public class WellActionService {
             return converter.apiSuccess200(wellList.stream().map(converter::wellToWellDto).collect(Collectors.toList()));
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -458,6 +466,7 @@ public class WellActionService {
             return converter.apiSuccess200(list);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -478,6 +487,7 @@ public class WellActionService {
             return converter.apiSuccess200(wellActionDtoStream, wellActions.getTotalElements(), wellActions.getTotalPages(), wellActions.getNumber());
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -490,6 +500,7 @@ public class WellActionService {
             return converter.apiSuccess200(wellList.stream().map(converter::wellToWellDto).collect(Collectors.toList()));
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -512,6 +523,7 @@ public class WellActionService {
             return converter.apiSuccess200(list);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -521,6 +533,7 @@ public class WellActionService {
             return converter.apiSuccess200();
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -569,6 +582,7 @@ public class WellActionService {
             return converter.apiSuccess200(stats);
         }catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -637,6 +651,7 @@ public class WellActionService {
 
         }catch (Exception e){
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409();
         }
     }
@@ -678,6 +693,7 @@ public class WellActionService {
             return converter.apiError404("Uppg action not found");
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error editing Uppg action");
         }
     }
@@ -696,6 +712,7 @@ public class WellActionService {
             return converter.apiError400("Id null");
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return converter.apiError409("Error in deleting uppg action", e);
         }
 
@@ -745,6 +762,7 @@ public class WellActionService {
 
         }catch (Exception e){
             e.printStackTrace();
+            logger.error(e.toString());
             return 0.0;
         }
     }
@@ -763,6 +781,7 @@ public class WellActionService {
             return sum;
         }catch (Exception e){
             e.printStackTrace();
+            logger.error(e.toString());
             return 0.0;
         }
     }

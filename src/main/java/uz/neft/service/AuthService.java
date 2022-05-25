@@ -1,5 +1,6 @@
 package uz.neft.service;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,6 +25,8 @@ public class AuthService implements UserDetailsService {
     UserRepository userRepository;
     JwtTokenProvider jwtTokenProvider;
     AuthenticationManager authenticationManager;
+    @Autowired
+    Logger logger;
 
     @Autowired
     public AuthService(UserRepository userRepository, JwtTokenProvider jwtTokenProvider, AuthenticationManager authenticationManager) {
@@ -53,6 +56,7 @@ public class AuthService implements UserDetailsService {
             return new ResToken(jwt);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.toString());
             return null;
         }
     }

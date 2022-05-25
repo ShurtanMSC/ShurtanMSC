@@ -3,9 +3,6 @@ package uz.neft.payload;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import uz.neft.dto.action.CollectionPointActionDto;
-
-import java.util.stream.Stream;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

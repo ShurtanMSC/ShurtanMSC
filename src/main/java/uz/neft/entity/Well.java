@@ -7,7 +7,6 @@ import uz.neft.entity.template.AbsEntityInteger;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.sql.Timestamp;
 import java.util.Date;
 
 @EqualsAndHashCode(callSuper = true)

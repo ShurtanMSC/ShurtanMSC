@@ -8,8 +8,6 @@ import uz.neft.backup.my.services.PostgresqlExportService;
 import uz.neft.utils.Converter;
 
 import java.io.File;
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Properties;
 
 @Service

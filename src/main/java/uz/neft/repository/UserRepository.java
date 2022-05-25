@@ -7,7 +7,6 @@ import uz.neft.entity.User;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 public interface UserRepository extends JpaRepository<User,Integer> {
 
