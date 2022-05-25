@@ -14,9 +14,9 @@
 	<name>ShurtanMSC</name>
 	<description>For software development information and analytical system for operational analysis and control of the digitalization system of the Shurtan group of fields</description>
 	<properties>
-		<java.version>11</java.version>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+		<java.version>17</java.version>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
 		<repackage.classifier/>
 		<spring-native.version>0.10.0</spring-native.version>
 		<!--		<sonar.projectKey>kalish</sonar.projectKey>-->
