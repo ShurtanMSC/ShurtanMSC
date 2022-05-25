@@ -24,6 +24,7 @@ import uz.neft.repository.constants.MiningSystemConstantRepository;
 import uz.neft.service.Calculator;
 import uz.neft.service.action.WellActionService;
 
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -78,10 +79,15 @@ public class DataLoader implements CommandLineRunner {
 //        @Value("${spring.datasource.initialization-mode}")
 //    private String mode;
 
-    @Value("${opc.simulation.service.address}")
-    private String simulate;
+//    @Value("${opc.simulation.service.address}")
+//    private String simulate;
+//
+//    @Value("${server.address}")
+//    private String simulate;
+
     @Override
     public void run(String... args) throws Exception {
+        String simulate = InetAddress.getLocalHost().getHostAddress();
         if(!miningSystemRepository.existsById(1)){
             //        if (mode.equals("always")) {
             try {
