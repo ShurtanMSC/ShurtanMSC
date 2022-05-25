@@ -20,11 +20,11 @@ public class ShurtanMscApplication {
 	@Bean
 	public RestTemplate restTemplate(){
 		HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
-		httpRequestFactory.setConnectionRequestTimeout(2);
-		httpRequestFactory.setConnectTimeout(2);
-		httpRequestFactory.setReadTimeout(2);
+		httpRequestFactory.setConnectionRequestTimeout(5);
+		httpRequestFactory.setConnectTimeout(5);
+		httpRequestFactory.setReadTimeout(5);
 
-		return new RestTemplate(httpRequestFactory);
+		return new RestTemplate();
 	}
 }
 

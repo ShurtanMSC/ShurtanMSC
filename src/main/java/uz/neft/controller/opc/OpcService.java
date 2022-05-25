@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import uz.neft.ecograph.web.xml.Root;
+import uz.neft.ecograph.web.xml.Root2;
 import uz.neft.entity.action.CollectionPointAction;
 import uz.neft.entity.enums.OpcServerType;
 
@@ -56,7 +57,33 @@ public class OpcService {
         }catch (Exception e){
             e.printStackTrace();
             logger.error(e.toString());
-            return 0.0;
+
+            try {
+
+                if (collectionPointAction.getCollectionPoint().getOpcServer().getType().equals(OpcServerType.REAL)){
+                    String[] strings = unit.split("\\.");
+//                RestTemplate restTemplate=new RestTemplate();
+                    String a=restTemplate.getForObject(uri, String.class);
+                    XmlMapper xmlMapper = new XmlMapper();
+                    JsonMapper jsonMapper=new JsonMapper();
+                    xmlMapper.enable(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY);
+                    JSONObject json = XML.toJSONObject(a);
+                    logger.info(String.valueOf(json));
+                    System.out.println(json);
+                    Root2 root2=jsonMapper.readValue(json.toString(), Root2.class);
+
+                    if (root2.getFieldgate().device.tag.get(0).equals(strings[1])) return root2.getFieldgate().device.v1;
+
+                    return 0.0;
+                }else {
+                    return new SecureRandom().nextFloat()*(16.0-13.0)+13.0;
+                }
+
+            }catch (Exception er){
+                er.printStackTrace();
+                logger.error(er.toString());
+                return 0.0;
+            }
         }
     }
 

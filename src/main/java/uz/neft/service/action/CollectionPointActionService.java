@@ -483,7 +483,8 @@ public class CollectionPointActionService {
 //                        else
 //                            pressureOpc = Calculator.mega_pascal_to_kgf_sm2(opcService.getValue(action, action.getCollectionPoint().getPressureUnit()));
 //
-                        double temperatureOpc = opcService.getValueWeb(action, action.getCollectionPoint().getTemperatureUnit(),action.getCollectionPoint().getOpcServer().getUrl());
+                        double temperatureOpc=0;
+                        temperatureOpc = opcService.getValueWeb(action, action.getCollectionPoint().getTemperatureUnit(),action.getCollectionPoint().getOpcServer().getUrl());
                         double pressureOpc=0;
                         if (collectionPoint.getOpcServer().getType().equals(OpcServerType.SIMULATE))
                             pressureOpc = opcService.getValueWeb(action, action.getCollectionPoint().getPressureUnit(),action.getCollectionPoint().getOpcServer().getUrl());
