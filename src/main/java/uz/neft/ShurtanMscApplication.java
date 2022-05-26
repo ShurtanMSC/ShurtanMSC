@@ -1,5 +1,6 @@
 package uz.neft;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -13,18 +14,33 @@ import org.springframework.web.client.RestTemplate;
 //@EnableScheduling
 public class ShurtanMscApplication {
 
+	@Value("${custom.timeout}")
+	private boolean timeout;
+	@Value("${custom.request.timeout}")
+	private int connectionRequestTimeout;
+
+	@Value("${custom.connect.timeout}")
+	private int connectTimeout;
+
+	@Value("${custom.read.timeout}")
+	private int readTimeout;
 	public static void main(String[] args) {
 		SpringApplication.run(ShurtanMscApplication.class, args);
 	}
 
 	@Bean
 	public RestTemplate restTemplate(){
-		HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
-		httpRequestFactory.setConnectionRequestTimeout(5);
-		httpRequestFactory.setConnectTimeout(5);
-		httpRequestFactory.setReadTimeout(5);
+		System.out.println(timeout);
+		if (timeout){
+			HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
+			httpRequestFactory.setConnectionRequestTimeout(connectionRequestTimeout);
+			httpRequestFactory.setConnectTimeout(connectTimeout);
+			httpRequestFactory.setReadTimeout(readTimeout);
 
+			return new RestTemplate(httpRequestFactory);
+		}
 		return new RestTemplate();
+
 	}
 }
 

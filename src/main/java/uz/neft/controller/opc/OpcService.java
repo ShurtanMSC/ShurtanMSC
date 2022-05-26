@@ -87,6 +87,74 @@ public class OpcService {
         }
     }
 
+
+    public String getValueWeb(CollectionPointAction collectionPointAction){
+        try {
+            if (collectionPointAction.getCollectionPoint().getOpcServer().getType().equals(OpcServerType.REAL)){
+//                RestTemplate restTemplate=new RestTemplate();
+                String a=restTemplate.getForObject(collectionPointAction.getCollectionPoint().getOpcServer().getUrl(), String.class);
+                return a;
+            }else {
+                return "";
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.error(e.toString());
+
+            return "";
+        }
+    }
+
+    public double getValueWeb(String a,CollectionPointAction collectionPointAction,String unit){
+        String[] strings = unit.split("\\.");
+        XmlMapper xmlMapper = new XmlMapper();
+        JsonMapper jsonMapper=new JsonMapper();
+        xmlMapper.enable(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY);
+        JSONObject json = XML.toJSONObject(a);
+        logger.info(String.valueOf(json));
+        System.out.println(json);
+        try {
+            if (collectionPointAction.getCollectionPoint().getOpcServer().getType().equals(OpcServerType.REAL)){
+
+                Root root=jsonMapper.readValue(json.toString(), Root.class);
+
+                for (int i = 0; i < root.getFieldgate().device.size(); i++) {
+                    if (root.getFieldgate().device.get(i).tag.get(0).equals(strings[1])) return root.getFieldgate().device.get(i).v1;
+                }
+
+                return 0.0;
+            }else {
+                return new SecureRandom().nextFloat()*(16.0-13.0)+13.0;
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.error(e.toString());
+
+            try {
+
+                if (collectionPointAction.getCollectionPoint().getOpcServer().getType().equals(OpcServerType.REAL)){
+
+
+
+                    Root2 root2=jsonMapper.readValue(json.toString(), Root2.class);
+
+                    if (root2.getFieldgate().device.tag.get(0).equals(strings[1])) return root2.getFieldgate().device.v1;
+
+                    return 0.0;
+                }else {
+                    return new SecureRandom().nextFloat()*(16.0-13.0)+13.0;
+                }
+
+            }catch (Exception er){
+                er.printStackTrace();
+                logger.error(er.toString());
+                return 0.0;
+            }
+        }
+    }
+
     public double getValue(CollectionPointAction collectionPointAction,String unit){
         try {
             if (collectionPointAction.getCollectionPoint().getOpcServer().getType().equals(OpcServerType.REAL)){

@@ -30,45 +30,51 @@ function clickActionBtn(id) {
     document.getElementById('addCollectionPointActionBtn').style.display = 'block';
     document.getElementById('goOutActionsIcon').style.display = 'block';
     document.getElementById('refreshAction').style.display = 'block';
+    localStorage.setItem("isAction","true")
 
     getActionsByCollectionPoint()
 }
 
 function getActionsByCollectionPoint(page, pageSize) {
-    let formField = document.getElementById('addOrEditCollectionPointActionForm');
-    formField['collectionPointId'].value = collectionPointID;
 
-    if (pageSize === undefined) {
-        pageSize = PAGESIZE;
+    if (localStorage.getItem("isAction")){
+        let formField = document.getElementById('addOrEditCollectionPointActionForm');
+        formField['collectionPointId'].value = collectionPointID;
+
+        if (pageSize === undefined) {
+            pageSize = PAGESIZE;
+        }
+        if (page === undefined) {
+            page = PAGENUM;
+        }
+
+        let pageNum = page - 1;
+
+        let config = {
+            method: 'get',
+            url: ''
+        };
+
+        config.url = '/api/collection_point/actions/' + collectionPointID + '?page=' + pageNum + '&pageSize=' + pageSize + ''
+
+        axios(config)
+            .then(function (response) {
+                console.log(response.data)
+                if (response.status === 200) {
+                    collectionPointActionsList = response.data.object
+                }
+                PAGENUM = response.data.pageNumber + 1;
+                document.getElementById("collectionPointActionsTable").innerHTML = createViewTableAction(response.data);
+                document.getElementById("totalPages").innerHTML = createViewPaginationAction(response.data.totalPages, PAGENUM);
+                document.getElementById("dataTableLengthSelect").innerHTML = createViewDataTableLengthSelect(response.data.totalElements);
+
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
     }
-    if (page === undefined) {
-        page = PAGENUM;
-    }
 
-    let pageNum = page - 1;
 
-    let config = {
-        method: 'get',
-        url: ''
-    };
-
-    config.url = '/api/collection_point/actions/' + collectionPointID + '?page=' + pageNum + '&pageSize=' + pageSize + ''
-
-    axios(config)
-        .then(function (response) {
-            console.log(response.data)
-            if (response.status === 200) {
-                collectionPointActionsList = response.data.object
-            }
-            PAGENUM = response.data.pageNumber + 1;
-            document.getElementById("collectionPointActionsTable").innerHTML = createViewTableAction(response.data);
-            document.getElementById("totalPages").innerHTML = createViewPaginationAction(response.data.totalPages, PAGENUM);
-            document.getElementById("dataTableLengthSelect").innerHTML = createViewDataTableLengthSelect(response.data.totalElements);
-
-        })
-        .catch(function (error) {
-            console.log(error.response)
-        })
 }
 
 function resetAndCloseFormAction() {
@@ -288,3 +294,5 @@ function handleDataTableLengthSelect(pageSize) {
     PAGESIZE = parseInt(pageSize)
     getActionsByCollectionPoint(1, PAGESIZE);
 }
+
+setInterval(getActionsByCollectionPoint, 2000);

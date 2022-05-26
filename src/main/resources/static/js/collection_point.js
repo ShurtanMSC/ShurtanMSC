@@ -11,6 +11,7 @@ function handleOpcId() {
 }
 
 function getAllMiningSystems() {
+    localStorage.removeItem("isAction")
     axios.get("/api/mining_system/all")
         .then(function (response) {
             if (response.data.message === "OK") {
@@ -23,6 +24,7 @@ function getAllMiningSystems() {
 }
 
 function getAllUppgs() {
+    localStorage.removeItem("isAction")
     axios.get("/api/uppg/all/mining_system/" + miningSystemId)
         .then(function (response) {
             if (response.data.message === "OK") {
@@ -48,6 +50,7 @@ function selectHandleUppg() {
 }
 
 function getAllCollectionPoints() {
+    localStorage.removeItem("isAction")
     if (uppgId == "" || uppgId == null) {
         document.getElementById("uppgSelect").innerHTML = "<option value=''>Нет УППГ</option>"
         document.getElementById("collectionPointTable").innerHTML = "<tr class=\"odd\">\n" +

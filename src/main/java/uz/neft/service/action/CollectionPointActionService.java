@@ -484,12 +484,13 @@ public class CollectionPointActionService {
 //                            pressureOpc = Calculator.mega_pascal_to_kgf_sm2(opcService.getValue(action, action.getCollectionPoint().getPressureUnit()));
 //
                         double temperatureOpc=0;
-                        temperatureOpc = opcService.getValueWeb(action, action.getCollectionPoint().getTemperatureUnit(),action.getCollectionPoint().getOpcServer().getUrl());
+                        String str=opcService.getValueWeb(action);
+                        temperatureOpc = opcService.getValueWeb(str,action, action.getCollectionPoint().getTemperatureUnit());
                         double pressureOpc=0;
                         if (collectionPoint.getOpcServer().getType().equals(OpcServerType.SIMULATE))
-                            pressureOpc = opcService.getValueWeb(action, action.getCollectionPoint().getPressureUnit(),action.getCollectionPoint().getOpcServer().getUrl());
+                            pressureOpc = opcService.getValueWeb(str,action, action.getCollectionPoint().getPressureUnit());
                         else
-                            pressureOpc = Calculator.mega_pascal_to_kgf_sm2(opcService.getValueWeb(action, action.getCollectionPoint().getPressureUnit(),action.getCollectionPoint().getOpcServer().getUrl()));
+                            pressureOpc = Calculator.mega_pascal_to_kgf_sm2(opcService.getValueWeb(str,action, action.getCollectionPoint().getPressureUnit()));
 
 
                         logger.info("lastActionId -> " + lastActionId);
@@ -573,18 +574,20 @@ public class CollectionPointActionService {
                             action.setExpend(0);
                             collectionPointActionRepository.save(action);
                         } else {
-//                            double expendCp = checkWells(collectionPoint, action);
-//                            action.setExpend(expendCp);
+                            double expendCp = checkWells(collectionPoint, action);
+                            action.setExpend(expendCp);
+                            logger.info("Expend "+collectionPoint.getName()+" = "+expendCp);
+                            System.out.println("Expend "+collectionPoint.getName()+" = "+expendCp);
 //                            akkaService.calculate(action);
-                            actionList.add(action);
+//                            actionList.add(action);
                         }
 
-//                        collectionPointActionRepository.save(action);
+                        collectionPointActionRepository.save(action);
                     } else
                         wellActionService.execute(collectionPoint.getUppg());
 
                 }
-                actionList.forEach(akkaService::calculate);
+//                actionList.forEach(akkaService::calculate);
             }
             testForecastGasService.addNewForecast(1);
         } catch (Exception e) {

@@ -10,6 +10,7 @@ import akka.command.manager.CmdComplete;
 import akka.command.worker.CmdTaskCalculate;
 import akka.command.Command;
 
+import org.slf4j.Logger;
 import org.springframework.context.ApplicationContext;
 import uz.neft.controller.opc.OpcService;
 import uz.neft.dto.fake.FakeService;
@@ -79,6 +80,8 @@ public class Worker extends AbstractBehavior<Command> {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        springContext.getBean(Logger.class).info("Expend "+cpAction.getCollectionPoint().getName()+" = "+expendCp);
+        System.out.println("Expend "+cpAction.getCollectionPoint().getName()+" = "+expendCp);
         cpAction.setExpend(expendCp);
         springContext.getBean(CollectionPointActionRepository.class).save(cpAction);
     }

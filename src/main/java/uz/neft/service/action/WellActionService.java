@@ -731,6 +731,7 @@ public class WellActionService {
         for (CollectionPoint collectionPoint : collectionPointList) {
             List<Well> wellList=wellRepository.findAllByCollectionPointOrderByIdAsc(collectionPoint);
             Optional<CollectionPointAction> pointAction = collectionPointActionRepository.findFirstByCollectionPointOrderByCreatedAtDesc(collectionPoint);
+            double cpExpend=0;
             for (Well well : wellList){
                 Optional<WellAction> action=wellActionRepository.findFirstByWellOrderByCreatedAtDesc(well);
                 if (action.isPresent()){
@@ -743,10 +744,16 @@ public class WellActionService {
                         action.get().setExpend(8000000*(action.get().getAverage_expend()/q_well));
                         action.get().setRpl(rpl(action.get()));
                     }
+                    cpExpend+=action.get().getExpend();
                     wellActionRepository.save(action.get());
                 }
 
             }
+            if (pointAction.isPresent()){
+                pointAction.get().setExpend(cpExpend);
+                collectionPointActionRepository.save(pointAction.get());
+            }
+
         }
     }
 
