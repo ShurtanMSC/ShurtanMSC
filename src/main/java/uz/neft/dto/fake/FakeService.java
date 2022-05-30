@@ -1,5 +1,6 @@
 package uz.neft.dto.fake;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +15,8 @@ import java.util.List;
 @Service
 public class FakeService {
 
+    @Value("${spring.datasource.url}")
+    private String postgresqlUrl;
     public static void main(String[] args) {
         Date date=new Date();
         System.out.println(date.getMinutes());
@@ -29,9 +32,9 @@ public class FakeService {
     }
 
     public List<FakeUppg> allSimulator(){
-        String url="jdbc:postgresql://localhost:5432/neftgaz";
+//        String url="jdbc:postgresql://localhost:5433/neftgaz";
         String userDB="postgres", pass="postgres";
-        return allSimulator(url,userDB,pass);
+        return allSimulator(postgresqlUrl,userDB,pass);
     }
 
     @Transactional
