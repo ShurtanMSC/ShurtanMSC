@@ -387,7 +387,7 @@ public class CollectionPointActionService {
             if (miningSystem.isPresent()) {
                 List<Uppg> uppgs = uppgRepository.findAllByMiningSystem(miningSystem.get());
 
-                List<FakeUppg> fakeUppgList = fakeService.allSimulator();
+                List<FakeUppg> fakeUppgList = fakeService.all();
 
                 if (fakeUppgList.size() == 2 && uppgs.size() <= 2) {
                     UppgAction uppgAction1 = UppgAction
