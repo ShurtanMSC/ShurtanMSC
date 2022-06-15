@@ -1,15 +1,21 @@
 package uz.neft.service.action;
 
 import org.slf4j.Logger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.UppgDto;
+import uz.neft.dto.action.CollectionPointActionDto;
 import uz.neft.dto.action.ObjectWithActionsDto;
 import uz.neft.dto.action.UppgActionDto;
 import uz.neft.entity.MiningSystem;
 import uz.neft.entity.Uppg;
 import uz.neft.entity.User;
+import uz.neft.entity.action.CollectionPointAction;
 import uz.neft.entity.action.UppgAction;
 import uz.neft.repository.MiningSystemRepository;
 import uz.neft.repository.UppgRepository;
@@ -152,6 +158,24 @@ public class UppgActionService {
             Stream<UppgActionDto> uppgActionDtoStream = allByUppgOrderByCreatedAtDesc.stream().map(converter::uppgActionToUppgActionDto);
 
             return converter.apiSuccess200(uppgActionDtoStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.toString());
+            return converter.apiError409("Error in fetching uppgs with actions by mining system ");
+        }
+    }
+
+    public HttpEntity<?> getUppgActionsByUppgId(Integer id,Optional<Integer> page,Optional<Integer> pageSize, Optional<String> sortBy) {
+        try {
+            Optional<Uppg> byId1 = uppgRepository.findById(id);
+            if (!byId1.isPresent()) return converter.apiError404("uppg not found");
+            Pageable pg = PageRequest.of(page.orElse(0), pageSize.orElse(10), Sort.Direction.DESC, sortBy.orElse("createdAt"));
+
+            Page<UppgAction> uppgActions = uppgActionRepository.findAllByUppgOrderByCreatedAtDesc(byId1.get(), pg);
+
+            Stream<UppgActionDto> uppgActionDtoStream = uppgActions.stream().map(converter::uppgActionToUppgActionDto);
+
+            return converter.apiSuccess200(uppgActionDtoStream,uppgActions.getTotalElements(),uppgActions.getTotalPages(),uppgActions.getNumber());
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.toString());

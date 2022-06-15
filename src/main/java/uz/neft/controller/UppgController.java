@@ -10,6 +10,8 @@ import uz.neft.secret.CurrentUser;
 import uz.neft.service.UppgService;
 import uz.neft.service.action.UppgActionService;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("api/uppg")
 @CrossOrigin
@@ -66,9 +68,18 @@ public class UppgController {
         return uppgActionService.getByMiningSystem(id);
     }
 
+//    @GetMapping("actions/{uppgId}")
+//    public HttpEntity<?> uppgActionsByUppgId(@PathVariable Integer uppgId) {
+//        return uppgActionService.getUppgActionsByUppgId(uppgId);
+//    }
+
     @GetMapping("actions/{uppgId}")
-    public HttpEntity<?> uppgActionsByUppgId(@PathVariable Integer uppgId) {
-        return uppgActionService.getUppgActionsByUppgId(uppgId);
+    public HttpEntity<?> uppgActionsByUppgId(@PathVariable Integer uppgId,
+                                             @RequestParam(value = "page", required = false, defaultValue = "0") Optional<Integer> page,
+                                             @RequestParam(value = "pageSize", required = false, defaultValue = "10") Optional<Integer> pageSize,
+                                             @RequestParam(value = "sortBy", required = false, defaultValue = "createdAt") Optional<String> sortBy
+    ) {
+        return uppgActionService.getUppgActionsByUppgId(uppgId,page,pageSize,sortBy);
     }
 
     @GetMapping("{id}")
