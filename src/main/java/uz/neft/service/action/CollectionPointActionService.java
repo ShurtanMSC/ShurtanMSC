@@ -72,6 +72,8 @@ public class CollectionPointActionService {
     @Value("${delta.pressure.forCollectionPoint.Action}")
     private Double deltaPressureAction ;
 
+    @Value("${check.time}")
+    private long checkTime ;
 
     public CollectionPointActionService(UserRepository userRepository, CollectionPointRepository collectionPointRepository, CollectionPointActionRepository collectionPointActionRepository, Converter converter, WellActionRepository wellActionRepository, WellRepository wellRepository, UppgRepository uppgRepository, UppgActionRepository uppgActionRepository, MiningSystemRepository miningSystemRepository, MiningSystemActionRepository miningSystemActionRepository, WellActionService wellActionService, OpcService opcService, FakeService fakeService, ForecastGasRepository forecastGasRepository, ForecastGasService forecastGasService, AkkaService akkaService, TESTForecastGasService testForecastGasService, Logger logger) {
         this.userRepository = userRepository;
@@ -458,135 +460,136 @@ public class CollectionPointActionService {
 
                 List<CollectionPointAction> actionList=new ArrayList<>();
 
-                for (CollectionPoint collectionPoint : all) {
-                    if (collectionPoint.isActiveE()) {
-                        CollectionPointAction action = CollectionPointAction
-                                .builder()
-                                .collectionPoint(collectionPoint)
-                                .build();
-
-                        long lastActionId = -1;
-                        double oldValueTemperature = 0;
-                        double oldValuePressure = 0;
-                        Optional<CollectionPointAction> lastAction = collectionPointActionRepository.findFirstByCollectionPointOrderByCreatedAtDesc(collectionPoint);
-                        if (lastAction.isPresent()) {
-                            lastActionId = lastAction.get().getId();
-                            oldValuePressure = lastAction.get().getPressure();
-                            oldValueTemperature = lastAction.get().getTemperature();
-                        }
-
-
-//                        double temperatureOpc = opcService.getValue(action, action.getCollectionPoint().getTemperatureUnit());
+//                for (CollectionPoint collectionPoint : all) {
+//                    if (collectionPoint.isActiveE()) {
+//                        CollectionPointAction action = CollectionPointAction
+//                                .builder()
+//                                .collectionPoint(collectionPoint)
+//                                .build();
+//
+//                        long lastActionId = -1;
+//                        double oldValueTemperature = 0;
+//                        double oldValuePressure = 0;
+//                        Optional<CollectionPointAction> lastAction = collectionPointActionRepository.findFirstByCollectionPointOrderByCreatedAtDesc(collectionPoint);
+//                        if (lastAction.isPresent()) {
+//                            lastActionId = lastAction.get().getId();
+//                            oldValuePressure = lastAction.get().getPressure();
+//                            oldValueTemperature = lastAction.get().getTemperature();
+//                        }
+//
+//
+////                        double temperatureOpc = opcService.getValue(action, action.getCollectionPoint().getTemperatureUnit());
+////                        double pressureOpc=0;
+////                        if (collectionPoint.getOpcServer().getType().equals(OpcServerType.SIMULATE))
+////                            pressureOpc = opcService.getValue(action, action.getCollectionPoint().getPressureUnit());
+////                        else
+////                            pressureOpc = Calculator.mega_pascal_to_kgf_sm2(opcService.getValue(action, action.getCollectionPoint().getPressureUnit()));
+////
+//                        double temperatureOpc=0;
+//                        String str=opcService.getValueWeb(action);
+//                        temperatureOpc = opcService.getValueWeb(str,action, action.getCollectionPoint().getTemperatureUnit());
 //                        double pressureOpc=0;
 //                        if (collectionPoint.getOpcServer().getType().equals(OpcServerType.SIMULATE))
-//                            pressureOpc = opcService.getValue(action, action.getCollectionPoint().getPressureUnit());
+//                            pressureOpc = opcService.getValueWeb(str,action, action.getCollectionPoint().getPressureUnit());
 //                        else
-//                            pressureOpc = Calculator.mega_pascal_to_kgf_sm2(opcService.getValue(action, action.getCollectionPoint().getPressureUnit()));
+//                            pressureOpc = Calculator.mega_pascal_to_kgf_sm2(opcService.getValueWeb(str,action, action.getCollectionPoint().getPressureUnit()));
 //
-                        double temperatureOpc=0;
-                        String str=opcService.getValueWeb(action);
-                        temperatureOpc = opcService.getValueWeb(str,action, action.getCollectionPoint().getTemperatureUnit());
-                        double pressureOpc=0;
-                        if (collectionPoint.getOpcServer().getType().equals(OpcServerType.SIMULATE))
-                            pressureOpc = opcService.getValueWeb(str,action, action.getCollectionPoint().getPressureUnit());
-                        else
-                            pressureOpc = Calculator.mega_pascal_to_kgf_sm2(opcService.getValueWeb(str,action, action.getCollectionPoint().getPressureUnit()));
-
-
-                        logger.info("lastActionId -> " + lastActionId);
-                        logger.info("oldValue_Temperature -> " + oldValueTemperature);
-                        logger.info("oldValue_Pressure -> " + oldValuePressure);
-                        logger.info("newValue_Temperature -> " + temperatureOpc);
-                        logger.info("newValue_Pressure -> " + pressureOpc);
-
-                        System.out.println("lastActionId -> " + lastActionId);
-                        System.out.println("oldValue_Temperature -> " + oldValueTemperature);
-                        System.out.println("oldValue_Pressure -> " + oldValuePressure);
-                        System.out.println("newValue_Temperature -> " + temperatureOpc);
-                        System.out.println("newValue_Pressure -> " + pressureOpc);
-
-                        double deltaTemperature = Math.abs(temperatureOpc - oldValueTemperature);
-                        double deltaPressure = Math.abs(pressureOpc - oldValuePressure);
-
-                        logger.info("deltaTemperature -> " + deltaTemperature);
-                        logger.info("deltaPressure -> " + deltaPressure);
-                        logger.info("DELTA --> " + deltaTemperatureAction);
-
-                        System.out.println("deltaTemperature -> " + deltaTemperature);
-                        System.out.println("deltaPressure -> " + deltaPressure);
-                        System.out.println("DELTA --> " + deltaTemperatureAction);
-
-                        boolean oldValueUpdate = false;
-                        if (deltaTemperature >= deltaTemperatureAction) {
-                            logger.info("deltaTemperature >= "+deltaTemperature);
-                            System.out.println("deltaTemperature >= "+deltaTemperature);
-                            action.setTemperature(temperatureOpc);
-                            oldValueTemperature = temperatureOpc;
-                            logger.info("oldValueTemperature -> " + oldValueTemperature);
-                            System.out.println("oldValueTemperature -> " + oldValueTemperature);
-                        } else {
-                            oldValueUpdate = true;
-                        }
-                        if (deltaPressure >= deltaPressureAction) {
-                            if (oldValueUpdate) {
-                                action.setTemperature(temperatureOpc);
-                            }
-
-                            logger.info("deltaPressure >= "+deltaPressure);
-                            System.out.println("deltaPressure >= "+deltaPressure);
-                            action.setPressure(pressureOpc);
-                            oldValuePressure = pressureOpc;
-                            logger.info("oldValuePressure -> " + oldValuePressure);
-                            System.out.println("oldValuePressure -> " + oldValuePressure);
-                        } else {
-                            if (oldValueUpdate) {
-                                Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
-                                CollectionPointAction collectionPointAction;
-                                if (collectionPointActionRepository.findById(lastActionId).isPresent()){
-                                    collectionPointAction = collectionPointActionRepository.findById(lastActionId).get();
-                                    collectionPointAction.setModified(modifiedDate);
-                                    CollectionPointAction save = collectionPointActionRepository.save(collectionPointAction);
-
-                                    logger.info("modifiedDate ---" + modifiedDate);
-                                    logger.info("oldValueUpdate -------------");
-                                    logger.info("Action id = " + lastActionId + ". Last Action Updated" + "modifiedDate  " + save.getModified());
-
-                                    System.out.println("modifiedDate ---" + modifiedDate);
-                                    System.out.println("oldValueUpdate -------------");
-                                    System.out.println("Action id = " + lastActionId + ". Last Action Updated" + "modifiedDate  " + save.getModified());
-
-                                }
-
-
-                                continue;
-                            } else {
-                                action.setPressure(pressureOpc);
-                            }
-                        }
-
-//                action.setPressure(action.getPressureOpc());
-//                action.setTemperature(action.getTemperatureOpc());
-                        wellActionService.execute(collectionPoint.getUppg());
-
-                        Thread.sleep(500);
-//                System.out.println(action.toString());
-                        if (action.getPressure() == 0 || action.getTemperature() == 0) {
-                            action.setExpend(0);
-                            collectionPointActionRepository.save(action);
-                        } else {
-                            double expendCp = checkWells(collectionPoint, action);
-                            action.setExpend(expendCp);
-                            logger.info("Expend "+collectionPoint.getName()+" = "+expendCp);
-                            System.out.println("Expend "+collectionPoint.getName()+" = "+expendCp);
-//                            akkaService.calculate(action);
-//                            actionList.add(action);
-                        }
-
-                        collectionPointActionRepository.save(action);
-                    } else
-                        wellActionService.execute(collectionPoint.getUppg());
-
-                }
+//
+//                        logger.info("lastActionId -> " + lastActionId);
+//                        logger.info("oldValue_Temperature -> " + oldValueTemperature);
+//                        logger.info("oldValue_Pressure -> " + oldValuePressure);
+//                        logger.info("newValue_Temperature -> " + temperatureOpc);
+//                        logger.info("newValue_Pressure -> " + pressureOpc);
+//
+//                        System.out.println("lastActionId -> " + lastActionId);
+//                        System.out.println("oldValue_Temperature -> " + oldValueTemperature);
+//                        System.out.println("oldValue_Pressure -> " + oldValuePressure);
+//                        System.out.println("newValue_Temperature -> " + temperatureOpc);
+//                        System.out.println("newValue_Pressure -> " + pressureOpc);
+//
+//                        double deltaTemperature = Math.abs(temperatureOpc - oldValueTemperature);
+//                        double deltaPressure = Math.abs(pressureOpc - oldValuePressure);
+//
+//                        logger.info("deltaTemperature -> " + deltaTemperature);
+//                        logger.info("deltaPressure -> " + deltaPressure);
+//                        logger.info("DELTA --> " + deltaTemperatureAction);
+//
+//                        System.out.println("deltaTemperature -> " + deltaTemperature);
+//                        System.out.println("deltaPressure -> " + deltaPressure);
+//                        System.out.println("DELTA --> " + deltaTemperatureAction);
+//
+//                        boolean oldValueUpdate = false;
+//                        if (deltaTemperature >= deltaTemperatureAction) {
+//                            logger.info("deltaTemperature >= "+deltaTemperature);
+//                            System.out.println("deltaTemperature >= "+deltaTemperature);
+//                            action.setTemperature(temperatureOpc);
+//                            oldValueTemperature = temperatureOpc;
+//                            logger.info("oldValueTemperature -> " + oldValueTemperature);
+//                            System.out.println("oldValueTemperature -> " + oldValueTemperature);
+//                        } else {
+//                            oldValueUpdate = true;
+//                        }
+//                        if (deltaPressure >= deltaPressureAction) {
+//                            if (oldValueUpdate) {
+//                                action.setTemperature(temperatureOpc);
+//                            }
+//
+//                            logger.info("deltaPressure >= "+deltaPressure);
+//                            System.out.println("deltaPressure >= "+deltaPressure);
+//                            action.setPressure(pressureOpc);
+//                            oldValuePressure = pressureOpc;
+//                            logger.info("oldValuePressure -> " + oldValuePressure);
+//                            System.out.println("oldValuePressure -> " + oldValuePressure);
+//                        } else {
+//                            if (oldValueUpdate) {
+//                                Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
+//                                CollectionPointAction collectionPointAction;
+//                                if (collectionPointActionRepository.findById(lastActionId).isPresent()){
+//                                    collectionPointAction = collectionPointActionRepository.findById(lastActionId).get();
+//                                    collectionPointAction.setModified(modifiedDate);
+//                                    CollectionPointAction save = collectionPointActionRepository.save(collectionPointAction);
+//
+//                                    logger.info("modifiedDate ---" + modifiedDate);
+//                                    logger.info("oldValueUpdate -------------");
+//                                    logger.info("Action id = " + lastActionId + ". Last Action Updated" + "modifiedDate  " + save.getModified());
+//
+//                                    System.out.println("modifiedDate ---" + modifiedDate);
+//                                    System.out.println("oldValueUpdate -------------");
+//                                    System.out.println("Action id = " + lastActionId + ". Last Action Updated" + "modifiedDate  " + save.getModified());
+//
+//                                }
+//
+//
+//                                continue;
+//                            } else {
+//                                action.setPressure(pressureOpc);
+//                            }
+//                        }
+//
+////                action.setPressure(action.getPressureOpc());
+////                action.setTemperature(action.getTemperatureOpc());
+//                        wellActionService.execute(collectionPoint.getUppg());
+//
+//                        Thread.sleep(500);
+////                System.out.println(action.toString());
+//                        if (action.getPressure() == 0 || action.getTemperature() == 0) {
+//                            action.setExpend(0);
+//                            collectionPointActionRepository.save(action);
+//                        } else {
+//                            double expendCp = checkWells(collectionPoint, action);
+//                            action.setExpend(expendCp);
+//                            logger.info("Expend "+collectionPoint.getName()+" = "+expendCp);
+//                            System.out.println("Expend "+collectionPoint.getName()+" = "+expendCp);
+////                            akkaService.calculate(action);
+////                            actionList.add(action);
+//                        }
+//
+//                        collectionPointActionRepository.save(action);
+//                    } else
+//                        wellActionService.execute(collectionPoint.getUppg());
+//
+//                }
+                setAllCollectionPoint(id);
 //                actionList.forEach(akkaService::calculate);
             }
             testForecastGasService.addNewForecast(1);
@@ -625,4 +628,83 @@ public class CollectionPointActionService {
     }
 
 
+    public void setAllCollectionPoint(int id) throws InterruptedException {
+        List<CollectionPoint> collectionPointList = collectionPointRepository.findAllByMiningSystemId(id);
+        List<Uppg> uppgList=uppgRepository.findAll();
+        for (CollectionPoint collectionPoint : collectionPointList) {
+
+            if(collectionPoint.isActiveE()){
+
+                Optional<CollectionPointAction> last = collectionPointActionRepository.findFirstByCollectionPointOrderByCreatedAtDesc(collectionPoint);
+
+                CollectionPointAction action;
+                if (last.isPresent()){
+                    action=balancer(last.get());
+                }else {
+                    action=balancer(CollectionPointAction.builder().collectionPoint(collectionPoint).build());
+                }
+
+
+
+                Thread.sleep(100);
+                if (action.getPressure() == 0
+//                        || action.getTemperature() == 0
+                ) {
+                    action.setExpend(0);
+//                    collectionPointActionRepository.save(action);
+                } else {
+                    double expendCp = checkWells(collectionPoint, action);
+                    action.setExpend(expendCp);
+                    logger.info("Expend "+collectionPoint.getName()+" = "+expendCp);
+                    System.out.println("Expend "+collectionPoint.getName()+" = "+expendCp);
+                }
+
+                collectionPointActionRepository.save(action);
+            }
+
+//            wellActionService.execute(collectionPoint.getUppg());
+        }
+        for (Uppg uppg : uppgList) {
+            wellActionService.execute(uppg);
+        }
+
+    }
+
+    public CollectionPointAction balancer(CollectionPointAction last){
+
+        String str=opcService.getValueWeb(last);
+        double t = opcService.getValueWeb(str,last, last.getCollectionPoint().getTemperatureUnit());
+        double p=0;
+        if (last.getCollectionPoint().getOpcServer().getType().equals(OpcServerType.SIMULATE))
+            p = opcService.getValueWeb(str,last, last.getCollectionPoint().getPressureUnit());
+        else
+            p = Calculator.mega_pascal_to_kgf_sm2(opcService.getValueWeb(str,last, last.getCollectionPoint().getPressureUnit()));
+
+        if (Math.abs(t-last.getTemperature())>deltaTemperatureAction||Math.abs(p-last.getPressure())>deltaPressureAction){
+            if (last.getCreatedAt()!=null){
+                if (last.getModified()!=null &&
+                        t==0
+                        &&
+                        p==0
+                        &&
+                        ((System.currentTimeMillis() - last.getModified().getTime()) < checkTime)){
+                    return last;
+                }
+                else {
+                    if (t==0
+                            &&
+                            p==0
+                            &&
+                            (System.currentTimeMillis()-last.getCreatedAt().getTime())<checkTime) return last;
+                }
+            }
+
+            return CollectionPointAction.builder().collectionPoint(last.getCollectionPoint()).pressure(p).temperature(t).build();
+        }else {
+            Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
+            last.setModified(modifiedDate);
+            return last;
+        }
+
+    }
 }

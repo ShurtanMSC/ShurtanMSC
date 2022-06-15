@@ -749,7 +749,7 @@ public class WellActionService {
                 }
 
             }
-            if (pointAction.isPresent()){
+            if (pointAction.isPresent()&&pointAction.get().getPressure()!=0){
                 pointAction.get().setExpend(cpExpend);
                 collectionPointActionRepository.save(pointAction.get());
             }
