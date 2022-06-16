@@ -21,6 +21,16 @@ function getAllMiningSystems() {
 }
 
 function getAllUppgs() {
+
+
+    const params = new URLSearchParams(window.location.search);
+    let page=params.get('page')
+    let pageSize=params.get('pageSize')
+    let uppg=params.get('uppg')
+
+
+
+
     axios.get("/api/uppg/all/mining_system/" + parseInt(miningSystemId))
         .then(function (response) {
             // console.log(response.data.object)
@@ -36,6 +46,9 @@ function getAllUppgs() {
             if (response.data.message === "OK" && response.data.object.length > 0) {
                 uppgsList = response.data.object
                 document.getElementById("uppgTable").innerHTML = createViewTable(response.data.object)
+            }
+            if (uppg){
+                clickActionBtn(uppg)
             }
         })
         .catch(function (error) {
@@ -121,7 +134,8 @@ function createViewTable(uppgs) {
             "    <td>" + uppg.name + "</td>\n" +
             "     <td hidden value='" + uppg.miningsiystemId + "'>" + uppg.miningsiystemId + "</td>\n" +
             "     <td><button data-target=\"#exampleModalCenter\" data-toggle=\"modal\" class='btn btn-success mt-1' id='btn-edit-uppg' value='" + uppg.id + "' onclick='editUppg(this.value)'>Редактировать</button>\n" +
-            "<button  class='btn btn-info ml-2' id='btn-action-mining' value='" + uppg.id + "' onclick='clickActionBtn(this.value)'>Действие</button>" +
+            "<a  href='/admin/uppg?uppg="+uppg.id+"&&page=1&&pageSize=10' class='btn btn-info ml-2' id='btn-action-mining'>Действие</a>" +
+            // "<button  class='btn btn-info ml-2' id='btn-action-mining' value='" + uppg.id + "' onclick='clickActionBtn(this.value)'>Действие</button>" +
             "      <button class='btn btn-danger ml-2 mt-1' id='btn-edit-uppg' value='" + uppg.id + "' onclick='deleteUppg(this.value)'>Удалить</button></td>\n" +
             "   </tr>"
     })
