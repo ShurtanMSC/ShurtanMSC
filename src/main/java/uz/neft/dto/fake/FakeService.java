@@ -46,6 +46,7 @@ public class FakeService {
             Statement statement=null;
             ResultSet resultSet=null;
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            DriverManager.setLoginTimeout(1);
             connection= DriverManager.getConnection(url,username,password);
 //            connection.setNetworkTimeout(Executors.newFixedThreadPool(1),1000);
             statement=connection.createStatement();

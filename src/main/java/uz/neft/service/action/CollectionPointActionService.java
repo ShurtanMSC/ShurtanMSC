@@ -75,6 +75,9 @@ public class CollectionPointActionService {
     @Value("${check.time}")
     private long checkTime ;
 
+    @Value("${write.interval}")
+    private long writeTimeInterval ;
+
     public CollectionPointActionService(UserRepository userRepository, CollectionPointRepository collectionPointRepository, CollectionPointActionRepository collectionPointActionRepository, Converter converter, WellActionRepository wellActionRepository, WellRepository wellRepository, UppgRepository uppgRepository, UppgActionRepository uppgActionRepository, MiningSystemRepository miningSystemRepository, MiningSystemActionRepository miningSystemActionRepository, WellActionService wellActionService, OpcService opcService, FakeService fakeService, ForecastGasRepository forecastGasRepository, ForecastGasService forecastGasService, AkkaService akkaService, TESTForecastGasService testForecastGasService, Logger logger) {
         this.userRepository = userRepository;
         this.collectionPointRepository = collectionPointRepository;
@@ -695,14 +698,19 @@ public class CollectionPointActionService {
                             &&
                             p==0
                             &&
-                            (System.currentTimeMillis()-last.getCreatedAt().getTime())<checkTime) return last;
+                            (System.currentTimeMillis()-last.getCreatedAt().getTime())<checkTime)
+                        return last;
                 }
             }
 
             return CollectionPointAction.builder().collectionPoint(last.getCollectionPoint()).pressure(p).temperature(t).build();
         }else {
+            if (System.currentTimeMillis()-last.getCreatedAt().getTime()>=writeTimeInterval){
+                return CollectionPointAction.builder().collectionPoint(last.getCollectionPoint()).pressure(p).temperature(t).build();
+            }
             Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
             last.setModified(modifiedDate);
+
             return last;
         }
 
