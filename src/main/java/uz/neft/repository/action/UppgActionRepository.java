@@ -16,6 +16,7 @@ public interface UppgActionRepository extends JpaRepository<UppgAction,Long> {
     UppgAction findFirstByUppg(Uppg uppg);
 
     Optional<UppgAction> findFirstByUppgOrderByCreatedAtDesc(Uppg uppg);
+    Optional<UppgAction> findFirstByUppgAndExpendGreaterThanOrderByCreatedAtDesc(Uppg uppg, double a);
 
 //    Optional<UppgAction> findFirstByUppg(Uppg uppg);
 

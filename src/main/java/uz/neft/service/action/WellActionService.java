@@ -14,11 +14,13 @@ import uz.neft.dto.action.WellActionDto;
 import uz.neft.dto.special.WellActionLite;
 import uz.neft.entity.*;
 import uz.neft.entity.action.CollectionPointAction;
+import uz.neft.entity.action.UppgAction;
 import uz.neft.entity.action.WellAction;
 import uz.neft.entity.enums.WellStatus;
 import uz.neft.entity.variables.*;
 import uz.neft.repository.*;
 import uz.neft.repository.action.CollectionPointActionRepository;
+import uz.neft.repository.action.UppgActionRepository;
 import uz.neft.repository.action.WellActionRepository;
 import uz.neft.repository.constants.ConstantRepository;
 import uz.neft.repository.constants.MiningSystemConstantRepository;
@@ -41,11 +43,12 @@ public class WellActionService {
     private final CollectionPointRepository collectionPointRepository;
     private final MiningSystemRepository miningSystemRepository;
     private final UppgRepository uppgRepository;
+    private final UppgActionRepository uppgActionRepository;
     private final CollectionPointActionRepository collectionPointActionRepository;
     private final Logger logger;
 
 
-    public WellActionService(WellActionRepository wellActionRepository, MiningSystemConstantRepository miningSystemConstantRepository, WellRepository wellRepository, Converter converter, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository, Calculator calculator, ConstantRepository constantRepository, UserRepository userRepository, CollectionPointRepository collectionPointRepository, UppgRepository uppgRepository, CollectionPointActionRepository collectionPointActionRepository, Logger logger) {
+    public WellActionService(WellActionRepository wellActionRepository, MiningSystemConstantRepository miningSystemConstantRepository, WellRepository wellRepository, Converter converter, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository, Calculator calculator, ConstantRepository constantRepository, UserRepository userRepository, CollectionPointRepository collectionPointRepository, UppgRepository uppgRepository, UppgActionRepository uppgActionRepository, CollectionPointActionRepository collectionPointActionRepository, Logger logger) {
         this.wellActionRepository = wellActionRepository;
         this.wellRepository = wellRepository;
         this.converter = converter;
@@ -56,6 +59,7 @@ public class WellActionService {
         this.collectionPointRepository = collectionPointRepository;
         this.miningSystemRepository = miningSystemRepository;
         this.uppgRepository = uppgRepository;
+        this.uppgActionRepository = uppgActionRepository;
         this.collectionPointActionRepository = collectionPointActionRepository;
         this.logger = logger;
     }
@@ -726,6 +730,13 @@ public class WellActionService {
 
 
     public void execute(Uppg uppg){
+        Optional<UppgAction> expendUppgPerHour = uppgActionRepository.findFirstByUppgAndExpendGreaterThanOrderByCreatedAtDesc(uppg, 0);
+        double expendUppg=8000000;
+        if (expendUppgPerHour.isPresent()) {
+            System.out.println("AAAAAAAAAAAAAAAA");
+            System.out.println(expendUppgPerHour.get());
+            expendUppg=expendUppgPerHour.get().getExpend()*1000;
+        }
         double q_well=sumAllExpendByUppg(uppg);
         List<CollectionPoint> collectionPointList = collectionPointRepository.findAllByUppg(uppg);
         for (CollectionPoint collectionPoint : collectionPointList) {
@@ -741,7 +752,8 @@ public class WellActionService {
                         action.get().setRpl(rpl(action.get()));
                     }
                     else {
-                        action.get().setExpend(8000000*(action.get().getAverage_expend()/q_well));
+//                        action.get().setExpend(8000000*(action.get().getAverage_expend()/q_well));
+                        action.get().setExpend(expendUppg*(action.get().getAverage_expend()/q_well));
                         action.get().setRpl(rpl(action.get()));
                     }
                     cpExpend+=action.get().getExpend();
