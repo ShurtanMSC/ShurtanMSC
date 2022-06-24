@@ -705,7 +705,7 @@ public class CollectionPointActionService {
 
             return CollectionPointAction.builder().collectionPoint(last.getCollectionPoint()).pressure(p).temperature(t).build();
         }else {
-            if (System.currentTimeMillis()-last.getCreatedAt().getTime()>=writeTimeInterval){
+            if (System.currentTimeMillis()-last.getCreatedAt().getTime()>=writeTimeInterval&&(last.getPressure()>0||last.getTemperature()>0)){
                 return CollectionPointAction.builder().collectionPoint(last.getCollectionPoint()).pressure(p).temperature(t).build();
             }
             Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
