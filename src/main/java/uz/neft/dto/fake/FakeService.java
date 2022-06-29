@@ -11,6 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 @Service
 public class FakeService {
@@ -48,7 +49,7 @@ public class FakeService {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             DriverManager.setLoginTimeout(1);
             connection= DriverManager.getConnection(url,username,password);
-//            connection.setNetworkTimeout(Executors.newFixedThreadPool(1),1000);
+            connection.setNetworkTimeout(Executors.newFixedThreadPool(1),1000);
             statement=connection.createStatement();
             resultSet=statement.executeQuery("SELECT TOP 144" +
                     "     [ID]" +

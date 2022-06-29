@@ -392,72 +392,79 @@ public class CollectionPointActionService {
             if (miningSystem.isPresent()) {
                 List<Uppg> uppgs = uppgRepository.findAllByMiningSystem(miningSystem.get());
 
-                List<FakeUppg> fakeUppgList = fakeService.all();
+                try {
+                    List<FakeUppg> fakeUppgList = fakeService.all();
 
-                if (fakeUppgList.size() == 2 && uppgs.size() <= 2) {
-                    UppgAction uppgAction1 = UppgAction
-                            .builder()
-                            .uppg(uppgs.get(0))
-                            .expend(fakeUppgList.get(0).getRasxod())
-                            .incomePressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(0).getDavleniya()))
-                            .exitPressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(0).getDavleniya()))
-                            .condensate(0)
-                            .exitTemperature(fakeUppgList.get(0).getTemperatura())
-                            .incomeTemperature(fakeUppgList.get(0).getTemperatura())
-                            .onWater(15)
-                            .actualPerformance(0)
-                            .designedPerformance(0)
-                            .todayExpend(fakeUppgList.get(0).getNakoplenniy_obyom_s_nachalo_sutok())
-                            .yesterdayExpend(fakeUppgList.get(0).getNakoplenniy_obyom_za_vchera())
-                            .thisMonthExpend(fakeUppgList.get(0).getNakoplenniy_obyom_s_nachalo_mesyach())
-                            .thisMonthExpend(fakeUppgList.get(0).getNakoplenniy_obyom_za_pered_mesyach())
-                            .build();
-                    uppgAction1 = uppgActionRepository.save(uppgAction1);
+                    if (fakeUppgList.size() == 2 && uppgs.size() <= 2) {
+                        UppgAction uppgAction1 = UppgAction
+                                .builder()
+                                .uppg(uppgs.get(0))
+                                .expend(fakeUppgList.get(0).getRasxod())
+                                .incomePressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(0).getDavleniya()))
+                                .exitPressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(0).getDavleniya()))
+                                .condensate(0)
+                                .exitTemperature(fakeUppgList.get(0).getTemperatura())
+                                .incomeTemperature(fakeUppgList.get(0).getTemperatura())
+                                .onWater(15)
+                                .actualPerformance(0)
+                                .designedPerformance(0)
+                                .todayExpend(fakeUppgList.get(0).getNakoplenniy_obyom_s_nachalo_sutok())
+                                .yesterdayExpend(fakeUppgList.get(0).getNakoplenniy_obyom_za_vchera())
+                                .thisMonthExpend(fakeUppgList.get(0).getNakoplenniy_obyom_s_nachalo_mesyach())
+                                .thisMonthExpend(fakeUppgList.get(0).getNakoplenniy_obyom_za_pered_mesyach())
+                                .build();
+                        uppgAction1 = uppgActionRepository.save(uppgAction1);
 
-                    UppgAction uppgAction2 = UppgAction
-                            .builder()
-                            .uppg(uppgs.get(1))
-                            .expend(fakeUppgList.get(1).getRasxod())
-                            .incomePressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(1).getDavleniya()))
-                            .exitPressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(1).getDavleniya()))
-                            .condensate(0)
-                            .exitTemperature(fakeUppgList.get(1).getTemperatura())
-                            .incomeTemperature(fakeUppgList.get(1).getTemperatura())
-                            .onWater(15)
-                            .actualPerformance(0)
-                            .designedPerformance(0)
-                            .todayExpend(fakeUppgList.get(1).getNakoplenniy_obyom_s_nachalo_sutok())
-                            .yesterdayExpend(fakeUppgList.get(1).getNakoplenniy_obyom_za_vchera())
-                            .thisMonthExpend(fakeUppgList.get(1).getNakoplenniy_obyom_s_nachalo_mesyach())
-                            .thisMonthExpend(fakeUppgList.get(1).getNakoplenniy_obyom_za_pered_mesyach())
-                            .build();
-                    uppgAction2 = uppgActionRepository.save(uppgAction2);
+                        UppgAction uppgAction2 = UppgAction
+                                .builder()
+                                .uppg(uppgs.get(1))
+                                .expend(fakeUppgList.get(1).getRasxod())
+                                .incomePressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(1).getDavleniya()))
+                                .exitPressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(1).getDavleniya()))
+                                .condensate(0)
+                                .exitTemperature(fakeUppgList.get(1).getTemperatura())
+                                .incomeTemperature(fakeUppgList.get(1).getTemperatura())
+                                .onWater(15)
+                                .actualPerformance(0)
+                                .designedPerformance(0)
+                                .todayExpend(fakeUppgList.get(1).getNakoplenniy_obyom_s_nachalo_sutok())
+                                .yesterdayExpend(fakeUppgList.get(1).getNakoplenniy_obyom_za_vchera())
+                                .thisMonthExpend(fakeUppgList.get(1).getNakoplenniy_obyom_s_nachalo_mesyach())
+                                .thisMonthExpend(fakeUppgList.get(1).getNakoplenniy_obyom_za_pered_mesyach())
+                                .build();
+                        uppgAction2 = uppgActionRepository.save(uppgAction2);
 
-                    Optional<MiningSystemAction> lastAction = miningSystemActionRepository.findFirstByMiningSystemOrderByCreatedAtDesc(miningSystem.get());
+                        Optional<MiningSystemAction> lastAction = miningSystemActionRepository.findFirstByMiningSystemOrderByCreatedAtDesc(miningSystem.get());
 
-                    MiningSystemAction miningSystemAction = MiningSystemAction
-                            .builder()
-                            .expend(uppgAction1.getExpend() + uppgAction2.getExpend())
-                            .miningSystem(miningSystem.get())
-                            .planThisYear(lastAction.map(MiningSystemAction::getPlanThisYear).orElse(0.0))
-                            .planThisMonth(lastAction.map(MiningSystemAction::getPlanThisMonth).orElse(0.0))
-                            .todayExpend(uppgAction1.getTodayExpend() + uppgAction2.getTodayExpend())
-                            .yesterdayExpend(uppgAction1.getYesterdayExpend() + uppgAction2.getYesterdayExpend())
-                            .thisMonthExpend(uppgAction1.getThisMonthExpend() + uppgAction2.getThisMonthExpend())
-                            .lastMonthExpend(uppgAction1.getLastMonthExpend() + uppgAction2.getLastMonthExpend())
-                            .build();
-                    miningSystemAction = miningSystemActionRepository.save(miningSystemAction);
+                        MiningSystemAction miningSystemAction = MiningSystemAction
+                                .builder()
+                                .expend(uppgAction1.getExpend() + uppgAction2.getExpend())
+                                .miningSystem(miningSystem.get())
+                                .planThisYear(lastAction.map(MiningSystemAction::getPlanThisYear).orElse(0.0))
+                                .planThisMonth(lastAction.map(MiningSystemAction::getPlanThisMonth).orElse(0.0))
+                                .todayExpend(uppgAction1.getTodayExpend() + uppgAction2.getTodayExpend())
+                                .yesterdayExpend(uppgAction1.getYesterdayExpend() + uppgAction2.getYesterdayExpend())
+                                .thisMonthExpend(uppgAction1.getThisMonthExpend() + uppgAction2.getThisMonthExpend())
+                                .lastMonthExpend(uppgAction1.getLastMonthExpend() + uppgAction2.getLastMonthExpend())
+                                .build();
+                        miningSystemAction = miningSystemActionRepository.save(miningSystemAction);
 
 
-                    Date date = new Date();
+                        Date date = new Date();
 
-                    Optional<ForecastGas> forecastGasNow = forecastGasRepository.findByMiningSystemAndYearAndMonth(miningSystem.get(), date.getYear(), Month.of(date.getMonth()+1));
-                    if (forecastGasNow.isPresent()) {
-                        forecastGasNow.get().setAmount(miningSystemAction.getThisMonthExpend());
-                        forecastGasRepository.save(forecastGasNow.get());
+                        Optional<ForecastGas> forecastGasNow = forecastGasRepository.findByMiningSystemAndYearAndMonth(miningSystem.get(), date.getYear(), Month.of(date.getMonth()+1));
+                        if (forecastGasNow.isPresent()) {
+                            forecastGasNow.get().setAmount(miningSystemAction.getThisMonthExpend());
+                            forecastGasRepository.save(forecastGasNow.get());
+                        }
+
                     }
-
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    logger.error(e.toString());
                 }
+
+
 
                 List<CollectionPoint> all = collectionPointRepository.findAllByMiningSystemId(id);
 
