@@ -43,6 +43,8 @@ public class CollectionPointAction extends AbsEntityLong {
     @ManyToOne
     private CollectionPoint collectionPoint;
 
+    private boolean open=false;
+
     @Value("${opc.service.address}")
     protected String address;
 

@@ -482,6 +482,7 @@ public class Converter {
                     .collectionPointId(collectionPointAction.getCollectionPoint().getId())
                     .createdAt(collectionPointAction.getCreatedAt())
                     .modified(collectionPointAction.getModified())
+                    .open(collectionPointAction.isOpen())
                     .build();
         } catch (Exception e) {
             e.printStackTrace();
