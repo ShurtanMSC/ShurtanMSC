@@ -482,7 +482,7 @@ public class Converter {
                     .collectionPointId(collectionPointAction.getCollectionPoint().getId())
                     .createdAt(collectionPointAction.getCreatedAt())
                     .modified(collectionPointAction.getModified())
-                    .open(collectionPointAction.isOpen())
+                    .door(collectionPointAction.isDoorOpen())
                     .build();
         } catch (Exception e) {
             e.printStackTrace();
@@ -528,6 +528,10 @@ public class Converter {
                     .exitPressure(uppgAction.getExitPressure())
                     .uppgId(uppgAction.getUppg().getId())
                     .createdAt(uppgAction.getCreatedAt())
+                    .todayExpend(uppgAction.getTodayExpend())
+                    .yesterdayExpend(uppgAction.getYesterdayExpend())
+                    .thisMonthExpend(uppgAction.getThisMonthExpend())
+                    .lastMonthExpend(uppgAction.getLastMonthExpend())
                     .build();
         } catch (Exception e) {
             e.printStackTrace();

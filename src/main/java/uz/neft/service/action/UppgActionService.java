@@ -1,6 +1,7 @@
 package uz.neft.service.action;
 
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -8,24 +9,32 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import uz.neft.controller.opc.OpcService;
 import uz.neft.dto.UppgDto;
-import uz.neft.dto.action.CollectionPointActionDto;
 import uz.neft.dto.action.ObjectWithActionsDto;
 import uz.neft.dto.action.UppgActionDto;
+import uz.neft.dto.fake.FakeService;
+import uz.neft.dto.fake.FakeUppg;
+import uz.neft.entity.ForecastGas;
 import uz.neft.entity.MiningSystem;
 import uz.neft.entity.Uppg;
 import uz.neft.entity.User;
-import uz.neft.entity.action.CollectionPointAction;
+import uz.neft.entity.action.MiningSystemAction;
 import uz.neft.entity.action.UppgAction;
-import uz.neft.repository.MiningSystemRepository;
-import uz.neft.repository.UppgRepository;
-import uz.neft.repository.UserRepository;
-import uz.neft.repository.WellRepository;
+import uz.neft.repository.*;
 import uz.neft.repository.action.CollectionPointActionRepository;
+import uz.neft.repository.action.MiningSystemActionRepository;
 import uz.neft.repository.action.UppgActionRepository;
 import uz.neft.repository.action.WellActionRepository;
+import uz.neft.repository.constants.ForecastGasRepository;
+import uz.neft.service.AkkaService;
+import uz.neft.service.Calculator;
+import uz.neft.service.ForecastGasService;
+import uz.neft.service.TESTForecastGasService;
 import uz.neft.utils.Converter;
 
+import java.time.Month;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -35,18 +44,47 @@ import java.util.stream.Stream;
 public class UppgActionService {
 
     private final UserRepository userRepository;
-    private final UppgActionRepository uppgActionRepository;
-    private final UppgRepository uppgRepository;
+    private final CollectionPointRepository collectionPointRepository;
+    private final CollectionPointActionRepository collectionPointActionRepository;
     private final Converter converter;
+    private final WellActionRepository wellActionRepository;
+    private final WellRepository wellRepository;
+    private final UppgRepository uppgRepository;
+    private final UppgActionRepository uppgActionRepository;
     private final MiningSystemRepository miningSystemRepository;
+    private final MiningSystemActionRepository miningSystemActionRepository;
+    private final MiningSystemActionService miningSystemActionService;
+    private final WellActionService wellActionService;
+    private final OpcService opcService;
+    private final FakeService fakeService;
+    private final ForecastGasRepository forecastGasRepository;
+    private final ForecastGasService forecastGasService;
+    private final AkkaService akkaService;
+    private final TESTForecastGasService testForecastGasService;
     private final Logger logger;
 
-    public UppgActionService(UserRepository userRepository, UppgActionRepository uppgActionRepository, UppgRepository uppgRepository, CollectionPointActionRepository collectionPointActionRepository, Converter converter, WellActionRepository wellActionRepository, WellRepository wellRepository, MiningSystemRepository miningSystemRepository, Logger logger) {
+    @Value("${uppg.write.interval}")
+    private long uppgWriteInterval;
+
+    public UppgActionService(UserRepository userRepository, CollectionPointRepository collectionPointRepository, CollectionPointActionRepository collectionPointActionRepository1, UppgActionRepository uppgActionRepository, UppgRepository uppgRepository, CollectionPointActionRepository collectionPointActionRepository, Converter converter, WellActionRepository wellActionRepository, WellRepository wellRepository, WellActionRepository wellActionRepository1, WellRepository wellRepository1, MiningSystemRepository miningSystemRepository, MiningSystemActionRepository miningSystemActionRepository, MiningSystemActionService miningSystemActionService, WellActionService wellActionService, OpcService opcService, FakeService fakeService, ForecastGasRepository forecastGasRepository, ForecastGasService forecastGasService, AkkaService akkaService, TESTForecastGasService testForecastGasService, Logger logger) {
         this.userRepository = userRepository;
+        this.collectionPointRepository = collectionPointRepository;
+        this.collectionPointActionRepository = collectionPointActionRepository1;
         this.uppgActionRepository = uppgActionRepository;
         this.uppgRepository = uppgRepository;
         this.converter = converter;
+        this.wellActionRepository = wellActionRepository1;
+        this.wellRepository = wellRepository1;
         this.miningSystemRepository = miningSystemRepository;
+        this.miningSystemActionRepository = miningSystemActionRepository;
+        this.miningSystemActionService = miningSystemActionService;
+        this.wellActionService = wellActionService;
+        this.opcService = opcService;
+        this.fakeService = fakeService;
+        this.forecastGasRepository = forecastGasRepository;
+        this.forecastGasService = forecastGasService;
+        this.akkaService = akkaService;
+        this.testForecastGasService = testForecastGasService;
         this.logger = logger;
     }
 
@@ -310,4 +348,51 @@ public class UppgActionService {
 
     //.....  from MODBUS
     //... coming soon
+
+    public void setAllUppgAction(List<Uppg> uppgs, MiningSystem miningSystem){
+        List<FakeUppg> fakeUppgList = fakeService.all();
+
+        if (fakeUppgList.size() == 2 && uppgs.size() <= 2) {
+            UppgAction uppgAction1 = UppgAction
+                    .builder()
+                    .uppg(uppgs.get(0))
+                    .expend(fakeUppgList.get(0).getRasxod())
+                    .incomePressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(0).getDavleniya()))
+                    .exitPressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(0).getDavleniya()))
+                    .condensate(0)
+                    .exitTemperature(fakeUppgList.get(0).getTemperatura())
+                    .incomeTemperature(fakeUppgList.get(0).getTemperatura())
+                    .onWater(15)
+                    .actualPerformance(0)
+                    .designedPerformance(0)
+                    .todayExpend(fakeUppgList.get(0).getNakoplenniy_obyom_s_nachalo_sutok())
+                    .yesterdayExpend(fakeUppgList.get(0).getNakoplenniy_obyom_za_vchera())
+                    .thisMonthExpend(fakeUppgList.get(0).getNakoplenniy_obyom_s_nachalo_mesyach())
+                    .lastMonthExpend(fakeUppgList.get(0).getNakoplenniy_obyom_za_pered_mesyach())
+                    .build();
+            uppgAction1 = uppgActionRepository.save(uppgAction1);
+
+            UppgAction uppgAction2 = UppgAction
+                    .builder()
+                    .uppg(uppgs.get(1))
+                    .expend(fakeUppgList.get(1).getRasxod())
+                    .incomePressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(1).getDavleniya()))
+                    .exitPressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(1).getDavleniya()))
+                    .condensate(0)
+                    .exitTemperature(fakeUppgList.get(1).getTemperatura())
+                    .incomeTemperature(fakeUppgList.get(1).getTemperatura())
+                    .onWater(15)
+                    .actualPerformance(0)
+                    .designedPerformance(0)
+                    .todayExpend(fakeUppgList.get(1).getNakoplenniy_obyom_s_nachalo_sutok())
+                    .yesterdayExpend(fakeUppgList.get(1).getNakoplenniy_obyom_za_vchera())
+                    .thisMonthExpend(fakeUppgList.get(1).getNakoplenniy_obyom_s_nachalo_mesyach())
+                    .lastMonthExpend(fakeUppgList.get(1).getNakoplenniy_obyom_za_pered_mesyach())
+                    .build();
+            uppgAction2 = uppgActionRepository.save(uppgAction2);
+
+            miningSystemActionService.setAllAction(List.of(uppgAction1, uppgAction2), miningSystem);
+
+        }
+    }
 }

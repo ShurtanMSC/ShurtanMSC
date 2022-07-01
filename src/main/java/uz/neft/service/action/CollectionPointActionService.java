@@ -55,6 +55,7 @@ public class CollectionPointActionService {
     private final WellRepository wellRepository;
     private final UppgRepository uppgRepository;
     private final UppgActionRepository uppgActionRepository;
+    private final UppgActionService uppgActionService;
     private final MiningSystemRepository miningSystemRepository;
     private final MiningSystemActionRepository miningSystemActionRepository;
     private final WellActionService wellActionService;
@@ -78,7 +79,7 @@ public class CollectionPointActionService {
     @Value("${write.interval}")
     private long writeTimeInterval ;
 
-    public CollectionPointActionService(UserRepository userRepository, CollectionPointRepository collectionPointRepository, CollectionPointActionRepository collectionPointActionRepository, Converter converter, WellActionRepository wellActionRepository, WellRepository wellRepository, UppgRepository uppgRepository, UppgActionRepository uppgActionRepository, MiningSystemRepository miningSystemRepository, MiningSystemActionRepository miningSystemActionRepository, WellActionService wellActionService, OpcService opcService, FakeService fakeService, ForecastGasRepository forecastGasRepository, ForecastGasService forecastGasService, AkkaService akkaService, TESTForecastGasService testForecastGasService, Logger logger) {
+    public CollectionPointActionService(UserRepository userRepository, CollectionPointRepository collectionPointRepository, CollectionPointActionRepository collectionPointActionRepository, Converter converter, WellActionRepository wellActionRepository, WellRepository wellRepository, UppgRepository uppgRepository, UppgActionRepository uppgActionRepository, UppgActionService uppgActionService, MiningSystemRepository miningSystemRepository, MiningSystemActionRepository miningSystemActionRepository, WellActionService wellActionService, OpcService opcService, FakeService fakeService, ForecastGasRepository forecastGasRepository, ForecastGasService forecastGasService, AkkaService akkaService, TESTForecastGasService testForecastGasService, Logger logger) {
         this.userRepository = userRepository;
         this.collectionPointRepository = collectionPointRepository;
         this.collectionPointActionRepository = collectionPointActionRepository;
@@ -87,6 +88,7 @@ public class CollectionPointActionService {
         this.wellRepository = wellRepository;
         this.uppgRepository = uppgRepository;
         this.uppgActionRepository = uppgActionRepository;
+        this.uppgActionService = uppgActionService;
         this.miningSystemRepository = miningSystemRepository;
         this.miningSystemActionRepository = miningSystemActionRepository;
         this.wellActionService = wellActionService;
@@ -393,212 +395,17 @@ public class CollectionPointActionService {
                 List<Uppg> uppgs = uppgRepository.findAllByMiningSystem(miningSystem.get());
 
                 try {
-                    List<FakeUppg> fakeUppgList = fakeService.all();
-
-                    if (fakeUppgList.size() == 2 && uppgs.size() <= 2) {
-                        UppgAction uppgAction1 = UppgAction
-                                .builder()
-                                .uppg(uppgs.get(0))
-                                .expend(fakeUppgList.get(0).getRasxod())
-                                .incomePressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(0).getDavleniya()))
-                                .exitPressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(0).getDavleniya()))
-                                .condensate(0)
-                                .exitTemperature(fakeUppgList.get(0).getTemperatura())
-                                .incomeTemperature(fakeUppgList.get(0).getTemperatura())
-                                .onWater(15)
-                                .actualPerformance(0)
-                                .designedPerformance(0)
-                                .todayExpend(fakeUppgList.get(0).getNakoplenniy_obyom_s_nachalo_sutok())
-                                .yesterdayExpend(fakeUppgList.get(0).getNakoplenniy_obyom_za_vchera())
-                                .thisMonthExpend(fakeUppgList.get(0).getNakoplenniy_obyom_s_nachalo_mesyach())
-                                .thisMonthExpend(fakeUppgList.get(0).getNakoplenniy_obyom_za_pered_mesyach())
-                                .build();
-                        uppgAction1 = uppgActionRepository.save(uppgAction1);
-
-                        UppgAction uppgAction2 = UppgAction
-                                .builder()
-                                .uppg(uppgs.get(1))
-                                .expend(fakeUppgList.get(1).getRasxod())
-                                .incomePressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(1).getDavleniya()))
-                                .exitPressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(1).getDavleniya()))
-                                .condensate(0)
-                                .exitTemperature(fakeUppgList.get(1).getTemperatura())
-                                .incomeTemperature(fakeUppgList.get(1).getTemperatura())
-                                .onWater(15)
-                                .actualPerformance(0)
-                                .designedPerformance(0)
-                                .todayExpend(fakeUppgList.get(1).getNakoplenniy_obyom_s_nachalo_sutok())
-                                .yesterdayExpend(fakeUppgList.get(1).getNakoplenniy_obyom_za_vchera())
-                                .thisMonthExpend(fakeUppgList.get(1).getNakoplenniy_obyom_s_nachalo_mesyach())
-                                .thisMonthExpend(fakeUppgList.get(1).getNakoplenniy_obyom_za_pered_mesyach())
-                                .build();
-                        uppgAction2 = uppgActionRepository.save(uppgAction2);
-
-                        Optional<MiningSystemAction> lastAction = miningSystemActionRepository.findFirstByMiningSystemOrderByCreatedAtDesc(miningSystem.get());
-
-                        MiningSystemAction miningSystemAction = MiningSystemAction
-                                .builder()
-                                .expend(uppgAction1.getExpend() + uppgAction2.getExpend())
-                                .miningSystem(miningSystem.get())
-                                .planThisYear(lastAction.map(MiningSystemAction::getPlanThisYear).orElse(0.0))
-                                .planThisMonth(lastAction.map(MiningSystemAction::getPlanThisMonth).orElse(0.0))
-                                .todayExpend(uppgAction1.getTodayExpend() + uppgAction2.getTodayExpend())
-                                .yesterdayExpend(uppgAction1.getYesterdayExpend() + uppgAction2.getYesterdayExpend())
-                                .thisMonthExpend(uppgAction1.getThisMonthExpend() + uppgAction2.getThisMonthExpend())
-                                .lastMonthExpend(uppgAction1.getLastMonthExpend() + uppgAction2.getLastMonthExpend())
-                                .build();
-                        miningSystemAction = miningSystemActionRepository.save(miningSystemAction);
-
-
-                        Date date = new Date();
-
-                        Optional<ForecastGas> forecastGasNow = forecastGasRepository.findByMiningSystemAndYearAndMonth(miningSystem.get(), date.getYear(), Month.of(date.getMonth()+1));
-                        if (forecastGasNow.isPresent()) {
-                            forecastGasNow.get().setAmount(miningSystemAction.getThisMonthExpend());
-                            forecastGasRepository.save(forecastGasNow.get());
-                        }
-
-                    }
+                    // Uppg processing
+                    uppgActionService.setAllUppgAction(uppgs, miningSystem.get());
                 } catch (Exception e) {
                     e.printStackTrace();
                     logger.error(e.toString());
                 }
 
-
-
                 List<CollectionPoint> all = collectionPointRepository.findAllByMiningSystemId(id);
 
                 List<CollectionPointAction> actionList=new ArrayList<>();
 
-//                for (CollectionPoint collectionPoint : all) {
-//                    if (collectionPoint.isActiveE()) {
-//                        CollectionPointAction action = CollectionPointAction
-//                                .builder()
-//                                .collectionPoint(collectionPoint)
-//                                .build();
-//
-//                        long lastActionId = -1;
-//                        double oldValueTemperature = 0;
-//                        double oldValuePressure = 0;
-//                        Optional<CollectionPointAction> lastAction = collectionPointActionRepository.findFirstByCollectionPointOrderByCreatedAtDesc(collectionPoint);
-//                        if (lastAction.isPresent()) {
-//                            lastActionId = lastAction.get().getId();
-//                            oldValuePressure = lastAction.get().getPressure();
-//                            oldValueTemperature = lastAction.get().getTemperature();
-//                        }
-//
-//
-////                        double temperatureOpc = opcService.getValue(action, action.getCollectionPoint().getTemperatureUnit());
-////                        double pressureOpc=0;
-////                        if (collectionPoint.getOpcServer().getType().equals(OpcServerType.SIMULATE))
-////                            pressureOpc = opcService.getValue(action, action.getCollectionPoint().getPressureUnit());
-////                        else
-////                            pressureOpc = Calculator.mega_pascal_to_kgf_sm2(opcService.getValue(action, action.getCollectionPoint().getPressureUnit()));
-////
-//                        double temperatureOpc=0;
-//                        String str=opcService.getValueWeb(action);
-//                        temperatureOpc = opcService.getValueWeb(str,action, action.getCollectionPoint().getTemperatureUnit());
-//                        double pressureOpc=0;
-//                        if (collectionPoint.getOpcServer().getType().equals(OpcServerType.SIMULATE))
-//                            pressureOpc = opcService.getValueWeb(str,action, action.getCollectionPoint().getPressureUnit());
-//                        else
-//                            pressureOpc = Calculator.mega_pascal_to_kgf_sm2(opcService.getValueWeb(str,action, action.getCollectionPoint().getPressureUnit()));
-//
-//
-//                        logger.info("lastActionId -> " + lastActionId);
-//                        logger.info("oldValue_Temperature -> " + oldValueTemperature);
-//                        logger.info("oldValue_Pressure -> " + oldValuePressure);
-//                        logger.info("newValue_Temperature -> " + temperatureOpc);
-//                        logger.info("newValue_Pressure -> " + pressureOpc);
-//
-//                        System.out.println("lastActionId -> " + lastActionId);
-//                        System.out.println("oldValue_Temperature -> " + oldValueTemperature);
-//                        System.out.println("oldValue_Pressure -> " + oldValuePressure);
-//                        System.out.println("newValue_Temperature -> " + temperatureOpc);
-//                        System.out.println("newValue_Pressure -> " + pressureOpc);
-//
-//                        double deltaTemperature = Math.abs(temperatureOpc - oldValueTemperature);
-//                        double deltaPressure = Math.abs(pressureOpc - oldValuePressure);
-//
-//                        logger.info("deltaTemperature -> " + deltaTemperature);
-//                        logger.info("deltaPressure -> " + deltaPressure);
-//                        logger.info("DELTA --> " + deltaTemperatureAction);
-//
-//                        System.out.println("deltaTemperature -> " + deltaTemperature);
-//                        System.out.println("deltaPressure -> " + deltaPressure);
-//                        System.out.println("DELTA --> " + deltaTemperatureAction);
-//
-//                        boolean oldValueUpdate = false;
-//                        if (deltaTemperature >= deltaTemperatureAction) {
-//                            logger.info("deltaTemperature >= "+deltaTemperature);
-//                            System.out.println("deltaTemperature >= "+deltaTemperature);
-//                            action.setTemperature(temperatureOpc);
-//                            oldValueTemperature = temperatureOpc;
-//                            logger.info("oldValueTemperature -> " + oldValueTemperature);
-//                            System.out.println("oldValueTemperature -> " + oldValueTemperature);
-//                        } else {
-//                            oldValueUpdate = true;
-//                        }
-//                        if (deltaPressure >= deltaPressureAction) {
-//                            if (oldValueUpdate) {
-//                                action.setTemperature(temperatureOpc);
-//                            }
-//
-//                            logger.info("deltaPressure >= "+deltaPressure);
-//                            System.out.println("deltaPressure >= "+deltaPressure);
-//                            action.setPressure(pressureOpc);
-//                            oldValuePressure = pressureOpc;
-//                            logger.info("oldValuePressure -> " + oldValuePressure);
-//                            System.out.println("oldValuePressure -> " + oldValuePressure);
-//                        } else {
-//                            if (oldValueUpdate) {
-//                                Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
-//                                CollectionPointAction collectionPointAction;
-//                                if (collectionPointActionRepository.findById(lastActionId).isPresent()){
-//                                    collectionPointAction = collectionPointActionRepository.findById(lastActionId).get();
-//                                    collectionPointAction.setModified(modifiedDate);
-//                                    CollectionPointAction save = collectionPointActionRepository.save(collectionPointAction);
-//
-//                                    logger.info("modifiedDate ---" + modifiedDate);
-//                                    logger.info("oldValueUpdate -------------");
-//                                    logger.info("Action id = " + lastActionId + ". Last Action Updated" + "modifiedDate  " + save.getModified());
-//
-//                                    System.out.println("modifiedDate ---" + modifiedDate);
-//                                    System.out.println("oldValueUpdate -------------");
-//                                    System.out.println("Action id = " + lastActionId + ". Last Action Updated" + "modifiedDate  " + save.getModified());
-//
-//                                }
-//
-//
-//                                continue;
-//                            } else {
-//                                action.setPressure(pressureOpc);
-//                            }
-//                        }
-//
-////                action.setPressure(action.getPressureOpc());
-////                action.setTemperature(action.getTemperatureOpc());
-//                        wellActionService.execute(collectionPoint.getUppg());
-//
-//                        Thread.sleep(500);
-////                System.out.println(action.toString());
-//                        if (action.getPressure() == 0 || action.getTemperature() == 0) {
-//                            action.setExpend(0);
-//                            collectionPointActionRepository.save(action);
-//                        } else {
-//                            double expendCp = checkWells(collectionPoint, action);
-//                            action.setExpend(expendCp);
-//                            logger.info("Expend "+collectionPoint.getName()+" = "+expendCp);
-//                            System.out.println("Expend "+collectionPoint.getName()+" = "+expendCp);
-////                            akkaService.calculate(action);
-////                            actionList.add(action);
-//                        }
-//
-//                        collectionPointActionRepository.save(action);
-//                    } else
-//                        wellActionService.execute(collectionPoint.getUppg());
-//
-//                }
                 setAllCollectionPoint(id);
 //                actionList.forEach(akkaService::calculate);
             }

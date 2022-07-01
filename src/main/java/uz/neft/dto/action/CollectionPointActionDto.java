@@ -29,7 +29,7 @@ public class CollectionPointActionDto {
 
     private Date createdAt;
 
-    private boolean open;
+    private boolean door;
 
 //    @LastModifiedBy
 //    @Column(nullable = false)

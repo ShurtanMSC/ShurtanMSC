@@ -47,6 +47,10 @@ public class UppgActionDto {
 
     private Date createdAt;
 
+    private double todayExpend;
+    private double yesterdayExpend;
+    private double thisMonthExpend;
+    private double lastMonthExpend;
 
 //    @LastModifiedBy
 //    @Column(nullable = false)

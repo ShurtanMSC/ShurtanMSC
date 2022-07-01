@@ -43,7 +43,7 @@ public class CollectionPointAction extends AbsEntityLong {
     @ManyToOne
     private CollectionPoint collectionPoint;
 
-    private boolean open=false;
+    private Boolean door=false;
 
     @Value("${opc.service.address}")
     protected String address;
@@ -135,4 +135,7 @@ public class CollectionPointAction extends AbsEntityLong {
                 '}';
     }
 
+    public boolean isDoorOpen() {
+        return door != null && door;
+    }
 }

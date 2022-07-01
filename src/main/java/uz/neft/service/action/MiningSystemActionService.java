@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 import uz.neft.dto.MiningSystemDto;
 import uz.neft.dto.action.MiningSystemActionDto;
 import uz.neft.dto.action.ObjectWithActionsDto;
+import uz.neft.entity.ForecastGas;
 import uz.neft.entity.MiningSystem;
 import uz.neft.entity.action.MiningSystemAction;
+import uz.neft.entity.action.UppgAction;
 import uz.neft.repository.*;
 import uz.neft.repository.action.MiningSystemActionRepository;
 import uz.neft.repository.constants.ConstantRepository;
@@ -17,7 +19,9 @@ import uz.neft.repository.constants.MiningSystemConstantRepository;
 import uz.neft.service.Calculator;
 import uz.neft.utils.Converter;
 
+import java.time.Month;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -138,4 +142,32 @@ public class MiningSystemActionService {
 //        }
 //
 //    }
+
+    public void setAllAction(List<UppgAction> uppgActions, MiningSystem miningSystem) {
+        Optional<MiningSystemAction> lastAction = miningSystemActionRepository.findFirstByMiningSystemOrderByCreatedAtDesc(miningSystem);
+        MiningSystemAction miningSystemAction = MiningSystemAction
+                .builder()
+                .expend(uppgActions.stream().mapToDouble(UppgAction::getExpend).sum())
+                .miningSystem(miningSystem)
+                .planThisYear(lastAction.map(MiningSystemAction::getPlanThisYear).orElse(0.0))
+                .planThisMonth(lastAction.map(MiningSystemAction::getPlanThisMonth).orElse(0.0))
+//                .todayExpend(uppgAction1.getTodayExpend() + uppgAction2.getTodayExpend())
+                .todayExpend(uppgActions.stream().mapToDouble(UppgAction::getTodayExpend).sum())
+//                .yesterdayExpend(uppgAction1.getYesterdayExpend() + uppgAction2.getYesterdayExpend())
+                .yesterdayExpend(uppgActions.stream().mapToDouble(UppgAction::getYesterdayExpend).sum())
+//                .thisMonthExpend(uppgAction1.getThisMonthExpend() + uppgAction2.getThisMonthExpend())
+                .thisMonthExpend(uppgActions.stream().mapToDouble(UppgAction::getThisMonthExpend).sum())
+//                .lastMonthExpend(uppgAction1.getLastMonthExpend() + uppgAction2.getLastMonthExpend())
+                .lastMonthExpend(uppgActions.stream().mapToDouble(UppgAction::getLastMonthExpend).sum())
+                .build();
+        miningSystemAction = miningSystemActionRepository.save(miningSystemAction);
+
+        Date date = new Date();
+
+        Optional<ForecastGas> forecastGasNow = forecastGasRepository.findByMiningSystemAndYearAndMonth(miningSystem, date.getYear(), Month.of(date.getMonth()+1));
+        if (forecastGasNow.isPresent()) {
+            forecastGasNow.get().setAmount(miningSystemAction.getThisMonthExpend());
+            forecastGasRepository.save(forecastGasNow.get());
+        }
+    }
 }
