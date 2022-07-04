@@ -1,12 +1,15 @@
 package uz.neft.entity.action;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import uz.neft.entity.Uppg;
 import uz.neft.entity.User;
 import uz.neft.entity.template.AbsEntityLong;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import java.sql.Timestamp;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -67,4 +70,7 @@ public class UppgAction extends AbsEntityLong {
 //    @Column(nullable = false)
 //    private LocalDateTime modified;
 
+    @CreationTimestamp
+    @Column(updatable = true)
+    private Timestamp modified;
 }

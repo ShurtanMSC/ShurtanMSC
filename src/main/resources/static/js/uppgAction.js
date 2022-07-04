@@ -141,22 +141,36 @@ function createViewTableAction(actions) {
         const createdAtMins = createdAtDate.getMinutes()
         const createdAtDateString = createdAtDayOfMonth + "-" + (createdAtMonth + 1) + "-" + createdAtYear + " " + createdAtHours + ":" + createdAtMins;
 
+        const modifiedDate = new Date('' + action.modified + '');
+        const modifiedDayOfMonth = modifiedDate.getDate();
+        const modifiedMonth = modifiedDate.getMonth(); // Be careful! January is 0, not 1
+        const modifiedYear = modifiedDate.getFullYear();
+        const modifiedHours = modifiedDate.getHours();
+        const modifiedMins = modifiedDate.getMinutes()
+
+        const modifiedDateString = action.modified!=null? modifiedDayOfMonth + "-" + (modifiedMonth + 1) + "-" + modifiedYear + " " + modifiedHours + ":" + modifiedMins:0;
+
+
+
 
 
 
         out += "<tr class=\"action_table_row\">\n" +
             "   <td class=\"sorting_1\">" + action.actionId + "</td>\n" +
             "    <td>" + action.expend + "</td>\n" +
-            "    <td>" + action.designedPerformance + "</td>\n" +
-            "    <td>" + action.actualPerformance + "</td>\n" +
-            "    <td>" + action.condensate + "</td>\n" +
-            "    <td>" + action.onWater + "</td>\n" +
-            "    <td>" + action.incomeTemperature + "</td>\n" +
-            "    <td>" + action.exitTemperature + "</td>\n" +
-            "    <td>" + action.incomePressure + "</td>\n" +
-            "    <td>" + action.exitPressure + "</td>\n" +
+            "    <td>" + Math.round(action.designedPerformance*100)/100 + "</td>\n" +
+            "    <td>" + Math.round(action.actualPerformance*100)/100 + "</td>\n" +
+            // "    <td>" + action.condensate + "</td>\n" +
+            // "    <td>" + action.onWater + "</td>\n" +
+            "    <td>" + Math.round(action.actualPerformance*100)/100 + "</td>\n" +
+            "    <td>" + Math.round(action.lastMonthExpend*100)/100 + "</td>\n" +
+            "    <td>" + Math.round(action.incomeTemperature*100)/100 + "</td>\n" +
+            "    <td>" + Math.round(action.exitTemperature*100)/100 + "</td>\n" +
+            "    <td>" + Math.round(action.incomePressure*100)/100 + "</td>\n" +
+            "    <td>" + Math.round(action.exitPressure*100)/100 + "</td>\n" +
             "    <td hidden>" + action.uppgId + "</td>\n" +
             "    <td>" + createdAtDateString + "</td>\n" +
+            "    <td>" + modifiedDateString + "</td>\n" +
             "     <td id=\"uppgIdTd\" hidden value='" + action.uppgId + "'>" + action.uppgId + "</td>\n" +
             "     <td><button data-target=\"#exampleModalCenterAction\" data-toggle=\"modal\" class='btn btn-success ml-1 mt-1' id='btn-edit-action' value='" + action.actionId + "' onclick='editUppgAction(this.value)'>Редактировать</button>\n" +
             "      <button class='btn btn-danger ml-1 mt-1' id='btn-edit-action' value='" + action.actionId + "' onclick='deleteUppgAction(this.value)'>Удалить</button></td>\n" +

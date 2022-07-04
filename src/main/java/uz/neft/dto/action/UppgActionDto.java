@@ -4,7 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
+import javax.persistence.Column;
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Getter
@@ -60,5 +63,8 @@ public class UppgActionDto {
 //    @Column(nullable = false)
 //    private LocalDateTime modified;
 
+//    @CreationTimestamp
+//    @Column(updatable = true)
+    private Timestamp modified;
 
 }

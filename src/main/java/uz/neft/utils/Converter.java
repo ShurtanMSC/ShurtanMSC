@@ -532,6 +532,7 @@ public class Converter {
                     .yesterdayExpend(uppgAction.getYesterdayExpend())
                     .thisMonthExpend(uppgAction.getThisMonthExpend())
                     .lastMonthExpend(uppgAction.getLastMonthExpend())
+                    .modified(uppgAction.getModified())
                     .build();
         } catch (Exception e) {
             e.printStackTrace();

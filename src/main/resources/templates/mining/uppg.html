@@ -213,18 +213,31 @@
                                                            class="form-control rounded-left"
                                                            placeholder="">
                                                 </div>
+<!--                                                <div class="form-group d-flex flex-column">-->
+<!--                                                    <label for="condensate" class="mb-0">По конденсату, тыс.т</label>-->
+<!--                                                    <input name="condensate" id="condensate" type="number" step=any-->
+<!--                                                           class="form-control rounded-left"-->
+<!--                                                           placeholder="">-->
+<!--                                                </div>-->
+<!--                                                <div class="form-group d-flex flex-column">-->
+<!--                                                    <label for="onWater" class="mb-0">По воде, тыс.т</label>-->
+<!--                                                    <input name="onWater" id="onWater" type="number" step=any-->
+<!--                                                           class="form-control rounded-left"-->
+<!--                                                           placeholder="">-->
+<!--                                                </div>-->
                                                 <div class="form-group d-flex flex-column">
-                                                    <label for="condensate" class="mb-0">По конденсату, тыс.т</label>
+                                                    <label for="condensate" class="mb-0">Накопленный объем с начала года т.м3</label>
                                                     <input name="condensate" id="condensate" type="number" step=any
                                                            class="form-control rounded-left"
                                                            placeholder="">
                                                 </div>
                                                 <div class="form-group d-flex flex-column">
-                                                    <label for="onWater" class="mb-0">По воде, тыс.т</label>
+                                                    <label for="onWater" class="mb-0">Накопленный объем за предыдущий месяц т.м3</label>
                                                     <input name="onWater" id="onWater" type="number" step=any
                                                            class="form-control rounded-left"
                                                            placeholder="">
-                                                </div></div>
+                                                </div>
+                                            </div>
                                             <div class="col-6">
                                                 <div class="form-group d-flex flex-column">
                                                     <label for="incomeTemperature" class="mb-0">Входная температура (°C)</label>
@@ -448,14 +461,24 @@
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                 >Фактическая производи телность, м³/год
                                                 </th>
+<!--                                                <th class="sorting users-table-title" tabindex="0"-->
+<!--                                                    aria-controls="dataTable" rowspan="1" colspan="1"-->
+<!--                                                >По конденсату, тыс.т-->
+<!--                                                </th>-->
+<!--                                                <th class="sorting users-table-title" tabindex="0"-->
+<!--                                                    aria-controls="dataTable" rowspan="1" colspan="1"-->
+<!--                                                >По воде, тыс.т-->
+<!--                                                </th>-->
+
                                                 <th class="sorting users-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
-                                                >По конденсату, тыс.т
+                                                >Накопленный объем с начала года т.м3
                                                 </th>
                                                 <th class="sorting users-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
-                                                >По воде, тыс.т
+                                                >Накопленный объем за предыдущий месяц т.м3
                                                 </th>
+
                                                 <th class="sorting users-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                 > Входная температура ( °C )
@@ -475,6 +498,10 @@
                                                 <th class="sorting users-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
                                                 >Дата создания
+                                                </th>
+                                                <th class="sorting users-table-title" tabindex="0"
+                                                    aria-controls="dataTable" rowspan="1" colspan="1"
+                                                >Дата изменения
                                                 </th>
                                                 <th class="sorting uppgs-table-title" tabindex="0"
                                                     aria-controls="dataTable" rowspan="1" colspan="1"
@@ -514,6 +541,7 @@
                                                     ( кгс/см²)
                                                 </th>
                                                 <th class="users-table-title" rowspan="1" colspan="1">Дата создания</th>
+                                                <th class="users-table-title" rowspan="1" colspan="1">Дата изменения</th>
                                                 <th class="users-table-title" rowspan="1" colspan="1">Редактировать</th>
                                             </tr>
                                             </tfoot>

@@ -33,6 +33,7 @@ import uz.neft.service.ForecastGasService;
 import uz.neft.service.TESTForecastGasService;
 import uz.neft.utils.Converter;
 
+import java.sql.Timestamp;
 import java.time.Month;
 import java.util.Date;
 import java.util.List;
@@ -352,47 +353,91 @@ public class UppgActionService {
     public void setAllUppgAction(List<Uppg> uppgs, MiningSystem miningSystem){
         List<FakeUppg> fakeUppgList = fakeService.all();
 
-        if (fakeUppgList.size() == 2 && uppgs.size() <= 2) {
-            UppgAction uppgAction1 = UppgAction
-                    .builder()
-                    .uppg(uppgs.get(0))
-                    .expend(fakeUppgList.get(0).getRasxod())
-                    .incomePressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(0).getDavleniya()))
-                    .exitPressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(0).getDavleniya()))
-                    .condensate(0)
-                    .exitTemperature(fakeUppgList.get(0).getTemperatura())
-                    .incomeTemperature(fakeUppgList.get(0).getTemperatura())
-                    .onWater(15)
-                    .actualPerformance(0)
-                    .designedPerformance(0)
-                    .todayExpend(fakeUppgList.get(0).getNakoplenniy_obyom_s_nachalo_sutok())
-                    .yesterdayExpend(fakeUppgList.get(0).getNakoplenniy_obyom_za_vchera())
-                    .thisMonthExpend(fakeUppgList.get(0).getNakoplenniy_obyom_s_nachalo_mesyach())
-                    .lastMonthExpend(fakeUppgList.get(0).getNakoplenniy_obyom_za_pered_mesyach())
-                    .build();
-            uppgAction1 = uppgActionRepository.save(uppgAction1);
-
-            UppgAction uppgAction2 = UppgAction
-                    .builder()
-                    .uppg(uppgs.get(1))
-                    .expend(fakeUppgList.get(1).getRasxod())
-                    .incomePressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(1).getDavleniya()))
-                    .exitPressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(1).getDavleniya()))
-                    .condensate(0)
-                    .exitTemperature(fakeUppgList.get(1).getTemperatura())
-                    .incomeTemperature(fakeUppgList.get(1).getTemperatura())
-                    .onWater(15)
-                    .actualPerformance(0)
-                    .designedPerformance(0)
-                    .todayExpend(fakeUppgList.get(1).getNakoplenniy_obyom_s_nachalo_sutok())
-                    .yesterdayExpend(fakeUppgList.get(1).getNakoplenniy_obyom_za_vchera())
-                    .thisMonthExpend(fakeUppgList.get(1).getNakoplenniy_obyom_s_nachalo_mesyach())
-                    .lastMonthExpend(fakeUppgList.get(1).getNakoplenniy_obyom_za_pered_mesyach())
-                    .build();
-            uppgAction2 = uppgActionRepository.save(uppgAction2);
-
-            miningSystemActionService.setAllAction(List.of(uppgAction1, uppgAction2), miningSystem);
-
+        for (int i = 0; i < uppgs.size(); i++) {
+            Optional<UppgAction> lastAction = uppgActionRepository.findFirstByUppgOrderByCreatedAtDesc(uppgs.get(i));
+            if (lastAction.isPresent()){
+                Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
+                lastAction.get().setModified(modifiedDate);
+                lastAction.get().setExpend(fakeUppgList.get(i).getRasxod());
+                lastAction.get().setIncomePressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(i).getDavleniya()));
+                lastAction.get().setExitPressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(i).getDavleniya()));
+                lastAction.get().setCondensate(lastAction.get().getCondensate());
+                lastAction.get().setIncomeTemperature(fakeUppgList.get(i).getTemperatura());
+                lastAction.get().setExitTemperature(fakeUppgList.get(i).getTemperatura());
+                lastAction.get().setOnWater(lastAction.get().getOnWater());
+                lastAction.get().setActualPerformance(fakeUppgList.get(i).getNakoplenniy_obyom());
+                lastAction.get().setDesignedPerformance(lastAction.get().getDesignedPerformance());
+                lastAction.get().setTodayExpend(fakeUppgList.get(i).getNakoplenniy_obyom_s_nachalo_sutok());
+                lastAction.get().setYesterdayExpend(fakeUppgList.get(i).getNakoplenniy_obyom_za_vchera());
+                lastAction.get().setThisMonthExpend(fakeUppgList.get(i).getNakoplenniy_obyom_s_nachalo_mesyach());
+                lastAction.get().setLastMonthExpend(fakeUppgList.get(i).getNakoplenniy_obyom_za_pered_mesyach());
+                uppgActionRepository.save(lastAction.get());
+            }else {
+                UppgAction action = UppgAction
+                        .builder()
+                        .uppg(uppgs.get(i))
+                        .expend(fakeUppgList.get(i).getRasxod())
+                        .incomePressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(i).getDavleniya()))
+                        .exitPressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(i).getDavleniya()))
+                        .condensate(0)
+                        .exitTemperature(fakeUppgList.get(i).getTemperatura())
+                        .incomeTemperature(fakeUppgList.get(i).getTemperatura())
+                        .onWater(15)
+                        .actualPerformance(fakeUppgList.get(i).getNakoplenniy_obyom())
+                        .designedPerformance(0)
+                        .todayExpend(fakeUppgList.get(i).getNakoplenniy_obyom_s_nachalo_sutok())
+                        .yesterdayExpend(fakeUppgList.get(i).getNakoplenniy_obyom_za_vchera())
+                        .thisMonthExpend(fakeUppgList.get(i).getNakoplenniy_obyom_s_nachalo_mesyach())
+                        .lastMonthExpend(fakeUppgList.get(i).getNakoplenniy_obyom_za_pered_mesyach())
+                        .modified(new Timestamp(System.currentTimeMillis()))
+                        .build();
+                action = uppgActionRepository.save(action);
+            }
         }
+
+
+
+//        if (fakeUppgList.size() == 2 && uppgs.size() <= 2) {
+//            UppgAction uppgAction1 = UppgAction
+//                    .builder()
+//                    .uppg(uppgs.get(0))
+//                    .expend(fakeUppgList.get(0).getRasxod())
+//                    .incomePressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(0).getDavleniya()))
+//                    .exitPressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(0).getDavleniya()))
+//                    .condensate(0)
+//                    .exitTemperature(fakeUppgList.get(0).getTemperatura())
+//                    .incomeTemperature(fakeUppgList.get(0).getTemperatura())
+//                    .onWater(15)
+//                    .actualPerformance(0)
+//                    .designedPerformance(0)
+//                    .todayExpend(fakeUppgList.get(0).getNakoplenniy_obyom_s_nachalo_sutok())
+//                    .yesterdayExpend(fakeUppgList.get(0).getNakoplenniy_obyom_za_vchera())
+//                    .thisMonthExpend(fakeUppgList.get(0).getNakoplenniy_obyom_s_nachalo_mesyach())
+//                    .lastMonthExpend(fakeUppgList.get(0).getNakoplenniy_obyom_za_pered_mesyach())
+//                    .build();
+//            uppgAction1 = uppgActionRepository.save(uppgAction1);
+//
+//            UppgAction uppgAction2 = UppgAction
+//                    .builder()
+//                    .uppg(uppgs.get(1))
+//                    .expend(fakeUppgList.get(1).getRasxod())
+//                    .incomePressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(1).getDavleniya()))
+//                    .exitPressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(1).getDavleniya()))
+//                    .condensate(0)
+//                    .exitTemperature(fakeUppgList.get(1).getTemperatura())
+//                    .incomeTemperature(fakeUppgList.get(1).getTemperatura())
+//                    .onWater(15)
+//                    .actualPerformance(0)
+//                    .designedPerformance(0)
+//                    .todayExpend(fakeUppgList.get(1).getNakoplenniy_obyom_s_nachalo_sutok())
+//                    .yesterdayExpend(fakeUppgList.get(1).getNakoplenniy_obyom_za_vchera())
+//                    .thisMonthExpend(fakeUppgList.get(1).getNakoplenniy_obyom_s_nachalo_mesyach())
+//                    .lastMonthExpend(fakeUppgList.get(1).getNakoplenniy_obyom_za_pered_mesyach())
+//                    .build();
+//            uppgAction2 = uppgActionRepository.save(uppgAction2);
+//
+//            miningSystemActionService.setAllAction(List.of(uppgAction1, uppgAction2), miningSystem);
+//
+//        }
     }
 }

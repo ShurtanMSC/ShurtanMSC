@@ -120,7 +120,7 @@ public class CollectionPointAction extends AbsEntityLong {
     //    @LastModifiedDate
 //    @Column(nullable = false)
     @CreationTimestamp
-    @Column(nullable = false, updatable = true)
+    @Column(updatable = true)
     private Timestamp modified;
 
     @Override
