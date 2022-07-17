@@ -35,6 +35,7 @@ import uz.neft.utils.Converter;
 
 import java.sql.Timestamp;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -352,7 +353,7 @@ public class UppgActionService {
 
     public void setAllUppgAction(List<Uppg> uppgs, MiningSystem miningSystem){
         List<FakeUppg> fakeUppgList = fakeService.all();
-
+        List<UppgAction> uppgActions= new ArrayList<>();
         for (int i = 0; i < uppgs.size(); i++) {
             Optional<UppgAction> lastAction = uppgActionRepository.findFirstByUppgOrderByCreatedAtDesc(uppgs.get(i));
             if (lastAction.isPresent()){
@@ -372,6 +373,7 @@ public class UppgActionService {
                 lastAction.get().setThisMonthExpend(fakeUppgList.get(i).getNakoplenniy_obyom_s_nachalo_mesyach());
                 lastAction.get().setLastMonthExpend(fakeUppgList.get(i).getNakoplenniy_obyom_za_pered_mesyach());
                 uppgActionRepository.save(lastAction.get());
+                uppgActions.add(lastAction.get());
             }else {
                 UppgAction action = UppgAction
                         .builder()
@@ -392,8 +394,12 @@ public class UppgActionService {
                         .modified(new Timestamp(System.currentTimeMillis()))
                         .build();
                 action = uppgActionRepository.save(action);
+                uppgActions.add(action);
             }
         }
+
+        miningSystemActionService.setAllAction(uppgActions, miningSystem);
+
 
 
 

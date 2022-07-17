@@ -1,12 +1,17 @@
 package uz.neft.service.action;
 
 import org.slf4j.Logger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.MiningSystemDto;
 import uz.neft.dto.action.MiningSystemActionDto;
 import uz.neft.dto.action.ObjectWithActionsDto;
+import uz.neft.dto.action.UppgActionDto;
 import uz.neft.entity.ForecastGas;
 import uz.neft.entity.MiningSystem;
 import uz.neft.entity.action.MiningSystemAction;
@@ -98,6 +103,28 @@ public class MiningSystemActionService {
         }
     }
 
+
+    public HttpEntity<?> allWithActionsByMiningSystem(Integer id,Optional<Integer> page,Optional<Integer> pageSize, Optional<String> sortBy) {
+        try {
+            Optional<MiningSystem> miningSystem = miningSystemRepository.findById(id);
+//            List<MiningSystemAction> miningSystemActions =miningSystemActionRepository.findAllByMiningSystemOrderByCreatedAtDesc(miningSystem.get());
+
+//            Stream<MiningSystemActionDto> miningSystemActionDtoStream = miningSystemActions.stream().map(converter::miningsystemActionToMiningSystemActionDto);
+            if (!miningSystem.isPresent()) return converter.apiError404("Mining system not found");
+
+            Pageable pg = PageRequest.of(page.orElse(0), pageSize.orElse(10), Sort.Direction.DESC, sortBy.orElse("createdAt"));
+
+            Page<MiningSystemAction> miningSystemActions = miningSystemActionRepository.findAllByMiningSystemOrderByCreatedAtDesc(miningSystem.get(), pg);
+
+            Stream<MiningSystemActionDto> MiningSystemActionDto = miningSystemActions.stream().map(converter::miningsystemActionToMiningSystemActionDto);
+
+            return converter.apiSuccess200(MiningSystemActionDto,miningSystemActions.getTotalElements(),miningSystemActions.getTotalPages(),miningSystemActions.getNumber());
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.toString());
+            return converter.apiError409();
+        }
+    }
 
     /**
      * Manually

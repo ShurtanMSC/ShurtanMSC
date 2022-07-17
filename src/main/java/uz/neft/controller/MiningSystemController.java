@@ -8,6 +8,8 @@ import uz.neft.dto.action.MiningSystemActionDto;
 import uz.neft.service.MiningSystemService;
 import uz.neft.service.action.MiningSystemActionService;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("api/mining_system")
 @CrossOrigin
@@ -69,7 +71,14 @@ public class MiningSystemController {
         return miningSystemActionService.allWithActions();
     }
 
-
+    @GetMapping("all/actions/{miningSystemId}")
+    public HttpEntity<?> allActionsByMiningSystemId(@PathVariable Integer miningSystemId,
+                                             @RequestParam(value = "page", required = false, defaultValue = "0") Optional<Integer> page,
+                                             @RequestParam(value = "pageSize", required = false, defaultValue = "10") Optional<Integer> pageSize,
+                                             @RequestParam(value = "sortBy", required = false, defaultValue = "createdAt") Optional<String> sortBy
+    ) {
+        return miningSystemActionService.allWithActionsByMiningSystem(miningSystemId,page,pageSize,sortBy);
+    }
 
 
     /**

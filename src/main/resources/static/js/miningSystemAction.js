@@ -31,7 +31,7 @@ function getActionsByMiningSystem() {
     let formField = document.getElementById('addOrEditMiningSystemActionForm');
     formField['miningSystemId'].value = miningSystemID;
 
-    axios.get("/api/admin/mining/allActions/" + miningSystemID)
+    axios.get("/api/mining_system/all/actions/" + miningSystemID)
         .then(function (response) {
             // console.log(response.data.object)
             if (response.data.message === "OK") {
