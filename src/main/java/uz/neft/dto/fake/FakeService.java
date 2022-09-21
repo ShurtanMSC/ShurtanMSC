@@ -15,7 +15,14 @@ import java.util.concurrent.Executors;
 
 @Service
 public class FakeService {
-
+    @Value("${uppg.simulation.enabled}")
+    private boolean uppgSimulationEnabled;
+    @Value("${uppg.database.url}")
+    private String uppgDatabaseUrl;
+    @Value("${uppg.database.username}")
+    private String uppgDatabaseUsername;
+    @Value("${uppg.database.password}")
+    private String uppgDatabasePassword;
     @Value("${spring.datasource.url}")
     private String postgresqlUrl;
     public static void main(String[] args) {
@@ -29,7 +36,10 @@ public class FakeService {
     public List<FakeUppg> all(){
         String url="jdbc:sqlserver://192.168.10.20:1433;database=UPPG";
         String userDB="UPPGReader", pass="97F88FA06BB691C96D3B46CC3252452369F4ACEB5E076CFACF4B7BF4B5370A5A43B57702334D3C31";
-        return all(url,userDB,pass);
+        List<FakeUppg> list=new ArrayList<>();
+        if (uppgSimulationEnabled) return list;
+//        return all(url,userDB,pass);
+        return all(uppgDatabaseUrl,uppgDatabaseUsername,uppgDatabasePassword);
     }
 
     public List<FakeUppg> allSimulator(){

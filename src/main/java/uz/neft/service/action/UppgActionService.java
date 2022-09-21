@@ -35,10 +35,7 @@ import uz.neft.utils.Converter;
 
 import java.sql.Timestamp;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -67,6 +64,9 @@ public class UppgActionService {
 
     @Value("${uppg.write.interval}")
     private long uppgWriteInterval;
+
+    @Value("${uppg.simulation.enabled}")
+    private boolean uppgSimulationEnabled;
 
     public UppgActionService(UserRepository userRepository, CollectionPointRepository collectionPointRepository, CollectionPointActionRepository collectionPointActionRepository1, UppgActionRepository uppgActionRepository, UppgRepository uppgRepository, CollectionPointActionRepository collectionPointActionRepository, Converter converter, WellActionRepository wellActionRepository, WellRepository wellRepository, WellActionRepository wellActionRepository1, WellRepository wellRepository1, MiningSystemRepository miningSystemRepository, MiningSystemActionRepository miningSystemActionRepository, MiningSystemActionService miningSystemActionService, WellActionService wellActionService, OpcService opcService, FakeService fakeService, ForecastGasRepository forecastGasRepository, ForecastGasService forecastGasService, AkkaService akkaService, TESTForecastGasService testForecastGasService, Logger logger) {
         this.userRepository = userRepository;
@@ -346,59 +346,120 @@ public class UppgActionService {
     }
 
 
+    public double random(double min, double max) {
+        Random r = new Random();
+        return r.nextDouble() * (max - min) + min;
+    }
+
     /** Auto **/
 
     //.....  from MODBUS
     //... coming soon
 
     public void setAllUppgAction(List<Uppg> uppgs, MiningSystem miningSystem){
-        List<FakeUppg> fakeUppgList = fakeService.all();
-        List<UppgAction> uppgActions= new ArrayList<>();
-        for (int i = 0; i < uppgs.size(); i++) {
-            Optional<UppgAction> lastAction = uppgActionRepository.findFirstByUppgOrderByCreatedAtDesc(uppgs.get(i));
-            if (lastAction.isPresent()){
-                Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
-                lastAction.get().setModified(modifiedDate);
-                lastAction.get().setExpend(fakeUppgList.get(i).getRasxod());
-                lastAction.get().setIncomePressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(i).getDavleniya()));
-                lastAction.get().setExitPressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(i).getDavleniya()));
-                lastAction.get().setCondensate(lastAction.get().getCondensate());
-                lastAction.get().setIncomeTemperature(fakeUppgList.get(i).getTemperatura());
-                lastAction.get().setExitTemperature(fakeUppgList.get(i).getTemperatura());
-                lastAction.get().setOnWater(lastAction.get().getOnWater());
-                lastAction.get().setActualPerformance(fakeUppgList.get(i).getNakoplenniy_obyom());
-                lastAction.get().setDesignedPerformance(lastAction.get().getDesignedPerformance());
-                lastAction.get().setTodayExpend(fakeUppgList.get(i).getNakoplenniy_obyom_s_nachalo_sutok());
-                lastAction.get().setYesterdayExpend(fakeUppgList.get(i).getNakoplenniy_obyom_za_vchera());
-                lastAction.get().setThisMonthExpend(fakeUppgList.get(i).getNakoplenniy_obyom_s_nachalo_mesyach());
-                lastAction.get().setLastMonthExpend(fakeUppgList.get(i).getNakoplenniy_obyom_za_pered_mesyach());
-                uppgActionRepository.save(lastAction.get());
-                uppgActions.add(lastAction.get());
-            }else {
-                UppgAction action = UppgAction
-                        .builder()
-                        .uppg(uppgs.get(i))
-                        .expend(fakeUppgList.get(i).getRasxod())
-                        .incomePressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(i).getDavleniya()))
-                        .exitPressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(i).getDavleniya()))
-                        .condensate(0)
-                        .exitTemperature(fakeUppgList.get(i).getTemperatura())
-                        .incomeTemperature(fakeUppgList.get(i).getTemperatura())
-                        .onWater(15)
-                        .actualPerformance(fakeUppgList.get(i).getNakoplenniy_obyom())
-                        .designedPerformance(0)
-                        .todayExpend(fakeUppgList.get(i).getNakoplenniy_obyom_s_nachalo_sutok())
-                        .yesterdayExpend(fakeUppgList.get(i).getNakoplenniy_obyom_za_vchera())
-                        .thisMonthExpend(fakeUppgList.get(i).getNakoplenniy_obyom_s_nachalo_mesyach())
-                        .lastMonthExpend(fakeUppgList.get(i).getNakoplenniy_obyom_za_pered_mesyach())
-                        .modified(new Timestamp(System.currentTimeMillis()))
-                        .build();
-                action = uppgActionRepository.save(action);
-                uppgActions.add(action);
+
+        if (uppgSimulationEnabled){
+
+
+            List<UppgAction> uppgActions= new ArrayList<>();
+            for (Uppg uppg : uppgs) {
+                Optional<UppgAction> lastAction = uppgActionRepository.findFirstByUppgOrderByCreatedAtDesc(uppg);
+                if (lastAction.isPresent()) {
+                    Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
+                    lastAction.get().setModified(modifiedDate);
+                    lastAction.get().setExpend(random(300, 450));
+                    lastAction.get().setIncomePressure(Calculator.mega_pascal_to_kgf_sm2(random(10, 12)));
+                    lastAction.get().setExitPressure(Calculator.mega_pascal_to_kgf_sm2(random(10, 12)));
+                    lastAction.get().setCondensate(lastAction.get().getCondensate());
+                    lastAction.get().setIncomeTemperature(random(45, 52));
+                    lastAction.get().setExitTemperature(random(45, 52));
+                    lastAction.get().setOnWater(lastAction.get().getOnWater());
+                    lastAction.get().setActualPerformance(random(15000000, 19000000));
+                    lastAction.get().setDesignedPerformance(lastAction.get().getDesignedPerformance());
+                    lastAction.get().setTodayExpend(random(1000000, 2000000));
+                    lastAction.get().setYesterdayExpend(random(8000000, 11000000));
+                    lastAction.get().setThisMonthExpend(random(50000000, 70000000));
+                    lastAction.get().setLastMonthExpend(random(70000000, 100000000));
+                    uppgActionRepository.save(lastAction.get());
+                    uppgActions.add(lastAction.get());
+                } else {
+                    UppgAction action = UppgAction
+                            .builder()
+                            .uppg(uppg)
+                            .expend(random(300, 450))
+                            .incomePressure(random(10, 12))
+                            .exitPressure(random(10, 12))
+                            .condensate(0)
+                            .exitTemperature(random(45, 52))
+                            .incomeTemperature(random(45, 52))
+                            .onWater(15)
+                            .actualPerformance(random(15000000, 19000000))
+                            .designedPerformance(0)
+                            .todayExpend(random(1000000, 2000000))
+                            .yesterdayExpend(random(8000000, 11000000))
+                            .thisMonthExpend(random(50000000, 70000000))
+                            .lastMonthExpend(random(70000000, 100000000))
+                            .modified(new Timestamp(System.currentTimeMillis()))
+                            .build();
+                    action = uppgActionRepository.save(action);
+                    uppgActions.add(action);
+                }
             }
+
+            miningSystemActionService.setAllAction(uppgActions, miningSystem);
+
+
+        }else {
+            List<FakeUppg> fakeUppgList = fakeService.all();
+            List<UppgAction> uppgActions= new ArrayList<>();
+            for (int i = 0; i < uppgs.size(); i++) {
+                Optional<UppgAction> lastAction = uppgActionRepository.findFirstByUppgOrderByCreatedAtDesc(uppgs.get(i));
+                if (lastAction.isPresent()){
+                    Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
+                    lastAction.get().setModified(modifiedDate);
+                    lastAction.get().setExpend(fakeUppgList.get(i).getRasxod());
+                    lastAction.get().setIncomePressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(i).getDavleniya()));
+                    lastAction.get().setExitPressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(i).getDavleniya()));
+                    lastAction.get().setCondensate(lastAction.get().getCondensate());
+                    lastAction.get().setIncomeTemperature(fakeUppgList.get(i).getTemperatura());
+                    lastAction.get().setExitTemperature(fakeUppgList.get(i).getTemperatura());
+                    lastAction.get().setOnWater(lastAction.get().getOnWater());
+                    lastAction.get().setActualPerformance(fakeUppgList.get(i).getNakoplenniy_obyom());
+                    lastAction.get().setDesignedPerformance(lastAction.get().getDesignedPerformance());
+                    lastAction.get().setTodayExpend(fakeUppgList.get(i).getNakoplenniy_obyom_s_nachalo_sutok());
+                    lastAction.get().setYesterdayExpend(fakeUppgList.get(i).getNakoplenniy_obyom_za_vchera());
+                    lastAction.get().setThisMonthExpend(fakeUppgList.get(i).getNakoplenniy_obyom_s_nachalo_mesyach());
+                    lastAction.get().setLastMonthExpend(fakeUppgList.get(i).getNakoplenniy_obyom_za_pered_mesyach());
+                    uppgActionRepository.save(lastAction.get());
+                    uppgActions.add(lastAction.get());
+                }else {
+                    UppgAction action = UppgAction
+                            .builder()
+                            .uppg(uppgs.get(i))
+                            .expend(fakeUppgList.get(i).getRasxod())
+                            .incomePressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(i).getDavleniya()))
+                            .exitPressure(Calculator.mega_pascal_to_kgf_sm2(fakeUppgList.get(i).getDavleniya()))
+                            .condensate(0)
+                            .exitTemperature(fakeUppgList.get(i).getTemperatura())
+                            .incomeTemperature(fakeUppgList.get(i).getTemperatura())
+                            .onWater(15)
+                            .actualPerformance(fakeUppgList.get(i).getNakoplenniy_obyom())
+                            .designedPerformance(0)
+                            .todayExpend(fakeUppgList.get(i).getNakoplenniy_obyom_s_nachalo_sutok())
+                            .yesterdayExpend(fakeUppgList.get(i).getNakoplenniy_obyom_za_vchera())
+                            .thisMonthExpend(fakeUppgList.get(i).getNakoplenniy_obyom_s_nachalo_mesyach())
+                            .lastMonthExpend(fakeUppgList.get(i).getNakoplenniy_obyom_za_pered_mesyach())
+                            .modified(new Timestamp(System.currentTimeMillis()))
+                            .build();
+                    action = uppgActionRepository.save(action);
+                    uppgActions.add(action);
+                }
+            }
+
+            miningSystemActionService.setAllAction(uppgActions, miningSystem);
         }
 
-        miningSystemActionService.setAllAction(uppgActions, miningSystem);
+
 
 
 

@@ -463,7 +463,7 @@ public class CollectionPointActionService {
 
 
 
-                Thread.sleep(100);
+                Thread.sleep(10);
                 if (action.getPressure() == 0
 //                        || action.getTemperature() == 0
                 ) {
@@ -490,12 +490,12 @@ public class CollectionPointActionService {
     public CollectionPointAction balancer(CollectionPointAction last){
 
         String str=opcService.getValueWeb(last);
-        double t = opcService.getValueWeb(str,last, last.getCollectionPoint().getTemperatureUnit());
+        double t = opcService.getValueWeb(str,last, last.getCollectionPoint().getTemperatureUnit(),true);
         double p=0;
         if (last.getCollectionPoint().getOpcServer().getType().equals(OpcServerType.SIMULATE))
-            p = opcService.getValueWeb(str,last, last.getCollectionPoint().getPressureUnit());
+            p = opcService.getValueWeb(str,last, last.getCollectionPoint().getPressureUnit(),false);
         else
-            p = Calculator.mega_pascal_to_kgf_sm2(opcService.getValueWeb(str,last, last.getCollectionPoint().getPressureUnit()));
+            p = Calculator.mega_pascal_to_kgf_sm2(opcService.getValueWeb(str,last, last.getCollectionPoint().getPressureUnit(),false));
 
         if (Math.abs(t-last.getTemperature())>deltaTemperatureAction||Math.abs(p-last.getPressure())>deltaPressureAction){
             if (last.getCreatedAt()!=null){

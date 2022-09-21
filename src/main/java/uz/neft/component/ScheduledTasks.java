@@ -34,7 +34,7 @@ public class ScheduledTasks {
     Logger logger;
 
 
-    @Scheduled(fixedDelay = 1000)
+    @Scheduled(fixedDelay = 500)
     public void transform() throws InterruptedException {
         System.out.println("TASK");
         logger.info("TASK");

@@ -106,7 +106,7 @@ public class OpcService {
         }
     }
 
-    public double getValueWeb(String a,CollectionPointAction collectionPointAction,String unit){
+    public double getValueWeb(String a,CollectionPointAction collectionPointAction,String unit,boolean isT){
         String[] strings = unit.split("\\.");
         XmlMapper xmlMapper = new XmlMapper();
         JsonMapper jsonMapper=new JsonMapper();
@@ -125,6 +125,7 @@ public class OpcService {
 
                 return 0.0;
             }else {
+                if (isT) return new SecureRandom().nextFloat()*(58.0-55.0)+55.0;
                 return new SecureRandom().nextFloat()*(16.0-13.0)+13.0;
             }
 
@@ -144,6 +145,7 @@ public class OpcService {
 
                     return 0.0;
                 }else {
+                    if (isT) return new SecureRandom().nextFloat()*(58.0-55.0)+55.0;
                     return new SecureRandom().nextFloat()*(16.0-13.0)+13.0;
                 }
 

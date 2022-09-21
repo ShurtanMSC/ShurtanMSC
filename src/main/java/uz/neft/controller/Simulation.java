@@ -1,5 +1,7 @@
 package uz.neft.controller;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.web.bind.annotation.*;
 import uz.neft.payload.Simulate;
 
@@ -36,6 +38,18 @@ public class Simulation {
         a[1]="Good";
         a[2]= String.valueOf(new Date());
         return a;
+    }
+
+    @GetMapping("/rasxod")
+    public Rasxod rasxod(){
+        return new Rasxod(new SecureRandom().nextFloat()*(15.0-10.0)+10.0,new SecureRandom().nextFloat()*(15.0-10.0)+10.0);
+    }
+
+    @Data
+    @AllArgsConstructor
+    class Rasxod{
+        private double rasxod;
+        private double rasxod2;
     }
 
 }
