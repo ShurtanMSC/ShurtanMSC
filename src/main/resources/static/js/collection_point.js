@@ -226,7 +226,7 @@ function createViewMiningOrUppgSelect(miningsOrUppgs) {
 }
 
 function addOptionOpcServers(servers) {
-    let out = "<option value=''>ОПС серверы</option>";
+    let out = "<option value=''>Устройсто</option>";
     servers.map(item => {
         out += "<option value='" + item.id + "'>" + item.name + "</option>"
     })
