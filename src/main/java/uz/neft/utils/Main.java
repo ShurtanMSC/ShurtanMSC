@@ -32,9 +32,9 @@ public class Main {
                 .builder()
                 .collectionPoint(collectionPoint)
                 .build();
-//        System.out.println(action.getPressureOpc());
+//        //System.out.println(action.getPressureOpc());
         Gson gson=new Gson();
-        System.out.println(collectionPoint.jsonRequestBodyPressure());
+        //System.out.println(collectionPoint.jsonRequestBodyPressure());
 //        HttpResponse<JsonNode> response = Unirest.post(action.getAddress())
 //                .header("Content-Type", "application/json")
 //                .body(collectionPoint.jsonRequestBodyPressure())
@@ -44,15 +44,15 @@ public class Main {
                 .header("Content-Type", "application/json")
                 .body("{\r\n    \"server\":\""+collectionPoint.getOpcServer().getAddress()+"\",\r\n    \"unit\":\""+collectionPoint.getPressureUnit()+"\"\r\n}")
                 .asJson();
-        System.out.println(response);
-        System.out.println(response.getStatus());
+        //System.out.println(response);
+        //System.out.println(response.getStatus());
         if (response.getBody()!=null){
-            System.out.println(response.getBody());
-            System.out.println(response.getBody().isArray());
-            System.out.println(response.getBody().getArray());
+            //System.out.println(response.getBody());
+            //System.out.println(response.getBody().isArray());
+            //System.out.println(response.getBody().getArray());
             String[] a= gson.fromJson(String.valueOf(response.getBody()), (Type) String[].class);
-            System.out.println(Arrays.toString(a));
-            System.out.println(a[0]);
+            //System.out.println(Arrays.toString(a));
+            //System.out.println(a[0]);
         }
 
     }
@@ -61,9 +61,9 @@ public class Main {
 //    public String test(Object o){
 //        String s="salom";
 //        return switch (o) {
-//            case null -> System.out.println("Null");
-//            case "salom" -> System.out.println("String: " + s);
-//            default -> System.out.println("Other");
+//            case null -> //System.out.println("Null");
+//            case "salom" -> //System.out.println("String: " + s);
+//            default -> //System.out.println("Other");
 //        };
 //    }
 }

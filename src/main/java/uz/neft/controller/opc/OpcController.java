@@ -38,7 +38,7 @@ public class OpcController {
         try {
             jbrowser.connect();
             String[] branches = jbrowser.getOpcBranch("");
-            System.out.println(Arrays.asList(branches));
+            //System.out.println(Arrays.asList(branches));
         }
         catch (ConnectivityException | UnableBrowseBranchException | UnableIBrowseException e) {
             e.printStackTrace();
@@ -48,10 +48,10 @@ public class OpcController {
 //      String[] items = jbrowser.getOpcItems("Simulation Items.Random", true);
             String[] items = jbrowser.getOpcItems(request.getUnit(), true);
             if (items != null) {
-                System.out.println(items.length);
-                for (String item : items) {
-                    System.out.println(item);
-                }
+//                System.out.println(items.length);
+//                for (String item : items) {
+//                    System.out.println(item);
+//                }
                 return ResponseEntity.ok(items);
             }
             // disconnect server

@@ -28,7 +28,7 @@ public class CollectionPointController {
 
     @PostMapping("add")
     public HttpEntity<?> add(@RequestBody CollectionPointDto dto) {
-        System.out.println(dto);
+        //System.out.println(dto);
         return collectionPointService.save(dto);
     }
 
@@ -106,8 +106,8 @@ public class CollectionPointController {
 
     @PutMapping("action/edit")
     public HttpEntity<?> editAction(@RequestBody CollectionPointActionDto dto) {
-        System.out.println("dtooooooooooooo");
-        System.out.println(dto);
+        //System.out.println("dtooooooooooooo");
+        //System.out.println(dto);
         return collectionPointActionService.editAction(dto);
     }
 

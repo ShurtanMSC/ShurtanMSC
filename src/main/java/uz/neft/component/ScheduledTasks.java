@@ -36,7 +36,7 @@ public class ScheduledTasks {
 
     @Scheduled(fixedDelay = 500)
     public void transform() throws InterruptedException {
-        System.out.println("TASK");
+        //System.out.println("TASK");
         logger.info("TASK");
         System.out.println();
         collectionPointActionService.setAll(1);

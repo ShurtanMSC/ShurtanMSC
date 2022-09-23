@@ -42,7 +42,7 @@ public class OpcService {
                 xmlMapper.enable(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY);
                 JSONObject json = XML.toJSONObject(a);
                 logger.info(String.valueOf(json));
-                System.out.println(json);
+                //System.out.println(json);
                 Root root=jsonMapper.readValue(json.toString(), Root.class);
 
                 for (int i = 0; i < root.getFieldgate().device.size(); i++) {
@@ -69,7 +69,7 @@ public class OpcService {
                     xmlMapper.enable(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY);
                     JSONObject json = XML.toJSONObject(a);
                     logger.info(String.valueOf(json));
-                    System.out.println(json);
+                    //System.out.println(json);
                     Root2 root2=jsonMapper.readValue(json.toString(), Root2.class);
 
                     if (root2.getFieldgate().device.tag.get(0).equals(strings[1])) return root2.getFieldgate().device.v1;
@@ -113,7 +113,7 @@ public class OpcService {
         xmlMapper.enable(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY);
         JSONObject json = XML.toJSONObject(a);
         logger.info(String.valueOf(json));
-        System.out.println(json);
+        //System.out.println(json);
         try {
             if (collectionPointAction.getCollectionPoint().getOpcServer().getType().equals(OpcServerType.REAL)){
 
@@ -170,7 +170,7 @@ public class OpcService {
                 // find opc-servers (OpcEnum interface)
                 try {
                     String[] opcServers = JOpcBrowser.getOpcServers("localhost");
-                    System.out.println(Arrays.asList(opcServers));
+                    //System.out.println(Arrays.asList(opcServers));
                 }
                 catch (HostException | NotFoundServersException e1) {
                     e1.printStackTrace();
@@ -182,7 +182,7 @@ public class OpcService {
                 try {
                     jbrowser.connect();
                     String[] branches = jbrowser.getOpcBranch("");
-                    System.out.println(Arrays.asList(branches));
+                    //System.out.println(Arrays.asList(branches));
                 }
                 catch (ConnectivityException | UnableBrowseBranchException | UnableIBrowseException e) {
                     e.printStackTrace();
@@ -191,20 +191,20 @@ public class OpcService {
 
                 try {
                     String[] parts = unit.split("\\.");
-                    System.out.println(Arrays.toString(parts));
+                    //System.out.println(Arrays.toString(parts));
 //      String[] items = jbrowser.getOpcItems("Simulation Items.Random", true);
 
                     String[] items = jbrowser.getOpcItems(parts[0]+"."+parts[1], true);
                     if (items != null) {
-                        System.out.println(items.length);
-//                    System.out.println(items);
+                        //System.out.println(items.length);
+//                    //System.out.println(items);
                         for (String item : items) {
                             if (item.contains(parts[0])&&item.contains(parts[2])){
                                 String[] itemParts =item.split(";");
-                                System.out.println(Arrays.toString(itemParts));
+                                //System.out.println(Arrays.toString(itemParts));
                                 if (itemParts.length==4) return Double.parseDouble(itemParts[3].replace(",","."));
                             }
-//                        System.out.println(item);
+//                        //System.out.println(item);
                         }
                     }
                     // disconnect server

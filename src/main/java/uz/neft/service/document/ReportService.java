@@ -74,7 +74,7 @@ public class ReportService{
 
 
 //    public static void main(String[] args) {
-//        System.out.println(new Date().getYear());
+//        //System.out.println(new Date().getYear());
 //    }
 
     public HttpEntity<?> productionReport(Date start, Date end){
@@ -264,7 +264,7 @@ public class ReportService{
                     ws.range(0,0,counter,20).style().wrapText(true).horizontalAlignment("center").verticalAlignment("center").set();
 
 
-                System.out.println(wb);;
+                //System.out.println(wb);;
 
 
 
@@ -284,8 +284,8 @@ public class ReportService{
 
     public OutputStream generateProductionReport(String name,Date start, Date end) throws Exception {
         List<ElectricityDto> dtoList = electricityService.allFirstByHelper();
-        System.out.println(dtoList.size());
-        System.out.println(dtoList);
+        //System.out.println(dtoList.size());
+        //System.out.println(dtoList);
         Excel excel=new Excel(name,name);
         Worksheet ws=excel.worksheet;
         Helper.operatingProduction(ws, dtoList.size() + 5, 10);
@@ -310,8 +310,8 @@ public class ReportService{
 //            double a2=reportModels.get(i).getPlan_m();
 //            double a3=a1/a2;
 //            double a4=a3*100;
-//            System.out.println(a3);
-//            System.out.println(a4);
+//            //System.out.println(a3);
+//            //System.out.println(a4);
 
             ws.value(2+i,3,reportModels.get(i).getPlan_m()==0?"0%":(int)(100*(reportModels.get(i).getFakt_m()/reportModels.get(i).getPlan_m()))+"%");
 
@@ -327,7 +327,7 @@ public class ReportService{
             ws.value(2+i,7,reportModels.get(i).getProshlom_god());
 
 //            int k=(int)(reportModels.get(i).getFakt_g()/reportModels.get(i).getPlan_g())*100;
-//            System.out.println(k);
+//            //System.out.println(k);
             ws.value(2+i,8,reportModels.get(i).getPlan_g()==0?"0%":(int)(100*(reportModels.get(i).getFakt_g()/reportModels.get(i).getPlan_g()))+"%");
 
             double b=reportModels.get(i).getPlan_g()-reportModels.get(i).getFakt_g();
@@ -360,8 +360,8 @@ public class ReportService{
 
     public OutputStream generateElectricityReport(String name,Date start, Date end) throws Exception {
         List<ElectricityDto> dtoList = electricityService.allFirstByHelper();
-        System.out.println(dtoList.size());
-        System.out.println(dtoList);
+        //System.out.println(dtoList.size());
+        //System.out.println(dtoList);
         Excel excel=new Excel(name,name);
         Worksheet ws=excel.worksheet;
         Helper.operatingElectricity(ws, dtoList.size() + 5, 5);
