@@ -1,13 +1,12 @@
 package uz.neft.entity;
 
 import lombok.*;
+import org.hibernate.envers.Audited;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import uz.neft.dto.ForecastDto;
 import uz.neft.entity.template.AbsEntityInteger;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 import java.time.Month;
 
 @EqualsAndHashCode(callSuper = true)
@@ -17,6 +16,8 @@ import java.time.Month;
 @Entity
 @Builder
 @Table(uniqueConstraints={@UniqueConstraint(columnNames = {"year", "month", "mining_system_id"})})
+//@Audited
+//@EntityListeners(AuditingEntityListener.class)
 public class ForecastCondensate extends AbsEntityInteger {
     private int year;
     private Month month;

@@ -20,7 +20,7 @@ function loginForm(event) {
 
     let config = {
         method: 'post',
-        url: '/api/auth/login',
+        url: '/api/auth/login/admin',
         data
     };
 
@@ -52,6 +52,7 @@ function loginForm(event) {
             }
         })
         .catch(function (error) {
+            alert("Неверный логин или пароль!")
             console.log(error.response);
         });
 }

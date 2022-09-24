@@ -62,6 +62,7 @@ public class JwtFilter extends OncePerRequestFilter {
         try {
             //REQUESTNI HEADER DAN "AUTHORIZATION" KALIT SO'Z ORQALI TOKENNI OLISH
             String tokenClient = httpServletRequest.getHeader("Authorization");
+//            System.out.println("TOOOKEEEEN "+tokenClient);
             //TOKENNI NULL GA TEKSHIRISH
             if (tokenClient != null) {
                 //TOKENNI BEARER EKANLIGINI TEKSHIRISH

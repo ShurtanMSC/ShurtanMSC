@@ -24,6 +24,7 @@ public class JwtTokenProvider {
                 .setSubject(user.getId().toString())
                 .setIssuedAt(date)
                 .claim("roles", user.getRoles())
+                .claim("fio",user.getFio())
                 .setExpiration(expireDate)
                 .signWith(SignatureAlgorithm.HS512, secretKey)
                 .compact();

@@ -2,12 +2,15 @@ package uz.neft.entity.action;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.envers.Audited;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import uz.neft.entity.Uppg;
 import uz.neft.entity.User;
 import uz.neft.entity.template.AbsEntityLong;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.ManyToOne;
 import java.sql.Timestamp;
 
@@ -17,6 +20,8 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+//@Audited
+//@EntityListeners(AuditingEntityListener.class)
 public class UppgAction extends AbsEntityLong {
 
     //Проектная производительность, м³/год

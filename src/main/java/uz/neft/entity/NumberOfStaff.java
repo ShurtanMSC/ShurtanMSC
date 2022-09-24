@@ -1,6 +1,8 @@
 package uz.neft.entity;
 
 import lombok.*;
+import org.hibernate.envers.Audited;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 import uz.neft.dto.StaffDto;
 import uz.neft.dto.action.ObjectWithActionsDto;
@@ -8,6 +10,7 @@ import uz.neft.entity.template.AbsEntityInteger;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.ManyToOne;
 import java.util.Date;
 
@@ -17,6 +20,8 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Builder
+//@Audited
+//@EntityListeners(AuditingEntityListener.class)
 public class NumberOfStaff extends AbsEntityInteger {
 
     @ManyToOne

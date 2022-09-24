@@ -1,6 +1,8 @@
 package uz.neft.entity;
 
 import lombok.*;
+import org.hibernate.envers.Audited;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 import uz.neft.entity.enums.WellCategory;
 import uz.neft.entity.template.AbsEntityInteger;
@@ -15,6 +17,8 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @Entity(name = "well")
+//@Audited
+//@EntityListeners(AuditingEntityListener.class)
 public class Well extends AbsEntityInteger {
 
     @NotNull

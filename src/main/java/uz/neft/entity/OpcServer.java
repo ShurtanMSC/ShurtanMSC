@@ -5,10 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.envers.Audited;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import uz.neft.entity.enums.OpcServerType;
 import uz.neft.entity.template.AbsEntityInteger;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotBlank;
@@ -18,6 +21,8 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @Setter
 @Entity
+//@Audited
+//@EntityListeners(AuditingEntityListener.class)
 public class OpcServer extends AbsEntityInteger {
 
     @NotBlank(message = "Opc Server name cannot be blank")

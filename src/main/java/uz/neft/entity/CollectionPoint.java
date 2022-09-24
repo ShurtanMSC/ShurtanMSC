@@ -1,9 +1,12 @@
 package uz.neft.entity;
 
 import lombok.*;
+import org.hibernate.envers.Audited;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import uz.neft.entity.template.AbsEntityInteger;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
@@ -13,6 +16,8 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Entity(name = "collection_point")
 @Builder
+//@Audited
+//@EntityListeners(AuditingEntityListener.class)
 public class CollectionPoint extends AbsEntityInteger {
 
 

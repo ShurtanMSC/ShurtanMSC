@@ -6,13 +6,16 @@ import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import uz.neft.entity.CollectionPoint;
 import uz.neft.entity.User;
 import uz.neft.entity.template.AbsEntityLong;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.ManyToOne;
 import java.lang.reflect.Type;
 import java.sql.Timestamp;
@@ -26,6 +29,8 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+//@Audited
+//@EntityListeners(AuditingEntityListener.class)
 public class CollectionPointAction extends AbsEntityLong {
 
     // Bosim

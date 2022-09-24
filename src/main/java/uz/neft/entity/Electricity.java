@@ -1,9 +1,12 @@
 package uz.neft.entity;
 
 import lombok.*;
+import org.hibernate.envers.Audited;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import uz.neft.entity.template.AbsEntityInteger;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.ManyToOne;
 
 @EqualsAndHashCode(callSuper = true)
@@ -12,6 +15,8 @@ import javax.persistence.ManyToOne;
 @NoArgsConstructor
 @Builder
 @Entity
+//@Audited
+//@EntityListeners(AuditingEntityListener.class)
 public class Electricity extends AbsEntityInteger {
     private double hourly;
     private int hourPerDay=24;

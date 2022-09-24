@@ -5,6 +5,11 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import uz.neft.dto.action.WellActionDto;
@@ -62,6 +67,8 @@ public class DataLoader implements CommandLineRunner {
     @Autowired
     private UppgActionRepository uppgActionRepository;
     @Autowired
+    AuthenticationManager authenticationManager;
+    @Autowired
     public DataLoader(UserRepository userRepository, MiningSystemConstantRepository miningSystemConstantRepository, RoleRepository roleRepository, ConstantRepository constantRepository
             , PasswordEncoder passwordEncoder, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository, WellActionRepository wellActionRepository) {
         this.userRepository = userRepository;
@@ -87,6 +94,15 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        UsernamePasswordAuthenticationToken authReq
+                = new UsernamePasswordAuthenticationToken("system", "system");
+//        Authentication auth = authenticationManager.authenticate(authReq);
+        Authentication auth = authenticationManager.authenticate(authReq);
+//        auth.setAuthenticated(true);
+        SecurityContext sc = SecurityContextHolder.getContext();
+        sc.setAuthentication(auth);
+        System.out.println("AAAAAAA");
+        System.out.println(auth);
         String simulate = InetAddress.getLocalHost().getHostAddress();
         if(!miningSystemRepository.existsById(1)){
             //        if (mode.equals("always")) {
@@ -122,70 +138,70 @@ public class DataLoader implements CommandLineRunner {
                                 .username("admin")
                                 .build()
                 );
-                userRepository.save(
-                        User
-                                .builder()
-                                .active(true)
-                                .email("operator")
-                                .password(passwordEncoder.encode("operator"))
-                                .fio("Азизжон Усманов")
-                                .phone("+998993793877")
-                                .roles(Collections.singleton(operator))
-                                .username("operator")
-                                .build()
-                );
-
-                userRepository.save(
-                        User
-                                .builder()
-                                .active(true)
-                                .email("employee")
-                                .password(passwordEncoder.encode("employee"))
-                                .fio("employee")
-                                .phone("+998993793877")
-                                .roles(Collections.singleton(employee))
-                                .username("employee")
-                                .build()
-                );
-
-                userRepository.save(
-                        User
-                                .builder()
-                                .active(true)
-                                .email("energetic")
-                                .password(passwordEncoder.encode("energetic"))
-                                .fio("Махмуд Саломов")
-                                .phone("+998993793877")
-                                .roles(Collections.singleton(energetic))
-                                .username("energetic")
-                                .build()
-                );
-
-                userRepository.save(
-                        User
-                                .builder()
-                                .active(true)
-                                .email("metrologist")
-                                .password(passwordEncoder.encode("metrologist"))
-                                .fio("Уткир Мусурманкулов")
-                                .phone("+998993793877")
-                                .roles(Collections.singleton(metrologist))
-                                .username("metrologist")
-                                .build()
-                );
-
-                userRepository.save(
-                        User
-                                .builder()
-                                .active(true)
-                                .email("geologist")
-                                .password(passwordEncoder.encode("geologist"))
-                                .fio("Джавлон Турсун-Ходжаев")
-                                .phone("+998993793877")
-                                .roles(Collections.singleton(metrologist))
-                                .username("geologist")
-                                .build()
-                );
+//                userRepository.save(
+//                        User
+//                                .builder()
+//                                .active(true)
+//                                .email("operator")
+//                                .password(passwordEncoder.encode("operator"))
+//                                .fio("Азизжон Усманов")
+//                                .phone("+998993793877")
+//                                .roles(Collections.singleton(operator))
+//                                .username("operator")
+//                                .build()
+//                );
+//
+//                userRepository.save(
+//                        User
+//                                .builder()
+//                                .active(true)
+//                                .email("employee")
+//                                .password(passwordEncoder.encode("employee"))
+//                                .fio("employee")
+//                                .phone("+998993793877")
+//                                .roles(Collections.singleton(employee))
+//                                .username("employee")
+//                                .build()
+//                );
+//
+//                userRepository.save(
+//                        User
+//                                .builder()
+//                                .active(true)
+//                                .email("energetic")
+//                                .password(passwordEncoder.encode("energetic"))
+//                                .fio("Махмуд Саломов")
+//                                .phone("+998993793877")
+//                                .roles(Collections.singleton(energetic))
+//                                .username("energetic")
+//                                .build()
+//                );
+//
+//                userRepository.save(
+//                        User
+//                                .builder()
+//                                .active(true)
+//                                .email("metrologist")
+//                                .password(passwordEncoder.encode("metrologist"))
+//                                .fio("Уткир Мусурманкулов")
+//                                .phone("+998993793877")
+//                                .roles(Collections.singleton(metrologist))
+//                                .username("metrologist")
+//                                .build()
+//                );
+//
+//                userRepository.save(
+//                        User
+//                                .builder()
+//                                .active(true)
+//                                .email("geologist")
+//                                .password(passwordEncoder.encode("geologist"))
+//                                .fio("Джавлон Турсун-Ходжаев")
+//                                .phone("+998993793877")
+//                                .roles(Collections.singleton(metrologist))
+//                                .username("geologist")
+//                                .build()
+//                );
 
 
             } catch (Exception e) {

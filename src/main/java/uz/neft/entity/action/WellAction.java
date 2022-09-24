@@ -1,15 +1,14 @@
 package uz.neft.entity.action;
 
 import lombok.*;
+import org.hibernate.envers.Audited;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import uz.neft.entity.User;
 import uz.neft.entity.Well;
 import uz.neft.entity.enums.WellStatus;
 import uz.neft.entity.template.AbsEntityLong;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -17,6 +16,8 @@ import javax.persistence.ManyToOne;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+//@Audited
+//@EntityListeners(AuditingEntityListener.class)
 public class WellAction extends AbsEntityLong {
     // Bosim
     private double pressure;

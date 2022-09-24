@@ -29,6 +29,12 @@ public class AuthController {
         return ResponseEntity.status(resToken != null ? 200 : 401).body(resToken);
     }
 
+    @PostMapping("/login/admin")
+    public HttpEntity<?> loginAdmin(@RequestBody SignIn signIn) {
+        ResToken resToken = authService.signInAdminPanel(signIn);
+        return ResponseEntity.status(resToken != null ? 200 : 401).body(resToken);
+    }
+
     @GetMapping("/test")
     public HttpEntity<?> test() {
         return ResponseEntity.ok(converter.apiSuccess());

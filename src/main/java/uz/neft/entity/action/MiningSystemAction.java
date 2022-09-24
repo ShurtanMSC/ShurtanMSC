@@ -1,10 +1,13 @@
 package uz.neft.entity.action;
 
 import lombok.*;
+import org.hibernate.envers.Audited;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import uz.neft.entity.MiningSystem;
 import uz.neft.entity.template.AbsEntityLong;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.ManyToOne;
 
 @EqualsAndHashCode(callSuper = true)
@@ -13,6 +16,8 @@ import javax.persistence.ManyToOne;
 @NoArgsConstructor
 @Entity
 @Builder
+//@Audited
+//@EntityListeners(AuditingEntityListener.class)
 public class MiningSystemAction extends AbsEntityLong {
 
     private double expend;
