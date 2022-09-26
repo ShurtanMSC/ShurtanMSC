@@ -39,6 +39,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.sql.Timestamp;
 import java.util.*;
 
 @Service
@@ -125,7 +126,29 @@ public class ReportService{
             List<Well> wells=wellRepository.findAllByMiningSystemIdSorted(mining_system_id);
             List<WellAction> wellActions=new ArrayList<>();
             for (Well well : wells) {
+
+
                 Optional<WellAction> first = wellActionRepository.findFirstByWellOrderByCreatedAtDesc(well);
+
+
+                double sumRpl=0;
+                double sumExpend=0;
+                double sumP=0;
+                double sumT=0;
+                List<WellAction> actions=wellActionRepository.findAllByCreatedAtBetween(new Timestamp(start.getTime()),new Timestamp(end.getTime()));
+
+                for (WellAction action : actions) {
+                    sumRpl+=action.getRpl();
+                    sumT+=action.getT_pr();
+                    sumP+=action.getP_pr();
+                    sumExpend+=action.getExpend();
+                }
+                if (first.isPresent()&&actions.size()>0){
+                    first.get().setExpend(sumExpend/actions.size());
+                    first.get().setRpl(sumRpl/actions.size());
+                    first.get().setP_pr(sumP/actions.size());
+                }
+
                 first.ifPresent(wellActions::add);
             }
             TechReportModel model=new TechReportModel();

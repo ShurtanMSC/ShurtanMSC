@@ -11,6 +11,7 @@
 	<groupId>uz.neft</groupId>
 	<artifactId>SHURTAN-MSC</artifactId>
 	<version>0.1</version>
+<!--	<packaging>war</packaging>-->
 	<name>ShurtanMSC</name>
 	<description>For software development information and analytical system for operational analysis and control of the digitalization system of the Shurtan group of fields</description>
 	<properties>

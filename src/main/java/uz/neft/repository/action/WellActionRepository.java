@@ -8,6 +8,7 @@ import uz.neft.entity.Well;
 import uz.neft.entity.action.WellAction;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +18,7 @@ public interface WellActionRepository extends JpaRepository<WellAction,Long> {
     Optional<WellAction> findFirstByWellOrderByCreatedAtDesc(Well well);
 //    Optional<WellAction> findFirstByWellOrderByCreatedAtDesc(Well well);
 
+    List<WellAction> findAllByCreatedAtGreaterThanAndCreatedAtLessThan(Date start, Date end);
 //    Optional<WellAction> findFirstByWell(Well well);
 
     Page<WellAction> findAllByWellOrderByCreatedAtDesc(Well well, Pageable pageable);

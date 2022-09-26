@@ -3,6 +3,7 @@ package uz.neft;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -12,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 @EnableScheduling
 //		(exclude = {DataSourceAutoConfiguration.class})
 //@EnableScheduling
-public class ShurtanMscApplication {
+public class ShurtanMscApplication extends SpringBootServletInitializer {
 
 	@Value("${custom.timeout}")
 	private boolean timeout;

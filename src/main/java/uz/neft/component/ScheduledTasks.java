@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import uz.neft.backup.Test;
 import uz.neft.repository.CollectionPointRepository;
 import uz.neft.repository.WellRepository;
 import uz.neft.repository.action.CollectionPointActionRepository;
@@ -29,7 +30,8 @@ public class ScheduledTasks {
     private WellRepository wellRepository;
     @Autowired
     private AkkaService akkaService;
-
+    @Autowired
+    private Test test;
     @Autowired
     Logger logger;
 
@@ -40,6 +42,13 @@ public class ScheduledTasks {
         logger.info("TASK");
         System.out.println();
         collectionPointActionService.setAll(1);
+    }
+
+    @Scheduled(fixedDelay = 86400000)
+    public void backup() throws InterruptedException {
+        System.out.println("Backup started");
+        logger.info("Backup started");
+        test.backup();
     }
 
 

@@ -369,28 +369,28 @@ public class PostgresqlExportService {
         ZipUtil.pack(sqlFolder, generatedZipFile);
 
         //mail the zipped file if mail settings are available
-        if (isEmailPropertiesSet()) {
-            boolean emailSendingRes = EmailService.builder()
-                    .setHost(properties.getProperty(EMAIL_HOST))
-                    .setPort(Integer.parseInt(properties.getProperty(EMAIL_PORT)))
-                    .setToAddress(properties.getProperty(EMAIL_TO))
-                    .setFromAddress(properties.getProperty(EMAIL_FROM))
-                    .setUsername(properties.getProperty(EMAIL_USERNAME))
-                    .setPassword(properties.getProperty(EMAIL_PASSWORD))
-                    .setSubject(properties.getProperty(EMAIL_SUBJECT, sqlFileName.replace(".sql", "").toUpperCase()))
-                    .setMessage(properties.getProperty(EMAIL_MESSAGE, "Please find attached database backup of " + database))
-                    .setAttachments(new File[]{new File(zipFileName)})
-                    .sendMail();
-
-            if (emailSendingRes) {
-                logger.debug(LOG_PREFIX + ": Zip File Sent as Attachment to Email Address Successfully");
-            } else {
-                logger.error(LOG_PREFIX + ": Unable to send zipped file as attachment to email. See log debug for more info");
-            }
-        }
+//        if (isEmailPropertiesSet()) {
+//            boolean emailSendingRes = EmailService.builder()
+//                    .setHost(properties.getProperty(EMAIL_HOST))
+//                    .setPort(Integer.parseInt(properties.getProperty(EMAIL_PORT)))
+//                    .setToAddress(properties.getProperty(EMAIL_TO))
+//                    .setFromAddress(properties.getProperty(EMAIL_FROM))
+//                    .setUsername(properties.getProperty(EMAIL_USERNAME))
+//                    .setPassword(properties.getProperty(EMAIL_PASSWORD))
+//                    .setSubject(properties.getProperty(EMAIL_SUBJECT, sqlFileName.replace(".sql", "").toUpperCase()))
+//                    .setMessage(properties.getProperty(EMAIL_MESSAGE, "Please find attached database backup of " + database))
+//                    .setAttachments(new File[]{new File(zipFileName)})
+//                    .sendMail();
+//
+//            if (emailSendingRes) {
+//                logger.debug(LOG_PREFIX + ": Zip File Sent as Attachment to Email Address Successfully");
+//            } else {
+//                logger.error(LOG_PREFIX + ": Unable to send zipped file as attachment to email. See log debug for more info");
+//            }
+//        }
 
         //clear the generated temp files
-        clearTempFiles(Boolean.parseBoolean(properties.getProperty(PRESERVE_GENERATED_ZIP, Boolean.FALSE.toString())));
+//        clearTempFiles(Boolean.parseBoolean(properties.getProperty(PRESERVE_GENERATED_ZIP, Boolean.FALSE.toString())));
 
     }
 

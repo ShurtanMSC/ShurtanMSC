@@ -66,6 +66,8 @@ public class ReportController {
     @GetMapping("/interval")
     public HttpEntity<?> reportInterval(@RequestParam Integer mining_system_id, @RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date start, @RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date end){
 //        return reportService.all(mining_system_id,start,end);
+        System.out.println(start);
+        System.out.println(end);
         return reportService.techReport(mining_system_id,start,end);
     }
 
