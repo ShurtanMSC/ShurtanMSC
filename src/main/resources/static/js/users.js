@@ -70,6 +70,7 @@ function addOrEditUser(event) {
 }
 
 function editUser(id) {
+    passRequired(false)
     document.getElementById('addOrEditUserH3').innerText = 'Редактировать пользователя'
     document.getElementById('addOrEditUserBtn').innerText = 'Редактировать'
     let editUser = usersList.find(user => user.id == id)
@@ -104,7 +105,7 @@ function createViewTable(users) {
             "                                    <td class=\"sorting_1\">" + user.id + "</td>\n" +
             "                                    <td>" + user.fio + "</td>\n" +
             "                                    <td>" + user.username + "</td>\n" +
-            "                                    <td>" + user.roleName + "</td>\n" +
+            "                                    <td>" + roleNameKirilChanger(user.roleName) + "</td>\n" +
             "                                    <td>" + user.phone + "</td>\n" +
             "                                    <td>" + user.email + "</td>\n" +
             "                                    <td><button data-target=\"#exampleModalCenter\" data-toggle=\"modal\" class='btn btn-success mt-1' id='btn-edit-user' value='" + user.id + "' onclick='editUser(this.value)'>Редактировать</button>\n" +
@@ -117,7 +118,23 @@ function createViewTable(users) {
 function addOptionRoles(roles) {
     let out = "<option value=''>Выбрать роль</option>";
     roles.map(role => {
-        out += "<option value='"+role.id+"'>"+role.roleName+"</option>"
+        out += "<option value='"+role.id+"'>"+roleNameKirilChanger(role.roleName)+"</option>"
     })
     return out;
+}
+
+function roleNameKirilChanger(name) {
+    switch (name) {
+        case "SUPER_ADMIN": return "АДМИНИСТРАТОР";
+        case "EMPLOYEE": return "РАБОЧИЙ";
+        case "ENERGETIC": return "ЭНЕРГЕТИК";
+        case "OPERATOR": return "ОПЕРАТОР";
+        case "METROLOGIST": return "МЕТРОЛОГ";
+        case "GEOLOGIST": return "ГЕОЛОГ";
+        default: return "";
+    }
+}
+
+function passRequired(bool){
+    document.getElementById("password").required=bool;
 }

@@ -35,6 +35,7 @@ public class UserService {
 
     public ResponseEntity<?> save(UserDto dto) {
         try {
+            if (dto.getPassword() == null || dto.getPassword().length()<3) return converter.apiError400("Password needed");
             if (dto.getId() != null) return converter.apiError400("id shouldn't be sent");
             if (!roleRepository.existsById(dto.getRoleId())) return converter.apiError404("Role id does not exist");
             User user = User
