@@ -30,10 +30,10 @@ public class FakeUppg {
         int p=0;
         int dp=0;
         int r=0;
-        int amountTemperature=0;
-        int amountPressure=0;
-        int amountPerepadPressure=0;
-        int amountRasxod=0;
+        double amountTemperature=0;
+        double amountPressure=0;
+        double amountPerepadPressure=0;
+        double amountRasxod=0;
         if (a){
 
             for (FakeFlowMeter flowMeter : flowMeters) {
