@@ -226,6 +226,32 @@ public class CollectionPointActionService {
         }
     }
 
+    //for websocket
+    public List<ObjectWithActionsDto> getAllWithActionsByMiningSystemWs(Integer id){
+        List<ObjectWithActionsDto> list = new ArrayList<>();
+
+        try {
+            List<CollectionPoint> collectionPointList = collectionPointRepository.findAllByMiningSystemIdOrder(id);
+
+//            collectionPointList.forEach(c->System.out.println(collectionPointActionRepository.findFirstByCollectionPointOrderByCreatedAtDesc(c)));
+
+            collectionPointList
+                    .forEach(
+                            c ->
+                                    list
+                                            .add(new ObjectWithActionsDto(
+                                                    converter.collectionPointToCollectionPointDto(c),
+                                                    converter.collectionPointActionToCollectionPointActionDto(
+                                                            collectionPointActionRepository
+                                                                    .findFirstByCollectionPointOrderByCreatedAtDesc(c).orElse(null)))));
+
+            return list;
+        }catch (Exception e){
+            logger.error(e.toString());
+            return list;
+        }
+    }
+
     public HttpEntity<?> getAllActionsByCollectionPoint(Integer collectionPointId, Optional<Integer> page, Optional<Integer> pageSize, Optional<String> sortBy) {
         try {
             if (collectionPointId == null) return converter.apiError400("action id is null!");

@@ -532,6 +532,26 @@ public class WellActionService {
         }
     }
 
+    public List<ObjectWithActionsDto> getAllWithActionByMiningSystemWs(Integer id) {
+        List<ObjectWithActionsDto> list = new ArrayList<>();
+        try {
+            List<Well> wellList = wellRepository.findAllByMiningSystemId(id);
+            wellList
+                    .forEach(
+                            w ->
+                                    list
+                                            .add(new ObjectWithActionsDto(
+                                                    converter.wellToWellDto(w),
+                                                    converter.wellActionToWellActionDto(
+                                                            wellActionRepository
+                                                                    .findFirstByWellOrderByCreatedAtDesc(w).orElse(null)))));
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.toString());
+        }
+        return list;
+    }
+
     public ResponseEntity<?> getCountByInWork() {
         try {
             return converter.apiSuccess200();

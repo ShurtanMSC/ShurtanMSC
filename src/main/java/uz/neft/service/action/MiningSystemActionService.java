@@ -88,6 +88,20 @@ public class MiningSystemActionService {
         }
     }
 
+    public List<ObjectWithActionsDto> allWithActionsWs() {
+        List<ObjectWithActionsDto> list = new ArrayList<>();
+
+        try {
+            List<MiningSystem> miningSystemList = miningSystemRepository.findAll();
+            miningSystemList.forEach(m -> list.add(new ObjectWithActionsDto(m, miningSystemActionRepository.findFirstByMiningSystemOrderByCreatedAtDesc(m))));
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.toString());
+            return list;
+        }
+    }
+
     public ResponseEntity<?> allWithActionsByMiningSystem(Integer id) {
         try {
             Optional<MiningSystem> miningSystem = miningSystemRepository.findById(id);
