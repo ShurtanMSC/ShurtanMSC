@@ -47,7 +47,7 @@ public class CollectionPointService {
                 collectionPoint.setName(dto.getName());
                 collectionPoint.setUppg(byIdUppg.get());
                 CollectionPoint save = collectionPointRepository.save(collectionPoint);
-                CollectionPointDto collectionPointDto = converter.collectionPointToCollectionPointDto(save);
+                CollectionPointDto collectionPointDto = (CollectionPointDto) converter.dto(save);
                 return converter.apiSuccess201("Collection point saved", collectionPointDto);
             }
             return converter.apiError404("Uppg not found");
@@ -97,7 +97,7 @@ public class CollectionPointService {
                     editCollectionPoint.setName(dto.getName());
                     editCollectionPoint.setUppg(byIdUppg.get());
                     CollectionPoint save = collectionPointRepository.save(editCollectionPoint);
-                    CollectionPointDto collectionPointDto = converter.collectionPointToCollectionPointDto(save);
+                    CollectionPointDto collectionPointDto = (CollectionPointDto) converter.dto(save);
                     return converter.apiSuccess200("Collection Point Edited", collectionPointDto);
                 }
                 return converter.apiError404("Uppg not found");
@@ -166,7 +166,7 @@ public class CollectionPointService {
     public ResponseEntity<?> findAll() {
         try {
             List<CollectionPoint> all = collectionPointRepository.findAll();
-            List<CollectionPointDto> collect = all.stream().map(converter::collectionPointToCollectionPointDto).collect(Collectors.toList());
+            List<CollectionPointDto> collect = all.stream().map(cp -> (CollectionPointDto) converter.dto(cp)).collect(Collectors.toList());
 
             return converter.apiSuccess200(collect);
         } catch (Exception e) {
@@ -196,7 +196,7 @@ public class CollectionPointService {
             if (id != null) {
                 Optional<CollectionPoint> byId = collectionPointRepository.findById(id);
                 if (byId.isPresent()) {
-                    CollectionPointDto collectionPointDto = converter.collectionPointToCollectionPointDto(byId.get());
+                    CollectionPointDto collectionPointDto = (CollectionPointDto) converter.dto(byId.get());
                     return converter.apiSuccess200(collectionPointDto);
                 }
                 return converter.apiError404("CollectionPoint not found");

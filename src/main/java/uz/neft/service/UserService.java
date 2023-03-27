@@ -49,7 +49,7 @@ public class UserService {
                     .roles(Collections.singleton(roleRepository.findById(dto.getRoleId()).get()))
                     .build();
             user = userRepository.save(user);
-            UserDto userDto = converter.userToUserDto(user);
+            UserDto userDto = (UserDto) converter.dto(user);
             return converter.apiSuccess201("User saved", userDto);
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,7 +78,7 @@ public class UserService {
                     editingUser.setPassword(passwordEncoder.encode(dto.getPassword()));
                 }
                 editingUser = userRepository.save(editingUser);
-                UserDto userDto = converter.userToUserDto(editingUser);
+                UserDto userDto = (UserDto) converter.dto(editingUser);
                 return converter.apiSuccess200("User edited", userDto);
             }
             return converter.apiError404("User not found");
@@ -111,7 +111,7 @@ public class UserService {
             if (id != null) {
                 Optional<User> byId = userRepository.findById(id);
                 if (byId.isPresent()) {
-                    UserDto userDto = converter.userToUserDto(byId.get());
+                    UserDto userDto = (UserDto) converter.dto(byId.get());
                     return converter.apiSuccess200(userDto);
                 } else {
                     return converter.apiError404("User not found");
@@ -127,7 +127,7 @@ public class UserService {
     public ResponseEntity<?> findAll() {
         try {
             List<User> all = userRepository.findAll();
-            List<UserDto> collect = all.stream().map(converter::userToUserDto).collect(Collectors.toList());
+            List<UserDto> collect = all.stream().map(user -> (UserDto) converter.dto(user)).collect(Collectors.toList());
 
             return converter.apiSuccess200(collect);
         } catch (Exception e) {

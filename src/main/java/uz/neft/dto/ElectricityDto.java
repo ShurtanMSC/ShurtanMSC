@@ -10,7 +10,7 @@ import uz.neft.entity.MiningSystem;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ElectricityDto {
+public class ElectricityDto implements Dto{
     private Integer id;
     private double hourly;
     private double daily;

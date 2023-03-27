@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UppgDto {
+public class UppgDto implements Dto{
 
     private Integer id;
     private String name;

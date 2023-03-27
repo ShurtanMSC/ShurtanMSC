@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.neft.dto.GasCompositionDto;
+import uz.neft.dto.MiningSystemDto;
 import uz.neft.dto.MiningSystemGasCompositionDto;
 import uz.neft.dto.action.ObjectWithActionsDto;
 import uz.neft.entity.MiningSystem;
@@ -49,7 +50,7 @@ public class GasCompositionService {
             composition.setCriticalTemperature(dto.getCriticalTemperature());
 
             GasComposition save = gasCompositionRepository.save(composition);
-            GasCompositionDto gasCompositionDto = converter.gasCompositionToGasCompositionDto(save);
+            GasCompositionDto gasCompositionDto = (GasCompositionDto) converter.dto(save);
 
             return converter.apiSuccess201("Gas Composition added", gasCompositionDto);
         } catch (Exception e) {
@@ -71,7 +72,7 @@ public class GasCompositionService {
                 composition.setCriticalTemperature(dto.getCriticalTemperature());
                 composition = gasCompositionRepository.save(composition);
 
-                GasCompositionDto gasCompositionDto = converter.gasCompositionToGasCompositionDto(composition);
+                GasCompositionDto gasCompositionDto = (GasCompositionDto) converter.dto(composition);
                 return converter.apiSuccess202("Gas Composition edited", gasCompositionDto);
             }
             return converter.apiError404("Gas Composition not found");
@@ -101,7 +102,7 @@ public class GasCompositionService {
     public ResponseEntity<?> findAll() {
         try {
             List<GasComposition> all = gasCompositionRepository.findAll();
-            List<GasCompositionDto> collect = all.stream().map(converter::gasCompositionToGasCompositionDto).collect(Collectors.toList());
+            List<GasCompositionDto> collect = all.stream().map(gc -> (GasCompositionDto)converter.dto(gc)).collect(Collectors.toList());
             return converter.apiSuccess200(collect);
         } catch (Exception e) {
             e.printStackTrace();
@@ -115,7 +116,7 @@ public class GasCompositionService {
 
             Optional<GasComposition> byId = gasCompositionRepository.findById(id);
             if (byId.isPresent()) {
-                GasCompositionDto gasCompositionDto = converter.gasCompositionToGasCompositionDto(byId.get());
+                GasCompositionDto gasCompositionDto = (GasCompositionDto) converter.dto(byId.get());
                 return converter.apiSuccess200(gasCompositionDto);
             } else {
                 return converter.apiError404("Gas Composition not found");
@@ -153,7 +154,7 @@ public class GasCompositionService {
             miningSystemGasComposition.setMolarFraction(dto.getMolarFraction());
 
             MiningSystemGasComposition save = miningSystemGasCompositionRepository.save(miningSystemGasComposition);
-            MiningSystemGasCompositionDto miningSystemGasCompositionDto = converter.miningSystemGasCompositionToMiningSystemGasCompositionDto(save);
+            MiningSystemGasCompositionDto miningSystemGasCompositionDto = (MiningSystemGasCompositionDto) converter.dto(save);
 
             return converter.apiSuccess201("Molar Fraction saved in MiningSystem_GasComposition Entity", miningSystemGasCompositionDto);
         } catch (
@@ -187,7 +188,7 @@ public class GasCompositionService {
             byIdMiningSysGasComposition.get().setMolarFraction(dto.getMolarFraction());
 
             MiningSystemGasComposition save = miningSystemGasCompositionRepository.save(byIdMiningSysGasComposition.get());
-            MiningSystemGasCompositionDto miningSystemGasCompositionDto = converter.miningSystemGasCompositionToMiningSystemGasCompositionDto(save);
+            MiningSystemGasCompositionDto miningSystemGasCompositionDto = (MiningSystemGasCompositionDto) converter.dto(save);
 
             return converter.apiSuccess200("Molar Fraction edited ", miningSystemGasCompositionDto);
         } catch (Exception e) {
@@ -219,12 +220,12 @@ public class GasCompositionService {
 
             for (MiningSystem miningSystem : miningSystems) {
                 List<MiningSystemGasComposition> allByMiningSystem = miningSystemGasCompositionRepository.findAllByMiningSystem(miningSystem);
-                List<MiningSystemGasCompositionDto> collect = allByMiningSystem.stream().map(converter::miningSystemGasCompositionToMiningSystemGasCompositionDto).collect(Collectors.toList());
-                dtoList.add(new ObjectWithActionsDto(converter.miningSysToMiningSysDto(miningSystem), collect));
+                List<MiningSystemGasCompositionDto> collect = allByMiningSystem.stream().map(gc -> (MiningSystemGasCompositionDto)converter.dto(gc)).collect(Collectors.toList());
+                dtoList.add(new ObjectWithActionsDto(converter.dto(miningSystem), collect));
             }
 //            miningSystemGasCompositionRepository.findAllByMiningSystem();
 //            List<MiningSystemGasComposition> all = miningSystemGasCompositionRepository.findAll();
-//            List<MiningSystemGasCompositionDto> collect = all.stream().map(converter::miningSystemGasCompositionToMiningSystemGasCompositionDto).collect(Collectors.toList());
+//            List<MiningSystemGasCompositionDto> collect = all.stream().map(gc -> (MiningSystemGasCompositionDto)converter.dto(gc)).collect(Collectors.toList());
 
             return converter.apiSuccess200(dtoList);
         } catch (Exception e) {
@@ -242,7 +243,7 @@ public class GasCompositionService {
 
             List<GasComposition> gasCompositionsList=new ArrayList<>();
             List<MiningSystemGasComposition> all = miningSystemGasCompositionRepository.findAllByMiningSystemOrderByGasCompositionId(miningSystem.get());
-            List<MiningSystemGasCompositionDto> collect = all.stream().map(converter::miningSystemGasCompositionToMiningSystemGasCompositionDto).collect(Collectors.toList());
+            List<MiningSystemGasCompositionDto> collect = all.stream().map(gc -> (MiningSystemGasCompositionDto) converter.dto(gc)).toList();
             List<ObjectWithActionsDto> objectWithActionsDtos=new ArrayList<>();
             for (int i = 0; i <collect.size() ; i++) {
                 objectWithActionsDtos.add(new ObjectWithActionsDto(all.get(i).getGasComposition(),collect.get(i)));
@@ -261,7 +262,7 @@ public class GasCompositionService {
             if (id == null) return converter.apiError400("Id null");
             Optional<MiningSystemGasComposition> byId = miningSystemGasCompositionRepository.findById(id);
             if (byId.isPresent()) {
-                MiningSystemGasCompositionDto dto = converter.miningSystemGasCompositionToMiningSystemGasCompositionDto(byId.get());
+                MiningSystemGasCompositionDto dto = (MiningSystemGasCompositionDto) converter.dto(byId.get());
                 return converter.apiSuccess200(dto);
             }
             return converter.apiError404("Molar Fraction not found in MiningSystem_GasComposition table");

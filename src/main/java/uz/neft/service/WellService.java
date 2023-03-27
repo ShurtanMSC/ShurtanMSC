@@ -48,7 +48,7 @@ public class WellService {
                             .category(dto.getCategory())
                             .build();
                     Well save = wellRepository.save(well);
-                    WellDto wellDto = converter.wellToWellDto(save);
+                    WellDto wellDto = (WellDto) converter.dto(save);
                     return converter.apiSuccess201("Well saved", wellDto);
                 }
                 return converter.apiError404("Collection point not found");
@@ -81,7 +81,7 @@ public class WellService {
                     editWell.setY(dto.getY());
                     editWell.setCategory(dto.getCategory());
                     Well editedWell = wellRepository.save(editWell);
-                    WellDto wellDto = converter.wellToWellDto(editedWell);
+                    WellDto wellDto = (WellDto) converter.dto(editedWell);
                     return converter.apiSuccess200("Well Edited", wellDto);
                 }
                 return converter.apiError404("Collection point not found");
@@ -114,7 +114,7 @@ public class WellService {
     public ResponseEntity<?> findAll() {
         try {
             List<Well> all = wellRepository.findAll();
-            List<WellDto> collect = all.stream().map(converter::wellToWellDto).collect(Collectors.toList());
+            List<WellDto> collect = all.stream().map(well -> (WellDto) converter.dto(well)).collect(Collectors.toList());
             return converter.apiSuccess200(collect);
         } catch (Exception e) {
             e.printStackTrace();
@@ -127,7 +127,7 @@ public class WellService {
             if (id != null) {
                 Optional<Well> byId = wellRepository.findById(id);
                 if (byId.isPresent()) {
-                    WellDto wellDto = converter.wellToWellDto(byId.get());
+                    WellDto wellDto = (WellDto) converter.dto(byId.get());
                     return converter.apiSuccess200(wellDto);
                 }
                 return converter.apiError404("Well not found");

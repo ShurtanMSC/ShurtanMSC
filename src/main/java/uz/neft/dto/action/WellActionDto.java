@@ -1,6 +1,7 @@
 package uz.neft.dto.action;
 
 import lombok.*;
+import uz.neft.dto.Dto;
 import uz.neft.entity.enums.WellStatus;
 
 import javax.persistence.EnumType;
@@ -12,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Setter
 @Builder
-public class WellActionDto {
+public class WellActionDto implements Dto{
 
     private Long actionId;
 

@@ -37,10 +37,7 @@ import uz.neft.utils.Converter;
 
 import java.sql.Timestamp;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -137,7 +134,7 @@ public class CollectionPointActionService {
 
             CollectionPointAction save = collectionPointActionRepository.save(collectionPointAction);
 
-            CollectionPointActionDto collectionPointActionDto = converter.collectionPointActionToCollectionPointActionDto(save);
+            CollectionPointActionDto collectionPointActionDto = (CollectionPointActionDto) converter.dto(save);
 
             return converter.apiSuccess201(collectionPointActionDto);
         } catch (Exception e) {
@@ -171,7 +168,7 @@ public class CollectionPointActionService {
         try {
             List<CollectionPoint> all = collectionPointRepository.findAll();
 
-            List<CollectionPointDto> collect = all.stream().map(converter::collectionPointToCollectionPointDto).collect(Collectors.toList());
+            List<CollectionPointDto> collect = all.stream().map(cp->(CollectionPointDto)converter.dto(cp)).collect(Collectors.toList());
 
             return converter.apiSuccess200(collect);
         } catch (Exception e) {
@@ -193,7 +190,7 @@ public class CollectionPointActionService {
 //                List<CollectionPoint> allByUppg = collectionPointRepository.findAllByUppg(uppg);
 //                collectionPointList.addAll(allByUppg);
 //            }
-            return converter.apiSuccess200(collectionPointList.stream().map(converter::collectionPointToCollectionPointDto).collect(Collectors.toList()));
+            return converter.apiSuccess200(collectionPointList.stream().map(cp -> (CollectionPointDto) converter.dto(cp)).collect(Collectors.toList()));
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.toString());
@@ -214,8 +211,8 @@ public class CollectionPointActionService {
                             c ->
                                     list
                                             .add(new ObjectWithActionsDto(
-                                                    converter.collectionPointToCollectionPointDto(c),
-                                                    converter.collectionPointActionToCollectionPointActionDto(
+                                                    (CollectionPointDto) converter.dto(c),
+                                                    (CollectionPointActionDto) converter.dto(
                                                             collectionPointActionRepository
                                                                     .findFirstByCollectionPointOrderByCreatedAtDesc(c).orElse(null)))));
             return converter.apiSuccess200(list);
@@ -240,10 +237,10 @@ public class CollectionPointActionService {
                             c ->
                                     list
                                             .add(new ObjectWithActionsDto(
-                                                    converter.collectionPointToCollectionPointDto(c),
-                                                    converter.collectionPointActionToCollectionPointActionDto(
-                                                            collectionPointActionRepository
-                                                                    .findFirstByCollectionPointOrderByCreatedAtDesc(c).orElse(null)))));
+                                                    (CollectionPointDto) converter.dto(c),
+                                                    converter.dto(
+                                                            Objects.requireNonNull(collectionPointActionRepository
+                                                                    .findFirstByCollectionPointOrderByCreatedAtDesc(c).orElse(null))))));
 
             return list;
         }catch (Exception e){
@@ -263,7 +260,7 @@ public class CollectionPointActionService {
 
             Page<CollectionPointAction> collectionPointActions = collectionPointActionRepository.findAllByCollectionPointOrderByCreatedAtDesc(collectionPoint.get(), pg);
 
-            Stream<CollectionPointActionDto> collectionPointActionDtoStream = collectionPointActions.stream().map(converter::collectionPointActionToCollectionPointActionDto);
+            Stream<CollectionPointActionDto> collectionPointActionDtoStream = collectionPointActions.stream().map(a->(CollectionPointActionDto) converter.dto(a));
 
             return converter.apiSuccess200(collectionPointActionDtoStream, collectionPointActions.getTotalElements(), collectionPointActions.getTotalPages(), collectionPointActions.getNumber());
 //            return converter.apiSuccess200(collectionPointActionDtoStream);
@@ -281,7 +278,7 @@ public class CollectionPointActionService {
 
             List<CollectionPoint> allByUppg = collectionPointRepository.findAllByUppgOrderByIdAsc(byId.get());
 
-            List<CollectionPointDto> collect = allByUppg.stream().map(converter::collectionPointToCollectionPointDto).collect(Collectors.toList());
+            List<CollectionPointDto> collect = allByUppg.stream().map(cp -> (CollectionPointDto) converter.dto(cp)).collect(Collectors.toList());
 
             return converter.apiSuccess200(collect);
         } catch (Exception e) {
@@ -296,7 +293,7 @@ public class CollectionPointActionService {
             Optional<CollectionPoint> byId = collectionPointRepository.findById(id);
             if (byId.isEmpty()) return converter.apiError404("collection point not found");
 
-            CollectionPointDto collectionPointDto = converter.collectionPointToCollectionPointDto(byId.get());
+            CollectionPointDto collectionPointDto = (CollectionPointDto) converter.dto(byId.get());
 
             return converter.apiSuccess200(collectionPointDto);
         } catch (Exception e) {
@@ -314,8 +311,8 @@ public class CollectionPointActionService {
                 Optional<CollectionPoint> byId = collectionPointRepository.findById(item.getId());
                 Optional<CollectionPointAction> collectionPointAction = collectionPointActionRepository.findFirstByCollectionPointOrderByCreatedAtDesc(byId.get());
 
-                CollectionPointDto collectionPointDto = converter.collectionPointToCollectionPointDto(byId.get());
-                CollectionPointActionDto collectionPointActionDto = converter.collectionPointActionToCollectionPointActionDto(collectionPointAction.get());
+                CollectionPointDto collectionPointDto = (CollectionPointDto) converter.dto(byId.get());
+                CollectionPointActionDto collectionPointActionDto = (CollectionPointActionDto) converter.dto(collectionPointAction.get());
 
                 return ObjectWithActionsDto
                         .builder()
@@ -339,8 +336,8 @@ public class CollectionPointActionService {
 
             Optional<CollectionPointAction> collectionPointAction = collectionPointActionRepository.findFirstByCollectionPointOrderByCreatedAtDesc(byId.get());
 
-            CollectionPointDto collectionPointDto = converter.collectionPointToCollectionPointDto(byId.get());
-            CollectionPointActionDto collectionPointActionDto = converter.collectionPointActionToCollectionPointActionDto(collectionPointAction.get());
+            CollectionPointDto collectionPointDto = (CollectionPointDto) converter.dto(byId.get());
+            CollectionPointActionDto collectionPointActionDto = (CollectionPointActionDto) converter.dto(collectionPointAction.get());
 
             ObjectWithActionsDto dto = ObjectWithActionsDto
                     .builder()
@@ -394,7 +391,7 @@ public class CollectionPointActionService {
                     collectionPointAction.setModified(modifiedDate);
 
                     CollectionPointAction save = collectionPointActionRepository.save(collectionPointAction);
-                    CollectionPointActionDto collectionPointActionDto = converter.collectionPointActionToCollectionPointActionDto(save);
+                    CollectionPointActionDto collectionPointActionDto = (CollectionPointActionDto) converter.dto(save);
                     return converter.apiSuccess200("Collection Point Action Edited", collectionPointActionDto);
                 }
                 return converter.apiError404("Collection Point not found");

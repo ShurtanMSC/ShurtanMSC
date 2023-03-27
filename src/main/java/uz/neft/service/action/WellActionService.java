@@ -283,7 +283,7 @@ public class WellActionService {
                     .build();
             WellAction save = wellActionRepository.save(wellAction);
 
-            WellActionDto wellActionDto = converter.wellActionToWellActionDto(save);
+            WellActionDto wellActionDto = (WellActionDto) converter.dto(save);
             execute(well.get().getCollectionPoint().getUppg());
 //            System.out.println("DEBIT = "+sumAllExpendByUppg(well.get().getCollectionPoint().getUppg()));
 
@@ -321,7 +321,7 @@ public class WellActionService {
         try {
             List<Well> all = wellRepository.findAll();
 
-            List<WellDto> wellDtos = all.stream().map(converter::wellToWellDto).collect(Collectors.toList());
+            List<WellDto> wellDtos = all.stream().map(well -> (WellDto) converter.dto(well)).collect(Collectors.toList());
 
             return converter.apiSuccess200(wellDtos);
         } catch (Exception e) {
@@ -365,7 +365,7 @@ public class WellActionService {
 
             List<Well> wells = wellRepository.findAllByCollectionPointOrderByIdAsc(byId.get());
 
-            List<WellDto> collect = wells.stream().map(converter::wellToWellDto).collect(Collectors.toList());
+            List<WellDto> collect = wells.stream().map(well -> (WellDto) converter.dto(well)).collect(Collectors.toList());
 
             return converter.apiSuccess200(collect);
         } catch (Exception e) {
@@ -379,7 +379,7 @@ public class WellActionService {
         try {
             Optional<Well> byId = wellRepository.findById(id);
             if (byId.isEmpty()) return converter.apiError404("well not found");
-            WellDto dto = converter.wellToWellDto(byId.get());
+            WellDto dto = (WellDto) converter.dto(byId.get());
             return converter.apiSuccess200(dto);
         } catch (Exception e) {
             e.printStackTrace();
@@ -396,10 +396,10 @@ public class WellActionService {
             Optional<WellAction> firstByWell = wellActionRepository.findFirstByWellOrderByCreatedAtDesc(byId.get());
 //            if (!firstByWell.isPresent()) return converter.apiError404("well action not found");
 
-            WellDto wellDto = converter.wellToWellDto(byId.get());
+            WellDto wellDto = (WellDto) converter.dto(byId.get());
             WellActionDto wellActionDto=new WellActionDto();
             if (firstByWell.isPresent()){
-                wellActionDto = converter.wellActionToWellActionDto(firstByWell.get());
+                wellActionDto = (WellActionDto) converter.dto(firstByWell.get());
             }
 
             ObjectWithActionsDto dto = ObjectWithActionsDto
@@ -425,10 +425,10 @@ public class WellActionService {
 
             Optional<WellAction> firstByWell = wellActionRepository.findFirstByWellOrderByCreatedAtDesc(byId1.get());
 
-            WellDto wellDto = converter.wellToWellDto(byId1.get());
+            WellDto wellDto = (WellDto) converter.dto(byId1.get());
             WellActionDto wellActionDto=new WellActionDto();
             if (firstByWell.isPresent()){
-                wellActionDto = converter.wellActionToWellActionDto(firstByWell.get());
+                wellActionDto = (WellActionDto) converter.dto(firstByWell.get());
             }
 
             return ObjectWithActionsDto
@@ -445,7 +445,7 @@ public class WellActionService {
         try {
             if (id == null) return converter.apiError400("id is null!");
             List<Well> wellList = wellRepository.findAllByUppgId(id);
-            return converter.apiSuccess200(wellList.stream().map(converter::wellToWellDto).collect(Collectors.toList()));
+            return converter.apiSuccess200(wellList.stream().map(well -> (WellDto) converter.dto(well)).collect(Collectors.toList()));
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.toString());
@@ -463,8 +463,8 @@ public class WellActionService {
                             w ->
                                     list
                                             .add(new ObjectWithActionsDto(
-                                                    converter.wellToWellDto(w),
-                                                    converter.wellActionToWellActionDto(
+                                                    converter.dto(w),
+                                                    converter.dto(
                                                             wellActionRepository
                                                                     .findFirstByWellOrderByCreatedAtDesc(w).get()))));
             return converter.apiSuccess200(list);
@@ -486,7 +486,7 @@ public class WellActionService {
 
             Page<WellAction> wellActions = wellActionRepository.findAllByWellOrderByCreatedAtDesc(well.get(), pg);
 
-            Stream<WellActionDto> wellActionDtoStream = wellActions.stream().map(converter::wellActionToWellActionDto);
+            Stream<WellActionDto> wellActionDtoStream = wellActions.stream().map(wa -> (WellActionDto) converter.dto(wa));
 
             return converter.apiSuccess200(wellActionDtoStream, wellActions.getTotalElements(), wellActions.getTotalPages(), wellActions.getNumber());
         } catch (Exception e) {
@@ -501,7 +501,7 @@ public class WellActionService {
         try {
             if (id == null) return converter.apiError400("id is null!");
             List<Well> wellList = wellRepository.findAllByMiningSystemId(id);
-            return converter.apiSuccess200(wellList.stream().map(converter::wellToWellDto).collect(Collectors.toList()));
+            return converter.apiSuccess200(wellList.stream().map(well -> (WellDto) converter.dto(well)).collect(Collectors.toList()));
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.toString());
@@ -520,10 +520,10 @@ public class WellActionService {
                             w ->
                                     list
                                             .add(new ObjectWithActionsDto(
-                                                    converter.wellToWellDto(w),
-                                                    converter.wellActionToWellActionDto(
-                                                            wellActionRepository
-                                                                    .findFirstByWellOrderByCreatedAtDesc(w).orElse(null)))));
+                                                    converter.dto(w),
+                                                    converter.dto(
+                                                            Objects.requireNonNull(wellActionRepository
+                                                                    .findFirstByWellOrderByCreatedAtDesc(w).orElse(null))))));
             return converter.apiSuccess200(list);
         } catch (Exception e) {
             e.printStackTrace();
@@ -541,10 +541,10 @@ public class WellActionService {
                             w ->
                                     list
                                             .add(new ObjectWithActionsDto(
-                                                    converter.wellToWellDto(w),
-                                                    converter.wellActionToWellActionDto(
-                                                            wellActionRepository
-                                                                    .findFirstByWellOrderByCreatedAtDesc(w).orElse(null)))));
+                                                    converter.dto(w),
+                                                    converter.dto(
+                                                            Objects.requireNonNull(wellActionRepository
+                                                                    .findFirstByWellOrderByCreatedAtDesc(w).orElse(null))))));
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.toString());
@@ -712,7 +712,7 @@ public class WellActionService {
                 wellAction.setWell(well.get());
 
                 WellAction save = wellActionRepository.save(wellAction);
-                WellActionDto wellActionDto = converter.wellActionToWellActionDto(save);
+                WellActionDto wellActionDto = (WellActionDto) converter.dto(save);
                 return converter.apiSuccess200("Uppg action edited", wellActionDto);
             }
             return converter.apiError404("Uppg action not found");

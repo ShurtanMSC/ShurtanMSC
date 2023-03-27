@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import uz.neft.dto.Dto;
 
 import java.util.Date;
 
@@ -11,7 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MiningSystemActionDto {
+public class MiningSystemActionDto implements Dto{
 
     private Long actionId;
 

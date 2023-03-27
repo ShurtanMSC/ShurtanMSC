@@ -107,7 +107,7 @@ public class MiningSystemActionService {
             Optional<MiningSystem> miningSystem = miningSystemRepository.findById(id);
             List<MiningSystemAction> miningSystemActions =miningSystemActionRepository.findAllByMiningSystemOrderByCreatedAtDesc(miningSystem.get());
 
-            Stream<MiningSystemActionDto> miningSystemActionDtoStream = miningSystemActions.stream().map(converter::miningsystemActionToMiningSystemActionDto);
+            Stream<MiningSystemActionDto> miningSystemActionDtoStream = miningSystemActions.stream().map(msa -> (MiningSystemActionDto) converter.dto(msa));
 
             return converter.apiSuccess200(miningSystemActionDtoStream);
         } catch (Exception e) {
@@ -123,14 +123,14 @@ public class MiningSystemActionService {
             Optional<MiningSystem> miningSystem = miningSystemRepository.findById(id);
 //            List<MiningSystemAction> miningSystemActions =miningSystemActionRepository.findAllByMiningSystemOrderByCreatedAtDesc(miningSystem.get());
 
-//            Stream<MiningSystemActionDto> miningSystemActionDtoStream = miningSystemActions.stream().map(converter::miningsystemActionToMiningSystemActionDto);
+//            Stream<MiningSystemActionDto> miningSystemActionDtoStream = miningSystemActions.stream().map(msa -> (MiningSystemActionDto) )converter.dto(msa));
             if (miningSystem.isEmpty()) return converter.apiError404("Mining system not found");
 
             Pageable pg = PageRequest.of(page.orElse(0), pageSize.orElse(10), Sort.Direction.DESC, sortBy.orElse("createdAt"));
 
             Page<MiningSystemAction> miningSystemActions = miningSystemActionRepository.findAllByMiningSystemOrderByCreatedAtDesc(miningSystem.get(), pg);
 
-            Stream<MiningSystemActionDto> MiningSystemActionDto = miningSystemActions.stream().map(converter::miningsystemActionToMiningSystemActionDto);
+            Stream<MiningSystemActionDto> MiningSystemActionDto = miningSystemActions.stream().map(msa -> (MiningSystemActionDto) converter.dto(msa));
 
             return converter.apiSuccess200(MiningSystemActionDto,miningSystemActions.getTotalElements(),miningSystemActions.getTotalPages(),miningSystemActions.getNumber());
         } catch (Exception e) {
@@ -149,7 +149,7 @@ public class MiningSystemActionService {
         try {
             List<MiningSystem> all = miningSystemRepository.findAll();
 
-            List<MiningSystemDto> wellDtos = all.stream().map(converter::miningSysToMiningSysDto).collect(Collectors.toList());
+            List<MiningSystemDto> wellDtos = all.stream().map(ms -> (MiningSystemDto) converter.dto(ms)).collect(Collectors.toList());
 
             return converter.apiSuccess200(wellDtos);
         } catch (Exception e) {

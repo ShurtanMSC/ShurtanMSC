@@ -14,7 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class WellDto {
+public class WellDto implements Dto{
 
     private Integer id;
     private Integer number;

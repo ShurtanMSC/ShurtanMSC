@@ -27,6 +27,8 @@ import uz.neft.payload.ApiResponseObjectByPageable;
 import uz.neft.repository.RoleRepository;
 import uz.neft.repository.UserRepository;
 
+import java.io.Serializable;
+
 @Component
 public class Converter {
 
@@ -541,7 +543,7 @@ public class Converter {
     }
 
 
-    public MiningSystemActionDto miningsystemActionToMiningSystemActionDto(MiningSystemAction miningSystemAction) {
+    public MiningSystemActionDto miningSystemActionToMiningSystemActionDto(MiningSystemAction miningSystemAction) {
         try {
             if (miningSystemAction == null) return null;
             return MiningSystemActionDto
@@ -563,6 +565,41 @@ public class Converter {
     }
 
 
+    public Dto dto(Serializable serializable){
+
+        if (serializable instanceof MiningSystemAction) return miningSystemActionToMiningSystemActionDto((MiningSystemAction) serializable);
+        if (serializable instanceof UppgAction) return uppgActionToUppgActionDto((UppgAction) serializable);
+        if (serializable instanceof ConstantValue) return constantValueToConstValueDto((ConstantValue) serializable);
+        if (serializable instanceof CollectionPointAction) return collectionPointActionToCollectionPointActionDto((CollectionPointAction) serializable);
+        if (serializable instanceof WellAction) return wellActionToWellActionDto((WellAction) serializable);
+        if (serializable instanceof MiningSystemGasComposition) return miningSystemGasCompositionToMiningSystemGasCompositionDto((MiningSystemGasComposition) serializable);
+        if (serializable instanceof Constant) return constantToConstantDto((Constant) serializable);
+        if (serializable instanceof GasComposition) return gasCompositionToGasCompositionDto((GasComposition) serializable);
+        if (serializable instanceof Well) return wellToWellDto((Well) serializable);
+        if (serializable instanceof CollectionPoint) return collectionPointToCollectionPointDto((CollectionPoint) serializable);
+        if (serializable instanceof Uppg) return uppgToUppgDto((Uppg) serializable);
+        if (serializable instanceof MiningSystem) return miningSysToMiningSysDto((MiningSystem) serializable);
+        if (serializable instanceof User) return userToUserDto((User) serializable);
+        return null;
+
+        //For preview
+//        return switch (serializable){
+//            case MiningSystemAction a -> miningSystemActionToMiningSystemActionDto(a);
+//            case UppgAction a -> uppgActionToUppgActionDto(a);
+//            case ConstantValue a -> constantValueToConstValueDto(a);
+//            case CollectionPointAction a -> collectionPointActionToCollectionPointActionDto(a);
+//            case WellAction a -> wellActionToWellActionDto(a);
+//            case MiningSystemGasComposition a -> miningSystemGasCompositionToMiningSystemGasCompositionDto(a);
+//            case Constant a -> constantToConstantDto(a);
+//            case GasComposition a -> gasCompositionToGasCompositionDto(a);
+//            case Well a -> wellToWellDto(a);
+//            case CollectionPoint a -> collectionPointToCollectionPointDto(a);
+//            case Uppg a -> uppgToUppgDto(a);
+//            case MiningSystem a -> miningSysToMiningSysDto(a);
+//            case User a -> userToUserDto(a);
+//            default -> throw new IllegalStateException("Unexpected value: " + serializable);
+//        };
+    }
 
 }
 

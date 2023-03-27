@@ -102,7 +102,7 @@ public class UppgService {
                 uppg.setName(dto.getName());
                 uppg.setMiningSystem(byIdMining.get());
                 Uppg save = uppgRepository.save(uppg);
-                UppgDto uppgDto = converter.uppgToUppgDto(save);
+                UppgDto uppgDto = (UppgDto) converter.dto(save);
                 return converter.apiSuccess201("Uppg saved", uppgDto);
             }
             return converter.apiError404("Mining system not found");
@@ -159,7 +159,7 @@ public class UppgService {
     public ResponseEntity<?> findAll() {
         try {
             List<Uppg> all = uppgRepository.findAll();
-            List<UppgDto> collect = all.stream().map(converter::uppgToUppgDto).collect(Collectors.toList());
+            List<UppgDto> collect = all.stream().map(uppg -> (UppgDto) converter.dto(uppg)).collect(Collectors.toList());
 
             return converter.apiSuccess201(collect);
         } catch (Exception e) {
@@ -174,7 +174,7 @@ public class UppgService {
             if (id != null) {
                 Optional<Uppg> byId = uppgRepository.findById(id);
                 if (byId.isPresent()) {
-                    UppgDto uppgDto = converter.uppgToUppgDto(byId.get());
+                    UppgDto uppgDto = (UppgDto) converter.dto(byId.get());
                     return converter.apiSuccess200(uppgDto);
                 } else {
                     return converter.apiError404("Uppg not found");

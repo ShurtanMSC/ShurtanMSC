@@ -5,6 +5,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import uz.neft.dto.UserDto;
 import uz.neft.entity.User;
 import uz.neft.payload.ResToken;
 import uz.neft.payload.SignIn;
@@ -43,7 +44,7 @@ public class AuthController {
     @GetMapping("/me")
     public HttpEntity<?> me(@CurrentUser User user) {
         if (user != null) {
-            return converter.apiSuccess200(converter.userToUserDto(user));
+            return converter.apiSuccess200(converter.dto(user));
         } else return null;
     }
 

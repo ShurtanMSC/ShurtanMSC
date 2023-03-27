@@ -10,7 +10,7 @@ import uz.neft.entity.variables.ConstantNameEnums;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ConstantDto2 {
+public class ConstantDto2 implements Dto{
 
     private Integer Id;
     private ConstantNameEnums name;

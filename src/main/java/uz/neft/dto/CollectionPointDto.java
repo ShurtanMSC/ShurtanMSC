@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CollectionPointDto {
+public class CollectionPointDto implements Dto{
 
     private Integer id;
     private String name;

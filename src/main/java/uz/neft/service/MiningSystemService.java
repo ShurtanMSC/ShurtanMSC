@@ -35,7 +35,7 @@ public class MiningSystemService {
             MiningSystem miningSystem = new MiningSystem();
             miningSystem.setName(dto.getName());
             MiningSystem save = miningSystemRepository.save(miningSystem);
-            MiningSystemDto miningSystemDto = converter.miningSysToMiningSysDto(save);
+            MiningSystemDto miningSystemDto = (MiningSystemDto) converter.dto(save);
             return converter.apiSuccess201("Mining system added", miningSystemDto);
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,7 +51,7 @@ public class MiningSystemService {
             Optional<MiningSystem> byId = miningSystemRepository.findById(dto.getMiningSystemId());
             miningSystemAction.setMiningSystem(byId.get());
             MiningSystemAction save = miningSystemActionRepository.save(miningSystemAction);
-            MiningSystemActionDto miningSystemActionDto = converter.miningsystemActionToMiningSystemActionDto(save);
+            MiningSystemActionDto miningSystemActionDto = (MiningSystemActionDto) converter.dto(save);
             return converter.apiSuccess201("Mining system action added", miningSystemActionDto);
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,7 +69,7 @@ public class MiningSystemService {
                 editMiningSys = byId.get();
                 editMiningSys.setName(dto.getName());
                 editMiningSys = miningSystemRepository.save(editMiningSys);
-                MiningSystemDto miningSystemDto = converter.miningSysToMiningSysDto(editMiningSys);
+                MiningSystemDto miningSystemDto = (MiningSystemDto) converter.dto(editMiningSys);
                 return converter.apiSuccess200("Mining system edited", miningSystemDto);
             }
             return converter.apiError404("Mining system not found");
@@ -98,7 +98,7 @@ public class MiningSystemService {
                     miningSystemAction.setPlanThisYear(dto.getPlanThisYear());
                 miningSystemAction.setMiningSystem(miningSystem.get());
                 MiningSystemAction save = miningSystemActionRepository.save(miningSystemAction);
-                MiningSystemActionDto miningSystemActionDto = converter.miningsystemActionToMiningSystemActionDto(save);
+                MiningSystemActionDto miningSystemActionDto = (MiningSystemActionDto) converter.dto(save);
                 return converter.apiSuccess200("Mining system action edited", miningSystemActionDto);
             }
             return converter.apiError404("Mining system action not found");
@@ -147,7 +147,7 @@ public class MiningSystemService {
     public ResponseEntity<?> findAll() {
         try {
             List<MiningSystem> all = miningSystemRepository.findAll();
-            List<MiningSystemDto> collect = all.stream().map(converter::miningSysToMiningSysDto).collect(Collectors.toList());
+            List<MiningSystemDto> collect = all.stream().map(ms -> (MiningSystemDto) converter.dto(ms)).collect(Collectors.toList());
             return converter.apiSuccess200(collect);
         } catch (Exception e) {
             e.printStackTrace();
@@ -160,7 +160,7 @@ public class MiningSystemService {
             if (id != null) {
                 Optional<MiningSystem> byId = miningSystemRepository.findById(id);
                 if (byId.isPresent()) {
-                    MiningSystemDto miningSystemDto = converter.miningSysToMiningSysDto(byId.get());
+                    MiningSystemDto miningSystemDto = (MiningSystemDto) converter.dto(byId.get());
                     return converter.apiSuccess200(miningSystemDto);
                 } else {
                     return converter.apiError404("Mining system not found");

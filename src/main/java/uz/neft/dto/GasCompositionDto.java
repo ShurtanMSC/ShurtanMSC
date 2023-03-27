@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class GasCompositionDto {
+public class GasCompositionDto implements Dto{
     private Integer id;
     private String name;
     private Double criticalPressure;

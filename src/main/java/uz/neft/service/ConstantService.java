@@ -68,7 +68,7 @@ public class ConstantService {
             constant.setDescription(dto.getDescription());
 
             Constant save = constantRepository.save(constant);
-            ConstantDto constantDto = converter.constantToConstantDto(save);
+            ConstantDto constantDto = (ConstantDto) converter.dto(save);
 
             return converter.apiSuccess201("Constant added", constantDto);
         } catch (Exception e) {
@@ -90,7 +90,7 @@ public class ConstantService {
                 constant.setDescription(dto.getDescription());
                 constant = constantRepository.save(constant);
 
-                ConstantDto gasCompositionDto = converter.constantToConstantDto(constant);
+                ConstantDto gasCompositionDto = (ConstantDto) converter.dto(constant);
                 return converter.apiSuccess202("Constant edited", gasCompositionDto);
             }
             return converter.apiError404("Constant not found");
@@ -122,7 +122,7 @@ public class ConstantService {
     public ResponseEntity<?> findAll() {
         try {
             List<Constant> all = constantRepository.findAll();
-            List<ConstantDto> collect = all.stream().map(converter::constantToConstantDto).collect(Collectors.toList());
+            List<ConstantDto> collect = all.stream().map(c -> (ConstantDto) converter.dto(c)).collect(Collectors.toList());
             return converter.apiSuccess200(collect);
         } catch (Exception e) {
             e.printStackTrace();
@@ -136,7 +136,7 @@ public class ConstantService {
             if (id != null) {
                 Optional<Constant> byId = constantRepository.findById(id);
                 if (byId.isPresent()) {
-                    ConstantDto constantDto = converter.constantToConstantDto(byId.get());
+                    ConstantDto constantDto = (ConstantDto) converter.dto(byId.get());
                     return converter.apiSuccess200(constantDto);
                 } else {
                     return converter.apiError404("Constant not found");
@@ -161,7 +161,7 @@ public class ConstantService {
 
             if (helper.isSuccess()) {
                 ConstantValue constantValue = (ConstantValue) helper.getObject();
-                return converter.apiSuccess201(helper.getMessage(), converter.constantValueToConstValueDto(constantValuesRepository.save(constantValue)));
+                return converter.apiSuccess201(helper.getMessage(), (ConstantValueDto) converter.dto(constantValuesRepository.save(constantValue)));
             } else return converter.apiError409(helper.getMessage(), null);
 
         } catch (Exception e) {
@@ -179,7 +179,7 @@ public class ConstantService {
             ApiResponseObject helper = (ApiResponseObject) helper(dto);
             if (helper.isSuccess()) {
                 ConstantValue constantValue = (ConstantValue) helper.getObject();
-                return converter.apiSuccess200("Successfully edited", converter.constantValueToConstValueDto(constantValuesRepository.save(constantValue)));
+                return converter.apiSuccess200("Successfully edited", (ConstantValueDto) converter.dto(constantValuesRepository.save(constantValue)));
             } else return converter.apiError409(helper.getMessage(), null);
 
 
@@ -210,7 +210,7 @@ public class ConstantService {
     public HttpEntity<?> allValues() {
         try {
             List<ConstantValue> all = constantValuesRepository.findAll();
-            List<ConstantValueDto> collect = all.stream().map(converter::constantValueToConstValueDto).collect(Collectors.toList());
+            List<ConstantValueDto> collect = all.stream().map(cv -> (ConstantValueDto)converter.dto(cv)).collect(Collectors.toList());
             return converter.apiSuccess200(collect);
         } catch (Exception e) {
             e.printStackTrace();
@@ -224,7 +224,7 @@ public class ConstantService {
             if (id == null) return converter.apiError400("Id null");
             Optional<ConstantValue> byId = constantValuesRepository.findById(id);
             if (byId.isEmpty()) return converter.apiError404("Constant not found");
-            ConstantValueDto constantValueDto = converter.constantValueToConstValueDto(byId.get());
+            ConstantValueDto constantValueDto = (ConstantValueDto) converter.dto(byId.get());
             return converter.apiSuccess200(constantValueDto);
         } catch (Exception e) {
             e.printStackTrace();
@@ -285,7 +285,7 @@ public class ConstantService {
         try {
             Optional<MiningSystem> miningSystem = miningSystemRepository.findById(miningId);
             List<MiningSystemConstant> allByMiningSystem = miningSystemConstantRepository.findAllByMiningSystem(miningSystem.get());
-//            List<ConstantDto> collect = all.stream().map(converter::constantToConstantDto).collect(Collectors.toList());
+//            List<ConstantDto> collect = all.stream().map(converter::dto).collect(Collectors.toList());
             return converter.apiSuccess200(allByMiningSystem);
         } catch (Exception e) {
             e.printStackTrace();

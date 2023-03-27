@@ -12,7 +12,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Builder
-public class StaffDto {
+public class StaffDto implements Dto{
 
     private Integer id;
 

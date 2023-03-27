@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import uz.neft.dto.Dto;
 
 import javax.persistence.Column;
 import java.sql.Timestamp;
@@ -14,7 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UppgActionDto {
+public class UppgActionDto implements Dto{
 
     private Long actionId;
 

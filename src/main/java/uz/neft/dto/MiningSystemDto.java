@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MiningSystemDto {
+public class MiningSystemDto implements Dto{
     private Integer Id;
     private String name;
 

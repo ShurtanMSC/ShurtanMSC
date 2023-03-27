@@ -11,7 +11,7 @@ import java.time.Month;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ForecastDto {
+public class ForecastDto implements Dto{
     private int year;
     private Month month;
     private double amount;

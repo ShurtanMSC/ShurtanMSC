@@ -119,7 +119,7 @@ public class UppgActionService {
 
             UppgAction save = uppgActionRepository.save(uppgAction);
 
-            UppgActionDto uppgActionDto = converter.uppgActionToUppgActionDto(save);
+            UppgActionDto uppgActionDto = (UppgActionDto) converter.dto(save);
 
             return converter.apiSuccess201(uppgActionDto);
         } catch (Exception e) {
@@ -152,7 +152,7 @@ public class UppgActionService {
         try {
             List<Uppg> all = uppgRepository.findAll();
 
-            List<UppgDto> collect = all.stream().map(converter::uppgToUppgDto).collect(Collectors.toList());
+            List<UppgDto> collect = all.stream().map(uppg -> (UppgDto) converter.dto(uppg)).collect(Collectors.toList());
 
             return converter.apiSuccess200(collect);
         } catch (Exception e) {
@@ -195,7 +195,7 @@ public class UppgActionService {
             if (byId1.isEmpty()) return converter.apiError404("uppg not found");
 
             List<UppgAction> allByUppgOrderByCreatedAtDesc = uppgActionRepository.findAllByUppgOrderByCreatedAtDesc(byId1.get());
-            Stream<UppgActionDto> uppgActionDtoStream = allByUppgOrderByCreatedAtDesc.stream().map(converter::uppgActionToUppgActionDto);
+            Stream<UppgActionDto> uppgActionDtoStream = allByUppgOrderByCreatedAtDesc.stream().map(uppg -> (UppgActionDto) converter.dto(uppg));
 
             return converter.apiSuccess200(uppgActionDtoStream);
         } catch (Exception e) {
@@ -213,7 +213,7 @@ public class UppgActionService {
 
             Page<UppgAction> uppgActions = uppgActionRepository.findAllByUppgOrderByCreatedAtDesc(byId1.get(), pg);
 
-            Stream<UppgActionDto> uppgActionDtoStream = uppgActions.stream().map(converter::uppgActionToUppgActionDto);
+            Stream<UppgActionDto> uppgActionDtoStream = uppgActions.stream().map(uppg -> (UppgActionDto) converter.dto(uppg));
 
             return converter.apiSuccess200(uppgActionDtoStream,uppgActions.getTotalElements(),uppgActions.getTotalPages(),uppgActions.getNumber());
         } catch (Exception e) {
@@ -230,7 +230,7 @@ public class UppgActionService {
 
             List<Uppg> uppgs = uppgRepository.findAllByMiningSystem(byId.get());
 
-            List<UppgDto> collect = uppgs.stream().map(converter::uppgToUppgDto).collect(Collectors.toList());
+            List<UppgDto> collect = uppgs.stream().map(uppg -> (UppgDto) converter.dto(uppg)).collect(Collectors.toList());
 
             return converter.apiSuccess200(collect);
         } catch (Exception e) {
@@ -244,7 +244,7 @@ public class UppgActionService {
         try {
             Optional<Uppg> byId = uppgRepository.findById(id);
             if (byId.isEmpty()) return converter.apiError404("uppg not found");
-            UppgDto dto = converter.uppgToUppgDto(byId.get());
+            UppgDto dto = (UppgDto) converter.dto(byId.get());
             return converter.apiSuccess200(dto);
         } catch (Exception e) {
             e.printStackTrace();
@@ -262,11 +262,11 @@ public class UppgActionService {
 //            if (!uppgAction.isPresent()) return converter.apiError404("uppg action not found");
 
             UppgActionDto uppgActionDto = new UppgActionDto();
-            UppgDto uppgDto = converter.uppgToUppgDto(byId.get());
+            UppgDto uppgDto = (UppgDto) converter.dto(byId.get());
             if (uppgAction.isPresent()) {
-                uppgActionDto = converter.uppgActionToUppgActionDto(uppgAction.get());
+                uppgActionDto = (UppgActionDto) converter.dto(uppgAction.get());
             } else {
-                uppgActionDto = converter.uppgActionToUppgActionDto(null);
+                uppgActionDto = (UppgActionDto) converter.dto(null);
             }
 
             ObjectWithActionsDto dto = ObjectWithActionsDto
@@ -292,13 +292,13 @@ public class UppgActionService {
             if (byId1.isEmpty()) converter.apiSuccess200("Empty list");
             Optional<UppgAction> firstByUppg = uppgActionRepository.findFirstByUppgOrderByCreatedAtDesc(byId1.get());
 
-            UppgDto uppgDto = converter.uppgToUppgDto(byId1.get());
+            UppgDto uppgDto = (UppgDto) converter.dto(byId1.get());
             UppgActionDto uppgActionDto = new UppgActionDto();
 
             if (firstByUppg.isPresent()) {
-                uppgActionDto = converter.uppgActionToUppgActionDto(firstByUppg.get());
+                uppgActionDto = (UppgActionDto) converter.dto(firstByUppg.get());
             } else {
-                uppgActionDto = converter.uppgActionToUppgActionDto(null);
+                uppgActionDto = (UppgActionDto) converter.dto(null);
             }
 
             return ObjectWithActionsDto
@@ -334,7 +334,7 @@ public class UppgActionService {
                 uppgAction.setIncomeTemperature(dto.getIncomeTemperature());
                 uppgAction.setOnWater(dto.getOnWater());
                 UppgAction save = uppgActionRepository.save(uppgAction);
-                UppgActionDto uppgActionDto = converter.uppgActionToUppgActionDto(save);
+                UppgActionDto uppgActionDto = (UppgActionDto) converter.dto(save);
                 return converter.apiSuccess200("Uppg action edited", uppgActionDto);
             }
             return converter.apiError404("Uppg action not found");
