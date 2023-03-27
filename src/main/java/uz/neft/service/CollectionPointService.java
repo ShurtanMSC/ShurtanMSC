@@ -67,8 +67,8 @@ public class CollectionPointService {
             Optional<Uppg> uppg = uppgRepository.findById(uppgId);
             Optional<OpcServer> opcServer = opcServerRepository.findById(opcId);
 
-            if (!uppg.isPresent()) return converter.apiError400("Uppg not found");
-            if (!opcServer.isPresent()) return converter.apiError400("opcServer not found");
+            if (uppg.isEmpty()) return converter.apiError400("Uppg not found");
+            if (opcServer.isEmpty()) return converter.apiError400("opcServer not found");
 
             CollectionPoint collectionPoint = new CollectionPoint();
             collectionPoint.setName(cPoint.getName());
@@ -120,8 +120,8 @@ public class CollectionPointService {
             Optional<Uppg> uppg = uppgRepository.findById(uppgId);
             Optional<OpcServer> opcServer = opcServerRepository.findById(opcId);
 
-            if (!uppg.isPresent()) return converter.apiError400("Uppg not found");
-            if (!opcServer.isPresent()) return converter.apiError400("opcServer not found");
+            if (uppg.isEmpty()) return converter.apiError400("Uppg not found");
+            if (opcServer.isEmpty()) return converter.apiError400("opcServer not found");
 
             CollectionPoint editCollectionPoint;
             Optional<CollectionPoint> byId = collectionPointRepository.findById(cPoint.getId());
@@ -179,7 +179,7 @@ public class CollectionPointService {
     public ResponseEntity<?> findAllByUppgId(Integer uppgId) {
         try {
             Optional<Uppg> byId = uppgRepository.findById(uppgId);
-            if (!byId.isPresent()) return converter.apiError404("uppg not found");
+            if (byId.isEmpty()) return converter.apiError404("uppg not found");
 
             List<CollectionPoint> allByUppg = collectionPointRepository.findAllByUppgOrderByIdAsc(byId.get());
 

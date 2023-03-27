@@ -142,8 +142,8 @@ public class GasCompositionService {
             Optional<MiningSystem> miningSystem = miningSystemRepository.findById(dto.getMiningSystemId());
             Optional<GasComposition> gasComposition = gasCompositionRepository.findById(dto.getGasCompositionId());
 
-            if (!miningSystem.isPresent()) return converter.apiError404("There is no Mining System such as ID");
-            if (!gasComposition.isPresent()) return converter.apiError404("There is no Gas Component such as ID");
+            if (miningSystem.isEmpty()) return converter.apiError404("There is no Mining System such as ID");
+            if (gasComposition.isEmpty()) return converter.apiError404("There is no Gas Component such as ID");
 
             Optional<MiningSystemGasComposition> firstFirstByMiningSystemAndGasComposition = miningSystemGasCompositionRepository.findFirstByMiningSystemAndGasComposition(miningSystem.get(), gasComposition.get());
             if (firstFirstByMiningSystemAndGasComposition.isPresent()) return converter.apiError409("This Molar Fraction Already exist");
@@ -175,13 +175,13 @@ public class GasCompositionService {
             Optional<MiningSystem> miningSystem = miningSystemRepository.findById(dto.getMiningSystemId());
             Optional<GasComposition> gasComposition = gasCompositionRepository.findById(dto.getGasCompositionId());
 
-            if (!miningSystem.isPresent()) return converter.apiError404("There is no Mining System such as ID");
-            if (!gasComposition.isPresent()) return converter.apiError404("There is no Gas Component such as ID");
+            if (miningSystem.isEmpty()) return converter.apiError404("There is no Mining System such as ID");
+            if (gasComposition.isEmpty()) return converter.apiError404("There is no Gas Component such as ID");
 
             Optional<MiningSystemGasComposition> byIdMiningSysGasComposition =
                     miningSystemGasCompositionRepository.findByIdAndMiningSystemAndGasComposition(dto.getId(), miningSystem.get(), gasComposition.get());
 
-            if (!byIdMiningSysGasComposition.isPresent())
+            if (byIdMiningSysGasComposition.isEmpty())
                 return converter.apiError404("There is no MiningSys_GasComposition ");
 
             byIdMiningSysGasComposition.get().setMolarFraction(dto.getMolarFraction());
@@ -238,7 +238,7 @@ public class GasCompositionService {
         try {
             if (mining_system_id==null) return converter.apiError400("Mining System id is null!");
             Optional<MiningSystem> miningSystem = miningSystemRepository.findById(mining_system_id);
-            if (!miningSystem.isPresent()) return converter.apiError404("Mining system not found!");
+            if (miningSystem.isEmpty()) return converter.apiError404("Mining system not found!");
 
             List<GasComposition> gasCompositionsList=new ArrayList<>();
             List<MiningSystemGasComposition> all = miningSystemGasCompositionRepository.findAllByMiningSystemOrderByGasCompositionId(miningSystem.get());

@@ -30,7 +30,7 @@ public class NumberOfStaffService {
     public HttpEntity<?> add(StaffDto dto) {
         try {
             Optional<MiningSystem> miningSystem = miningSystemRepository.findById(dto.getMiningSystemId());
-            if (!miningSystem.isPresent()) return converter.apiError404("Mining system not found");
+            if (miningSystem.isEmpty()) return converter.apiError404("Mining system not found");
             NumberOfStaff numberOfStaff = dto.toEntity(miningSystem.get());
             numberOfStaff=numberOfStaffRepository.save(numberOfStaff);
             return converter.apiSuccess201(numberOfStaff.toDto());
@@ -43,9 +43,9 @@ public class NumberOfStaffService {
     public HttpEntity<?> one(int id) {
         try {
             Optional<MiningSystem> miningSystem = miningSystemRepository.findById(id);
-            if (!miningSystem.isPresent()) return converter.apiError404("Mining system not found");
+            if (miningSystem.isEmpty()) return converter.apiError404("Mining system not found");
             Optional<NumberOfStaff> first = numberOfStaffRepository.findFirstByMiningSystemOrderByCreatedAtDesc(miningSystem.get());
-            if (!first.isPresent()) return converter.apiSuccess200(new ObjectWithActionsDto(miningSystem.get().toDto(),null));
+            if (first.isEmpty()) return converter.apiSuccess200(new ObjectWithActionsDto(miningSystem.get().toDto(),null));
             return converter.apiSuccess200(first.get().toWithActionsDto());
         }catch (Exception e){
             e.printStackTrace();

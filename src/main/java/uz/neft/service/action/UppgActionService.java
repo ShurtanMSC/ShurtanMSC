@@ -99,7 +99,7 @@ public class UppgActionService {
 
         if (dto.getUppgId() == null) return converter.apiError400("Uppg id is null");
         Optional<Uppg> uppg = uppgRepository.findById(dto.getUppgId());
-        if (!uppg.isPresent()) return converter.apiError400("uppg not found");
+        if (uppg.isEmpty()) return converter.apiError400("uppg not found");
 
         try {
             UppgAction uppgAction = UppgAction
@@ -177,7 +177,7 @@ public class UppgActionService {
     public HttpEntity<?> getUppgsWithActionByMiningSystem(Integer id) {
         try {
             Optional<MiningSystem> byId = miningSystemRepository.findById(id);
-            if (!byId.isPresent()) return converter.apiError404("mining system not found");
+            if (byId.isEmpty()) return converter.apiError404("mining system not found");
 
             List<Uppg> uppgs = uppgRepository.findAllByMiningSystem(byId.get());
 
@@ -192,7 +192,7 @@ public class UppgActionService {
     public HttpEntity<?> getUppgActionsByUppgId(Integer id) {
         try {
             Optional<Uppg> byId1 = uppgRepository.findById(id);
-            if (!byId1.isPresent()) return converter.apiError404("uppg not found");
+            if (byId1.isEmpty()) return converter.apiError404("uppg not found");
 
             List<UppgAction> allByUppgOrderByCreatedAtDesc = uppgActionRepository.findAllByUppgOrderByCreatedAtDesc(byId1.get());
             Stream<UppgActionDto> uppgActionDtoStream = allByUppgOrderByCreatedAtDesc.stream().map(converter::uppgActionToUppgActionDto);
@@ -208,7 +208,7 @@ public class UppgActionService {
     public HttpEntity<?> getUppgActionsByUppgId(Integer id,Optional<Integer> page,Optional<Integer> pageSize, Optional<String> sortBy) {
         try {
             Optional<Uppg> byId1 = uppgRepository.findById(id);
-            if (!byId1.isPresent()) return converter.apiError404("uppg not found");
+            if (byId1.isEmpty()) return converter.apiError404("uppg not found");
             Pageable pg = PageRequest.of(page.orElse(0), pageSize.orElse(10), Sort.Direction.DESC, sortBy.orElse("createdAt"));
 
             Page<UppgAction> uppgActions = uppgActionRepository.findAllByUppgOrderByCreatedAtDesc(byId1.get(), pg);
@@ -226,7 +226,7 @@ public class UppgActionService {
     public HttpEntity<?> getByMiningSystem(Integer id) {
         try {
             Optional<MiningSystem> byId = miningSystemRepository.findById(id);
-            if (!byId.isPresent()) return converter.apiError404("mining system not found");
+            if (byId.isEmpty()) return converter.apiError404("mining system not found");
 
             List<Uppg> uppgs = uppgRepository.findAllByMiningSystem(byId.get());
 
@@ -243,7 +243,7 @@ public class UppgActionService {
     public HttpEntity<?> getUppg(Integer id) {
         try {
             Optional<Uppg> byId = uppgRepository.findById(id);
-            if (!byId.isPresent()) return converter.apiError404("uppg not found");
+            if (byId.isEmpty()) return converter.apiError404("uppg not found");
             UppgDto dto = converter.uppgToUppgDto(byId.get());
             return converter.apiSuccess200(dto);
         } catch (Exception e) {
@@ -256,7 +256,7 @@ public class UppgActionService {
     public HttpEntity<?> getUppgWithAction(Integer id) {
         try {
             Optional<Uppg> byId = uppgRepository.findById(id);
-            if (!byId.isPresent()) return converter.apiError404("uppg not found");
+            if (byId.isEmpty()) return converter.apiError404("uppg not found");
 
             Optional<UppgAction> uppgAction = uppgActionRepository.findFirstByUppgOrderByCreatedAtDesc(byId.get());
 //            if (!uppgAction.isPresent()) return converter.apiError404("uppg action not found");
@@ -289,7 +289,7 @@ public class UppgActionService {
 
         List<ObjectWithActionsDto> collect = uppgs.stream().map(item -> {
             Optional<Uppg> byId1 = uppgRepository.findById(item.getId());
-            if (!byId1.isPresent()) converter.apiSuccess200("Empty list");
+            if (byId1.isEmpty()) converter.apiSuccess200("Empty list");
             Optional<UppgAction> firstByUppg = uppgActionRepository.findFirstByUppgOrderByCreatedAtDesc(byId1.get());
 
             UppgDto uppgDto = converter.uppgToUppgDto(byId1.get());

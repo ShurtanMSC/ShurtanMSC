@@ -196,7 +196,7 @@ public class ConstantService {
             if (id == null) return converter.apiError400("Id null");
             Optional<ConstantValue> byId = constantValuesRepository.findById(id);
 
-            if (!byId.isPresent()) return converter.apiError404("ConstantValue not found");
+            if (byId.isEmpty()) return converter.apiError404("ConstantValue not found");
 
             constantValuesRepository.deleteById(id);
             return converter.apiSuccess200("ConstantValue deleted ");
@@ -223,7 +223,7 @@ public class ConstantService {
         try {
             if (id == null) return converter.apiError400("Id null");
             Optional<ConstantValue> byId = constantValuesRepository.findById(id);
-            if (!byId.isPresent()) return converter.apiError404("Constant not found");
+            if (byId.isEmpty()) return converter.apiError404("Constant not found");
             ConstantValueDto constantValueDto = converter.constantValueToConstValueDto(byId.get());
             return converter.apiSuccess200(constantValueDto);
         } catch (Exception e) {
@@ -236,7 +236,7 @@ public class ConstantService {
     public ApiResponse helper(ConstantValueDto dto) {
         if (dto.getConstantId() == null) return converter.apiError("Constant id is null", null);
         Optional<Constant> constant = constantRepository.findById(dto.getConstantId());
-        if (!constant.isPresent()) return converter.apiError("Constant not found", null);
+        if (constant.isEmpty()) return converter.apiError("Constant not found", null);
         if (dto.getValue() == null) return converter.apiError("Value id is null", null);
         ConstantValue constantValue = new ConstantValue();
         constantValue.setConstant(constant.get());

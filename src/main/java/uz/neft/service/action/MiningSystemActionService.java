@@ -64,7 +64,7 @@ public class MiningSystemActionService {
         try {
             if (id == null) return converter.apiError400("Mining system id is null!");
             Optional<MiningSystem> miningSystem = miningSystemRepository.findById(id);
-            if (!miningSystem.isPresent())
+            if (miningSystem.isEmpty())
                 return converter.apiError404("No mining system was found with id " + id + "!");
             Optional<MiningSystemAction> action = miningSystemActionRepository.findFirstByMiningSystemOrderByCreatedAtDesc(miningSystem.get());
             return converter.apiSuccess200(new ObjectWithActionsDto(miningSystem.get(), action));
@@ -124,7 +124,7 @@ public class MiningSystemActionService {
 //            List<MiningSystemAction> miningSystemActions =miningSystemActionRepository.findAllByMiningSystemOrderByCreatedAtDesc(miningSystem.get());
 
 //            Stream<MiningSystemActionDto> miningSystemActionDtoStream = miningSystemActions.stream().map(converter::miningsystemActionToMiningSystemActionDto);
-            if (!miningSystem.isPresent()) return converter.apiError404("Mining system not found");
+            if (miningSystem.isEmpty()) return converter.apiError404("Mining system not found");
 
             Pageable pg = PageRequest.of(page.orElse(0), pageSize.orElse(10), Sort.Direction.DESC, sortBy.orElse("createdAt"));
 

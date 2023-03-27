@@ -346,7 +346,7 @@ public class WellActionService {
     public HttpEntity<?> getWellsWithActionByCollectionPoint(Integer id) {
         try {
             Optional<CollectionPoint> byId = collectionPointRepository.findById(id);
-            if (!byId.isPresent()) return converter.apiError404("collection point not found");
+            if (byId.isEmpty()) return converter.apiError404("collection point not found");
 
             List<Well> wells = wellRepository.findAllByCollectionPointOrderByIdAsc(byId.get());
 
@@ -361,7 +361,7 @@ public class WellActionService {
     public HttpEntity<?> getByCollectionPoint(Integer id) {
         try {
             Optional<CollectionPoint> byId = collectionPointRepository.findById(id);
-            if (!byId.isPresent()) return converter.apiError404("collection point not found");
+            if (byId.isEmpty()) return converter.apiError404("collection point not found");
 
             List<Well> wells = wellRepository.findAllByCollectionPointOrderByIdAsc(byId.get());
 
@@ -378,7 +378,7 @@ public class WellActionService {
     public HttpEntity<?> getWell(Integer id) {
         try {
             Optional<Well> byId = wellRepository.findById(id);
-            if (!byId.isPresent()) return converter.apiError404("well not found");
+            if (byId.isEmpty()) return converter.apiError404("well not found");
             WellDto dto = converter.wellToWellDto(byId.get());
             return converter.apiSuccess200(dto);
         } catch (Exception e) {
@@ -391,7 +391,7 @@ public class WellActionService {
     public HttpEntity<?> getWellWithAction(Integer id) {
         try {
             Optional<Well> byId = wellRepository.findById(id);
-            if (!byId.isPresent()) return converter.apiError404("well not found");
+            if (byId.isEmpty()) return converter.apiError404("well not found");
 
             Optional<WellAction> firstByWell = wellActionRepository.findFirstByWellOrderByCreatedAtDesc(byId.get());
 //            if (!firstByWell.isPresent()) return converter.apiError404("well action not found");
@@ -480,7 +480,7 @@ public class WellActionService {
         try {
             if (wellId == null) return converter.apiError400("action id is null!");
             Optional<Well> well = wellRepository.findById(wellId);
-            if (!well.isPresent()) return converter.apiError404("well not found");
+            if (well.isEmpty()) return converter.apiError404("well not found");
 
             Pageable pg = PageRequest.of(page.orElse(0), pageSize.orElse(10), Sort.Direction.DESC, sortBy.orElse("createdAt"));
 
@@ -580,13 +580,14 @@ public class WellActionService {
                 for (Well well : wellList){
                     Optional<WellAction> action = wellActionRepository.findFirstByWellOrderByCreatedAtDesc(well);
                     if (action.isPresent()){
-                        switch (action.get().getStatus()){
-                            case IN_WORK: IN_WORK_A++;break;
-                            case IN_IDLE:IN_IDLE_A++; break;
-                            case IN_LIQUIDATION:IN_LIQUIDATION_A++; break;
-                            case IN_CONSERVATION:IN_CONSERVATION_A++; break;
-                            case IN_REPAIR:IN_REPAIR_A++; break;
-                            default: break;
+                        switch (action.get().getStatus()) {
+                            case IN_WORK -> IN_WORK_A++;
+                            case IN_IDLE -> IN_IDLE_A++;
+                            case IN_LIQUIDATION -> IN_LIQUIDATION_A++;
+                            case IN_CONSERVATION -> IN_CONSERVATION_A++;
+                            case IN_REPAIR -> IN_REPAIR_A++;
+                            default -> {
+                            }
                         }
                     }
 

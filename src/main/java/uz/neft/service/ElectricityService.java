@@ -30,7 +30,7 @@ public class ElectricityService {
             if (dto.getId()!=null) return converter.apiError400("id shouldn't be sent");
             if (dto.getMiningSystemId()==null) return converter.apiError400("Mining system id is null!");
             Optional<MiningSystem> miningSystem = miningSystemRepository.findById(dto.getMiningSystemId());
-            if (!miningSystem.isPresent()) return converter.apiError404("Mining system not found!");
+            if (miningSystem.isEmpty()) return converter.apiError404("Mining system not found!");
             Electricity electricity=Electricity
                     .builder()
                     .hourly(dto.getHourly())
@@ -50,7 +50,7 @@ public class ElectricityService {
             List<MiningSystem> miningSystemList=new ArrayList<>();
             for (ElectricityDto electricityDto : dtoList) {
                 Optional<MiningSystem> miningSystem = miningSystemRepository.findById(electricityDto.getMiningSystemId());
-                if (!miningSystem.isPresent()) return converter.apiError404("Mining system not foound");
+                if (miningSystem.isEmpty()) return converter.apiError404("Mining system not foound");
                 miningSystemList.add(miningSystem.get());
             }
             for (int i = 0; i <miningSystemList.size() ; i++) {
@@ -77,7 +77,7 @@ public class ElectricityService {
         try {
             if (dto.getId()==null) return converter.apiError400("Id is null!");
             Optional<Electricity> electricity = electricityRepository.findById(dto.getId());
-            if (!electricity.isPresent()) return converter.apiError404("Electricity not found!");
+            if (electricity.isEmpty()) return converter.apiError404("Electricity not found!");
             electricity.get().setHourly(dto.getHourly());
             Electricity edit = electricityRepository.save(electricity.get());
             return converter.apiSuccess200("Edited",edit);
@@ -94,7 +94,7 @@ public class ElectricityService {
     public ResponseEntity<?> getOne(Integer id){
         try {
             Optional<Electricity> electricity = electricityRepository.findById(id);
-            if (!electricity.isPresent()) return converter.apiError404("Electricity not found");
+            if (electricity.isEmpty()) return converter.apiError404("Electricity not found");
             return converter.apiSuccess200(electricity.get());
         }catch (Exception e){
             e.printStackTrace();
@@ -106,9 +106,9 @@ public class ElectricityService {
     public ResponseEntity<?> getOneByMiningSystem(Integer id){
         try {
             Optional<MiningSystem> miningSystem = miningSystemRepository.findById(id);
-            if (!miningSystem.isPresent()) return converter.apiError404("Mining system not found!");
+            if (miningSystem.isEmpty()) return converter.apiError404("Mining system not found!");
             Optional<Electricity> electricity = electricityRepository.findFirstByMiningSystemOrderByCreatedAtDesc(miningSystem.get());
-            if (!electricity.isPresent()) return converter.apiError404("Electricity not found");
+            if (electricity.isEmpty()) return converter.apiError404("Electricity not found");
             return converter.apiSuccess200(electricity.get());
         }catch (Exception e){
             e.printStackTrace();

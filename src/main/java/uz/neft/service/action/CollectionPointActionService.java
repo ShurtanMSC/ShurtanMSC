@@ -108,7 +108,7 @@ public class CollectionPointActionService {
 
         if (dto.getCollectionPointId() == null) return converter.apiError400("Collection Point id is null");
         Optional<CollectionPoint> collectionPoint = collectionPointRepository.findById(dto.getCollectionPointId());
-        if (!collectionPoint.isPresent()) return converter.apiError400("Collection Point not found");
+        if (collectionPoint.isEmpty()) return converter.apiError400("Collection Point not found");
 
         List<Well> allByCollectionPoint = wellRepository.findAllByCollectionPointOrderByIdAsc(collectionPoint.get());
 
@@ -150,7 +150,7 @@ public class CollectionPointActionService {
     public HttpEntity<?> addSpecial(User user, CollectionPointAndWells collectionPointAndWells) {
         try {
             Optional<CollectionPoint> collectionPoint = collectionPointRepository.findById(collectionPointAndWells.getCollectionPointId());
-            if (!collectionPoint.isPresent()) return converter.apiError404("Collection point not found");
+            if (collectionPoint.isEmpty()) return converter.apiError404("Collection point not found");
             ResponseEntity<?> response = wellActionService.addSpecial(user, collectionPoint.get(), collectionPointAndWells.getWellList());
             if (response.getStatusCode().value() != 200) return response;
             CollectionPointActionDto dto = CollectionPointActionDto
@@ -256,7 +256,7 @@ public class CollectionPointActionService {
         try {
             if (collectionPointId == null) return converter.apiError400("action id is null!");
             Optional<CollectionPoint> collectionPoint = collectionPointRepository.findById(collectionPointId);
-            if (!collectionPoint.isPresent()) return converter.apiError404("collection point not found");
+            if (collectionPoint.isEmpty()) return converter.apiError404("collection point not found");
 
 //            List<CollectionPointAction> collectionPointActions = collectionPointActionRepository.findAllByCollectionPointOrderByCreatedAtDesc(collectionPoint.get());
             Pageable pg = PageRequest.of(page.orElse(0), pageSize.orElse(10), Sort.Direction.DESC, sortBy.orElse("createdAt"));
@@ -277,7 +277,7 @@ public class CollectionPointActionService {
     public HttpEntity<?> getByUppg(Integer id) {
         try {
             Optional<Uppg> byId = uppgRepository.findById(id);
-            if (!byId.isPresent()) return converter.apiError404("uppg not found");
+            if (byId.isEmpty()) return converter.apiError404("uppg not found");
 
             List<CollectionPoint> allByUppg = collectionPointRepository.findAllByUppgOrderByIdAsc(byId.get());
 
@@ -294,7 +294,7 @@ public class CollectionPointActionService {
     public HttpEntity<?> getCollectionPoint(Integer id) {
         try {
             Optional<CollectionPoint> byId = collectionPointRepository.findById(id);
-            if (!byId.isPresent()) return converter.apiError404("collection point not found");
+            if (byId.isEmpty()) return converter.apiError404("collection point not found");
 
             CollectionPointDto collectionPointDto = converter.collectionPointToCollectionPointDto(byId.get());
 
@@ -335,7 +335,7 @@ public class CollectionPointActionService {
     public HttpEntity<?> getCollectionPointWithAction(Integer id) {
         try {
             Optional<CollectionPoint> byId = collectionPointRepository.findById(id);
-            if (!byId.isPresent()) return converter.apiError404("collection point not found");
+            if (byId.isEmpty()) return converter.apiError404("collection point not found");
 
             Optional<CollectionPointAction> collectionPointAction = collectionPointActionRepository.findFirstByCollectionPointOrderByCreatedAtDesc(byId.get());
 

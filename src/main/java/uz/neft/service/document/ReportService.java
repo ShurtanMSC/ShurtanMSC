@@ -239,16 +239,16 @@ public class ReportService{
                             List<Well> wellList = wellRepository.findAllByCollectionPointOrderByIdAsc(collectionPoint);
                             ws.range(counter, 0, counter + wellList.size(), 0).merge();
 
-                            for (int k = 0; k < wellList.size(); k++) {
+                            for (Well well : wellList) {
 
-                                Optional<WellAction> action = wellActionRepository.findFirstByWellOrderByCreatedAtDesc(wellList.get(k));
+                                Optional<WellAction> action = wellActionRepository.findFirstByWellOrderByCreatedAtDesc(well);
 
 //                                if (action.isPresent()) {
 //                                ws.value();
                                 ws.value(counter, 1, well_counter);
                                 well_counter++;
-                                ws.value(counter, 2, wellList.get(k).getNumber());
-                                if (action.isPresent()){
+                                ws.value(counter, 2, well.getNumber());
+                                if (action.isPresent()) {
                                     ws.value(counter, 3, action.get().getTemperature());
                                     ws.value(counter, 4, action.get().getPressure());
                                     ws.value(counter, 5, action.get().getRo_gas());

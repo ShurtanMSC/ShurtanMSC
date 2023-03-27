@@ -38,7 +38,7 @@ public class ForecastGasService implements ForecastMethodInterface{
         try {
             if (dto.getMining_system_id()==null) return converter.apiError("Mining system id is null!");
             Optional<MiningSystem> miningSystem = miningSystemRepository.findById(dto.getMining_system_id());
-            if (!miningSystem.isPresent()) return converter.apiError("Mining system not found");
+            if (miningSystem.isEmpty()) return converter.apiError("Mining system not found");
             if (dto.getYear()<=1970) return converter.apiError("Year is invalid!");
             if (dto.getAmount()<=0) return converter.apiError("Amount is invalid!");
             if (dto.getMonth()==null) return converter.apiError("Month is null!");
@@ -63,7 +63,7 @@ public class ForecastGasService implements ForecastMethodInterface{
         try {
             if (dto.getMining_system_id()==null) return converter.apiError400("Mining system id is null!");
             Optional<MiningSystem> miningSystem = miningSystemRepository.findById(dto.getMining_system_id());
-            if (!miningSystem.isPresent()) return converter.apiError404("Mining system not found");
+            if (miningSystem.isEmpty()) return converter.apiError404("Mining system not found");
             if (dto.getYear()<=1970) return converter.apiError400("Year is invalid!");
             if (dto.getAmount()<=0) return converter.apiError400("Amount is invalid!");
             if (dto.getMonth()==null) return converter.apiError400("Month is null!");
@@ -95,9 +95,7 @@ public class ForecastGasService implements ForecastMethodInterface{
                     gasList.add((ForecastGas) apiResponseObject.getObject());
                 }
             }
-            for (int i = 0; i <gasList.size() ; i++) {
-                gasList.set(i,forecastGasRepository.save(gasList.get(i)));
-            }
+            gasList.replaceAll(forecastGasRepository::save);
             return converter.apiSuccess200(gasList);
 
         }catch (Exception e){
@@ -112,7 +110,7 @@ public class ForecastGasService implements ForecastMethodInterface{
         try {
             if (id==null) return converter.apiError400("id is null");
             Optional<MiningSystem> miningSystem = miningSystemRepository.findById(id);
-            if (!miningSystem.isPresent()) return converter.apiError404("Mining system not found");
+            if (miningSystem.isEmpty()) return converter.apiError404("Mining system not found");
             ForecastGas forecast= ForecastGas
                     .builder()
                     .miningSystem(miningSystem.get())
@@ -145,7 +143,7 @@ public class ForecastGasService implements ForecastMethodInterface{
         try {
             if (id==null) return converter.apiError400("id is null");
             Optional<MiningSystem> miningSystem = miningSystemRepository.findById(id);
-            if (!miningSystem.isPresent()) return converter.apiError404("Mining system not found");
+            if (miningSystem.isEmpty()) return converter.apiError404("Mining system not found");
             return converter.apiSuccess200(forecastGasRepository.findAllByMiningSystemOrderByCreatedAtAsc(miningSystem.get()));
         }catch (Exception e) {
             e.printStackTrace();
@@ -159,7 +157,7 @@ public class ForecastGasService implements ForecastMethodInterface{
         try {
             if (id==null) return converter.apiError400("id is null");
             Optional<MiningSystem> miningSystem = miningSystemRepository.findById(id);
-            if (!miningSystem.isPresent()) return converter.apiError404("Mining system not found");
+            if (miningSystem.isEmpty()) return converter.apiError404("Mining system not found");
             return converter.apiSuccess200(forecastGasRepository.findAllByMiningSystemAndYearBetweenOrderByCreatedAtAsc(miningSystem.get(),from,to));
         }catch (Exception e) {
             e.printStackTrace();
@@ -173,7 +171,7 @@ public class ForecastGasService implements ForecastMethodInterface{
         try {
             if (id==null) return converter.apiError400("id is null");
             Optional<MiningSystem> miningSystem = miningSystemRepository.findById(id);
-            if (!miningSystem.isPresent()) return converter.apiError404("Mining system not found");
+            if (miningSystem.isEmpty()) return converter.apiError404("Mining system not found");
             return converter.apiSuccess200(forecastGasRepository.findAllByMiningSystemAndYearBetween(miningSystem.get(),year,year));
         }catch (Exception e) {
             e.printStackTrace();
