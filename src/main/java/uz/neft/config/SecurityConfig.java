@@ -35,11 +35,6 @@ public class SecurityConfig {
         return LoggerFactory.getLogger("Logger");
     }
 
-//    @Bean
-//    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfiguration) throws Exception {
-//        return authConfiguration.getAuthenticationManager();
-//    }
-
     @Bean
     public JwtFilter jwtFilter(){
         return new JwtFilter();
@@ -65,27 +60,6 @@ public class SecurityConfig {
 
         return authProvider;
     }
-
-
-
-//    @Bean
-//    public AuthenticationManager authenticationManager() {
-//        List<UserDetails> users = new ArrayList<>();
-//        users.add(User.withDefaultPasswordEncoder()
-//                .username("user")
-//                .password("password")
-//                .roles("USER")
-//                .build());
-//        users.add(User.withDefaultPasswordEncoder()
-//                .username("admin")
-//                .password("password")
-//                .roles("ADMIN")
-//                .build());
-//        InMemoryUserDetailsManager userDetailsManager = new InMemoryUserDetailsManager(users);
-//        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-//        authenticationProvider.setUserDetailsService(userDetailsManager);
-//        return new ProviderManager(Collections.singletonList(authenticationProvider));
-//    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
