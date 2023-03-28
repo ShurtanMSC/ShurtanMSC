@@ -5,18 +5,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import uz.neft.secret.JwtFilter;
-import uz.neft.service.AuthService;
+import uz.neft.service.security.CustomUserDetailsService;
 
 
 
@@ -26,21 +25,20 @@ import uz.neft.service.AuthService;
         securedEnabled = true,
         jsr250Enabled = true,
         prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
     @Autowired
-    AuthService authService;
+    CustomUserDetailsService customUserDetailsService;
 
     @Bean
     public Logger logger(){
         return LoggerFactory.getLogger("Logger");
     }
 
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+//    @Bean
+//    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfiguration) throws Exception {
+//        return authConfiguration.getAuthenticationManager();
+//    }
 
     @Bean
     public JwtFilter jwtFilter(){
@@ -52,16 +50,45 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(authService).passwordEncoder(passwordEncoder())
-                .and()
-                .inMemoryAuthentication().withUser("system").password(passwordEncoder().encode("system")).roles("ADMIN");
 
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+
+        authProvider.setUserDetailsService(customUserDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+
+
+//        auth.userDetailsService(authService).passwordEncoder(passwordEncoder())
+//                .and()
+//                .inMemoryAuthentication().withUser("system").password(passwordEncoder().encode("system")).roles("ADMIN");
+
+        return authProvider;
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+
+
+//    @Bean
+//    public AuthenticationManager authenticationManager() {
+//        List<UserDetails> users = new ArrayList<>();
+//        users.add(User.withDefaultPasswordEncoder()
+//                .username("user")
+//                .password("password")
+//                .roles("USER")
+//                .build());
+//        users.add(User.withDefaultPasswordEncoder()
+//                .username("admin")
+//                .password("password")
+//                .roles("ADMIN")
+//                .build());
+//        InMemoryUserDetailsManager userDetailsManager = new InMemoryUserDetailsManager(users);
+//        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+//        authenticationProvider.setUserDetailsService(userDetailsManager);
+//        return new ProviderManager(Collections.singletonList(authenticationProvider));
+//    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .cors()
                 .and()
@@ -86,13 +113,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .anyRequest()
 //                .authenticated();
-                .permitAll();
+                .permitAll().and().userDetailsService(customUserDetailsService);
         http.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
-    }
+        http.userDetailsService(customUserDetailsService);
 
-//    @Bean
-//    public AccessDeniedHandler accessDeniedHandler(){
-//        return new CustomAccessDeniedHandler();
-//    }
+        // http....;
+
+        return http.build();
+    }
 
 }

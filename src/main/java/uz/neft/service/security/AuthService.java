@@ -1,15 +1,12 @@
-package uz.neft.service;
+package uz.neft.service.security;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import uz.neft.entity.RoleName;
 import uz.neft.entity.User;
@@ -21,33 +18,17 @@ import uz.neft.repository.UserRepository;
 import uz.neft.secret.JwtTokenProvider;
 
 import java.util.Objects;
-
-
 @Service
-public class AuthService implements UserDetailsService {
-
+public class AuthService {
+    @Autowired
     UserRepository userRepository;
+    @Autowired
     JwtTokenProvider jwtTokenProvider;
-    AuthenticationManager authenticationManager;
+    @Autowired
+    DaoAuthenticationProvider authenticationManager;
     @Autowired
     Logger logger;
 
-    @Autowired
-    public AuthService(UserRepository userRepository, JwtTokenProvider jwtTokenProvider, AuthenticationManager authenticationManager) {
-        this.userRepository = userRepository;
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.authenticationManager = authenticationManager;
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username + " not found"));
-    }
-
-    public User loadByUserId(Integer userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("user not found"));
-
-    }
 
     public ResToken signIn(SignIn signIn) {
         try {
@@ -90,7 +71,4 @@ public class AuthService implements UserDetailsService {
         return new ApiResponseObject("Ok", true, userRepository.byUsername(search));
     }
 
-//    public ApiResponse all() {
-//        return new ApiResponse("Ok", true, userRepository.findAll().stream().map(item -> dtoService.userDto(item)).collect(Collectors.toList()));
-//    }
 }

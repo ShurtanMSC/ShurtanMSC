@@ -5,12 +5,11 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import uz.neft.dto.UserDto;
 import uz.neft.entity.User;
 import uz.neft.payload.ResToken;
 import uz.neft.payload.SignIn;
 import uz.neft.secret.CurrentUser;
-import uz.neft.service.AuthService;
+import uz.neft.service.security.AuthService;
 import uz.neft.utils.Converter;
 
 @RestController

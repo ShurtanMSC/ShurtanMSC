@@ -2,8 +2,12 @@
     <footer class="sticky-footer white">
         <div class="container my-auto">
             <div class="copyright text-center my-auto">
-                <span>Copyright &copy; Uzlitineftgaz 2021</span>
+                <span id="copyright"></span>
             </div>
         </div>
     </footer>
+    <script>
+        let date = new Date();
+        document.getElementById("copyright").innerText='Copyright © Uzlitineftgaz '+date.getFullYear();
+    </script>
 </div>

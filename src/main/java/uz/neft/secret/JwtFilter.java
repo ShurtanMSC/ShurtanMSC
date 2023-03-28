@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import uz.neft.repository.UserRepository;
-import uz.neft.service.AuthService;
+import uz.neft.service.security.CustomUserDetailsService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -24,7 +24,7 @@ public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     UserRepository userRepository;
     @Autowired
-    AuthService authService;
+    CustomUserDetailsService customUserDetailsService;
     @Autowired
     PasswordEncoder passwordEncoder;
 
@@ -74,11 +74,11 @@ public class JwtFilter extends OncePerRequestFilter {
                         //USERID ni oldik tokendan
                         String userIdFromToken = jwtTokenProvider.getUserIdFromToken(tokenClient);
 
-                        return authService.loadByUserId(Integer.parseInt(userIdFromToken));
+                        return customUserDetailsService.loadByUserId(Integer.parseInt(userIdFromToken));
                     }
                 } else if (tokenClient.startsWith("Basic ")) {
                     String[] userNameAndPassword = getUserNameAndPassword(tokenClient);
-                    UserDetails userDetails = authService.loadUserByUsername(userNameAndPassword[0]);
+                    UserDetails userDetails = customUserDetailsService.loadUserByUsername(userNameAndPassword[0]);
                     if (userDetails != null && passwordEncoder.matches(userNameAndPassword[1], userDetails.getPassword())) {
                         return userDetails;
                     }

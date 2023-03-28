@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -67,7 +68,7 @@ public class DataLoader implements CommandLineRunner {
     @Autowired
     private UppgActionRepository uppgActionRepository;
     @Autowired
-    AuthenticationManager authenticationManager;
+    DaoAuthenticationProvider authenticationManager;
     @Autowired
     public DataLoader(UserRepository userRepository, MiningSystemConstantRepository miningSystemConstantRepository, RoleRepository roleRepository, ConstantRepository constantRepository
             , PasswordEncoder passwordEncoder, MiningSystemRepository miningSystemRepository, GasCompositionRepository gasCompositionRepository, MiningSystemGasCompositionRepository miningSystemMiningSystemGasCompositionRepository, WellActionRepository wellActionRepository) {
@@ -94,15 +95,15 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        UsernamePasswordAuthenticationToken authReq
-                = new UsernamePasswordAuthenticationToken("system", "system");
+//        UsernamePasswordAuthenticationToken authReq
+//                = new UsernamePasswordAuthenticationToken("system", "system");
+////        Authentication auth = authenticationManager.authenticate(authReq);
 //        Authentication auth = authenticationManager.authenticate(authReq);
-        Authentication auth = authenticationManager.authenticate(authReq);
-//        auth.setAuthenticated(true);
-        SecurityContext sc = SecurityContextHolder.getContext();
-        sc.setAuthentication(auth);
-        System.out.println("AAAAAAA");
-        System.out.println(auth);
+////        auth.setAuthenticated(true);
+//        SecurityContext sc = SecurityContextHolder.getContext();
+//        sc.setAuthentication(auth);
+//        System.out.println("AAAAAAA");
+//        System.out.println(auth);
         String simulate = InetAddress.getLocalHost().getHostAddress();
         if(!miningSystemRepository.existsById(1)){
             //        if (mode.equals("always")) {
