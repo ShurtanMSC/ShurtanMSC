@@ -62,8 +62,9 @@ public class ScheduledTasks {
         messagingTemplate.convertAndSend("/topic/mining-system-action", miningSystemActionService.allWithActionsWs());
     }
 
-    @Scheduled(fixedDelay = 86400000)
-    public void backup() throws InterruptedException {
+//    @Scheduled(fixedDelay = 86400000)
+    @Scheduled(cron = "0 0 12 * * ?")
+    public void backup() {
         System.out.println("Backup started");
         logger.info("Backup started");
         test.backup();
